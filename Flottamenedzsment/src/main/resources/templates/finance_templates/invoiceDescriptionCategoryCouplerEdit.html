@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main}">
+<head>
+<title>Flotta</title>
+</head>
+<body>
+
+  <div layout:fragment="loginContent">
+
+      <h2>Invoice description category coupler edit</h2>
+
+      <form th:action="${'/finance/invoiceDescriptionCategoryCoupler/' + coupler.id}" method="post">
+      <div class="container">
+        <label>Name</label>
+        <input type="text" class="form-control" id="name" name="name" th:value="${coupler.name}"/>
+        <label for="available">Available</label>
+        <input type="checkbox" id="available" name="available" th:checked="*{coupler.available}" />
+        <hr />
+        <div class="row my-2" th:each="description : ${coupler.getSortedDescriptions()}">
+          <div class="col-4">
+            <input type="text" class="form-control" id="description" name="description" th:value="${description}" readonly="readonly" />
+          </div>
+          <div class="col-2">
+            <select id="category" name="category" class="form-control">
+              <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}" th:selected="${coupler.descriptionCategoryMap.get(description) == category}" ></option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="/finance/invoiceDescriptionCategoryCoupler/all" class="btn btn-primary" th:text="#{button.back}"></a>
+      </div>
+      </form>
+      
+
+  </div>
+
+</body>
+</html>

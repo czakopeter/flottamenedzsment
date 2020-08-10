@@ -1,0 +1,38 @@
+.my-menu {
+	border-width: 1px;
+	border-style: solid;
+	border-color: #b3ccff;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	background-color: #f2f8ff;
+}
+
+.my-border {
+	border-width: 1px;
+	border-style: solid;
+	border-color: #b3ccff;
+	border-radius: 5px;
+	padding: 10px;
+	margin-bottom: 10px;
+	margin-top: 10px
+}
+
+body h2 {
+	margin-top: 30px;
+	margin-bottom: 30px
+}
+
+.center {
+	width: 40%;
+	max-width: 400px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.tabcontent {
+	display: none;
+}
+
+a img, button img {
+	height: 20px;
+}

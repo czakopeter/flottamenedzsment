@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main}">
+<head>
+<title>Flotta</title>
+</head>
+<body>
+
+  <div layout:fragment="loginContent">
+
+    <h2 th:text="#{main.users}">Users</h2>
+
+    <a href="/user/new" class="btn btn-primary my-2" th:text="#{button.new}"></a>
+
+    <table id="enabled" class="table">
+      <tr>
+        <th>Email</th>
+        <th>Full name</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+      <tr th:each="user : ${users}">
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.fullName}"></td>
+        <td th:text="${user.getStatusName()}"></td>
+        <td><a th:href="'/user/' + ${user.id}" class="btn btn-primary"
+          th:text="#{button.edit}"
+        >Edit</a></td>
+      </tr>
+    </table>
+
+  </div>
+
+
+</body>
+</html>

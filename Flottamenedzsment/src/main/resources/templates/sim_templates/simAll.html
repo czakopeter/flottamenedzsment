@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main}">
+<head>
+<title>Flotta</title>
+</head>
+<body>
+
+  <div layout:fragment="loginContent">
+
+    <h2 th:text="#{main.sims}">Sims</h2>
+    
+    <div th:replace="fragments/message :: message"></div>
+    
+    <a href="/sim/new" class="btn btn-primary my-2"
+      th:text="#{button.new}"
+    >New</a>
+
+    <table class="table table-sm table-hover">
+      <thead class="thead-light">
+        <tr>
+          <th th:text="#{sim.imei}">IMEI</th>
+          <th th:text="#{sim.pin}">Pin</th>
+          <th th:text="#{sim.puk}">Puk</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody class="table-striped">
+        <tr th:each="sim : ${sims}">
+          <td th:text="${sim.imei}"></td>
+          <td th:text="${sim.pin}"></td>
+          <td th:text="${sim.puk}"></td>
+          <td th:text="${sim.status}"></td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main}">
+<head>
+<title>Flotta</title>
+</head>
+<body>
+  <div layout:fragment="loginContent">
+
+    <h2>New device</h2>
+
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <div th:replace="fragments/device :: deviceForm"></div>
+    
+    
+    
+    <script th:inline="javascript">
+					//<![CDATA[
+					window.onload = function() {
+						document.getElementById('serialNumber').required = true;
+						document.getElementById('saveBtn').formAction = "/device/new";
+					};
+
+					//]]>
+				</script>
+
+  </div>
+</body>
+</html>

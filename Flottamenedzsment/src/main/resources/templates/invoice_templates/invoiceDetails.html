@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main}">
+<head>
+<title>Flotta</title>
+</head>
+<body>
+
+  <div layout:fragment="loginContent">
+
+    <div class="container">
+
+      <h2>Invoice details</h2>
+
+      <div class="row my-2">
+        <div class="col-2"><label th:text="#{bill.invoiceNumber}">Invoice number</label></div>
+        <div class="col-2"><label th:text="${invoice.invoiceNumber}">Invoice number</label></div>
+      </div>
+      <div class="row my-2">
+        <div class="col-2"><label th:text="#{bill.fromDate}">From</label></div>
+        <div class="col-2"><label th:text="${invoice.beginDate}">From date</label></div>
+      </div>
+      <div class="row my-2">
+        <div class="col-2"><label th:text="#{bill.emdDate}">To</label></div>
+        <div class="col-2"><label th:text="${invoice.endDate}">End date</label></div>
+      </div>
+      <div class="row my-2">
+        <div class="col-2"><label th:text="#{bill.invoiceNetAmount}">Net amount</label></div>
+        <div class="col-2"><label th:text="${invoice.invoiceNetAmount} + ' Ft'">Net amount</label></div>
+      </div>
+      <div class="row my-2">
+        <div class="col-2"><label th:text="#{bill.invoiceTaxAmount}">Tax amount</label></div>
+        <div class="col-2"><label th:text="${invoice.invoiceTaxAmount} + ' Ft'">Tax amount</label></div>
+      </div>
+    
+
+      <table class="table">
+        <tr>
+          <th>Subscription</th>
+          <th>Description</th>
+          <th>Begin</th>
+          <th>End</th>
+          <th>Net Amount</th>
+          <th>Tax Amount</th>
+          <th>Tax Percentage</th>
+        </tr>
+        <tr th:each="feeItem : ${invoice.getFeeItems()}">
+          <td th:text="${feeItem?.subscription}"></td>
+          <td th:text="${feeItem.description}"></td>
+          <td th:text="${feeItem.beginDate}"></td>
+          <td th:text="${feeItem.endDate}"></td>
+          <td th:text="${feeItem.netAmount}"></td>
+          <td th:text="${feeItem.taxAmount}"></td>
+          <td th:text="${feeItem.taxPercentage}"></td>
+        </tr>
+      </table>
+    </div>
+
+  </div>
+
+
+</body>
+</html>

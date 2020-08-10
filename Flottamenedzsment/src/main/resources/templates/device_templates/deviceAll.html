@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main}">
+<head>
+<title>Flotta</title>
+</head>
+<body>
+  <div layout:fragment="loginContent">
+
+    <h2>Devices</h2>
+
+    <a  href="/device/new" class="btn btn-primary my-2" th:text="#{button.new}" th:classappend="${canCreateNew ? '' : 'disabled'}">New</a>
+
+    <table class="table">
+      <tr>
+        <th th:text="#{device.serialNumber}">Serial number</th>
+        <th th:text="#{device.typeName}">Type Name</th>
+        <th th:text="#{device.user}">User</th>
+        <th th:text="#{device.subscription}">Subscription</th>
+        <th></th>
+      </tr>
+      <tr th:each="device : ${devices}">
+        <td th:text="${device.serialNumber}"></td>
+        <td th:text="${device.typeName}"></td>
+        <td th:text="${device.userName}"></td>
+        <td th:text="${device.number}"></td>
+        <td>
+          <div class="btn-group">
+            <a th:href="'/device/' + ${device.id} + '/update'" class="btn btn-primary" th:title="#{button.edit}">
+              <img alt="edit" src="/img/edit.png" />
+            </a>
+            <a th:href="'/device/' + ${device.id} + '/view'" class="btn btn-primary" title="view">
+              <img alt="view" src="/img/visible.png" />
+            </a>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+
+    <!--     Modal new device basic data -->
+    <!--     <div class="modal" id="edit" tabindex="-1" role="dialog" aria-hidden="true"> -->
+    <!--       <div class="modal-dialog" role="document"> -->
+    <!--         <div class="modal-content"> -->
+    <!--           <form id="modalForm" action="/device/all" th:object="${device}" method="post"> -->
+    <!--             <div class="modal-header"> -->
+    <!--               <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+    <!--                 <span aria-hidden="true">x</span> -->
+    <!--               </button> -->
+    <!--               <h4 class="modal-title" id="exampleModalLabel">Basic device</h4> -->
+    <!--             </div> -->
+    <!--             <div class="modal-body"> -->
+    <!--               <div class="form-group"> -->
+    <!--                 <label class="form-control-label">Serial number</label> <span><input -->
+    <!--                   type="text" class="form-control" id="serialNumber" name="serialNumber" -->
+    <!--                   required="required" -->
+    <!--                 /></span> -->
+    <!--               </div> -->
+    <!--               <div class="form-group"> -->
+    <!--                 <label class="form-control-label">Device type</label> <select th:field="*{typeName}" -->
+    <!--                   id="deviceType" required="required" -->
+    <!--                 > -->
+    <!--                   <option th:each="type : ${types}" th:value="${type.name}" th:text="${type.name}"></option> -->
+    <!--                 </select> -->
+    <!--               </div> -->
+    <!--               <div class="form-group"> -->
+    <!--                 <label class="form-control-label">Date</label> <input type="date" -->
+    <!--                   required="required" -->
+    <!--                 /> -->
+    <!--               </div> -->
+    <!--             </div> -->
+    <!--             <div class="modal-footer"> -->
+    <!--               <button type="submit" class="btn btn-primary">Save</button> -->
+    <!--               <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button> -->
+    <!--             </div> -->
+    <!--           </form> -->
+    <!--         </div> -->
+    <!--       </div> -->
+    <!--     </div> -->
+
+    <script th:inline="javascript">
+    //<![CDATA[
+  	//]]>
+	</script>
+
+  </div>
+</body>
+</html>

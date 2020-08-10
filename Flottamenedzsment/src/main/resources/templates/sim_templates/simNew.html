@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main}">
+<head>
+<title>Flotta</title>
+</head>
+<body>
+
+  <div layout:fragment="loginContent">
+
+    <h2 th:text="#{sim.newSim}">New sim</h2>
+    
+    <div th:if="${error}" class="alert alert-warning" th:text="${error}"></div>
+
+    <form action="/sim/new" method="post" th:object="${sim}">
+      <div>
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{sim.imei}">IMEI</label>
+          </div>
+          <div class="col-4">
+            <input type="text" id="imei" name="imei" th:value="*{imei}" required="required"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{sim.pin}">PIN</label>
+          </div>
+          <div class="col-4">
+            <input type="text" id="pin" name="pin" th:value="*{pin}" required="required"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{sim.puk}">PUK</label>
+          </div>
+          <div class="col-4">
+            <input type="text" id="puk" name="puk" th:value="*{puk}" required="required"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-6 text-right">
+            <button type="submit" class="btn btn-primary" name="command" value="add"
+              th:text="#{button.add}"
+            >Add</button>
+            <a class="btn btn-primary" href="/sim/all" th:text="#{button.back}">Back</a>
+          </div>
+        </div>
+      </div>
+    </form>
+
+
+
+  </div>
+
+
+</body>
+</html>

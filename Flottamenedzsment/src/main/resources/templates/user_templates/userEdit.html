@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main}">
+<head>
+<title>Flotta</title>
+</head>
+<body>
+
+  <div layout:fragment="loginContent">
+
+    <h2 th:text="#{user.editUser}">Edit user</h2>
+    
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    
+    <form th:object="${user}" method="post" id="form">
+      <div class="container">
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{user.fullName}">Full name</label>
+          </div>
+          <div class="col-4">
+            <input type="text" class="form-control" id="fullName" name="fullName" th:value="*{fullName}"
+              readonly="readonly"
+            />
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{user.email}">Email</label>
+          </div>
+          <div class="col-4">
+            <input type="email" class="form-control" id="email" name="email" th:value="*{email}"
+              readonly="readonly"
+            />
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{role.roles}">Roles</label>
+          </div>
+        </div>
+        <div sec:authorize="hasAuthority('ADMIN')" class="row my-2">
+          <div class="col-2">
+            <label th:text="#{role.admin}">Admin</label>
+          </div>
+          <div class="col-2">
+            <input type="checkbox" class="form-control" id="admin" name="admin" th:checked="${user.hasRole('admin')}" />
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{role.userMngr}">User manager</label>
+          </div>
+          <div class="col-2">
+            <input type="checkbox" class="form-control" id="user_mngr" name="user_mngr" th:checked="${user.hasRole('user_mngr')}" />
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{role.subscriptionMngr}">Subscription manager</label>
+          </div>
+          <div class="col-2">
+            <input type="checkbox" class="form-control" id="subscription_mngr" name="subscription_mngr" th:checked="${user.hasRole('subscription_mngr')}" />
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{role.deviceMngr}">Device manager</label>
+          </div>
+          <div class="col-2">
+            <input type="checkbox" class="form-control" id="device_mngr" name="device_mngr" th:checked="${user.hasRole('device_mngr')}" />
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{role.financeMngr}">Finance</label>
+          </div>
+          <div class="col-2">
+            <input type="checkbox" class="form-control" id="finance_mngr" name="finance_mngr" th:checked="${user.hasRole('finance_mngr')}" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <button type="submit" id="button" class="btn btn-primary"
+              th:formaction="'/user/' + ${user.id}" formmethod="post"
+              th:text="#{button.save}"
+            >Save</button>
+            <a href="/user/all" class="btn btn-primary" th:text="#{button.back}">Back</a>
+          </div>
+        </div>
+      </div>
+    </form>
+    
+
+  </div>
+
+
+</body>
+</html>

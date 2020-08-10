@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+
+  <div class="container" th:fragment="dateSliceSelector">
+    <select th:if="${dates} != null" onchange="changeDate(this)" class="my-3">
+      <option th:each="date : ${dates}" th:value="${date}" th:text="${date}"
+        th:selected="${date} == ${device.date}"
+      ></option>
+    </select>
+  </div>
+
+
+  <div class="container" th:fragment="deviceForm">
+    <form th:object="${device}" method="post">
+      <div class="row my-2">
+        <div class="col-2">
+          <label th:text="#{device.serialNumber}">Serial number</label>
+        </div>
+        <div class="col-4">
+          <input type="text" class="form-control" id="serialNumber" name="serialNumber"
+            th:value="*{serialNumber}"
+          />
+        </div>
+      </div>
+      <div class="row my-2">
+        <div class="col-2">
+          <label th:text="#{device.typeName}">Type name</label>
+        </div>
+        <div class="col-4">
+          <select th:field="*{typeName}" class="form-control" id="deviceType">
+            <option th:each="type : ${deviceTypes}" th:value="${type.name}" th:text="${type.name}"></option>
+          </select>
+        </div>
+      </div>
+      <div class="row my-2">
+        <div class="col-2">
+          <label th:text="#{device.date}">Date</label>
+        </div>
+        <div class="col-4">
+          <input type="date" class="form-control" id="date" name="date" required="required" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4"></div>
+        <div class="col-2">
+          <button type="submit" id="saveBtn" class="btn" formmethod="post" th:text="#{button.save}">Save</button>
+          <a href="/device/all" class="btn btn-primary" th:text="#{button.back}">Back</a>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+
+  <div th:fragment="editDeviceTableForm">
+    <form th:object="${device}" method="post">
+      <table class="table">
+        <tr>
+          <td>Serial number</td>
+          <td><input type="text" class="form-control" id="serialNumber" name="serialNumber"
+            th:value="*{serialNumber}" readonly="readonly"
+          /></td>
+        </tr>
+        <tr>
+          <td>Type Name</td>
+          <td><input type="text" class="form-control" id="${typeName}" name="${typeName}"
+            th:value="*{typeName}" readonly="readonly"
+          /></td>
+        </tr>
+        <tr>
+          <td>User</td>
+          <td><select th:field="*{userId}" id="userId">
+              <option value="0"></option>
+              <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.fullName}"
+                th:title="${user.email}"
+              ></option>
+          </select></td>
+        </tr>
+        <tr>
+          <td>Date</td>
+          <td><input type="date" id="date" name="date" th:value="*{date}" required="required" /></td>
+        </tr>
+      </table>
+      <button type="submit" class="btn btn-primary" th:formaction="'/device/edit/' + ${device.id}">Save</button>
+      <a href="/device/all" class="btn btn-primary">Back</a>
+    </form>
+  </div>
+  
+  <div th:fragment="deviceTypeTabPanelAndJavaScript">
+    <div class="tab mt-5">
+      <button name="tabbtn" class="btn btn-light active"
+        onclick="changeTab(this, 'visibleTab')"
+      >Visible</button>
+      <button name="tabbtn" class="btn btn-light" onclick="changeTab(this, 'invisibleTab')">Invisible</button>
+    </div>
+
+    <div id="visibleTab" class="tabcontent">
+      <h3>Visible</h3>
+      <table class="table" id="table">
+        <tr>
+          <th>Brand</th>
+          <th>Model</th>
+          <th>Name</th>
+          <th>SIM number</th>
+          <th>Has MicroSD slot</th>
+          <th></th>
+        </tr>
+        <tr th:each="deviceType, i : ${deviceTypes}" th:if="${deviceType.visible == true}">
+          <td th:id="id + ${i.count}" th:text="${deviceType.id}" style="display: none;"></td>
+          <td th:id="visible + ${i.count}" th:text="${deviceType.visible}" style="display: none;" ></td>
+          <td th:id="brand + ${i.count}" th:text="${deviceType.brand}"></td>
+          <td th:id="model + ${i.count}" th:text="${deviceType.model}"></td>
+          <td th:id="name + ${i.count}" th:text="${deviceType.name}"></td>
+          <td th:id="simNumber + ${i.count}" th:text="${deviceType.simNumber}"></td>
+          <td th:id="microsd + ${i.count}" th:text="${deviceType.microsd}"></td>
+          <td><button type="button" class="btn btn-primary"
+              th:onclick="|set_modal(${i.count})|" data-target="#edit" data-backdrop="static"
+              data-toggle="modal"
+            >Edit</button></td>
+        </tr>
+      </table>
+    </div>
+
+    <div id="invisibleTab" class="tabcontent">
+      <h3>Invisible</h3>
+      <table class="table" id="table">
+        <tr>
+          <th>Brand</th>
+          <th>Model</th>
+          <th>Name</th>
+          <th>SIM number</th>
+          <th>Has MicroSD slot</th>
+          <th></th>
+        </tr>
+        <tr th:each="deviceType, i : ${deviceTypes}" th:if="${deviceType.visible == false}">
+          <td th:id="id + ${i.count}" th:text="${deviceType.id}" style="display: none;"></td>
+          <td th:id="visible + ${i.count}" th:text="${deviceType.visible}" style="display: none;"></td>
+          <td th:id="brand + ${i.count}" th:text="${deviceType.brand}"></td>
+          <td th:id="model + ${i.count}" th:text="${deviceType.model}"></td>
+          <td th:id="name + ${i.count}" th:text="${deviceType.name}"></td>
+          <td th:id="simNumber + ${i.count}" th:text="${deviceType.simNumber}"></td>
+          <td th:id="microsd + ${i.count}" th:text="${deviceType.microsd}"></td>
+          <td><button type="button" class="btn btn-primary"
+              th:onclick="|set_modal(${i.count})|" data-target="#edit" data-backdrop="static"
+              data-toggle="modal"
+            >Edit</button></td>
+        </tr>
+      </table>
+    </div>
+    
+<!--     function changeTab(btn, tabName) { -->
+<!--             var i, tabcontent, tabbtn; -->
+<!--             tabcontent = document.getElementsByClassName("tabcontent"); -->
+<!--             for (i = 0; i < tabcontent.length; i++) { -->
+<!--               tabcontent[i].style.display = "none"; -->
+<!--             } -->
+<!--             tabbtn = document.getElementsByName("tabbtn"); -->
+<!--             for (i = 0; i < tabbtn.length; i++) { -->
+<!--               tabbtn[i].className = tabbtn[i].className.replace(" active", ""); -->
+<!--             } -->
+<!--             document.getElementById(tabName).style.display = "block"; -->
+<!--             btn.className += " active"; -->
+<!--           } -->
+  </div>
+
+
+
+</body>
+</html>

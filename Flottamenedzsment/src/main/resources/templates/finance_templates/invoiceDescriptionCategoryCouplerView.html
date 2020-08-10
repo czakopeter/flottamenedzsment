@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main}">
+<head>
+<title>Flotta</title>
+</head>
+<body>
+
+  <div layout:fragment="loginContent">
+
+      <h2>Invoice description category coupler view</h2>
+
+      <div class="container">
+        <label>Name</label>
+        <input type="text" class="form-control" id="name" name="name" th:value="${coupler.name}" readonly="readonly"/>
+        <label for="available">Available</label>
+        <input type="checkbox" id="available" name="available" th:checked="${coupler.available}" onclick="return false;" />
+        <hr />
+        <div class="row my-2" th:each="description : ${coupler.getSortedDescriptions()}">
+          <div class="col-4">
+            <input type="text" class="form-control" id="description" name="description" th:value="${description}" readonly="readonly" />
+          </div>
+          <div class="col-2">
+            <input type="text" class="form-control" id="category" name="category" th:value="${coupler.descriptionCategoryMap.get(description).name}" readonly="readonly" />
+          </div>
+        </div>
+        <a href="/finance/invoiceDescriptionCategoryCoupler/all" class="btn btn-primary" th:text="#{button.back}"></a>
+      </div>
+      
+
+  </div>
+
+</body>
+</html>

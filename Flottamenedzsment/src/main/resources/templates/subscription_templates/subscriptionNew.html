@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main}">
+<head>
+<title>Flotta</title>
+</head>
+<body>
+
+  <div layout:fragment="loginContent">
+
+    <h2 th:text="#{subscription.newSubscription}">New subscription</h2>
+
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <form th:object="${subscription}" method="post" id="form">
+      <input type="hidden" id="order" name="order" />
+      <div class="container">
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{subscription.phoneNumber}">Number</label>
+          </div>
+          <div class="col-4">
+            <input type="text" class="form-control" id="number" name="number" th:value="*{number}"
+              required="required"
+            />
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{subscription.imei}">IMEI</label>
+          </div>
+          <div class="col-4">
+            <select id="imei" name="imei" th:value="*{imei}" class="form-control">
+              <option th:each="sim : ${freeSims}" th:value="${sim.imei}" th:text="${sim.imei}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{subscription.createDate}">Create date</label>
+          </div>
+          <div class="col-4">
+            <input type="date" class="form-control" id="date" name="date" th:value="*{date}" required="required" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6 text-right">
+            <button type="submit" id="button" class="btn btn-primary"
+              formaction="/subscription/new" formmethod="post"
+              th:text="#{button.save}"
+            >Save</button>
+            <a href="/subscription/all" class="btn btn-primary" th:text="#{button.back}">Back</a>
+          </div>
+        </div>
+      </div>
+    </form>
+
+
+
+
+
+    <script th:inline="javascript">
+					//<![CDATA[
+					//]]>
+				</script>
+
+  </div>
+
+
+
+</body>
+</html>

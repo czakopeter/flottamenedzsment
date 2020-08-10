@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main}">
+<head>
+<title>Flotta</title>
+</head>
+<body>
+
+  <div layout:fragment="loginContent">
+
+    <h2>View subscription</h2>
+
+    <div class="container">
+      <select th:if="${dates} != null" onchange="dateChange(this)" class="my-3">
+        <option th:each="date : ${dates}" th:value="${date}" th:text="${date}"
+          th:selected="${date} == ${subscription.date}"
+        ></option>
+      </select>
+    </div>
+    
+<!--     <form method="get"> -->
+<!--       <div class="btn-group"> -->
+<!--         <button class="btn btn-primary" th:formaction="'/subscription/' + ${subscription.id} + '/edit'">Edit</button> -->
+<!--         <button class="btn btn-default disabled" th:formaction="'/subscription/' + ${subscription.id} + '/view'">View</button> -->
+<!--       </div> -->
+<!--     </form> -->
+    
+    <form th:object="${subscription}" method="post" id="form">
+      <input type="hidden" id="id" name="id" th:value="*{id}"/>
+      <input type="hidden" id="order" name="order" />
+      <div class="container">
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{subscription.phoneNumber}">Number</label>
+          </div>
+          <div class="col-4">
+            <input type="text" class="form-control" id="number" name="number" th:value="*{number}"
+              readonly="readonly"
+            />
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{subscription.imei}">IMEI</label>
+          </div>
+          <div class="col-4">
+            <input type="text" class="form-control" id="imei" name="imei" th:value="*{imei}"
+              readonly="readonly"
+            />
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{subscription.user}">User</label>
+          </div>
+          <div class="col-4">
+            <input type="text" class="form-control" id="userName" name="userName"
+              th:value="*{userName}" readonly="readonly"
+            />
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{subscription.device}">Device</label>
+          </div>
+          <div class="col-4">
+            <input type="text" class="form-control" id="deviceName" name="deviceName"
+              th:value="*{deviceName}" readonly="readonly"
+            />
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{subscription.note}">Note</label>
+          </div>
+          <div class="col-4">
+            <input type="text" class="form-control" id="note" name="note" th:value="*{note}" readonly="readonly"/>
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{subscription.date}">Date</label>
+          </div>
+          <div class="col-4">
+            <input type="date" class="form-control" id="date" name="date" th:value="*{date}" readonly="readonly" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6 text-right">
+            <a href="/subscription/all" class="btn btn-primary" th:text="#{button.back}">Back</a>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <script src="/js/subscription.js"></script>
+
+
+
+  </div>
+
+</body>
+</html>

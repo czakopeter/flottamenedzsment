@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main}">
+<head>
+<title>Flotta</title>
+</head>
+<body>
+
+  <div layout:fragment="loginContent">
+
+    <h2>Items</h2>
+
+    <div class="container">
+      <h4>Subscriptions</h4>
+      <div th:if="${#lists.isEmpty(subscriptions)}" class="text-center my-border">
+        <b>You don't have any subscriptions</b>
+      </div>
+      
+      <table th:unless="${#lists.isEmpty(subscriptions)}" id="subscriptions-table" class="table table-sm table-hover">
+        <thead>
+          <tr>
+            <th th:text="#{subscription.phoneNumber}">Number</th>
+            <th th:text="#{subscription.imei}">IMEI</th>
+            <th th:text="#{subscription.device}">Device</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="subscription : ${subscriptions}">
+            <td th:text="${subscription.number}"></td>
+            <td th:text="${subscription.imei}"></td>
+            <td th:text="${subscription.deviceName}"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <br />
+
+    <div class="container">
+    <h4>Devices</h4>
+      <div th:if="${#lists.isEmpty(devices)}" class="text-center my-border">
+        <b>You don't have any devices</b>
+      </div>
+      <table th:unless="${#lists.isEmpty(devices)}" id="devices-table" class="table table-sm table-hover">
+        <thead>
+          <tr>
+            <th th:text="#{device.serialNumber}">Serial number</th>
+            <th th:text="#{device.typeName}">Type Name</th>
+            <th th:text="#{device.subscription}">Subscription</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="device : ${devices}">
+            <td th:text="${device.serialNumber}"></td>
+            <td th:text="${device.typeName}"></td>
+            <td th:text="${device.number}"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+  </div>
+
+
+</body>
+</html>

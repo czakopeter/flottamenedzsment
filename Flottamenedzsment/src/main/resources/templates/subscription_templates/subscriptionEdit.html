@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main}">
+<head>
+<title>Flotta</title>
+</head>
+<body>
+
+  <div layout:fragment="loginContent">
+
+    <h2>Edit subscription</h2>
+
+<!--     <div class="container"> -->
+<!--       <select th:if="${dates} != null" onchange="changeDate(this)" class="my-3"> -->
+<!--         <option th:each="date : ${dates}" th:value="${date}" th:text="${date}" -->
+<!--           th:selected="${date} == ${subscription.date}" -->
+<!--         ></option> -->
+<!--       </select> -->
+<!--     </div> -->
+
+<!--     <form method="get"> -->
+<!--       <div class="btn-group"> -->
+<!--         <button class="btn btn-default disabled" th:formaction="'/subscription/' + ${subscription.id} + '/edit'">Edit</button> -->
+<!--         <button class="btn btn-primary" th:formaction="'/subscription/' + ${subscription.id} + '/view'">View</button> -->
+<!--       </div> -->
+<!--     </form> -->
+
+    <form th:action="'/subscription/' + ${subscription.id} + '/update'" th:object="${subscription}" method="post" id="form">
+      <div class="container">
+        <input type="hidden" id="id" name="id" th:value="*{id}" /> 
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{subscription.phoneNumber}">Number</label>
+          </div>
+          <div class="col-4">
+            <input type="text" class="form-control" id="number" name="number" th:value="*{number}" readonly="readonly"/>
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{subscription.imei}">IMEI</label>
+          </div>
+          <div class="col-4">
+            <input type="hidden" id="oldImei" name="oldImei" th:value="*{oldImei}" readonly="readonly" />
+            <input type="text" id="imei" name="imei" th:value="*{imei}" class="form-control" readonly="readonly" />
+          </div>
+          <div>
+            <input th:if="${not #lists.isEmpty(freeSims)}" id="simChangeBtn" type="button" class="btn btn-primary" data-toggle="modal"
+              data-target="#simChooserModal" value="Change"
+            />
+            <button th:if="${not #lists.isEmpty(freeSims)}" type="button" id="simChangeResetBtn" class="btn btn-primary" onClick="resetSimChange()">Reset</button>
+          </div>
+        </div>
+        <div class="row" id="reasonRow"  style="display: none;">
+          <div class="col-2" th:text="'Sim change reason'"></div>
+          <div class="col-4">
+            <input type="text" id="simChangeReason" name="simChangeReason" th:value="*{simChangeReason}" class="form-control"  />
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{subscription.user}">User</label>
+          </div>
+          <div class="col-4">
+            <select th:field="*{userId}" class="form-control" id="userId" onchange="selectUser(this)">
+              <option value="0" title="Nobody"></option>
+              <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.fullName}"
+                th:title="${user.email}"
+              ></option>
+            </select>
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{subscription.device}">Device</label>
+          </div>
+          <div class="col-4">
+            <select th:field="*{deviceId}" class="form-control" id="deviceSelect" onchange="selectDevice(this)" >
+              <option value="0"></option>
+              <option th:each="device : ${devices}" th:value="${device.id}" th:text="${device.typeName} + ' (' + ${device.serialNumber} + ')'"></option>
+            </select>
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{subscription.note}">Note</label>
+          </div>
+          <div class="col-4">
+            <input type="text" class="form-control" id="note" name="note" th:value="*{note}"/>
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{subscription.date}">Date</label>
+          </div>
+          <div class="col-4">
+            <input type="date" class="form-control" id="date" name="date" th:value="*{date}" required="required"
+              th:min="${subscription.min}"
+            />
+            <input type="hidden" id="min" name="min" th:value="*{min}" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6 text-right">
+            <button type="submit" id="button" class="btn" th:text="#{button.save}">Save</button>
+            <a href="/subscription/all" class="btn btn-primary" th:text="#{button.back}">Back</a>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="modal" id="simChooserModal" tabindex="-1" role="dialog"
+      aria-labelledby="simChooserModalLabel" aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Imei change</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row my-1" th:each="sim : ${freeSims}">
+              <div class="col" name="imei" th:text="${sim.imei}"></div>
+              <div class="col-2">
+                <button type="button" class="btn btn-primary" onClick="simChange(this)" value="Select" data-dismiss="modal">Select</button>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/subscription.js"></script>
+
+    <script th:inline="javascript">
+					//<![CDATA[
+					//simStatus
+// 						-1 sub dont have sim
+					//	0 sub have own sim
+					//	1 sub change sim
+// 					var simStatus;
+// 					if(document.getElementById('oldImei').value == '') {
+// 						simStatus = -1;
+// 					} else {
+// 						simStatus = document.getElementById('imei').value != document.getElementById('oldImei').value ? 1 : 0;
+// 					}
+// 					var simChanged = document.getElementById('imei').value != document.getElementById('oldImei').value;
+					
+// 					window.onload = function() {
+// 						switch(simStatus) {
+// 							case -1:
+// 								if(document.getElementById('imei').value == '') {
+// 									document.getElementById('button').disabled = true;
+// 								}
+// 								document.getElementById('simChangeBtn').value = 'Select';
+// 								document.getElementById('simChangeResetBtn').style.display = 'none';
+// 								break;
+// 							case 0:
+// 								document.getElementById('simChangeResetBtn').disabled = true;
+// 								break;
+// 							case 1:
+// 								document.getElementById('reasonRow').style.display = null;
+// 								document.getElementById('simChangeReason').required = true;
+// 								break;
+// 						}
+// 					};
+
+// 					function changeDate(d) {
+// 						document.getElementById('order').value = 'dateSliceCh ' + d.value;
+// 						document.getElementById('form').submit();
+// 					}
+
+// 					function simChange(imei) {
+// 						switch(simStatus) {
+// 							case -1:
+// 								document.getElementById('button').disabled = false;
+// 								break;
+// 							default:
+// 								document.getElementById('reasonRow').style.display = null;
+// 								document.getElementById('simChangeReason').required = true;
+// 								document.getElementById('simChangeResetBtn').disabled = false;
+// 								break;
+// 						}
+// 						document.getElementById('imei').value = imei;
+// 					}
+					
+// 					function resetSimChange() {
+// 						document.getElementById('imei').value = document.getElementById('oldImei').value;
+// 						document.getElementById('simChangeReason').value = null;
+// 						document.getElementById('simChangeReason').required = false;
+// 						document.getElementById('reasonRow').style.display = 'none';
+// 						document.getElementById('simChangeResetBtn').disabled = true;
+// 					}
+
+// 					function userUpdate(user) {
+// 						document.getElementById('order').value = 'userCh ' + user.value;
+// 						document.getElementById('form').submit();
+// 					}
+					
+// 					function deviceUpdate(device) {
+// 						document.getElementById('order').value = 'deviceCh';
+// 						document.getElementById('form').submit();
+// 					}
+					
+					//]]>
+				</script>
+
+  </div>
+
+
+
+</body>
+</html>

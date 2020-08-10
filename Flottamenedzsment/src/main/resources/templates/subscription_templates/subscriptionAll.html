@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main}">
+<head>
+<title>Flotta</title>
+</head>
+<body>
+
+  <div layout:fragment="loginContent">
+
+    <h2 th:text="#{main.subscriptions}">Subscriptions</h2>
+
+    <a href="/subscription/new" class="btn btn-primary my-2" th:classappend="${canCreateNew ? '' : 'disabled'}"
+      th:text="#{button.new}" th:disabled="${not canCreateNew}"
+    >New</a>
+
+    <table class="table table-sm">
+      <tr>
+        <th th:text="#{subscription.phoneNumber}">Number</th>
+        <th th:text="#{subscription.imei}">IMEI</th>
+        <th th:text="#{subscription.user}">User</th>
+        <th th:text="#{subscription.device}">Device</th>
+        <th></th>
+      </tr>
+      <tr th:each="subscription : ${subscriptions}">
+        <td th:text="${subscription.number}"></td>
+        <td th:text="${subscription.imei}"></td>
+        <td th:text="${subscription.userName}"></td>
+        <td th:text="${subscription.deviceName}"></td>
+        <td>
+          <div class="btn-group">
+            <a th:href="'/subscription/' + ${subscription.id} + '/update'" class="btn btn-primary" th:title="#{button.edit}">
+              <img alt="edit" src="/img/edit.png" />
+            </a>
+            <a th:href="'/subscription/' + ${subscription.id} + '/view'" class="btn btn-primary" title="view">
+              <img alt="view" src="/img/visible.png" />
+            </a>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+  </div>
+
+</body>
+</html>
