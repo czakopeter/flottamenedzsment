@@ -195,5 +195,9 @@ public class BillingService {
   public void deleteInvoiceByInvoiceNumber(String invoiceNumber) {
     invoiceService.deleteInvoiceByInvoiceNumber(invoiceNumber);
   }
+
+  public void acceptInvoiceByInvoiceNumber(String invoiceNumber) {
+    invoiceService.acceptInvoiceByInvoiceNumber(invoiceNumber);
+  }
   
 }

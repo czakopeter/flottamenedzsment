@@ -525,4 +525,8 @@ public class MainService {
     billingService.deleteInvoiceByInvoiceNumber(invoiceNumber);
   }
 
+  public void acceptInvoiceByInvoiceNumber(String invoiceNumber) {
+    billingService.acceptInvoiceByInvoiceNumber(invoiceNumber);
+  }
+
 }

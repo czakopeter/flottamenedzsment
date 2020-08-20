@@ -71,12 +71,14 @@ public class InvoiceService {
 
     Invoice invoice = processInvoiceXmlString(xmlString);
 
-    if (invoiceRepository.findByInvoiceNumber(invoice.getInvoiceNumber()) != null) {
-      throw new FileUploadException("Already exists!");
-    }
     if(!invoice.isConsistent()) {
       throw new FileUploadException("Invoice is NOT consistant!");
     }
+    
+    if (invoiceRepository.findByInvoiceNumber(invoice.getInvoiceNumber()) != null) {
+      throw new FileUploadException("Already exists!");
+    }
+    
     return invoiceRepository.save(invoice);
   }
 
@@ -165,12 +167,6 @@ public class InvoiceService {
     }
   }
   
-//  private String cleanXMLString(StringBuilder sb) {
-//    int fromIndex = 0;
-//    sb.indexOf(">", fromIndex);
-//    return sb.toString();
-//  }
-
   public List<Invoice> findAll() {
     return invoiceRepository.findAll();
   }
@@ -244,13 +240,20 @@ public class InvoiceService {
         System.err.println(e);
       }
     }
-
   }
 
   public void deleteInvoiceByInvoiceNumber(String invoiceNumber) {
     Invoice invoice = invoiceRepository.findByInvoiceNumber(invoiceNumber);
     if (invoice.canDelete()) {
       invoiceRepository.delete(invoice);
+    }
+  }
+
+  public void acceptInvoiceByInvoiceNumber(String invoiceNumber) {
+    Invoice invoice = invoiceRepository.findByInvoiceNumber(invoiceNumber);
+    if(invoice != null) {
+      invoice.setAcceptedByCompany();
+      invoiceRepository.save(invoice);
     }
   }
 

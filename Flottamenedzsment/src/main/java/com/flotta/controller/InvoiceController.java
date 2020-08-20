@@ -46,22 +46,27 @@ public class InvoiceController {
   }
   
 //TODO show full header of invoice
-  @GetMapping("invoice/{invoiceNumber}")
+  @GetMapping("invoice/{invoiceNumber}/details")
   public String invoiceDetails(Model model, @PathVariable("invoiceNumber") String invoiceNumber) {
     model.addAttribute("invoice", service.findInvoiceByInvoiceNumber(invoiceNumber));
     return "invoice_templates/invoiceDetails";
   }
   
-//  @PostMapping(path = "/invoice/{invoiceNumber}/reprocessing")
-  @PostMapping(path = "/invoice/{invoiceNumber}/restartProcessing")
+  @PostMapping("/invoice/{invoiceNumber}/restartProcessing")
   public String restartProcessingOfInvoice(@PathVariable(value = "invoiceNumber") String invoiceNumber) {
     service.restartPorcessingOfInvoice(invoiceNumber);
     return "redirect:/invoice/all";
   }
   
-  @PostMapping(path = "/invoice/{invoiceNumber}/delete")
+  @PostMapping("/invoice/{invoiceNumber}/delete")
   public String deleteInvoice(@PathVariable(value = "invoiceNumber") String invoiceNumber) {
     service.deleteInvoiceByInvoiceNumber(invoiceNumber);
+    return "redirect:/invoice/all";
+  }
+  
+  @PostMapping("invoice/{invoiceNumber}/accept")
+  public String acceptInoiveByCompany(@PathVariable(value = "invoiceNumber") String invoiceNumber) {
+    service.acceptInvoiceByInvoiceNumber(invoiceNumber);
     return "redirect:/invoice/all";
   }
   

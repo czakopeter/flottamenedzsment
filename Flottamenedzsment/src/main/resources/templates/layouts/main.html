@@ -50,9 +50,9 @@
   <div class="navbar navbar-expand mx-1 my-menu">
     <div sec:authorize="isAuthenticated()" class="navbar-nav">
       <ul class="nav nav-pills">
-        <li sec:authorize="hasAnyAuthority('BASIC')" class="nav-item"><a class="nav-link"
-          th:classappend="${title} == 'Homepage' ? 'active' :''" href="/" th:text="#{main.homepage}"
-        >Homepage</a></li>
+<!--         <li sec:authorize="hasAnyAuthority('BASIC')" class="nav-item"><a class="nav-link" -->
+<!--           th:classappend="${title} == 'Homepage' ? 'active' :''" href="/" th:text="#{main.homepage}" -->
+<!--         >Homepage</a></li> -->
         <li sec:authorize="hasAnyAuthority('USER_MNGR','ADMIN')" class="nav-item"><a
           class="nav-link" th:classappend="${title} == 'User' ? 'active' :''" href="/user/all"
           th:text="#{main.users}"

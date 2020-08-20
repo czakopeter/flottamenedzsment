@@ -107,4 +107,8 @@ public class MyNode {
     root.setName(name);
     return root;
   }
+  
+  public boolean equalsName(String name) {
+    return this.name.equalsIgnoreCase(name);
+  }
 }

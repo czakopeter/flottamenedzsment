@@ -41,8 +41,10 @@
           <td th:text="${invoice.invoiceNetAmount}"></td>
           <td th:text="${invoice.invoiceTaxAmount}"></td>
           <td>
-            
-            <a th:unless="${invoice.hasProblem()}" th:href="'/invoice/' + ${invoice.invoiceNumber}" class="btn btn-primary" th:text="#{button.details}"
+            <button th:unless="${invoice.hasProblem()}" type="submit" class="btn btn-success" th:formaction="'/invoice/' + ${invoice.invoiceNumber} + '/accept'">
+              <img alt="Accept" src="/img/checkmark.png">
+            </button>
+            <a th:unless="${invoice.hasProblem()}" th:href="'/invoice/' + ${invoice.invoiceNumber} + '/details'" class="btn btn-primary" th:text="#{button.details}"
             >Details</a>
 <!--           </td> -->
 <!--           <form action="/finance/invoicePartition" method="post"> -->
@@ -56,7 +58,7 @@
 <!--           </form> -->
 <!--           <td> -->
             <div class="btn-group">
-              <button type="submit" class="btn btn-warning" th:formaction="'/invoice/' + ${invoice.invoiceNumber} + '/continueProcessing/'">
+              <button type="submit" class="btn btn-warning" th:formaction="'/invoice/' + ${invoice.invoiceNumber} + '/restartProcessing'">
                 <img alt="refresh" src="/img/refresh.png"/>
               </button>
               <button type="submit" class="btn btn-danger" th:formaction="'/invoice/' + ${invoice.invoiceNumber} + '/delete'">

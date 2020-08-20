@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="ISO-8859-2"?>
+<Account>
+	<CustomerData>
+		<Name>Czako Peter Soma</Name>
+		<City>Budapest</City>
+	</CustomerData>
+	<CompanyData>
+		<Name>Magyar Telekom Nyrt.</Name>
+		<City>Budapest</City>
+	</CompanyData>
+	<InvoiceData>
+		<Begin>2020.01.01.</Begin>
+		<End>2020.01.31.</End>
+		<InvNb>5120200001303613</InvNb>
+		<InvTotalNetA>3300</InvTotalNetA>
+		<InvTotalTaxA>671</InvTotalTaxA>
+		<InvTotalGrossA>3971</InvTotalGrossA>
+	</InvoiceData>
+	<FeeItems>
+		<FeeItem>
+			<ItemNr>202563364</ItemNr>
+			<Desc>Mobil telefon szolgaltatas</Desc>
+			<Begin>2020.01.01.</Begin>
+			<End>2020.01.31.</End>
+			<NetA>2000</NetA>
+			<TaxP>27%</TaxP>
+      <TaxA>540</TaxA>
+			<GrossA>2540</GrossA>
+		</FeeItem>
+		<FeeItem>
+			<ItemNr>202563364</ItemNr>
+			<Desc>Mobil net 1GB</Desc>
+      <Begin>2020.01.01.</Begin>
+			<End>2020.01.31.</End>
+			<NetA>1000</NetA>
+			<TaxP>5%</TaxP>
+      <TaxA>50</TaxA>
+			<GrossA>1050</GrossA>
+		</FeeItem>
+		<FeeItem>
+			<ItemNr>202563364</ItemNr>
+			<Desc>Telekom mobilhalozaton belul</Desc>
+      <Begin>2020.01.03.</Begin>
+			<End>2020.01.26.</End>
+			<NetA>100</NetA>
+			<TaxP>27%</TaxP>
+      <TaxA>27</TaxA>
+			<GrossA>127</GrossA>
+		</FeeItem>
+		<FeeItem>
+		<ItemNr>202563364</ItemNr>
+			<Desc>Belfoldi mas mobilhalozat / Telenor</Desc>
+			<Begin>2020.01.19.</Begin>
+			<End>2020.01.19.</End>
+			<NetA>100</NetA>
+			<TaxP>27%</TaxP>
+      <TaxA>27</TaxA>
+			<GrossA>127</GrossA>
+		</FeeItem>
+		<FeeItem>
+		<ItemNr>202563364</ItemNr>
+			<Desc>Belfoldi mas mobilhalozat / Vodafone</Desc>
+      <Begin>2020.01.01.</Begin>
+			<End>2020.01.31.</End>
+			<NetA>100</NetA>
+			<TaxP>27%</TaxP>
+      <TaxA>27</TaxA>
+			<GrossA>127</GrossA>
+		</FeeItem>
+	</FeeItems>
+</Account>

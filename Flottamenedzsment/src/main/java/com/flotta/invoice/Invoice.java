@@ -201,4 +201,10 @@ public class Invoice {
   public boolean isConsistent() {
     return true;
   }
+
+  public void setAcceptedByCompany() {
+    for(InvoiceByUserAndPhoneNumber part : invoicePart) {
+      part.setAcceptedByCompany();
+    }
+  }
 }

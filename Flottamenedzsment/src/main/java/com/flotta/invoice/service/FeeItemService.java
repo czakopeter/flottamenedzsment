@@ -68,6 +68,7 @@ public class FeeItemService {
   public List<InvoiceOfUserByNumber> getPendingInvoicesOfCurrentUser(User user) {
     Map<String, InvoiceOfUserByNumber> result = new HashMap<>();
     for(FeeItem fee : feeItemRepository.findAllByUserIdAndAcceptedByUserFalseAndAcceptedByCompanyTrue(user.getId())) {
+      System.out.println(fee);
       InvoiceOfUserByNumber i = result.get(fee.getSubscription());
       if(i == null) {
         i = new InvoiceOfUserByNumber(fee.getSubscription(), "22222222222222222");

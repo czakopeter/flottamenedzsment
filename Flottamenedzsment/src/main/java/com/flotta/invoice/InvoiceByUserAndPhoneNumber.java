@@ -181,6 +181,12 @@ public class InvoiceByUserAndPhoneNumber extends BasicEntity {
       }
     }
   }
+
+  public void setAcceptedByCompany() {
+    for(FeeItem item : fees) {
+      item.setAcceptedByCompany(true);
+    }
+  }
   
 
 //  public List<InvoiceByUserAndPhoneNumber> splitBeforeDate(List<LocalDate> dates) {

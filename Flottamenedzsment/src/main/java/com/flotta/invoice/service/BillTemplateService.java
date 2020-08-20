@@ -1,6 +1,8 @@
 package com.flotta.invoice.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -75,8 +77,8 @@ public class BillTemplateService {
     }
     
     for(MyNode template : templates) {
-      template.show();
-      if(equals(root.getChildNodes(), template.getChild())) {
+//      template.show();
+      if (equals(root.getChildNodes(), template.getChild())) {
         return true;
       }
     }
@@ -85,33 +87,65 @@ public class BillTemplateService {
   }
   
   //kijavítani, nem működik jól
-  private boolean equals(NodeList nodes, List<MyNode> subTemplates) {
-    System.out.println("\ntemplate size: " + subTemplates.size());
-    System.out.println("nodelist size: " + length(nodes));
-    if(subTemplates.size() != length(nodes)) {
-//      return false;
+  private boolean equals(NodeList nodes, List<MyNode> templates) {
+    System.out.println("\ntemplate: " + templates.size());
+    print(templates);
+    System.out.println("invoice: " + length(nodes));
+    print(nodes);
+    
+    if(templates.size() > length(nodes)) {
+      return false;
     }
+    
+    Map<String, Boolean> appear = new HashMap<>();
+    for(MyNode node : templates) {
+      appear.put(node.getName(), false);
+    }
+    
     for (int i = 0; i < nodes.getLength(); i++) {
-      Node tempNode = nodes.item(i);
-      if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
-        boolean valid = false;
-        System.out.println("\nNode name: " + tempNode.getNodeName());
-        for (MyNode subTemplate : subTemplates) {
-          System.out.println("mynode name: " + subTemplate.getName());
-          if (tempNode.getNodeName().equalsIgnoreCase(subTemplate.getName())) {
-            if (equals(tempNode.getChildNodes(), subTemplate.getChild())) {
-              valid = true;
-              break;
-            }
-          }
-        }
-        System.out.println("\n");
-        if (!valid) {
+      Node node = nodes.item(i);
+      if (node.getNodeType() == Node.ELEMENT_NODE) {
+        int index = indexOf(templates, node.getNodeName());
+        if(index == -1 || !equals(node.getChildNodes(), templates.get(index).getChild())) {
           return false;
         }
+        appear.put(templates.get(index).getName(), true);
       }
     }
-    return false;
+    for(boolean appeared : appear.values()) {
+      if(appeared == false) {
+        return false;
+      }
+    }
+    return true;
+  }
+  
+  private int indexOf(List<MyNode> nodes, String searched) {
+    for(int i = 0; i < nodes.size(); i++) {
+      MyNode node = nodes.get(i);
+      if(node.equalsName(searched)) {
+        return i;
+      }
+    }
+    return -1;
+  }
+  
+  private void print(NodeList list) {
+    for (int i = 0; i < list.getLength(); i++) {
+      Node node = list.item(i);
+      if (node.getNodeType() == Node.ELEMENT_NODE) {
+        System.out.print(node.getNodeName() + ", ");
+      }
+    }
+    System.out.println();
+  }
+  
+  private void print(List<MyNode> list) {
+    for (int i = 0; i < list.size(); i++) {
+      MyNode node = list.get(i);
+      System.out.print(node.getName() + ", ");
+    }
+    System.out.println();
   }
   
   private int length(NodeList nodes) {
