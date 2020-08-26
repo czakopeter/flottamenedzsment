@@ -278,5 +278,26 @@ public class Subscription extends BasicEntityWithCreateDate {
     } else if(date.isEqual(lastNoteModDate)) {
     }
   }
+
+  public List<LocalDate> getUserModificationDatesBetween(LocalDate beginDate, LocalDate endDate) {
+    List<LocalDate> result = new LinkedList<>();
+    List<LocalDate> dates = new LinkedList<>(subUsers.keySet());
+    Collections.sort(dates);
+    for(LocalDate date : dates) {
+      if(date.isAfter(beginDate) && !date.isAfter(endDate)) {
+        result.add(date);
+      }
+    }
+    return result;
+  }
+
+  public User getUserByDate(LocalDate date) {
+    LocalDate floor = Utility.floorDate(subUsers, date);
+    if(floor == null) {
+      return null;
+    } else {
+      return subUsers.get(floor).getUser();
+    }
+  }
   
 }

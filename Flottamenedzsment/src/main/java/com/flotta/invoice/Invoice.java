@@ -144,9 +144,14 @@ public class Invoice {
     for(InvoiceByUserAndPhoneNumber part : invoicePart) {
       if((subscription == null && part.getSubscription() == null) ||
           (subscription != null && 
-          feeItem.getSubscription().contentEquals(part.getSubscription().getNumber()) && 
-          feeItem.getUserId() == (part.getUser() != null ? part.getUser().getId() : 0 ))
+          feeItem.getSubscription().contentEquals(part.getSubscription().getNumber()))
           ) {
+        if(subscription != null) {
+          List<LocalDate> dates = subscription.getUserModificationDatesBetween(feeItem.getBeginDate(), feeItem.getEndDate());
+          for(LocalDate date : dates) {
+            subscription.getUserByDate(date);
+          }
+        }
         part.addFeeItem(feeItem);
         return;
       }
