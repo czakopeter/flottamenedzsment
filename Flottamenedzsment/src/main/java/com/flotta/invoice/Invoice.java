@@ -15,6 +15,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.flotta.entity.Subscription;
+import com.flotta.entity.User;
+
+import net.bytebuddy.utility.privilege.GetSystemPropertyAction;
 
 @Entity
 @Table(name = "invoices")
@@ -42,7 +45,6 @@ public class Invoice {
   private double invoiceGrossAmount;
   
   private boolean closed;
-  
   
   @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
   private List<InvoiceByUserAndPhoneNumber> invoicePart = new LinkedList<>();
@@ -141,24 +143,46 @@ public class Invoice {
 
   //TODO átalakít
   public void addFeeItem(Subscription subscription, FeeItem feeItem) {
-    for(InvoiceByUserAndPhoneNumber part : invoicePart) {
-      if((subscription == null && part.getSubscription() == null) ||
-          (subscription != null && 
-          feeItem.getSubscription().contentEquals(part.getSubscription().getNumber()))
-          ) {
-        if(subscription != null) {
-          List<LocalDate> dates = subscription.getUserModificationDatesBetween(feeItem.getBeginDate(), feeItem.getEndDate());
-          for(LocalDate date : dates) {
-            subscription.getUserByDate(date);
+    if(subscription == null) {
+      for(InvoiceByUserAndPhoneNumber part : invoicePart) {
+        if(part.getSubscription() == null) {
+          part.addFeeItem(feeItem);
+          return;
+        }
+      }
+      InvoiceByUserAndPhoneNumber part = new InvoiceByUserAndPhoneNumber(this, null, null);
+      part.addFeeItem(feeItem);
+      invoicePart.add(part);
+      return;
+    } else {
+      List<FeeItem> fees = splitByUser(feeItem, subscription);
+      for(FeeItem fee : fees) {
+        boolean hasPart = false;
+        for(InvoiceByUserAndPhoneNumber part : invoicePart) {
+          if((fee.getUserId() == 0 && part.getUser() == null) || 
+             (part.getUser() != null && fee.getUserId() == part.getUser().getId() && part.getSubscription().equals(subscription))) {
+            part.addFeeItem(fee);
+            hasPart = true;
+            break;
           }
         }
-        part.addFeeItem(feeItem);
-        return;
+        if(!hasPart) {
+          InvoiceByUserAndPhoneNumber part = new InvoiceByUserAndPhoneNumber(this, subscription, subscription.getUserByDate(fee.getBeginDate()));
+          part.addFeeItem(fee);
+          invoicePart.add(part);
+        }
       }
     }
-    InvoiceByUserAndPhoneNumber part = new InvoiceByUserAndPhoneNumber(this, subscription, null);
-    part.addFeeItem(feeItem);
-    invoicePart.add(part);
+  }
+  
+  private List<FeeItem> splitByUser(FeeItem feeItem, Subscription subscription) {
+    List<LocalDate> dates = subscription.getUserModificationDatesBetween(feeItem.getBeginDate(), feeItem.getEndDate());
+    List<FeeItem> fees = feeItem.splitBeforeDate(dates);
+    for(FeeItem fee : fees) {
+      User user = subscription.getUserByDate(fee.getBeginDate());
+      fee.setUserId(user != null ? user.getId() : 0);
+    }
+    return fees;
   }
   
   public List<FeeItem> getFeeItems() {

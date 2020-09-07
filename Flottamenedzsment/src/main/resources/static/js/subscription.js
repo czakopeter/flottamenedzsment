@@ -14,6 +14,8 @@
 //	xhr.send(data);
 //}
 
+
+
 function dateChange(dateSelect) {
 	let id = document.querySelector("#id").value;
 	sendData("POST", "/subscription/" + id + "/view", "date=" + dateSelect.value, setViewData)

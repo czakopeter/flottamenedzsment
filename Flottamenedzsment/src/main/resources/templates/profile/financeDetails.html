@@ -45,7 +45,7 @@
           <tr th:each="fee, i : ${invoicePart.fees}">
             <td th:text="${fee.category}"></td>
             <td th:text="${fee.description}"></td>
-            <td th:text="${fee.userGross}"></td>
+            <td th:text="${fee.totalGrossAmount}"></td>
             <td>
               <input type="text" class="form-control" th:name="${fee.id}" placeholder="Enter your note" />
             </td>
