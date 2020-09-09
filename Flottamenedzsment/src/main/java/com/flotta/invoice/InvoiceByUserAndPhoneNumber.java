@@ -42,6 +42,8 @@ public class InvoiceByUserAndPhoneNumber extends BasicEntity {
 
   private double userGrossAmount;
   
+  private double companyGrossAmount;
+  
   private double totalGrossAmount;
   
   private boolean closed;
@@ -128,6 +130,16 @@ public class InvoiceByUserAndPhoneNumber extends BasicEntity {
   public void setUserGrossAmount(double userGrossAmount) {
     this.userGrossAmount = userGrossAmount;
   }
+  
+  
+
+  public double getCompanyGrossAmount() {
+    return companyGrossAmount;
+  }
+
+  public void setCompanyGrossAmount(double companyGrossAmount) {
+    this.companyGrossAmount = companyGrossAmount;
+  }
 
   public double getTotalGrossAmount() {
     return totalGrossAmount;
@@ -163,6 +175,8 @@ public class InvoiceByUserAndPhoneNumber extends BasicEntity {
   }
   
   private void amountUpdate(FeeItem item) {
+    this.userGrossAmount += item.getUserGrossAmount();
+    this.companyGrossAmount += item.getCompanyGrossAmount();
     this.totalNetAmount += item.getNetAmount();
     this.totalTaxAmount += item.getTaxAmount();
     this.totalGrossAmount += item.getTotalGrossAmount();
@@ -188,44 +202,14 @@ public class InvoiceByUserAndPhoneNumber extends BasicEntity {
     }
   }
   
-
-//  public List<InvoiceByUserAndPhoneNumber> splitBeforeDate(List<LocalDate> dates) {
-//    List<InvoiceByUserAndPhoneNumber> result = new LinkedList<>();
-//    Collections.sort(dates);
-//    LocalDate b = beginDate;
-//    for (LocalDate date : dates) {
-//      if (date.isEqual(beginDate) || date.isBefore(beginDate) || date.isAfter(endDate)) {
-//        // nothing
-//      } else {
-//        InvoiceByUserAndPhoneNumber fee = getPartOfFeeItem(b, date);
-//        
-//        result.add(fee);
-//        b = date;
-//      }
-//    }
-//    InvoiceByUserAndPhoneNumber last = getPartOfFeeItem(b, endDate.plusDays(1));
-//    last.setId(this.id);
-//    result.add(last);
-//    return result;
-//  }
-
-  // LocalDate b is inclusive
-  // LocalDate e is exclusive
-//  private InvoiceByUserAndPhoneNumber getPartOfFeeItem(LocalDate b, LocalDate e) {
-//    long all = beginDate.until(endDate, ChronoUnit.DAYS) + 1;
-//    long part = b.until(e, ChronoUnit.DAYS);
-//    InvoiceByUserAndPhoneNumber result = new InvoiceByUserAndPhoneNumber(this);
-//    result.setId(0);
-//    result.setBegin(b);
-//    result.setEnd(e.minusDays(1));
-//    result.setNetAmount(round(netAmount * part / all, 2));
-//    result.setTaxAmount(round(taxAmount * part / all, 2));
-//    result.setUserGross(round(userGross * part / all, 2));
-//    result.setCompGross(round(companyGross * part / all, 2));
-//    result.setValidByUser(false);
-//    result.setValidByCompany(false);
-//    return result;
-//  }
-  
-  
+  public void updateAmountsByFeeItems() {
+    this.totalNetAmount = 0;
+    this.totalTaxAmount = 0;
+    this.userGrossAmount = 0;
+    this.companyGrossAmount = 0;
+    this.totalGrossAmount = 0;
+    for(FeeItem item : fees) {
+      amountUpdate(item);
+    }
+  }
 }

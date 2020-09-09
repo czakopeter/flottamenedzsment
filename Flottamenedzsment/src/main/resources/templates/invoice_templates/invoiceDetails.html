@@ -40,14 +40,14 @@
           <th>Description</th>
           <th>Begin</th>
           <th>End</th>
-          <th>Total gross amount</th>
-          <th>User gross amount</th>
+          <th>Total gross</th>
+          <th>User gross</th>
+          <th>Comp. gross</th>
           <th></th>
         </tr>
         <span th:each="partOfInvoice : ${invoice.invoicePart}">
           <tr>
             <td colspan="5" th:text="${partOfInvoice?.user?.fullName}"></td>
-<!--             <td th:text="${partOfInvoice.totalGrossAmount}"></td> -->
             <td th:text="${#numbers.formatDecimal(partOfInvoice.totalGrossAmount, 0, 2)}"></td>
             <td th:text="${partOfInvoice.userGrossAmount}"></td>
             <td></td>
@@ -60,94 +60,33 @@
             <td name="endDate" th:text="${feeItem.endDate}"></td>
             <td name="totalGrossAmount" th:text="${feeItem.totalGrossAmount}"></td>
             <td name="userGrossAmount" th:text="${feeItem.userGrossAmount}"></td>
-            <td><button type="button" class="btn btn-primary" onclick="set_modal(this)"
-              data-target="#edit" data-backdrop="static" data-toggle="modal"
-              ><img alt="Edit" src=""></button></td>
+            <td name="compGrossAmount" th:text="${feeItem.companyGrossAmount}"></td>
+<!--             <td><button type="button" class="btn btn-primary" onclick="set_modal(this)" -->
+<!--               data-target="#edit" data-backdrop="static" data-toggle="modal" -->
+<!--                ><img alt="Edit" src=""></button> -->
+<!--             </td> -->
+            <td name="buttons" width="85px">
+              <div id="prepareEditingButton">
+                <button type="button" class="btn btn-sm btn-primary" onclick="prepare_editing(this)">
+                  <img alt="Edit" src="/img/edit.png">
+                </button>
+              </div>
+              <div id="acceptOrCancelEditingButton" style="display: none" class="btn-group">
+                <button type="button" class="btn btn-sm btn-success" onclick="accept_editing(this)">
+                  <img alt="Accept" src="/img/checkmark.png">
+                </button><button type="button" class="btn btn-sm btn-danger" onclick="cancel_editing(this)">
+                  <img alt="Cancel" src="/img/cross.png">
+                </button>
+              </div>
+            </td>
           </tr>
         </span>
       </table>
     </div>
     
-    <!-- Modal -->
-    <div class="modal " id="edit" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title" id="exampleModalLabel">Set item of invoice</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">x</span>
-              </button>
-            </div>
-            <div class="modal-body">
-            <table id="table" class="table table-sm table-hover" style="width: 500px">
-        <thead>
-          <tr>
-            <th>Description</th>
-            <th class="text-center" colspan="2">Company</th>
-            <th></th>
-            <th class="text-center" colspan="2">User</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="align-middle">
-              <label id="description"></label>
-              <input type="hidden" id="item_id" />
-            </td>
-            <td style="width: 4em;">
-              <label id="companyAmount" class="form-check-label">0</label>
-              <label>Ft</label>
-            </td>
-            <td class="align-middle text-center">
-              <input type="radio" th:id="companyRadio" th:name="radio" th:onclick="clickOnRadioButton('company')" />
-            </td>
-            <td class="align-middle">
-              <input type="range" class="form-control-range"
-                id="range" name="ratio" min="0" max="100"
-                th:oninput="setRangeInput()"/>
-            </td>
-            <td class="align-middle text-center">
-              <input type="radio" th:id="userRadio" th:name="radio" th:onclick="clickOnRadioButton('user')"
-            /></td>
-            <td style="width: 4em;">
-              <label th:id="userAmount" class="form-check-label">0</label>
-              <label>Ft</label>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-            </div>
-            <div class="modal-footer">
-              <button type="submit" class="btn btn-primary">Save</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
-            </div>
-        </div>
-      </div>
-    </div>
+    <script src="/js/invoiceDetails.js"></script>
     
-    <script th:inline="javascript">
-        //<![CDATA[
-          function set_modal(b) {
-            let tr = b.parentElement.parentElement;
-            let description = document.querySelector('#description');
-            let id = document.querySelector('#item_id');
-            let companyAmount = document.querySelector('#companyAmount');
-            let companyRadio = document.querySelector('#companyRadio');
-            let range = document.querySelector('#range');
-            let userRadio = document.querySelector('#userRadio');
-            let userAmount = document.querySelector('#userAmount');
-            
-            
-            
-            description.textContent = tr.querySelector('[name=description]').textContent;
-            id.value = tr.querySelector('[name=id]').value;
-            companyAmount.innerHTML = tr.querySelector('[name=totalGrossAmount]').textContent - tr.querySelector('[name=userGrossAmount]').textContent;
-            userAmount.innerHTML = tr.querySelector('[name=userGrossAmount]').textContent;
-          }
-        //]]>
-  </script>
     
-
   </div>
 
 

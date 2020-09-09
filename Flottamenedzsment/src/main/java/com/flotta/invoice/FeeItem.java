@@ -43,6 +43,8 @@ public class FeeItem {
   
   private double userGrossAmount;
   
+  private double companyGrossAmount;
+  
   private double totalGrossAmount;
   
   private String category;
@@ -69,6 +71,7 @@ public class FeeItem {
     this.netAmount = netAmount;
     this.taxAmount = taxAmount;
     this.taxPercentage = taxPercentage;
+    this.companyGrossAmount = totalGrossAmount;
     this.totalGrossAmount = totalGrossAmount;
   }
 
@@ -82,6 +85,7 @@ public class FeeItem {
     this.taxAmount = feeItem.taxAmount;
     this.taxPercentage = feeItem.taxPercentage;
     this.userGrossAmount = feeItem.userGrossAmount;
+    this.companyGrossAmount = feeItem.companyGrossAmount;
     this.totalGrossAmount = feeItem.totalGrossAmount;
   }
 
@@ -165,6 +169,14 @@ public class FeeItem {
     this.userGrossAmount = userGrossAmount;
   }
   
+  public double getCompanyGrossAmount() {
+    return companyGrossAmount;
+  }
+
+  public void setCompanyGrossAmount(double companyGrossAmount) {
+    this.companyGrossAmount = companyGrossAmount;
+  }
+
   public double getTotalGrossAmount() {
     return totalGrossAmount;
   }
@@ -237,6 +249,7 @@ public class FeeItem {
     result.setNetAmount(Utility.round(netAmount * part / all, 2));
     result.setTaxAmount(Utility.round(taxAmount * part / all, 2));
     result.setUserGrossAmount(Utility.round(userGrossAmount * part / all, 2));
+    result.setCompanyGrossAmount(Utility.round(companyGrossAmount * part / all, 2));
     result.setTotalGrossAmount(Utility.round(totalGrossAmount * part / all, 2));
     result.setAcceptedByUser(false);
     result.setAcceptedByCompany(false);
