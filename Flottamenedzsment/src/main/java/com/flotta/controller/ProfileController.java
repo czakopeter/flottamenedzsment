@@ -25,10 +25,6 @@ public class ProfileController {
     this.service = service;
   }
 
-//  @ModelAttribute
-//  public void title(Model model) {
-//  }
-  
   @GetMapping("/profile/items")
   public String listItems(Model model) {
     model.addAttribute("devices", service.findAllCurrentDeviceOfUser());

@@ -94,15 +94,21 @@ function modifyAmountRatio(input) {
 }
        		
 function isDecimal(number) {
-	let hasDecimalPoint = false;
-	for(let digit of number) {
-		if(!Number.isInteger(parseInt(digit))) {
-			if(!hasDecimalPoint && digit == '.') {
-				hasDecimalPoint = true;
-			} else {
-				return false;
-			}
-		}
+	let num = parseFloat(number);
+	if(num == 'NaN' || number.length != num.toString().length) {
+		return false;
 	}
-  	return true;
+	return true;
+	
+//	let hasDecimalPoint = false;
+//	for(let digit of number) {
+//		if(!Number.isInteger(parseInt(digit))) {
+//			if(!hasDecimalPoint && digit == '.') {
+//				hasDecimalPoint = true;
+//			} else {
+//				return false;
+//			}
+//		}
+//	}
+//  	return true;
  }
