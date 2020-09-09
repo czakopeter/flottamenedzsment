@@ -529,4 +529,8 @@ public class MainService {
     billingService.acceptInvoiceByInvoiceNumber(invoiceNumber);
   }
 
+  public void modifyFeeItemGrossAmountRatio(long id, double userAmount, double compAmount) {
+    billingService.modifyFeeItemGrossAmountRatio(id, userAmount, compAmount);
+  }
+
 }

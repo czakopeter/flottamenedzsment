@@ -199,5 +199,9 @@ public class BillingService {
   public void acceptInvoiceByInvoiceNumber(String invoiceNumber) {
     invoiceService.acceptInvoiceByInvoiceNumber(invoiceNumber);
   }
+
+  public void modifyFeeItemGrossAmountRatio(long id, double userAmount, double compAmount) {
+    invoiceService.modifyFeeItemGrossAmountRatio(id, userAmount, compAmount);
+  }
   
 }

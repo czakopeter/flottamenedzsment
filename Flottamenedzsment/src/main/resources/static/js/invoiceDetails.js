@@ -9,16 +9,28 @@ function prepare_editing(editButton) {
 function accept_editing(acceptButton) {
 	let tr = acceptButton.parentElement.parentElement.parentElement;
 	
+	let userGrossAmount;
+	let compGrossAmount;
+	
     let td = tr.querySelector('[name=userGrossAmount]');
     let input = td.querySelector('input');
+    userGrossAmount = input.value;
     inputValueToTdTextAndRemove(td, input);
     
     td = tr.querySelector('[name=compGrossAmount]');
     input = td.querySelector('input');
+    compGrossAmount = input.value;
     inputValueToTdTextAndRemove(td, input);
     
     tr.querySelector('#prepareEditingButton').style.display = null;
     tr.querySelector('#acceptOrCancelEditingButton').style.display = 'none';
+    
+    let id = tr.querySelector('[name=id]').value
+    sendData('POST', '/invoice/modifyFeeItemGrossAmountRatio', 'id=' + id + '&userGrossAmount=' + userGrossAmount + '&compGrossAmount=' + compGrossAmount, function () {});
+}
+
+function no(data) {
+	
 }
        		
 function cancel_editing(cancelButton) {
@@ -61,7 +73,6 @@ function inputDefaultValueToTdTextAndRemove(td, input) {
 }
        		
 function modifyAmountRatio(input) {
-	console.log(isDecimal(input.value));
 	if(isDecimal(input.value)) {
 		let td = input.parentElement;
 		let tr = td.parentElement;
@@ -70,11 +81,12 @@ function modifyAmountRatio(input) {
        			tr.querySelector('[name=userGrossAmount]').querySelector('input');
         let fullAmount = tr.querySelector('[name=totalGrossAmount]').textContent;
 
-        if(input.value > fullAmount) {
+        if(parseFloat(input.value) > parseFloat(fullAmount)) {
            	input.value = fullAmount;
            	otherInput.value = 0.0;
         } else {
            	otherInput.value = (fullAmount - input.value).toFixed(2);
+           	input.value = parseFloat(input.value).toFixed(2);
         }
     } else {
        	input.value = input.defaultValue;
@@ -84,7 +96,6 @@ function modifyAmountRatio(input) {
 function isDecimal(number) {
 	let hasDecimalPoint = false;
 	for(let digit of number) {
-		console.log(digit);
 		if(!Number.isInteger(parseInt(digit))) {
 			if(!hasDecimalPoint && digit == '.') {
 				hasDecimalPoint = true;

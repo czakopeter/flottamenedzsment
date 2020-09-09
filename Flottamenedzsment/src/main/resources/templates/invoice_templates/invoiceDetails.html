@@ -47,9 +47,10 @@
         </tr>
         <span th:each="partOfInvoice : ${invoice.invoicePart}">
           <tr>
-            <td colspan="5" th:text="${partOfInvoice?.user?.fullName}"></td>
-            <td th:text="${#numbers.formatDecimal(partOfInvoice.totalGrossAmount, 0, 2)}"></td>
-            <td th:text="${partOfInvoice.userGrossAmount}"></td>
+            <th colspan="5" th:text="${partOfInvoice?.user?.fullName}"></th>
+            <th th:text="${#numbers.formatDecimal(partOfInvoice.totalGrossAmount, 1, 2)}"></th>
+            <th th:text="${#numbers.formatDecimal(partOfInvoice.userGrossAmount, 1, 2)}"></th>
+            <th th:text="${#numbers.formatDecimal(partOfInvoice.companyGrossAmount, 1, 2)}"></th>
             <td></td>
           </tr>
           <tr th:each="feeItem : ${partOfInvoice.fees}">
@@ -61,10 +62,6 @@
             <td name="totalGrossAmount" th:text="${feeItem.totalGrossAmount}"></td>
             <td name="userGrossAmount" th:text="${feeItem.userGrossAmount}"></td>
             <td name="compGrossAmount" th:text="${feeItem.companyGrossAmount}"></td>
-<!--             <td><button type="button" class="btn btn-primary" onclick="set_modal(this)" -->
-<!--               data-target="#edit" data-backdrop="static" data-toggle="modal" -->
-<!--                ><img alt="Edit" src=""></button> -->
-<!--             </td> -->
             <td name="buttons" width="85px">
               <div id="prepareEditingButton">
                 <button type="button" class="btn btn-sm btn-primary" onclick="prepare_editing(this)">

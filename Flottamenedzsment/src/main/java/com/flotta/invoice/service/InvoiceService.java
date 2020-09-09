@@ -257,4 +257,12 @@ public class InvoiceService {
     }
   }
 
+  public void modifyFeeItemGrossAmountRatio(long id, double userAmount, double compAmount) {
+    FeeItem feeItem = feeItemService.getById(id);
+    feeItem.setUserGrossAmount(userAmount);
+    feeItem.setCompanyGrossAmount(compAmount);
+    feeItem.getInvoiceByUserAndPhoneNumber().updateAmountsByFeeItems();
+    feeItemService.save(feeItem);
+  }
+
 }

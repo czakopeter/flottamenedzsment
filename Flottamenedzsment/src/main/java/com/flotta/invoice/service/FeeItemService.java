@@ -110,4 +110,12 @@ public class FeeItemService {
     
     
   }
+
+  public FeeItem getById(long id) {
+    return feeItemRepository.findById(id).orElse(null);
+  }
+
+  public void save(FeeItem feeItem) {
+    feeItemRepository.save(feeItem);
+  }
 }
