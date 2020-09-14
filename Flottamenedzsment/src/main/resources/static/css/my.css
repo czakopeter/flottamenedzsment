@@ -1,9 +1,9 @@
 .my-menu {
+	margin: 5px;
 	border-width: 1px;
 	border-style: solid;
 	border-color: #b3ccff;
-	border-bottom-left-radius: 5px;
-	border-bottom-right-radius: 5px;
+	border-radius: 5px;
 	background-color: #f2f8ff;
 }
 
@@ -24,7 +24,7 @@ body h2 {
 
 .center {
 	width: 40%;
-	max-width: 400px;
+	min-width: 400px;
 	margin-left: auto;
 	margin-right: auto;
 }

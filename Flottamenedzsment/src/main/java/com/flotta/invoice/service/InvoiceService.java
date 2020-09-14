@@ -24,6 +24,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.flotta.entity.Subscription;
 import com.flotta.entity.User;
 import com.flotta.entity.viewEntity.InvoiceOfUserByNumber;
 import com.flotta.entity.viewEntity.OneCategoryOfUserFinance;
@@ -42,9 +43,11 @@ public class InvoiceService {
   private BillTemplateService billTemplateService;
 
   private FeeItemService feeItemService;
-
+  
   private SubscriptionServiceOnlyInfo subscriptionInfo;
 
+  private InvoiceByUserAndPhoneNumberService invoiceByUserAndPhoneNumberService;
+  
   @Autowired
   public void setInvoiceRepository(InvoiceRepository invoiceRepository) {
     this.invoiceRepository = invoiceRepository;
@@ -64,6 +67,11 @@ public class InvoiceService {
   @Autowired
   public void setSubscriptionInfo(SubscriptionServiceOnlyInfo subscriptionInfo) {
     this.subscriptionInfo = subscriptionInfo;
+  }
+  
+  @Autowired
+  public void setInvoiceByUserAndPhoneNumberService(InvoiceByUserAndPhoneNumberService invoiceByUserAndPhoneNumberService) {
+    this.invoiceByUserAndPhoneNumberService = invoiceByUserAndPhoneNumberService;
   }
 
   public Invoice uploadInvoice(MultipartFile file) throws FileUploadException {
@@ -179,16 +187,16 @@ public class InvoiceService {
     return invoiceRepository.findById(id).orElse(null);
   }
 
-  public List<FeeItem> findAllFeeItemByInvoiceId(long id) {
-    List<FeeItem> result = new LinkedList<>();
-    Invoice invoice = invoiceRepository.findById(id).orElse(null);
-    if (invoice != null) {
-      for (InvoiceByUserAndPhoneNumber part : invoice.getInvoicePart()) {
-        result.addAll(part.getFees());
-      }
-    }
-    return result;
-  }
+//  public List<FeeItem> findAllFeeItemByInvoiceId(long id) {
+//    List<FeeItem> result = new LinkedList<>();
+//    Invoice invoice = invoiceRepository.findById(id).orElse(null);
+//    if (invoice != null) {
+//      for (InvoiceByUserAndPhoneNumber part : invoice.getInvoicePart()) {
+//        result.addAll(part.getFees());
+//      }
+//    }
+//    return result;
+//  }
 
   public void save(Invoice invoice) {
     invoiceRepository.save(invoice);
@@ -206,8 +214,8 @@ public class InvoiceService {
     return feeItemService.getPendingInvoicesOfCurrentUser(user);
   }
 
-  public InvoiceOfUserByNumber getPendingInvoiceOfCurrentUserBySubscription(User user, String number) {
-    return feeItemService.getPendingInvoiceOfCurrentUserByNumber(user, number);
+  public InvoiceByUserAndPhoneNumber getPendingInvoiceOfUserBySubscription(User user, Invoice invoice, Subscription subscription) {
+    return invoiceByUserAndPhoneNumberService.getPendingInvoiceOfUserBySubscription(user, invoice, subscription);
   }
 
   public boolean acceptInvoiceOfCurrentUserByNumber(User user, String number) {

@@ -18,16 +18,18 @@ import com.flotta.entity.Sim;
 import com.flotta.entity.Subscription;
 import com.flotta.entity.User;
 import com.flotta.entity.switchTable.Service.UserDevService;
-import com.flotta.entity.switchTable.Service.UserSubService;
+//import com.flotta.entity.switchTable.Service.UserSubService;
 import com.flotta.entity.viewEntity.DeviceToView;
 import com.flotta.entity.viewEntity.InvoiceOfUserByNumber;
 import com.flotta.entity.viewEntity.OneCategoryOfUserFinance;
 import com.flotta.entity.viewEntity.SubscriptionToView;
+import com.flotta.exception.UnknownPhoneNumberException;
 import com.flotta.invoice.Category;
 import com.flotta.invoice.ChargeRatioByCategory;
 import com.flotta.invoice.DescriptionCategoryCoupler;
 import com.flotta.invoice.FeeItem;
 import com.flotta.invoice.Invoice;
+import com.flotta.invoice.InvoiceByUserAndPhoneNumber;
 import com.flotta.invoice.exception.FileUploadException;
 import com.flotta.invoice.service.BillingService;
 //import com.flotta.invoice.service.ChargeRatioService;
@@ -48,7 +50,7 @@ public class MainService {
 	
 //	private SubSimService subSimService;
 	
-	private UserSubService userSubService;
+//	private UserSubService userSubService;
 	
 	private UserDevService userDevService;
 	
@@ -77,10 +79,10 @@ public class MainService {
 //    this.subSimService = subSimService;
 //  }
 	
-	@Autowired
-	public void setUserSubService(UserSubService userSubService) {
-    this.userSubService = userSubService;
-  }
+//	@Autowired
+//	public void setUserSubService(UserSubService userSubService) {
+//    this.userSubService = userSubService;
+//  }
 	
 	@Autowired
 	public void setUserService(UserService userService) {
@@ -362,37 +364,37 @@ public class MainService {
     return billingService.findAllDescriptionCategoryCoupler();
   }
   
-  public boolean invoiceDivisionByTemplateId(long billId, long templateId) {
-    List<FeeItem> fees = billingService.findAllFeeItemByBillId(billId);
-
-    fees = divideFeeItemsByUserChanges(fees);
-    fees = setFeeItemsUser(fees);
-    billingService.save(fees);
-    
-    return billingService.billPartitionByTemplateId(billId, templateId);
-  }
+//  public boolean invoiceDivisionByTemplateId(long billId, long templateId) {
+//    List<FeeItem> fees = billingService.findAllFeeItemByBillId(billId);
+//
+//    fees = divideFeeItemsByUserChanges(fees);
+//    fees = setFeeItemsUser(fees);
+//    billingService.save(fees);
+//    
+//    return billingService.billPartitionByTemplateId(billId, templateId);
+//  }
   
-  private List<FeeItem> divideFeeItemsByUserChanges(List<FeeItem> fees) {
-    List<FeeItem> result = new LinkedList<>();
-    for(FeeItem fee : fees) {
-      String number = fee.getSubscription();
-      LocalDate begin = fee.getBeginDate();
-      LocalDate end = fee.getEndDate();
-      List<LocalDate> allNewUserBegin = userSubService.findAllBeginDateBySubBetween(number, begin, end);
-      result.addAll(fee.splitBeforeDate(allNewUserBegin));
-    }
-    return result;
-  }
+//  private List<FeeItem> divideFeeItemsByUserChanges(List<FeeItem> fees) {
+//    List<FeeItem> result = new LinkedList<>();
+//    for(FeeItem fee : fees) {
+//      String number = fee.getSubscription();
+//      LocalDate begin = fee.getBeginDate();
+//      LocalDate end = fee.getEndDate();
+//      List<LocalDate> allNewUserBegin = userSubService.findAllBeginDateBySubBetween(number, begin, end);
+//      result.addAll(fee.splitBeforeDate(allNewUserBegin));
+//    }
+//    return result;
+//  }
   
-  private List<FeeItem> setFeeItemsUser(List<FeeItem> fees) {
-    for(FeeItem fee : fees) {
-      User user = userSubService.getUser(fee.getSubscription(), fee.getBeginDate(), fee.getEndDate());
-      if(user != null) {
-        fee.setUserId(user.getId());
-      }
-    }
-    return fees;
-  }
+//  private List<FeeItem> setFeeItemsUser(List<FeeItem> fees) {
+//    for(FeeItem fee : fees) {
+//      User user = userSubService.getUser(fee.getSubscription(), fee.getBeginDate(), fee.getEndDate());
+//      if(user != null) {
+//        fee.setUserId(user.getId());
+//      }
+//    }
+//    return fees;
+//  }
   
   public List<Category> findAllCategory() {
     return billingService.findAllCategory();
@@ -479,8 +481,10 @@ public class MainService {
     return billingService.getPendingInvoicesOfCurrentUser(getCurrentUser());
   }
 
-  public InvoiceOfUserByNumber getPendingInvoiceOfCurrentUserByNumber(String number) {
-    return billingService.getPendingInvoiceOfCurrentUserByNumber(getCurrentUser(), number);
+  public InvoiceByUserAndPhoneNumber getPendingInvoiceOfCurrentUserByNumber(String invoiceNumber, String number) {
+    Invoice invoice = billingService.findInvoicedByInvoiceNumber(invoiceNumber);
+    Subscription subscription = subscriptionService.findByNumber(number);
+    return billingService.getPendingInvoiceOfUserBySubscription(getCurrentUser(), invoice, subscription);
   }
   
   private User getCurrentUser() {

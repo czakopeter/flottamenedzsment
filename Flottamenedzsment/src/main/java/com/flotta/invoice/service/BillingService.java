@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.flotta.entity.Subscription;
 import com.flotta.entity.User;
 import com.flotta.entity.viewEntity.InvoiceOfUserByNumber;
 import com.flotta.entity.viewEntity.OneCategoryOfUserFinance;
@@ -17,6 +18,7 @@ import com.flotta.invoice.ChargeRatioByCategory;
 import com.flotta.invoice.DescriptionCategoryCoupler;
 import com.flotta.invoice.FeeItem;
 import com.flotta.invoice.Invoice;
+import com.flotta.invoice.InvoiceByUserAndPhoneNumber;
 import com.flotta.invoice.exception.FileUploadException;
 
 @Service
@@ -90,9 +92,9 @@ public class BillingService {
     return  descriptionCategoryCouplerService.findAll();
   }
   
-  public List<FeeItem> findAllFeeItemByBillId(long id) {
-    return invoiceService.findAllFeeItemByInvoiceId(id);
-  }
+//  public List<FeeItem> findAllFeeItemByBillId(long id) {
+//    return invoiceService.findAllFeeItemByInvoiceId(id);
+//  }
   
   public Invoice findBillById(long id) {
     return invoiceService.findById(id);
@@ -168,8 +170,8 @@ public class BillingService {
     return result;
   }
 
-  public InvoiceOfUserByNumber getPendingInvoiceOfCurrentUserByNumber(User user, String number) {
-    return invoiceService.getPendingInvoiceOfCurrentUserBySubscription(user, number);
+  public InvoiceByUserAndPhoneNumber getPendingInvoiceOfUserBySubscription(User user, Invoice invoice, Subscription subscription) {
+    return invoiceService.getPendingInvoiceOfUserBySubscription(user, invoice, subscription);
   }
 
   public List<InvoiceOfUserByNumber> getPendingInvoicesOfCurrentUser(User user) {

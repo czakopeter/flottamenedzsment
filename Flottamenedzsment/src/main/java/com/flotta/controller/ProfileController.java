@@ -70,22 +70,20 @@ public class ProfileController {
       if(service.acceptInvoicesOfCurrentUserByNumbers(new LinkedList<>(accept.keySet()))) {
         
       }
-      
     }
     return "redirect:/profile/finance";
   }
 
-  //TODO ellenőrizni h number és user kapcsolatban van e
-  @PostMapping("/profile/finance/{number}")
-  public String details(Model model, @PathVariable ("number") String number) {
-    model.addAttribute("invoicePart", service.getPendingInvoiceOfCurrentUserByNumber(number));
+  //TODO ellenőrizni hogy number és user kapcsolatban van e
+  @PostMapping("/profile/finance/{invoiceNumber}/{number}")
+  public String details(Model model, @PathVariable ("invoiceNumber") String invoiceNumber, @PathVariable ("number") String number) {
+    model.addAttribute("invoicePart", service.getPendingInvoiceOfCurrentUserByNumber(invoiceNumber, number));
     return "profile/financeDetails";
   }
   
-  @PostMapping("/profile/finance/{number}/revision")
-  public String createRevisionText(Model model, @PathVariable ("number") String number, @RequestParam Map<String, String> map) {
+  @PostMapping("/profile/finance/{invoiceNumber}/{number}/revision")
+  public String createRevisionText(Model model, @PathVariable ("invoiceNumber") String invoiceNumber, @PathVariable ("number") String number, @RequestParam Map<String, String> map) {
     service.askForRevision(number, map);
-    model.addAttribute("invoicePart", service.getPendingInvoiceOfCurrentUserByNumber(number));
     return "redirect:/profile/finance";
   }
   

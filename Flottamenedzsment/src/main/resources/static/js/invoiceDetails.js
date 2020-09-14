@@ -84,6 +84,9 @@ function modifyAmountRatio(input) {
         if(parseFloat(input.value) > parseFloat(fullAmount)) {
            	input.value = fullAmount;
            	otherInput.value = 0.0;
+        } else if(parseFloat(input.value) < 0) {
+        	input.value = 0.0;
+           	otherInput.value = fullAmount;
         } else {
            	otherInput.value = (fullAmount - input.value).toFixed(2);
            	input.value = parseFloat(input.value).toFixed(2);
@@ -99,16 +102,4 @@ function isDecimal(number) {
 		return false;
 	}
 	return true;
-	
-//	let hasDecimalPoint = false;
-//	for(let digit of number) {
-//		if(!Number.isInteger(parseInt(digit))) {
-//			if(!hasDecimalPoint && digit == '.') {
-//				hasDecimalPoint = true;
-//			} else {
-//				return false;
-//			}
-//		}
-//	}
-//  	return true;
  }

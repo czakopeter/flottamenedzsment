@@ -50,7 +50,7 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
 			//TODO adatbázishoz csak ADMIN,
 //			  .antMatchers("/db/**").hasRole("ADMIN")
 			  .antMatchers("/db/**").permitAll()
-			  .antMatchers("/activation/**", "/registration", "/accessDennied", "/passwordReset").permitAll()
+			  .antMatchers("/activation/**", "/registration", "/accessDennied", "/passwordReset", "/css/*").permitAll()
 			  .antMatchers("/billing/**", "/finance/**").hasAnyAuthority("FINANCE_MNGR", "ADMIN")
 			  .antMatchers("/subscription/**", "/sim/**").hasAnyAuthority("SUBSCRIPTION_MNGR", "ADMIN")
         .antMatchers("/device/**", "/deviceType/**").hasAnyAuthority("DEVICE_MNGR", "ADMIN")
