@@ -1,6 +1,7 @@
 package com.flotta.invoice;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,7 +47,11 @@ public class InvoiceByUserAndPhoneNumber extends BasicEntity {
   
   private double totalGrossAmount;
   
-  private boolean closed;
+  private boolean acceptedByUser;
+  
+  private boolean acceptedByCompany;
+  
+//  private boolean closed;
   
   private String revisionNote;
   
@@ -148,14 +153,26 @@ public class InvoiceByUserAndPhoneNumber extends BasicEntity {
   public void setTotalGrossAmount(double totalGrossAmount) {
     this.totalGrossAmount = totalGrossAmount;
   }
-
-  public boolean isClosed() {
-    return closed;
+  
+  public boolean isAcceptedByUser() {
+    return acceptedByUser;
   }
 
-  public void setClosed(boolean closed) {
-    this.closed = closed;
+  public void setAcceptedByUser(boolean acceptedByUser) {
+    this.acceptedByUser = acceptedByUser;
   }
+
+  public boolean isAcceptedByCompany() {
+    return acceptedByCompany;
+  }
+
+  public void setAcceptedByCompany(boolean acceptedByCompany) {
+    this.acceptedByCompany = acceptedByCompany;
+  }
+
+//  public void setClosed(boolean closed) {
+//    this.closed = closed;
+//  }
 
   public String getRevisionNote() {
     return revisionNote;
@@ -195,12 +212,16 @@ public class InvoiceByUserAndPhoneNumber extends BasicEntity {
       }
     }
   }
-
-  public void setAcceptedByCompany() {
-    for(FeeItem item : fees) {
-      item.setAcceptedByCompany(true);
-    }
+  
+  public boolean isClosed() {
+    return acceptedByCompany && acceptedByUser;
   }
+
+//  public void setAcceptedByCompany() {
+//    for(FeeItem item : fees) {
+//      item.setAcceptedByCompany(true);
+//    }
+//  }
   
   public void updateAmountsByFeeItems() {
     this.totalNetAmount = 0;
@@ -210,6 +231,14 @@ public class InvoiceByUserAndPhoneNumber extends BasicEntity {
     this.totalGrossAmount = 0;
     for(FeeItem item : fees) {
       amountUpdate(item);
+    }
+  }
+  
+  public String getPeriod() {
+    if(beginDate == null) {
+      return "";
+    } else {
+      return beginDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")) + " - " + endDate.format(DateTimeFormatter.ofPattern("MM.dd"));
     }
   }
 }

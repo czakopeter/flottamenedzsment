@@ -12,6 +12,7 @@ import com.flotta.invoice.InvoiceByUserAndPhoneNumber;
 
 public interface InvoiceByUserAndPhoneNumberRepository extends CrudRepository<InvoiceByUserAndPhoneNumber, Long> {
 
-  InvoiceByUserAndPhoneNumber findAllByUserAndInvoiceAndSubscription(User user, Invoice invoice, Subscription subscription);
+  InvoiceByUserAndPhoneNumber findByUserAndInvoiceAndSubscriptionAndAcceptedByCompanyTrue(User user, Invoice invoice, Subscription subscription);
 
+  List<InvoiceByUserAndPhoneNumber> findAllByUserAndAcceptedByCompanyTrueAndAcceptedByUserFalse(User user);
 }

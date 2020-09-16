@@ -477,8 +477,8 @@ public class MainService {
     return billingService.getUnusedCategoryOfChargeRatio(id);
   }
 
-  public List<InvoiceOfUserByNumber> getPendingInvoicesOfCurrentUser() {
-    return billingService.getPendingInvoicesOfCurrentUser(getCurrentUser());
+  public List<InvoiceByUserAndPhoneNumber> getPendingInvoicesOfCurrentUser() {
+    return billingService.getPendingInvoicesOfUser(getCurrentUser());
   }
 
   public InvoiceByUserAndPhoneNumber getPendingInvoiceOfCurrentUserByNumber(String invoiceNumber, String number) {
@@ -492,7 +492,7 @@ public class MainService {
     return userService.findByEmail(((UserDetailsImpl)auth.getPrincipal()).getUsername());
   }
 
-  public boolean acceptInvoiceOfCurrentUserByNumber(String number) {
+  public boolean acceptInvoiceOfCurrentUserByInvoiceNumberAndNumber(String number) {
     return billingService.acceptInvoiceOfCurrentUserByNumber(getCurrentUser(), number);
   }
 

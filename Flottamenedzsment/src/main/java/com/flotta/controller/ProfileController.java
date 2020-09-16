@@ -2,6 +2,7 @@ package com.flotta.controller;
 
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,13 +51,13 @@ public class ProfileController {
   
   @GetMapping("/profile/finance")
   public String showActualUserPendingInvoices(Model model) {
-    model.addAttribute("invoicePerNumbers", service.getPendingInvoicesOfCurrentUser());
+    model.addAttribute("invoiceParts", service.getPendingInvoicesOfCurrentUser());
     return "profile/financeSummary";
   }
   
-  @PostMapping("/profile/finance/{number}/accept")
+  @PostMapping("/profile/finance/{invoiceNumber}/{number}/accept")
   public String acceptInvoiceOfCurrentUserByNumber(@PathVariable("number") String number) {
-    if(service.acceptInvoiceOfCurrentUserByNumber(number)) {
+    if(service.acceptInvoiceOfCurrentUserByInvoiceNumberAndNumber(number)) {
       System.out.println("Accepted");
     } else {
       System.out.println("Some problem");
@@ -64,13 +65,17 @@ public class ProfileController {
     return "redirect:/profile/finance";
   }
   
+  //TODO Create method for user accept one or more invoice
   @PostMapping("/profile/finance/accept")
-  public String acceptInvoicesOfUserByNumbers(@RequestParam Map<String, String> accept) {
-    if(accept != null) {
-      if(service.acceptInvoicesOfCurrentUserByNumbers(new LinkedList<>(accept.keySet()))) {
-        
-      }
-    }
+//  public String acceptInvoicesOfUserByNumbers(@RequestParam Map<String, String> accept) {
+  public String acceptInvoicesOfUserByNumbers(@RequestParam("invoiceNumbers") List<String> inv, @RequestParam("numbers") List<String> num) {
+    System.out.println(inv);
+    System.out.println(num);
+//    if(accept != null) {
+//      if(service.acceptInvoicesOfCurrentUserByNumbers(new LinkedList<>(accept.keySet()))) {
+//        
+//      }
+//    }
     return "redirect:/profile/finance";
   }
 

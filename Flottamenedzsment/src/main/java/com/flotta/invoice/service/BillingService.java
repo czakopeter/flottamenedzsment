@@ -174,8 +174,8 @@ public class BillingService {
     return invoiceService.getPendingInvoiceOfUserBySubscription(user, invoice, subscription);
   }
 
-  public List<InvoiceOfUserByNumber> getPendingInvoicesOfCurrentUser(User user) {
-    return invoiceService.getPendingInvoicesOfCurrentUser(user);
+  public List<InvoiceByUserAndPhoneNumber> getPendingInvoicesOfUser(User user) {
+    return invoiceService.getPendingInvoicesOfUser(user);
   }
 
   public boolean acceptInvoiceOfCurrentUserByNumber(User currentUser, String number) {

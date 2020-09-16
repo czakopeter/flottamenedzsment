@@ -210,8 +210,9 @@ public class InvoiceService {
     feeItemService.save(fees);
   }
 
-  public List<InvoiceOfUserByNumber> getPendingInvoicesOfCurrentUser(User user) {
-    return feeItemService.getPendingInvoicesOfCurrentUser(user);
+  public List<InvoiceByUserAndPhoneNumber> getPendingInvoicesOfUser(User user) {
+    return invoiceByUserAndPhoneNumberService.getPendingInvoicesOfUser(user);
+//    return feeItemService.getPendingInvoicesOfCurrentUser(user);
   }
 
   public InvoiceByUserAndPhoneNumber getPendingInvoiceOfUserBySubscription(User user, Invoice invoice, Subscription subscription) {

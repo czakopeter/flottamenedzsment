@@ -2,15 +2,16 @@
 	margin: 5px;
 	border-width: 1px;
 	border-style: solid;
-	border-color: #b3ccff;
+	border-color: #8a9cff;
 	border-radius: 5px;
-	background-color: #f2f8ff;
+	background-color: #f1f1ff;
+	background-color: #d4ffb4;
 }
 
 .my-border {
 	border-width: 1px;
 	border-style: solid;
-	border-color: #b3ccff;
+	border-color: #8a9cff;
 	border-radius: 5px;
 	padding: 10px;
 	margin-bottom: 10px;

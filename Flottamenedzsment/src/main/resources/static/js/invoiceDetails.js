@@ -29,10 +29,6 @@ function accept_editing(acceptButton) {
     sendData('POST', '/invoice/modifyFeeItemGrossAmountRatio', 'id=' + id + '&userGrossAmount=' + userGrossAmount + '&compGrossAmount=' + compGrossAmount, function () {});
 }
 
-function no(data) {
-	
-}
-       		
 function cancel_editing(cancelButton) {
     let tr = cancelButton.parentElement.parentElement.parentElement;
     

@@ -10,11 +10,11 @@
     <h2>Finances</h2>
       <form method="post">
       
-      <div th:if="${#lists.isEmpty(invoicePerNumbers)}" class="my-border text-center">
+      <div th:if="${#lists.isEmpty(invoiceParts)}" class="my-border text-center">
         <b>You don't have any pending invoice</b>
       </div>
       
-      <table th:unless="${#lists.isEmpty(invoicePerNumbers)}" class="table table-sm table-hover">
+      <table th:unless="${#lists.isEmpty(invoiceParts)}" class="table table-sm table-hover">
         <thead>
           <tr>
             <td>
@@ -35,27 +35,27 @@
           </tr>
         </thead>
         <tbody>
-          <tr th:each="invoicePerNumber, i : ${invoicePerNumbers}">
+          <tr th:each="invoicePart, i : ${invoiceParts}">
             <td>
-              <input name="number" type="hidden" th:value="${invoicePerNumber.number}" />
+              <input name="invoiceNumber" type="hidden" th:value="${invoicePart.invoice.invoiceNumber}" />
               <input name="numberCheckBox" type="checkbox" onclick="selectSingleCheckbox(this)"/>
             </td>
-            <td th:text="${invoicePerNumber.number}"></td>
-            <td th:text="${invoicePerNumber.getPeriod()}"></td>
-            <td th:text="${invoicePerNumber.grossAmount}"></td>
+            <td name="number" th:text="${invoicePart.subscription.number}"></td>
+            <td th:text="${invoicePart.getPeriod()}"></td>
+            <td th:text="${invoicePart.userGrossAmount}"></td>
             <td>
               <div class="btn-group">
                 <button type="button" onclick="acceptOneInvoice(this)" class="btn btn-success" style="color: black;">Accept</button>
-                <button type="submit" th:formaction="'/profile/finance/' + ${invoicePerNumber.number}" class="btn btn-info"  style="color: black;">Details</button>
+                <button type="submit" th:formaction="'/profile/finance/' + ${invoicePart.invoice.invoiceNumber} + '/' + ${invoicePart.subscription.number}" class="btn btn-info"  style="color: black;">Details</button>
               </div>
             </td>
           </tr>
         </tbody>
       </table>
-      <button id="accept-all-selected" type="button" onclick="acceptAllSelected()" class="btn btn-primary" style="visibility: hidden;">Accept all selected</button>
+      <button id="accept-all-selected" type="button" onclick="acceptAllSelectedInvoice()" class="btn btn-primary" style="visibility: hidden;">Accept all selected</button>
       </form>
       
-    <script src="/js/financeSummary.js"></script>
+    <script src="/js/profile/financeSummary.js"></script>
 
   </div>
 

@@ -62,7 +62,7 @@
             <td name="totalGrossAmount" th:text="${feeItem.totalGrossAmount}"></td>
             <td name="userGrossAmount" th:text="${feeItem.userGrossAmount}"></td>
             <td name="compGrossAmount" th:text="${feeItem.companyGrossAmount}"></td>
-            <td name="buttons" width="85px">
+            <td name="buttons" width="85px" th:style="${partOfInvoice.acceptedByCompany or partOfInvoice.user == null} ? 'visibility:hidden'">
               <div id="prepareEditingButton">
                 <button type="button" class="btn btn-sm btn-primary" onclick="prepare_editing(this)">
                   <img alt="Edit" src="/img/edit.png">

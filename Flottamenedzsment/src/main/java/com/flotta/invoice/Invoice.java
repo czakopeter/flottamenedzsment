@@ -233,7 +233,7 @@ public class Invoice {
 
   public void setAcceptedByCompany() {
     for(InvoiceByUserAndPhoneNumber part : invoicePart) {
-      part.setAcceptedByCompany();
+      part.setAcceptedByCompany(true);
     }
   }
 }
