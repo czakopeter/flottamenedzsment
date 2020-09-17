@@ -1,6 +1,7 @@
 package com.flotta.invoice.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,5 +28,17 @@ public class InvoiceByUserAndPhoneNumberService {
 
   public List<InvoiceByUserAndPhoneNumber> getPendingInvoicesOfUser(User user) {
     return invoiceByUserAndPhoneNumberRepository.findAllByUserAndAcceptedByCompanyTrueAndAcceptedByUserFalse(user);
+  }
+
+  public boolean acceptInvoicesOfUserByInvoiceNumbersAndSubscription(User user, List<Long> ids) {
+    for(Long id : ids) {
+      Optional<InvoiceByUserAndPhoneNumber> optional = invoiceByUserAndPhoneNumberRepository.findById(id);
+      if(optional.isPresent()) {
+        InvoiceByUserAndPhoneNumber part = optional.get();
+        part.setAcceptedByUser(true);
+        invoiceByUserAndPhoneNumberRepository.save(part);
+      }
+    }
+    return true;
   }
 }

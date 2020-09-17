@@ -49,10 +49,6 @@ public class FeeItem {
   
   private String category;
   
-  private boolean acceptedByUser;
-  
-  private boolean acceptedByCompany;
-
   public FeeItem() {
   }
 
@@ -201,22 +197,6 @@ public class FeeItem {
     this.userId = userId;
   }
   
-  public boolean isAcceptedByUser() {
-    return acceptedByUser;
-  }
-
-  public void setAcceptedByUser(boolean acceptedByUser) {
-    this.acceptedByUser = acceptedByUser;
-  }
-
-  public boolean isAcceptedByCompany() {
-    return acceptedByCompany;
-  }
-
-  public void setAcceptedByCompany(boolean acceptedByCompany) {
-    this.acceptedByCompany = acceptedByCompany;
-  }
-
   public List<FeeItem> splitBeforeDate(List<LocalDate> dates) {
     List<FeeItem> result = new LinkedList<>();
     Collections.sort(dates);
@@ -251,8 +231,6 @@ public class FeeItem {
     result.setUserGrossAmount(Utility.round(userGrossAmount * part / all, 2));
     result.setCompanyGrossAmount(Utility.round(companyGrossAmount * part / all, 2));
     result.setTotalGrossAmount(Utility.round(totalGrossAmount * part / all, 2));
-    result.setAcceptedByUser(false);
-    result.setAcceptedByCompany(false);
     return result;
   }
   

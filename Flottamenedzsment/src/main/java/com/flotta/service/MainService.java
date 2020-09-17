@@ -492,12 +492,12 @@ public class MainService {
     return userService.findByEmail(((UserDetailsImpl)auth.getPrincipal()).getUsername());
   }
 
-  public boolean acceptInvoiceOfCurrentUserByInvoiceNumberAndNumber(String number) {
-    return billingService.acceptInvoiceOfCurrentUserByNumber(getCurrentUser(), number);
-  }
+//  public boolean acceptInvoiceOfCurrentUserByInvoiceNumberAndNumber(String number) {
+//    return billingService.acceptInvoiceOfUserByNumber(getCurrentUser(), number);
+//  }
 
-  public boolean acceptInvoicesOfCurrentUserByNumbers(List<String> numbers) {
-    return billingService.acceptInvoicesOfCurrentUserByNumbers(getCurrentUser(), numbers);
+  public boolean acceptInvoicesOfCurrentUserByInvoiceNumbersAndPhoneNumbers(List<Long> ids) {
+    return billingService.acceptInvoicesOfUserByInvoiceNumbersAndSubscriptions(getCurrentUser(), ids);
   }
 
   public void askForRevision(String number, Map<String, String> map) {

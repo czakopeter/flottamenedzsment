@@ -219,15 +219,12 @@ public class InvoiceService {
     return invoiceByUserAndPhoneNumberService.getPendingInvoiceOfUserBySubscription(user, invoice, subscription);
   }
 
-  public boolean acceptInvoiceOfCurrentUserByNumber(User user, String number) {
-    return feeItemService.acceptInvoiceOfCurrentUserByNumber(user, number);
-  }
+//  public boolean acceptInvoiceOfCurrentUserByNumber(User user, String number) {
+//    return feeItemService.acceptInvoiceOfCurrentUserByNumber(user, number);
+//  }
 
-  public boolean acceptInvoicesOfCurrentUserByNumbers(User user, List<String> numbers) {
-    for (String number : numbers) {
-      feeItemService.acceptInvoiceOfCurrentUserByNumber(user, number);
-    }
-    return true;
+  public boolean acceptInvoicesOfUserByInvoiceNumbersAndSubscription(User user, List<Long> ids) {
+    return invoiceByUserAndPhoneNumberService.acceptInvoicesOfUserByInvoiceNumbersAndSubscription(user, ids);
   }
 
   public void askForRevision(User user, String number, Map<String, String> map) {

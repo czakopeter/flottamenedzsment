@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.flotta.service.MainService;
@@ -57,26 +58,22 @@ public class ProfileController {
   
   @PostMapping("/profile/finance/{invoiceNumber}/{number}/accept")
   public String acceptInvoiceOfCurrentUserByNumber(@PathVariable("number") String number) {
-    if(service.acceptInvoiceOfCurrentUserByInvoiceNumberAndNumber(number)) {
-      System.out.println("Accepted");
-    } else {
-      System.out.println("Some problem");
-    }
+//    if(service.acceptInvoiceOfCurrentUserByInvoiceNumberAndNumber(number)) {
+//      System.out.println("Accepted");
+//    } else {
+//      System.out.println("Some problem");
+//    }
     return "redirect:/profile/finance";
   }
   
   //TODO Create method for user accept one or more invoice
   @PostMapping("/profile/finance/accept")
-//  public String acceptInvoicesOfUserByNumbers(@RequestParam Map<String, String> accept) {
-  public String acceptInvoicesOfUserByNumbers(@RequestParam("invoiceNumbers") List<String> inv, @RequestParam("numbers") List<String> num) {
-    System.out.println(inv);
-    System.out.println(num);
-//    if(accept != null) {
-//      if(service.acceptInvoicesOfCurrentUserByNumbers(new LinkedList<>(accept.keySet()))) {
-//        
-//      }
-//    }
-    return "redirect:/profile/finance";
+  @ResponseBody
+  public List<Long> acceptInvoicesOfCurrentUserByNumbers(@RequestParam("ids") List<Long> ids) {
+    if(service.acceptInvoicesOfCurrentUserByInvoiceNumbersAndPhoneNumbers(ids)) {
+      return ids;
+    }
+    return new LinkedList<>();
   }
 
   //TODO ellenőrizni hogy number és user kapcsolatban van e

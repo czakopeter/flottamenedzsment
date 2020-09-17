@@ -178,12 +178,12 @@ public class BillingService {
     return invoiceService.getPendingInvoicesOfUser(user);
   }
 
-  public boolean acceptInvoiceOfCurrentUserByNumber(User currentUser, String number) {
-    return invoiceService.acceptInvoiceOfCurrentUserByNumber(currentUser, number);
-  }
+//  public boolean acceptInvoiceOfUserByNumber(User user, String number) {
+//    return invoiceService.acceptInvoiceOfCurrentUserByNumber(user, number);
+//  }
 
-  public boolean acceptInvoicesOfCurrentUserByNumbers(User user, List<String> numbers) {
-    return invoiceService.acceptInvoicesOfCurrentUserByNumbers(user, numbers);
+  public boolean acceptInvoicesOfUserByInvoiceNumbersAndSubscriptions(User user, List<Long> ids) {
+    return invoiceService.acceptInvoicesOfUserByInvoiceNumbersAndSubscription(user, ids);
   }
 
   public void askForRevision(User user, String number, Map<String, String> map) {

@@ -65,46 +65,46 @@ public class FeeItemService {
   }
 
   //TODO szétválasztani ha egy számnak több számlája is van, jelenleg feltétel h csak egy legyen
-  public List<InvoiceOfUserByNumber> getPendingInvoicesOfCurrentUser(User user) {
-    Map<String, InvoiceOfUserByNumber> result = new HashMap<>();
-    for(FeeItem fee : feeItemRepository.findAllByUserIdAndAcceptedByUserFalseAndAcceptedByCompanyTrue(user.getId())) {
-      System.out.println(fee);
-      InvoiceOfUserByNumber i = result.get(fee.getSubscription());
-      if(i == null) {
-        i = new InvoiceOfUserByNumber(fee.getSubscription(), "22222222222222222");
-        result.put(fee.getSubscription(), i);
-      }
-      i.addFeeItem(fee);
-    }
-    return new LinkedList<>(result.values());
-  }
+//  public List<InvoiceOfUserByNumber> getPendingInvoicesOfCurrentUser(User user) {
+//    Map<String, InvoiceOfUserByNumber> result = new HashMap<>();
+//    for(FeeItem fee : feeItemRepository.findAllByUserIdAndAcceptedByUserFalseAndAcceptedByCompanyTrue(user.getId())) {
+//      System.out.println(fee);
+//      InvoiceOfUserByNumber i = result.get(fee.getSubscription());
+//      if(i == null) {
+//        i = new InvoiceOfUserByNumber(fee.getSubscription(), "22222222222222222");
+//        result.put(fee.getSubscription(), i);
+//      }
+//      i.addFeeItem(fee);
+//    }
+//    return new LinkedList<>(result.values());
+//  }
 
-  public InvoiceOfUserByNumber getPendingInvoiceOfCurrentUserByNumber(User user, String number) {
-    List<FeeItem> fees = feeItemRepository.findAllByUserIdAndSubscription(user.getId(), number);
-    InvoiceOfUserByNumber result = new InvoiceOfUserByNumber(number, "22222222222222222");
-    for(FeeItem fee : fees) {
-      result.addFeeItem(fee);
-    }
-    return result;
-  }
+//  public InvoiceOfUserByNumber getPendingInvoiceOfCurrentUserByNumber(User user, String number) {
+//    List<FeeItem> fees = feeItemRepository.findAllByUserIdAndSubscription(user.getId(), number);
+//    InvoiceOfUserByNumber result = new InvoiceOfUserByNumber(number, "22222222222222222");
+//    for(FeeItem fee : fees) {
+//      result.addFeeItem(fee);
+//    }
+//    return result;
+//  }
 
-  public boolean acceptInvoiceOfCurrentUserByNumber(User user, String number) {
-    List<FeeItem> fees = feeItemRepository.findAllByUserIdAndSubscription(user.getId(), number);
-    if(fees.isEmpty()) {
-      return false;
-    } else {
-      for(FeeItem fee : fees) {
-        fee.setAcceptedByUser(true);
-      }
-      feeItemRepository.saveAll(fees);
-      return true;
-    }
-  }
+//  public boolean acceptInvoiceOfCurrentUserByNumber(User user, String number) {
+//    List<FeeItem> fees = feeItemRepository.findAllByUserIdAndSubscription(user.getId(), number);
+//    if(fees.isEmpty()) {
+//      return false;
+//    } else {
+//      for(FeeItem fee : fees) {
+//        fee.setAcceptedByUser(true);
+//      }
+//      feeItemRepository.saveAll(fees);
+//      return true;
+//    }
+//  }
 
   public void askForRevision(User user, String number, Map<String, String> map) {
     List<FeeItem> fees = feeItemRepository.findAllByUserIdAndSubscription(user.getId(), number);
     for(FeeItem fee : fees) {
-      fee.setAcceptedByCompany(false);
+//      fee.setAcceptedByCompany(false);
     }
     feeItemRepository.saveAll(fees);
     

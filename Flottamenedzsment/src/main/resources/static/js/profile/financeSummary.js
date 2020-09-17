@@ -45,34 +45,26 @@ function setToSingleAcceptMode() {
 }
 
 function acceptOneInvoice(btn) {
-	let number = btn.parentElement.parentElement.parentElement.querySelector("[name=number]").textContent;
-	let invoiceNumber = btn.parentElement.parentElement.parentElement.querySelector("[name=invoiceNumber]".textContent);
-	console.log(number);
-	console.log(invoiceNumber);
-	sendData("POST", "/profile/finance/accept", "invoiceNumbers=" + invoiceNumber.value + "&numbers=" + number, afterAccept);
+	sendData("POST", "/profile/finance/accept", "ids=" + btn.parentElement.parentElement.parentElement.querySelector("[name=id]").value, afterAccept);
 }
 
 function acceptAllSelectedInvoice() {
 	let data= "";
 	for(let checkbox of document.querySelectorAll("[name=numberCheckBox]")) {
-		console.log(checkbox);
 		if(checkbox.checked) {
 			if(data != "") {
 				data += "&";
 			}
-			data += "invoiceNumbers=" + checkbox.parentElement.querySelector("[name=invoiceNumber]").value;
-			data += "&numbers=" + checkbox.parentElement.parentElement.querySelector("[name=number]").textContent;
+			data += "ids=" + checkbox.parentElement.querySelector("[name=id]").value;
 		}
 	}
-	console.log(data);
 	sendData("POST", "/profile/finance/accept", data, afterAccept);
 }
 
-function afterAccept() {
+function afterAccept(data) {
+	console.log(data);
 	let table = document.querySelector("table");
-	for(let checkbox in document.querySelectorAll("[name=numberCheckBox]")) {
-		if(checkbox.checked) {
-			table.deleteRow(checkbox.parentElement.parentElement.rowIndex);
-		}
+	for(let i = 0; i < data.length; i++) {
+		table.deleteRow(table.querySelector("#p" + data[i]).parentElement.parentElement.rowIndex);
 	}
 }

@@ -16,5 +16,5 @@ public interface FeeItemRepository extends CrudRepository<FeeItem, Long> {
 
   List<FeeItem> findAllByUserIdAndSubscription(long userId, String subscription);
 
-  List<FeeItem> findAllByUserIdAndAcceptedByUserFalseAndAcceptedByCompanyTrue(long id);
+//  List<FeeItem> findAllByUserIdAndAcceptedByUserFalseAndAcceptedByCompanyTrue(long id);
 }

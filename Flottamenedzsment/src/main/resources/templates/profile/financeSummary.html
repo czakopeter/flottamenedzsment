@@ -37,6 +37,7 @@
         <tbody>
           <tr th:each="invoicePart, i : ${invoiceParts}">
             <td>
+              <input th:id="'p' + ${invoicePart.id}" name="id" type="hidden" th:value="${invoicePart.id}" />
               <input name="invoiceNumber" type="hidden" th:value="${invoicePart.invoice.invoiceNumber}" />
               <input name="numberCheckBox" type="checkbox" onclick="selectSingleCheckbox(this)"/>
             </td>
