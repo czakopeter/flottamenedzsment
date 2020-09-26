@@ -211,8 +211,7 @@ public class BillingService {
   }
 
   public InvoiceByUserAndPhoneNumber getAcceptedInvoiceOfUserById(User user, long id) {
-    // TODO Auto-generated method stub
-    return null;
+    return invoiceService.getAcceptedInvoiceOfUserById(user, id);
   }
   
 }
