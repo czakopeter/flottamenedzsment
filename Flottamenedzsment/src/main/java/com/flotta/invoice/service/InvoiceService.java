@@ -215,8 +215,8 @@ public class InvoiceService {
 //    return feeItemService.getPendingInvoicesOfCurrentUser(user);
   }
 
-  public InvoiceByUserAndPhoneNumber getPendingInvoiceOfUserBySubscription(User user, Invoice invoice, Subscription subscription) {
-    return invoiceByUserAndPhoneNumberService.getPendingInvoiceOfUserBySubscription(user, invoice, subscription);
+  public InvoiceByUserAndPhoneNumber getPendingInvoiceOfUserById(User user, Long id) {
+    return invoiceByUserAndPhoneNumberService.getPendingInvoiceOfUserById(user, id);
   }
 
 //  public boolean acceptInvoiceOfCurrentUserByNumber(User user, String number) {
@@ -227,8 +227,8 @@ public class InvoiceService {
     return invoiceByUserAndPhoneNumberService.acceptInvoicesOfUserByInvoiceNumbersAndSubscription(user, ids);
   }
 
-  public void askForRevision(User user, String number, Map<String, String> map) {
-    feeItemService.askForRevision(user, number, map);
+  public void askForRevision(User user, long id, Map<String, String> map) {
+    invoiceByUserAndPhoneNumberService.askForRevision(user, id, map);
   }
 
   public void resetInvoiceByInvoiceNumber(String invoiceNumber) {
@@ -269,6 +269,14 @@ public class InvoiceService {
     feeItem.setCompanyGrossAmount(compAmount);
     feeItem.getInvoiceByUserAndPhoneNumber().updateAmountsByFeeItems();
     feeItemService.save(feeItem);
+  }
+
+  public List<InvoiceByUserAndPhoneNumber> getAcceptedInvoicesOfUser(User user) {
+    return invoiceByUserAndPhoneNumberService.getAcceptedInvoicesOfUser(user);
+  }
+
+  public InvoiceByUserAndPhoneNumber getAcceptedInvoiceOfUserById(User user, long id) {
+    return invoiceByUserAndPhoneNumberService.getAcceptedInvoiceOfUserById(user, id);
   }
 
 }

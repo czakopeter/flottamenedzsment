@@ -56,17 +56,6 @@ public class ProfileController {
     return "profile/financeSummary";
   }
   
-  @PostMapping("/profile/finance/{invoiceNumber}/{number}/accept")
-  public String acceptInvoiceOfCurrentUserByNumber(@PathVariable("number") String number) {
-//    if(service.acceptInvoiceOfCurrentUserByInvoiceNumberAndNumber(number)) {
-//      System.out.println("Accepted");
-//    } else {
-//      System.out.println("Some problem");
-//    }
-    return "redirect:/profile/finance";
-  }
-  
-  //TODO Create method for user accept one or more invoice
   @PostMapping("/profile/finance/accept")
   @ResponseBody
   public List<Long> acceptInvoicesOfCurrentUserByNumbers(@RequestParam("ids") List<Long> ids) {
@@ -77,16 +66,28 @@ public class ProfileController {
   }
 
   //TODO ellenőrizni hogy number és user kapcsolatban van e
-  @PostMapping("/profile/finance/{invoiceNumber}/{number}")
-  public String details(Model model, @PathVariable ("invoiceNumber") String invoiceNumber, @PathVariable ("number") String number) {
-    model.addAttribute("invoicePart", service.getPendingInvoiceOfCurrentUserByNumber(invoiceNumber, number));
+  @PostMapping("/profile/finance/{id}")
+  public String details(Model model, @PathVariable ("id") long id) {
+    model.addAttribute("invoicePart", service.getPendingInvoiceOfCurrentUserById(id));
     return "profile/financeDetails";
   }
   
-  @PostMapping("/profile/finance/{invoiceNumber}/{number}/revision")
-  public String createRevisionText(Model model, @PathVariable ("invoiceNumber") String invoiceNumber, @PathVariable ("number") String number, @RequestParam Map<String, String> map) {
-    service.askForRevision(number, map);
+  @PostMapping("/profile/finance/{id}/revision")
+  public String createRevisionText(Model model, @PathVariable ("id") long id, @RequestParam Map<String, String> map) {
+    service.askForRevision(id, map);
     return "redirect:/profile/finance";
+  }
+  
+  @GetMapping("/profile/finance/history")
+  public String listAcceptedInvoiceOfCurrentUser(Model model) {
+    model.addAttribute("invoiceParts", service.getAcceptedInvoicesOfCurrentUser());
+    return "profile/acceptedInvoices";
+  }
+  
+  @PostMapping("/profile/finance/{id}/view")
+  public String detailsOfOneAcceptedInvoice(Model model, @PathVariable ("id") long id) {
+    model.addAttribute("invoicePart", service.getAcceptedInvoiceOfCurrentUserById(id));
+    return "profile/financeDetails";
   }
   
 }

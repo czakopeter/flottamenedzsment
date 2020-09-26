@@ -1,6 +1,7 @@
 package com.flotta.invoice;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -49,6 +50,8 @@ public class FeeItem {
   
   private String category;
   
+  private String revisionNote;
+  
   public FeeItem() {
   }
 
@@ -83,6 +86,7 @@ public class FeeItem {
     this.userGrossAmount = feeItem.userGrossAmount;
     this.companyGrossAmount = feeItem.companyGrossAmount;
     this.totalGrossAmount = feeItem.totalGrossAmount;
+    this.revisionNote = feeItem.revisionNote;
   }
 
   public long getId() {
@@ -197,6 +201,18 @@ public class FeeItem {
     this.userId = userId;
   }
   
+  public String getRevisionNote() {
+    return revisionNote;
+  }
+
+  public void setRevisionNote(String revisionNote) {
+    if(revisionNote == null || revisionNote.isEmpty()) {
+      this.revisionNote = null;
+    } else {
+      this.revisionNote = revisionNote;
+    }
+  }
+
   public List<FeeItem> splitBeforeDate(List<LocalDate> dates) {
     List<FeeItem> result = new LinkedList<>();
     Collections.sort(dates);
@@ -232,6 +248,18 @@ public class FeeItem {
     result.setCompanyGrossAmount(Utility.round(companyGrossAmount * part / all, 2));
     result.setTotalGrossAmount(Utility.round(totalGrossAmount * part / all, 2));
     return result;
+  }
+  
+  public String getPeriod() {
+    if(beginDate == null) {
+      return "";
+    } else {
+      return beginDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")) + " - " + endDate.format(DateTimeFormatter.ofPattern("MM.dd"));
+    }
+  }
+
+  public boolean hasRevisionNote() {
+    return revisionNote != null;
   }
   
 }

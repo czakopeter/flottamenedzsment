@@ -20,62 +20,50 @@
         </form>
       </div>
       
-      <form method="post">
-      <table class="table table-sm">
-        <tr>
-          <th th:text="#{bill.invoiceNumber}">Invoice number</th>
-          <th th:text="#{bill.fromDate}">From</th>
-          <th th:text="#{bill.emdDate}">To</th>
-          <th th:text="#{bill.invoiceNetAmount}">Net amount</th>
-          <th th:text="#{bill.invoiceTaxAmount}">Tax amount</th>
-          <th></th>
-          <th>Template option</th>
-          <th></th>
-          <th></th>
-        </tr>
-        <tr th:each="invoice : ${invoices}">
-
-          <td name="invoiceNumber" th:text="${invoice.invoiceNumber}"></td>
-          <td th:text="${invoice.beginDate}"></td>
-          <td th:text="${invoice.endDate}"></td>
-          <td th:text="${invoice.invoiceNetAmount}"></td>
-          <td th:text="${invoice.invoiceTaxAmount}"></td>
-          <td>
-            <button th:unless="${invoice.hasProblem()}" type="submit" class="btn btn-success" th:formaction="'/invoice/' + ${invoice.invoiceNumber} + '/accept'" th:title="#{button.accept}">
-              <img alt="Accept" src="/img/checkmark.png">
-            </button>
-            <a th:unless="${invoice.hasProblem()}" th:href="'/invoice/' + ${invoice.invoiceNumber} + '/details'" class="btn btn-primary" th:text="#{button.details}"
-            >Details</a>
-<!--           </td> -->
-<!--           <form action="/finance/invoicePartition" method="post"> -->
-<!--             <td> -->
-<!--               <select class="form-control" id="coupler_id" name="coupler_id"> -->
-<!--                 <option th:each="coupler : ${couplers}" th:value="${coupler.id}" th:text="${coupler.name}"></option> -->
-<!--               </select> -->
-<!--             </td> -->
-<!--             <td><input type="submit" id="invoice_id" name="invoice_id" th:value="Part" -->
-<!--             /></td> -->
-<!--           </form> -->
-<!--           <td> -->
-            <div class="btn-group">
-              <button type="submit" class="btn btn-warning" th:formaction="'/invoice/' + ${invoice.invoiceNumber} + '/restartProcessing'">
-                <img alt="refresh" src="/img/refresh.png"/>
+      <div th:if="${#lists.isEmpty(invoices)}" class="my-border text-center">
+        <b>There aren't any invoices</b>
+      </div>
+      
+      <div th:unless="${#lists.isEmpty(invoices)}">
+        <form method="post">
+        <table class="table table-sm">
+          <tr>
+            <th th:text="#{bill.invoiceNumber}">Invoice number</th>
+            <th th:text="#{bill.fromDate}">From</th>
+            <th th:text="#{bill.emdDate}">To</th>
+            <th th:text="#{bill.invoiceNetAmount}">Net amount</th>
+            <th th:text="#{bill.invoiceTaxAmount}">Tax amount</th>
+            <th></th>
+          </tr>
+          <tr th:each="invoice : ${invoices}" th:classappend="${invoice.hasAnyRevisionNote() ? 'hasRevisionNote' : ''}">
+            <td name="invoiceNumber" th:text="${invoice.invoiceNumber}"></td>
+            <td th:text="${invoice.beginDate}"></td>
+            <td th:text="${invoice.endDate}"></td>
+            <td th:text="${invoice.invoiceNetAmount}"></td>
+            <td th:text="${invoice.invoiceTaxAmount}"></td>
+            <td>
+              <button th:unless="${invoice.hasProblem() or invoice.acceptedByCompany}" type="submit" class="btn btn-sm btn-success" th:formaction="'/invoice/' + ${invoice.invoiceNumber} + '/accept'" th:title="#{button.accept}">
+                <img alt="Accept" src="/img/checkmark.png">
               </button>
-              <button type="submit" class="btn btn-danger" th:formaction="'/invoice/' + ${invoice.invoiceNumber} + '/delete'" th:title="#{button.delete}">
-                <img alt="Delete" src="/img/trash.png" />
-              </button>
-            </div>
-            <img th:if="${invoice.hasProblem()}" alt="Problem" src="/img/problem.png" th:title="${invoice.getProblem()}" style="height: 20px;"/>
-          </td>
-        </tr>
-      </table>
-      </form>
+              <a th:unless="${invoice.hasProblem()}" th:href="'/invoice/' + ${invoice.invoiceNumber} + '/details'" class="btn btn-sm btn-primary" th:text="#{button.details}"
+              >Details</a>
+              <div class="btn-group">
+                <button type="submit" class="btn btn-sm btn-warning" th:formaction="'/invoice/' + ${invoice.invoiceNumber} + '/restartProcessing'">
+                  <img alt="refresh" src="/img/refresh.png"/>
+                </button>
+                <button th:if="${invoice.canDelete()}" type="submit" class="btn btn-sm btn-danger" th:formaction="'/invoice/' + ${invoice.invoiceNumber} + '/delete'" th:title="#{button.delete}">
+                  <img alt="Delete" src="/img/trash.png" />
+                </button>
+              </div>
+              <img th:if="${invoice.hasProblem()}" alt="Problem" src="/img/problem.png" th:title="${invoice.getProblem()}" style="height: 20px;"/>
+            </td>
+          </tr>
+        </table>
+        </form>
+      </div>
+<!--       <input type="hidden" id="template_id" name="template_id" /> -->
 
-      <input type="hidden" id="template_id" name="template_id" />
 
-
-    
-    <div id='example'></div>
     
     <script src="/js/invoiceAll.js"></script>
     <script th:inline="javascript">

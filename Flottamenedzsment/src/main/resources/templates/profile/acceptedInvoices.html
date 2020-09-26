@@ -7,19 +7,16 @@
 
   <div layout:fragment="loginContent">
 
-    <h2>Finances</h2>
+    <h2>Finance history</h2>
       <form method="post">
       
       <div th:if="${#lists.isEmpty(invoiceParts)}" class="my-border text-center">
-        <b>You don't have any pending invoice</b>
+        <b>You don't have any historical invoice</b>
       </div>
       
       <table th:unless="${#lists.isEmpty(invoiceParts)}" class="table table-sm table-hover">
         <thead>
           <tr>
-            <td>
-              <input id="select-all" type="checkbox" title="Select all" onclick="selectAll()" />
-            </td>
             <th>
               <label>Number</label>
             </th>
@@ -29,35 +26,25 @@
             <th>
               <label>Gross amount</label>
             </th>
-            <th id="action-col">
-              <label>Actions</label>
+            <th> 
             </th>
           </tr>
         </thead>
         <tbody>
           <tr th:each="invoicePart, i : ${invoiceParts}">
-            <td>
-              <input th:id="'p' + ${invoicePart.id}" name="id" type="hidden" th:value="${invoicePart.id}" />
-              <input name="invoiceNumber" type="hidden" th:value="${invoicePart.invoice.invoiceNumber}" />
-              <input name="numberCheckBox" type="checkbox" onclick="selectSingleCheckbox(this)"/>
-            </td>
             <td name="number" th:text="${invoicePart.subscription.number}"></td>
             <td th:text="${invoicePart.getPeriod()}"></td>
             <td th:text="${invoicePart.userGrossAmount}"></td>
             <td>
               <div class="btn-group">
-                <button type="button" onclick="acceptOneInvoice(this)" class="btn btn-success" style="color: black;">Accept</button>
-                <button type="submit" th:formaction="'/profile/finance/' + ${invoicePart.id}" class="btn btn-info"  style="color: black;">Details</button>
+                <button type="submit" th:formaction="'/profile/finance/' + ${invoicePart.id} + '/view'" class="btn btn-info"  style="color: black;">Details</button>
               </div>
             </td>
           </tr>
         </tbody>
       </table>
-      <button id="accept-all-selected" type="button" onclick="acceptAllSelectedInvoice()" class="btn btn-primary" style="visibility: hidden;">Accept all selected</button>
       </form>
       
-    <script src="/js/profile/financeSummary.js"></script>
-
   </div>
 
 

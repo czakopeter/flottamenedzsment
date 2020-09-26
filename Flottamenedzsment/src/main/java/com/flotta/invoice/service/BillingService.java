@@ -170,8 +170,8 @@ public class BillingService {
     return result;
   }
 
-  public InvoiceByUserAndPhoneNumber getPendingInvoiceOfUserBySubscription(User user, Invoice invoice, Subscription subscription) {
-    return invoiceService.getPendingInvoiceOfUserBySubscription(user, invoice, subscription);
+  public InvoiceByUserAndPhoneNumber getPendingInvoiceOfUserById(User user, Long id) {
+    return invoiceService.getPendingInvoiceOfUserById(user, id);
   }
 
   public List<InvoiceByUserAndPhoneNumber> getPendingInvoicesOfUser(User user) {
@@ -186,8 +186,8 @@ public class BillingService {
     return invoiceService.acceptInvoicesOfUserByInvoiceNumbersAndSubscription(user, ids);
   }
 
-  public void askForRevision(User user, String number, Map<String, String> map) {
-    invoiceService.askForRevision(user, number, map);
+  public void askForRevision(User user, long id, Map<String, String> map) {
+    invoiceService.askForRevision(user, id, map);
   }
 
   public void resetInvoiceByInvoiceNumber(String invoiceNumber) {
@@ -204,6 +204,15 @@ public class BillingService {
 
   public void modifyFeeItemGrossAmountRatio(long id, double userAmount, double compAmount) {
     invoiceService.modifyFeeItemGrossAmountRatio(id, userAmount, compAmount);
+  }
+
+  public List<InvoiceByUserAndPhoneNumber> getAcceptedInvoicesOfUser(User user) {
+    return invoiceService.getAcceptedInvoicesOfUser(user);
+  }
+
+  public InvoiceByUserAndPhoneNumber getAcceptedInvoiceOfUserById(User user, long id) {
+    // TODO Auto-generated method stub
+    return null;
   }
   
 }

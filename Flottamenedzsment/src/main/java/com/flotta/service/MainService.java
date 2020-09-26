@@ -481,10 +481,8 @@ public class MainService {
     return billingService.getPendingInvoicesOfUser(getCurrentUser());
   }
 
-  public InvoiceByUserAndPhoneNumber getPendingInvoiceOfCurrentUserByNumber(String invoiceNumber, String number) {
-    Invoice invoice = billingService.findInvoicedByInvoiceNumber(invoiceNumber);
-    Subscription subscription = subscriptionService.findByNumber(number);
-    return billingService.getPendingInvoiceOfUserBySubscription(getCurrentUser(), invoice, subscription);
+  public InvoiceByUserAndPhoneNumber getPendingInvoiceOfCurrentUserById(Long id) {
+    return billingService.getPendingInvoiceOfUserById(getCurrentUser(), id);
   }
   
   private User getCurrentUser() {
@@ -500,9 +498,8 @@ public class MainService {
     return billingService.acceptInvoicesOfUserByInvoiceNumbersAndSubscriptions(getCurrentUser(), ids);
   }
 
-  public void askForRevision(String number, Map<String, String> map) {
-    billingService.askForRevision(getCurrentUser(), number, map);
-    createRevisionMessage(getCurrentUser(), number, map);
+  public void askForRevision(long id, Map<String, String> map) {
+    billingService.askForRevision(getCurrentUser(), id, map);
   }
   
   private void createRevisionMessage(User user, String number, Map<String,String> notes) {
@@ -535,6 +532,14 @@ public class MainService {
 
   public void modifyFeeItemGrossAmountRatio(long id, double userAmount, double compAmount) {
     billingService.modifyFeeItemGrossAmountRatio(id, userAmount, compAmount);
+  }
+
+  public List<InvoiceByUserAndPhoneNumber> getAcceptedInvoicesOfCurrentUser() {
+    return billingService.getAcceptedInvoicesOfUser(getCurrentUser());
+  }
+
+  public InvoiceByUserAndPhoneNumber getAcceptedInvoiceOfCurrentUserById(long id) {
+    return billingService.getAcceptedInvoiceOfUserById(getCurrentUser(), id);
   }
 
 }

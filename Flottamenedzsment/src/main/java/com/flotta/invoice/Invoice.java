@@ -44,7 +44,9 @@ public class Invoice {
   
   private double invoiceGrossAmount;
   
-  private boolean closed;
+  private boolean acceptedByUsers;
+  
+  private boolean acceptedByCompany;
   
   @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
   private List<InvoiceByUserAndPhoneNumber> invoicePart = new LinkedList<>();
@@ -125,14 +127,22 @@ public class Invoice {
     this.invoiceGrossAmount = invoiceGrossAmount;
   }
 
-  public boolean isClosed() {
-    return closed;
+  public boolean isAcceptedByUsers() {
+    return acceptedByUsers;
   }
 
-  public void setClosed(boolean closed) {
-    this.closed = closed;
+  public void setAcceptedByUsers(boolean acceptedByUsers) {
+    this.acceptedByUsers = acceptedByUsers;
   }
-  
+
+  public boolean isAcceptedByCompany() {
+    return acceptedByCompany;
+  }
+
+  public void setAcceptedByCompany(boolean acceptedByCompany) {
+    this.acceptedByCompany = acceptedByCompany;
+  }
+
   public List<InvoiceByUserAndPhoneNumber> getInvoicePart() {
     return invoicePart;
   }
@@ -223,7 +233,7 @@ public class Invoice {
   }
 
   public boolean canDelete() {
-    return !closed;
+    return !acceptedByUsers && !acceptedByCompany;
   }
 
   //TODO konzisztenciát ellenőrző függvényt elkészíteni
@@ -232,8 +242,33 @@ public class Invoice {
   }
 
   public void setAcceptedByCompany() {
-    for(InvoiceByUserAndPhoneNumber part : invoicePart) {
-      part.setAcceptedByCompany(true);
+    this.acceptedByCompany = true;
+    if(hasAnyRevisionNote()) {
+      for(InvoiceByUserAndPhoneNumber part : invoicePart) {
+        if(part.hasRevisionNote()) {
+          part.setRevisionNote("");
+          part.setAcceptedByCompany(true);
+        }
+        for(FeeItem feeItem : part.getFees()) {
+          if(feeItem.hasRevisionNote()) {
+            feeItem.setRevisionNote("");
+          }
+        }
+      }
+    } else {
+      for(InvoiceByUserAndPhoneNumber part : invoicePart) {
+        part.setAcceptedByCompany(true);
+      }
     }
   }
+  
+  public boolean hasAnyRevisionNote() {
+    for(InvoiceByUserAndPhoneNumber part : invoicePart) {
+      if(part.hasRevisionNote() || part.hasAnyRevisionNoteOfFees()) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
 }

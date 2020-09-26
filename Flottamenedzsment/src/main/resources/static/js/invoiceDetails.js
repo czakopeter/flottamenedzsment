@@ -50,7 +50,6 @@ function tdTextChangeToInput(td) {
     userInput.setAttribute('class', 'form-control form-control-sm');
     userInput.setAttribute('style', 'text-align:right');
     userInput.setAttribute('onchange', 'modifyAmountRatio(this)');
-// userInput.setAttribute('oninput', 'modifyAmountRatio(this)');
     userInput.value = td.textContent;
     userInput.defaultValue = td.textContent;
     userInput.setAttribute('size', '1');
@@ -99,3 +98,43 @@ function isDecimal(number) {
 	}
 	return true;
  }
+
+function show_details(btn) {
+	btn.setAttribute("onclick", "hide_details(this)");
+	let tr = btn.parentElement.parentElement;
+	let id = tr.id.substr("part".length);
+	let rows = document.querySelectorAll("[name=feeItem" + id + "]");
+	for(let row of rows) {
+		row.style.visibility = "visible";
+	}
+	btn.innerHTML  = "Less";
+}
+
+function hide_details(btn) {
+	btn.setAttribute("onclick", "show_details(this)");
+	let tr = btn.parentElement.parentElement;
+	let id = tr.id.substr("part".length);
+	let rows = document.querySelectorAll("[name=feeItem" + id + "]");
+	for(let row of rows) {
+		row.style.visibility = "collapse";
+	}
+	btn.innerHTML  = "More";
+}
+
+function show_revision_note(btn) {
+	let tr = btn.parentElement.parentElement;
+	let index = tr.rowIndex + 1;
+	let table = tr.parentElement;
+	table.rows[index].style.visibility = "visible";
+	btn.querySelector("img").src = "/img/up-arrow.png";
+	btn.setAttribute("onclick", "hide_revision_note(this)");
+}
+
+function hide_revision_note(btn) {
+	let tr = btn.parentElement.parentElement;
+	let index = tr.rowIndex + 1;
+	let table = tr.parentElement;
+	table.rows[index].style.visibility = "collapse";
+	btn.querySelector("img").src = "/img/down-arrow.png";
+	btn.setAttribute("onclick", "show_revision_note(this)");
+}

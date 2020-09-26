@@ -51,8 +51,6 @@ public class InvoiceByUserAndPhoneNumber extends BasicEntity {
   
   private boolean acceptedByCompany;
   
-//  private boolean closed;
-  
   private String revisionNote;
   
   public InvoiceByUserAndPhoneNumber() {
@@ -136,8 +134,6 @@ public class InvoiceByUserAndPhoneNumber extends BasicEntity {
     this.userGrossAmount = userGrossAmount;
   }
   
-  
-
   public double getCompanyGrossAmount() {
     return companyGrossAmount;
   }
@@ -170,19 +166,17 @@ public class InvoiceByUserAndPhoneNumber extends BasicEntity {
     this.acceptedByCompany = acceptedByCompany;
   }
 
-//  public void setClosed(boolean closed) {
-//    this.closed = closed;
-//  }
-
   public String getRevisionNote() {
     return revisionNote;
   }
 
   public void setRevisionNote(String revisionNote) {
-    this.revisionNote = revisionNote;
+    if(revisionNote == null || revisionNote.isEmpty()) {
+      this.revisionNote = null;
+    } else {
+      this.revisionNote = revisionNote;
+    }
   }
-  
-  
 
   public void addFeeItem(FeeItem item) {
     item.setInvoiceByUserAndPhoneNumber(this);
@@ -217,12 +211,6 @@ public class InvoiceByUserAndPhoneNumber extends BasicEntity {
     return acceptedByCompany && acceptedByUser;
   }
 
-//  public void setAcceptedByCompany() {
-//    for(FeeItem item : fees) {
-//      item.setAcceptedByCompany(true);
-//    }
-//  }
-  
   public void updateAmountsByFeeItems() {
     this.totalNetAmount = 0;
     this.totalTaxAmount = 0;
@@ -241,4 +229,31 @@ public class InvoiceByUserAndPhoneNumber extends BasicEntity {
       return beginDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")) + " - " + endDate.format(DateTimeFormatter.ofPattern("MM.dd"));
     }
   }
+
+  public void setRevisionNoteOfFeeItem(long id, String note) {
+    for(FeeItem fee : fees) {
+      if(fee.getId() == id) {
+        fee.setRevisionNote(note);
+      }
+    }
+  }
+
+  public boolean hasRevisionNote() {
+    return revisionNote != null;
+  }
+  
+  public boolean hasAnyRevisionNote() {
+    return this.hasRevisionNote() || this.hasAnyRevisionNoteOfFees();
+  }
+  
+  public boolean hasAnyRevisionNoteOfFees() {
+    for(FeeItem fee : fees) {
+      if(fee.hasRevisionNote()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  
 }

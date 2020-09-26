@@ -7,8 +7,6 @@
 
   <div layout:fragment="loginContent">
 
-    <div class="container">
-
       <h2>Invoice details</h2>
 
       <div class="row my-2">
@@ -33,32 +31,41 @@
       </div>
     
 
-      <table class="table table-sm">
+      <table class="table table-sm table-hover">
         <tr>
           <th>User</th>
           <th>Subscription</th>
           <th>Description</th>
-          <th>Begin</th>
-          <th>End</th>
+          <th>Period</th>
           <th>Total gross</th>
           <th>User gross</th>
           <th>Comp. gross</th>
           <th></th>
         </tr>
-        <span th:each="partOfInvoice : ${invoice.invoicePart}">
-          <tr>
-            <th colspan="5" th:text="${partOfInvoice?.user?.fullName}"></th>
+        <th:block th:each="partOfInvoice : ${invoice.invoicePart}">
+          <tr th:id="'part' + ${partOfInvoice.id}" th:classappend="${partOfInvoice.hasAnyRevisionNote() ? 'hasRevisionNote' : ''}">
+            <th th:text="${partOfInvoice?.user?.fullName}"></th>
+            <th colspan="2" th:text="${partOfInvoice?.subscription?.number}"></th>
+            <th th:text="${partOfInvoice.getPeriod()}"></th>
             <th th:text="${#numbers.formatDecimal(partOfInvoice.totalGrossAmount, 1, 2)}"></th>
-            <th th:text="${#numbers.formatDecimal(partOfInvoice.userGrossAmount, 1, 2)}"></th>
-            <th th:text="${#numbers.formatDecimal(partOfInvoice.companyGrossAmount, 1, 2)}"></th>
-            <td></td>
+            <th name="userGrossAmount" th:text="${#numbers.formatDecimal(partOfInvoice.userGrossAmount, 1, 1)}"></th>
+            <th name="compGrossAmount" th:text="${#numbers.formatDecimal(partOfInvoice.companyGrossAmount, 1, 2)}"></th>
+            <td>
+              <button class="btn btn-sm btn-info" onclick="show_details(this)">More</button>
+<!--               <button th:if="${partOfInvoice.revisionNote != null}" name="downArrowBtn" class="btn btn-sm btn-info" onclick="show_revision_note(this)"> -->
+<!--                 <img src="/img/down-arrow.png" alt="down-arrow"/> -->
+<!--               </button> -->
+            </td>
           </tr>
-          <tr th:each="feeItem : ${partOfInvoice.fees}">
+          <tr th:if="${partOfInvoice.revisionNote != null}" style="border-top-style: hidden;">
+            <td th:id="'revisionNote' + ${partOfInvoice.id}" colspan="8" class="hasRevisionNote" th:text="${partOfInvoice.revisionNote}"></td>
+          </tr>
+          <th:block th:each="feeItem : ${partOfInvoice.fees}" >
+          <tr th:name="'feeItem' + ${partOfInvoice.id}" style="visibility: collapse" th:classappend="${feeItem.hasRevisionNote() ? 'hasRevisionNote' : ''}">
             <td><input name="id" type="hidden" th:value="${feeItem.id}"/></td>
             <td name="subscription" th:text="${feeItem?.subscription}"></td>
             <td name="description" th:text="${feeItem.description}"></td>
-            <td name="beginDate" th:text="${feeItem.beginDate}"></td>
-            <td name="endDate" th:text="${feeItem.endDate}"></td>
+            <td name="period" th:text="${feeItem.getPeriod()}"></td>
             <td name="totalGrossAmount" th:text="${feeItem.totalGrossAmount}"></td>
             <td name="userGrossAmount" th:text="${feeItem.userGrossAmount}"></td>
             <td name="compGrossAmount" th:text="${feeItem.companyGrossAmount}"></td>
@@ -75,12 +82,21 @@
                   <img alt="Cancel" src="/img/cross.png">
                 </button>
               </div>
+<!--               <button th:if="${feeItem.revisionNote != null}" class="btn btn-sm btn-info" onclick="show_revision_note(this)"> -->
+<!--                 <img src="/img/down-arrow.png" alt="down-arrow"/> -->
+<!--               </button> -->
             </td>
           </tr>
-        </span>
+          <tr th:if="${feeItem.revisionNote != null}" th:name="'feeItem' + ${partOfInvoice.id}" style="visibility: collapse;border-top-style: hidden;" >
+            <td colspan="8" th:id="'feeRevisionNote' + ${feeItem.id}" class="hasRevisionNote" th:text="${feeItem.revisionNote}">
+            </td>
+          </tr>
+          </th:block>
+        </th:block>
       </table>
-    </div>
-    
+      
+      <a href="/invoice/all" class="btn btn-primary" th:text="#{button.back}">Back</a>
+      
     <script src="/js/invoiceDetails.js"></script>
     
     
