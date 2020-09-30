@@ -17,8 +17,6 @@ import javax.persistence.Table;
 import com.flotta.entity.Subscription;
 import com.flotta.entity.User;
 
-import net.bytebuddy.utility.privilege.GetSystemPropertyAction;
-
 @Entity
 @Table(name = "invoices")
 public class Invoice {
@@ -246,18 +244,21 @@ public class Invoice {
     if(hasAnyRevisionNote()) {
       for(InvoiceByUserAndPhoneNumber part : invoicePart) {
         if(part.hasRevisionNote()) {
-          part.setRevisionNote("");
+          part.setRevisionNote(null);
           part.setAcceptedByCompany(true);
         }
         for(FeeItem feeItem : part.getFees()) {
           if(feeItem.hasRevisionNote()) {
-            feeItem.setRevisionNote("");
+            feeItem.setRevisionNote(null);
           }
         }
       }
     } else {
       for(InvoiceByUserAndPhoneNumber part : invoicePart) {
         part.setAcceptedByCompany(true);
+        if(part.getUser() == null) {
+          part.setAcceptedByUser(true);
+        }
       }
     }
   }

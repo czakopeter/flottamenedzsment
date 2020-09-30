@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -215,7 +216,7 @@ public class InvoiceByUserAndPhoneNumber extends BasicEntity {
     this.totalNetAmount = 0;
     this.totalTaxAmount = 0;
     this.userGrossAmount = 0;
-    this.companyGrossAmount = 0;
+    this.companyGrossAmount = 0.0;
     this.totalGrossAmount = 0;
     for(FeeItem item : fees) {
       amountUpdate(item);

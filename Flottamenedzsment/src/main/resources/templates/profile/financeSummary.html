@@ -14,28 +14,20 @@
         <b>You don't have any pending invoice</b>
       </div>
       
-      <table th:unless="${#lists.isEmpty(invoiceParts)}" class="table table-sm table-hover">
-        <thead>
-          <tr>
-            <td>
+      <table th:unless="${#lists.isEmpty(invoiceParts)}" class="table table-sm">
+<!--         <thead class="table-info" > -->
+          <tr class="table-primary" style="border: solid 2px">
+            <th>
               <input id="select-all" type="checkbox" title="Select all" onclick="selectAll()" />
-            </td>
-            <th>
-              <label>Number</label>
             </th>
-            <th>
-              <label>Period</label>
-            </th>
-            <th>
-              <label>Gross amount</label>
-            </th>
-            <th id="action-col">
-              <label>Actions</label>
-            </th>
+            <th>Number</th>
+            <th>Period</th>
+            <th>Gross amount</th>
+            <th id="action-col">Actions</th>
           </tr>
-        </thead>
+<!--         </thead> -->
         <tbody>
-          <tr th:each="invoicePart, i : ${invoiceParts}">
+          <tr th:each="invoicePart : ${invoiceParts}" th:classappend="${invoicePart.acceptedByUser ? 'table-success' : 'table-warning'}">
             <td>
               <input th:id="'p' + ${invoicePart.id}" name="id" type="hidden" th:value="${invoicePart.id}" />
               <input name="invoiceNumber" type="hidden" th:value="${invoicePart.invoice.invoiceNumber}" />
@@ -43,11 +35,15 @@
             </td>
             <td name="number" th:text="${invoicePart.subscription.number}"></td>
             <td th:text="${invoicePart.getPeriod()}"></td>
-            <td th:text="${invoicePart.userGrossAmount}"></td>
+            <td th:text="${#numbers.formatDecimal(invoicePart.userGrossAmount, 1, 2)} + ' Ft'"></td>
             <td>
               <div class="btn-group">
-                <button type="button" onclick="acceptOneInvoice(this)" class="btn btn-success" style="color: black;">Accept</button>
-                <button type="submit" th:formaction="'/profile/finance/' + ${invoicePart.id}" class="btn btn-info"  style="color: black;">Details</button>
+                <button type="button" onclick="acceptOneInvoice(this)" class="btn btn-sm btn-success" style="color: black;" th:if="${not invoicePart.acceptedByUser}">
+                  <img alt="Accept" src="/img/checkmark.png" />
+                </button>
+                <button type="submit" th:formaction="'/profile/finance/' + ${invoicePart.id}" class="btn btn-sm btn-info"  style="color: black;">
+                  <img alt="Details" src="/img/list.png" />
+                </button>
               </div>
             </td>
           </tr>

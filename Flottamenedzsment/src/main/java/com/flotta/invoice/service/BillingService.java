@@ -131,9 +131,9 @@ public class BillingService {
     invoiceService.save(invoice);
   }
 
-  public List<OneCategoryOfUserFinance> getFinanceByUserId(long id) {
-    return invoiceService.getFinanceByUserId(id);
-  }
+//  public List<OneCategoryOfUserFinance> getFinanceByUserId(long id) {
+//    return invoiceService.getFinanceByUserId(id);
+//  }
 
   public void save(List<FeeItem> fees) {
     invoiceService.save(fees);
@@ -212,6 +212,10 @@ public class BillingService {
 
   public InvoiceByUserAndPhoneNumber getAcceptedInvoiceOfUserById(User user, long id) {
     return invoiceService.getAcceptedInvoiceOfUserById(user, id);
+  }
+
+  public List<InvoiceByUserAndPhoneNumber> getInvoicesOfUser(User user) {
+    return invoiceService.getInvoicesOfUser(user);
   }
   
 }

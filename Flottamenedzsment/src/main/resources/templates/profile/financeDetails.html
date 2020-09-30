@@ -10,23 +10,26 @@
     <h2>Finance details</h2>
       
       <form method="post">
-      <div class="container">
-        <div class="row">
+        <div class="row my-2">
           <div class="col-2">Number</div>
-          <div class="col-2" th:text="${invoicePart.subscription.number}">201234567</div>
+          <div class="col-2" th:text="${invoicePart.subscription.number}" style="text-align: right;">201234567</div>
         </div>
-        <div class="row">
+        <div class="row my-2">
           <div class="col-2">Begin</div>
-          <div class="col-2" th:text="${invoicePart.beginDate}">2020.01.10</div>
+          <div class="col-2" th:text="${invoicePart.beginDate}" style="text-align: right;">2020.01.10</div>
         </div>
-        <div class="row">
+        <div class="row my-2">
           <div class="col-2">End</div>
-          <div class="col-2" th:text="${invoicePart.endDate}">2020.01.31</div>
+          <div class="col-2" th:text="${invoicePart.endDate}" style="text-align: right;">2020.01.31</div>
         </div>
-      </div>
+        <div class="row my-2">
+          <div class="col-2">Total gross amount</div>
+          <div class="col-2" th:text="${invoicePart.userGrossAmount} + ' Ft'" style="text-align: right;">1000</div>
+        </div>
+      
       <table class="table table-sm table-hover">
         <thead>
-          <tr>
+          <tr class="table-info">
             <th>
               <label>Category</label>
             </th>
@@ -39,31 +42,32 @@
             <th>
               <label>Gross amount</label>
             </th>
-            <th>
+            <th th:if="${not invoicePart.acceptedByUser}">
               <label>Revision note</label>
             </th>
           </tr>
         </thead>
         <tbody>
-          <tr th:each="fee : ${invoicePart.fees}">
+          <tr name="fee" th:each="fee : ${invoicePart.fees}">
             <td th:text="${fee.category}"></td>
             <td th:text="${fee.description}"></td>
             <td th:text="${fee.getPeriod()}"></td>
-            <td th:text="${fee.userGrossAmount}"></td>
-            <td>
-              <input type="text" class="form-control" th:name="${fee.id}" placeholder="Enter your note" />
+            <td th:text="${fee.userGrossAmount} + ' Ft'"></td>
+            <td th:if="${not invoicePart.acceptedByUser}">
+              <input type="text" class="form-control" th:name="${fee.id}" placeholder="Enter your note" oninput="modifyNotes()" />
             </td>
           </tr>
         </tbody>
       </table>
-      <textarea class="form-control mb-2" name="textarea" placeholder="Enter your note for entiry invoice"></textarea>
+      <textarea th:if="${not invoicePart.acceptedByUser}" class="form-control mb-2" name="textarea" placeholder="Enter your note for entiry invoice" oninput="modifyNotes()"></textarea>
       
       <div class="btn-group">
-<!--         <button type="submit" th:formaction="'/profile/finance/' + ${invoicePart.invoice.invoiceNumber} + '/' + ${invoicePart.subscription.number} + '/accept'" class="btn btn-success">Accept</button> -->
-        <button type="submit" th:formaction="'/profile/finance/' + ${invoicePart.id} + '/revision'" class="btn btn-warning">Ask for revision</button>
+        <button id="revisionBtn" type="submit" th:formaction="'/profile/finance/' + ${invoicePart.id} + '/revision'" class="btn btn-warning" th:if="${not invoicePart.acceptedByUser}" style="visibility: hidden; ">Ask for revision</button>
         <a class="btn btn-primary" href="/profile/finance" th:text="#{button.back}"></a>
       </div>
       </form>
+
+  <script src="/js/profile/financeDetails.js"></script>
 
   </div>
 

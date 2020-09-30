@@ -7,6 +7,10 @@
 
   <div layout:fragment="loginContent">
 
+      <a href="/invoice/all" class="btn btn-sm btn-primary" >
+<!--         <img alt="Back" src="/img/left-arrow.png"> -->
+        <img alt="Back" src="/img/left.png">
+      </a>
       <h2>Invoice details</h2>
 
       <div class="row my-2">
@@ -29,41 +33,41 @@
         <div class="col-2"><label th:text="#{bill.invoiceTaxAmount}">Tax amount</label></div>
         <div class="col-2"><label th:text="${invoice.invoiceTaxAmount} + ' Ft'">Tax amount</label></div>
       </div>
-    
 
       <table class="table table-sm table-hover">
-        <tr>
+<!--       <thead> -->
+        <tr class="table-info">
           <th>User</th>
           <th>Subscription</th>
-          <th>Description</th>
           <th>Period</th>
           <th>Total gross</th>
           <th>User gross</th>
           <th>Comp. gross</th>
-          <th></th>
+          <th ></th>
         </tr>
+<!--         </thead> -->
+        <tbody>
         <th:block th:each="partOfInvoice : ${invoice.invoicePart}">
-          <tr th:id="'part' + ${partOfInvoice.id}" th:classappend="${partOfInvoice.hasAnyRevisionNote() ? 'hasRevisionNote' : ''}">
-            <th th:text="${partOfInvoice?.user?.fullName}"></th>
-            <th colspan="2" th:text="${partOfInvoice?.subscription?.number}"></th>
+          <tr th:id="'part' + ${partOfInvoice.id}" th:classappend="${partOfInvoice.hasAnyRevisionNote() ? 'table-danger' : ''}" style="border-top: solid 2px; ">
+            <th th:text="${partOfInvoice.user != null ? partOfInvoice.user.fullName : 'Company'}"></th>
+            <th th:text="${partOfInvoice?.subscription?.number}"></th>
             <th th:text="${partOfInvoice.getPeriod()}"></th>
             <th th:text="${#numbers.formatDecimal(partOfInvoice.totalGrossAmount, 1, 2)}"></th>
-            <th name="userGrossAmount" th:text="${#numbers.formatDecimal(partOfInvoice.userGrossAmount, 1, 1)}"></th>
+            <th name="userGrossAmount" th:text="${#numbers.formatDecimal(partOfInvoice.userGrossAmount, 1, 2)}"></th>
             <th name="compGrossAmount" th:text="${#numbers.formatDecimal(partOfInvoice.companyGrossAmount, 1, 2)}"></th>
             <td>
-              <button class="btn btn-sm btn-info" onclick="show_details(this)">More</button>
-<!--               <button th:if="${partOfInvoice.revisionNote != null}" name="downArrowBtn" class="btn btn-sm btn-info" onclick="show_revision_note(this)"> -->
-<!--                 <img src="/img/down-arrow.png" alt="down-arrow"/> -->
-<!--               </button> -->
+              <button class="btn btn-sm btn-info" onclick="show_details(this)">
+                <img src="/img/down-arrow.png" alt="down-arrow"/>
+              </button>
             </td>
           </tr>
           <tr th:if="${partOfInvoice.revisionNote != null}" style="border-top-style: hidden;">
-            <td th:id="'revisionNote' + ${partOfInvoice.id}" colspan="8" class="hasRevisionNote" th:text="${partOfInvoice.revisionNote}"></td>
+            <td th:id="'revisionNote' + ${partOfInvoice.id}" colspan="8" class="table-danger" th:text="${partOfInvoice.revisionNote}"></td>
           </tr>
           <th:block th:each="feeItem : ${partOfInvoice.fees}" >
-          <tr th:name="'feeItem' + ${partOfInvoice.id}" style="visibility: collapse" th:classappend="${feeItem.hasRevisionNote() ? 'hasRevisionNote' : ''}">
+          <tr th:name="'feeItem' + ${partOfInvoice.id}" style="visibility: collapse" th:classappend="${feeItem.hasRevisionNote() ? 'table-danger' : ''}">
             <td><input name="id" type="hidden" th:value="${feeItem.id}"/></td>
-            <td name="subscription" th:text="${feeItem?.subscription}"></td>
+<!--             <td name="subscription" th:text="${feeItem?.subscription}"></td> -->
             <td name="description" th:text="${feeItem.description}"></td>
             <td name="period" th:text="${feeItem.getPeriod()}"></td>
             <td name="totalGrossAmount" th:text="${feeItem.totalGrossAmount}"></td>
@@ -82,17 +86,15 @@
                   <img alt="Cancel" src="/img/cross.png">
                 </button>
               </div>
-<!--               <button th:if="${feeItem.revisionNote != null}" class="btn btn-sm btn-info" onclick="show_revision_note(this)"> -->
-<!--                 <img src="/img/down-arrow.png" alt="down-arrow"/> -->
-<!--               </button> -->
             </td>
           </tr>
           <tr th:if="${feeItem.revisionNote != null}" th:name="'feeItem' + ${partOfInvoice.id}" style="visibility: collapse;border-top-style: hidden;" >
-            <td colspan="8" th:id="'feeRevisionNote' + ${feeItem.id}" class="hasRevisionNote" th:text="${feeItem.revisionNote}">
+            <td colspan="8" th:id="'feeRevisionNote' + ${feeItem.id}" class="table-danger" th:text="${feeItem.revisionNote}">
             </td>
           </tr>
           </th:block>
         </th:block>
+        </tbody>
       </table>
       
       <a href="/invoice/all" class="btn btn-primary" th:text="#{button.back}">Back</a>

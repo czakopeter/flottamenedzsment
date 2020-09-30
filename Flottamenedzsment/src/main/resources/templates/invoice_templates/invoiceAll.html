@@ -27,7 +27,7 @@
       <div th:unless="${#lists.isEmpty(invoices)}">
         <form method="post">
         <table class="table table-sm">
-          <tr>
+          <tr class="table-info">
             <th th:text="#{bill.invoiceNumber}">Invoice number</th>
             <th th:text="#{bill.fromDate}">From</th>
             <th th:text="#{bill.emdDate}">To</th>
@@ -45,8 +45,9 @@
               <button th:unless="${invoice.hasProblem() or invoice.acceptedByCompany}" type="submit" class="btn btn-sm btn-success" th:formaction="'/invoice/' + ${invoice.invoiceNumber} + '/accept'" th:title="#{button.accept}">
                 <img alt="Accept" src="/img/checkmark.png">
               </button>
-              <a th:unless="${invoice.hasProblem()}" th:href="'/invoice/' + ${invoice.invoiceNumber} + '/details'" class="btn btn-sm btn-primary" th:text="#{button.details}"
-              >Details</a>
+              <a th:unless="${invoice.hasProblem()}" th:href="'/invoice/' + ${invoice.invoiceNumber} + '/details'" class="btn btn-sm btn-primary" >
+                <img th:alt="#{button.details}" src="/img/list.png" />
+              </a>
               <div class="btn-group">
                 <button type="submit" class="btn btn-sm btn-warning" th:formaction="'/invoice/' + ${invoice.invoiceNumber} + '/restartProcessing'">
                   <img alt="refresh" src="/img/refresh.png"/>

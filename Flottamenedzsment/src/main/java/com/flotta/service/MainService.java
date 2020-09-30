@@ -20,10 +20,10 @@ import com.flotta.entity.User;
 import com.flotta.entity.switchTable.Service.UserDevService;
 //import com.flotta.entity.switchTable.Service.UserSubService;
 import com.flotta.entity.viewEntity.DeviceToView;
-import com.flotta.entity.viewEntity.InvoiceOfUserByNumber;
-import com.flotta.entity.viewEntity.OneCategoryOfUserFinance;
+//import com.flotta.entity.viewEntity.InvoiceOfUserByNumber;
+//import com.flotta.entity.viewEntity.OneCategoryOfUserFinance;
 import com.flotta.entity.viewEntity.SubscriptionToView;
-import com.flotta.exception.UnknownPhoneNumberException;
+//import com.flotta.exception.UnknownPhoneNumberException;
 import com.flotta.invoice.Category;
 import com.flotta.invoice.ChargeRatioByCategory;
 import com.flotta.invoice.DescriptionCategoryCoupler;
@@ -412,10 +412,10 @@ public class MainService {
     billingService.upgradeDescriptionCategoryCoupler(id, descriptions, categories);
   }
 
-  public List<OneCategoryOfUserFinance> getUserFinance(String email) {
-    User user = userService.findByEmail(email);
-    return billingService.getFinanceByUserId(user.getId());
-  }
+//  public List<OneCategoryOfUserFinance> getUserFinance(String email) {
+//    User user = userService.findByEmail(email);
+//    return billingService.getFinanceByUserId(user.getId());
+//  }
 
   public List<SubscriptionToView> findAllCurrentSubscriptionOfUser() {
     return subscriptionService.findAllCurrentByUser(getCurrentUser());
@@ -502,22 +502,6 @@ public class MainService {
     billingService.askForRevision(getCurrentUser(), id, map);
   }
   
-  private void createRevisionMessage(User user, String number, Map<String,String> notes) {
-    StringBuilder sb = new StringBuilder();
-    sb.append("Sender email: " + user.getEmail());
-    sb.append("\nSubscription: " + number);
-    for(String key : notes.keySet()) {
-      if(!key.equals("textarea") && !notes.get(key).isEmpty()) {
-        sb.append("\nFeeItem id: " + key + "\n\tnote: " + notes.get(key));
-      }
-    }
-    if(!notes.get("textarea").isEmpty()) {
-      sb.append("\nNote for entiry invoce:\n" + notes.get("textarea"));
-    }
-    
-    System.out.println(sb);
-  }
-
   public void restartPorcessingOfInvoice(String invoiceNumber) {
     billingService.resetInvoiceByInvoiceNumber(invoiceNumber);
   }
@@ -540,6 +524,10 @@ public class MainService {
 
   public InvoiceByUserAndPhoneNumber getAcceptedInvoiceOfCurrentUserById(long id) {
     return billingService.getAcceptedInvoiceOfUserById(getCurrentUser(), id);
+  }
+
+  public List<InvoiceByUserAndPhoneNumber> getInvoicesOfCurrentUser() {
+    return billingService.getInvoicesOfUser(getCurrentUser());
   }
 
 }

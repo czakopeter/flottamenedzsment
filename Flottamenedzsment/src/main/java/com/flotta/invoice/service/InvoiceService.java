@@ -7,7 +7,6 @@ import java.io.StringReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,10 +23,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.flotta.entity.Subscription;
 import com.flotta.entity.User;
-import com.flotta.entity.viewEntity.InvoiceOfUserByNumber;
-import com.flotta.entity.viewEntity.OneCategoryOfUserFinance;
+//import com.flotta.entity.viewEntity.OneCategoryOfUserFinance;
 import com.flotta.invoice.FeeItem;
 import com.flotta.invoice.Invoice;
 import com.flotta.invoice.InvoiceByUserAndPhoneNumber;
@@ -202,9 +199,9 @@ public class InvoiceService {
     invoiceRepository.save(invoice);
   }
 
-  public List<OneCategoryOfUserFinance> getFinanceByUserId(long id) {
-    return feeItemService.getFinanceByUserId(id);
-  }
+//  public List<OneCategoryOfUserFinance> getFinanceByUserId(long id) {
+//    return feeItemService.getFinanceByUserId(id);
+//  }
 
   public void save(List<FeeItem> fees) {
     feeItemService.save(fees);
@@ -277,6 +274,10 @@ public class InvoiceService {
 
   public InvoiceByUserAndPhoneNumber getAcceptedInvoiceOfUserById(User user, long id) {
     return invoiceByUserAndPhoneNumberService.getAcceptedInvoiceOfUserById(user, id);
+  }
+
+  public List<InvoiceByUserAndPhoneNumber> getInvoicesOfUser(User user) {
+    return invoiceByUserAndPhoneNumberService.getInvoicesOfUser(user);
   }
 
 }

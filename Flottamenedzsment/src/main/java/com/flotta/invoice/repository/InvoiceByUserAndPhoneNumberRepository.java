@@ -6,22 +6,22 @@ import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.flotta.entity.Subscription;
 import com.flotta.entity.User;
-import com.flotta.invoice.Invoice;
 import com.flotta.invoice.InvoiceByUserAndPhoneNumber;
 
 public interface InvoiceByUserAndPhoneNumberRepository extends CrudRepository<InvoiceByUserAndPhoneNumber, Long> {
-
-  InvoiceByUserAndPhoneNumber findByUserAndInvoiceAndSubscriptionAndAcceptedByCompanyTrue(User user, Invoice invoice, Subscription subscription);
-
+  
+  //Felhasználóhoz tartózó összes felhasználó elfogadására váró
   List<InvoiceByUserAndPhoneNumber> findAllByUserAndAcceptedByCompanyTrueAndAcceptedByUserFalse(User user);
 
-  InvoiceByUserAndPhoneNumber findByUserAndInvoiceAndSubscriptionAndAcceptedByCompanyTrueAndAcceptedByUserFalse(User user, Invoice invoiceNumber, Subscription subscription);
-  
+  //Konkrét id-vel, ellenőrizve hogy a felhasználóhoz tartozik
   Optional<InvoiceByUserAndPhoneNumber> findByIdAndUser(Long id, User user);
 
+  //Felhasználóhoz tartozó összes lezárt (mindkét oldalról elfogadott)
   List<InvoiceByUserAndPhoneNumber> findAllByUserAndAcceptedByCompanyTrueAndAcceptedByUserTrue(User user);
 
+  //Konkrét id-vel, ellenőrizve hogy a felhasználóhoz tartozik és lezárt (mindkét oldalról elfogadott)
   InvoiceByUserAndPhoneNumber findByIdAndUserAndAcceptedByCompanyTrueAndAcceptedByUserTrue(long id, User user);
+  
+  List<InvoiceByUserAndPhoneNumber> findAllByUser(User user);
 }

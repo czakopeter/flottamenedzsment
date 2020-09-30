@@ -70,4 +70,8 @@ public class InvoiceByUserAndPhoneNumberService {
   public InvoiceByUserAndPhoneNumber getAcceptedInvoiceOfUserById(User user, long id) {
     return invoiceByUserAndPhoneNumberRepository.findByIdAndUserAndAcceptedByCompanyTrueAndAcceptedByUserTrue(id, user);
   }
+
+  public List<InvoiceByUserAndPhoneNumber> getInvoicesOfUser(User user) {
+    return invoiceByUserAndPhoneNumberRepository.findAllByUser(user);
+  }
 }
