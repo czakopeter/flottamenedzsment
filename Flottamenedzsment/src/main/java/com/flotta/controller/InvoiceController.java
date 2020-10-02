@@ -100,4 +100,11 @@ public class InvoiceController {
 //    service.upgradeBillPartitionTemplate(templateId, descriptions, categories);
 //    return "redirect:/billing/all";
 //  }
+  
+  @GetMapping("/invoice/settings")
+  public String invoicePartitionSettings(Model model) {
+    model.addAttribute("categories", service.findAllCategory());
+    return "finance_templates/financeSettings";
+  }
 }
+ 

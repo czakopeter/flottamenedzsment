@@ -61,6 +61,7 @@ public class UserController {
     return "user_templates/userEdit";
   }
   
+  //TODO fetch-csel küldeni az adatokat (role, boolean)
   @PostMapping("/user/{id}")
   @ResponseBody
   public String editUser(Model model, @PathVariable("id") long id, @RequestParam  Map<String, Boolean> roles) {

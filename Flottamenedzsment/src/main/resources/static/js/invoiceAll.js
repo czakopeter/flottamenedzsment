@@ -13,5 +13,16 @@ function refreshInvoice(refreshLink) {
 	    }
 	}
 	xhr.send(data);
-	
+
+}
+
+function browseFile() {
+	let input = document.querySelector("#file");
+	input.click();
+}
+
+function selectFile(input) {
+	let fileName = input.value.substr(input.value.lastIndexOf("\\") + 1);
+//	fileName = fileName.replaceAll(" ", "_");
+	document.querySelector("#fileName").innerHTML = fileName;
 }

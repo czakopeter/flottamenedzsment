@@ -8,16 +8,20 @@
 
     <h2>Devices</h2>
 
-    <a  href="/device/new" class="btn btn-primary my-2" th:text="#{button.new}" th:classappend="${canCreateNew ? '' : 'disabled'}">New</a>
+    <a href="/device/new" class="btn btn-primary my-2" th:text="#{button.new}"
+      th:classappend="${canCreateNew ? '' : 'disabled'}"
+    >New</a>
 
-    <table class="table">
-      <tr>
-        <th th:text="#{device.serialNumber}">Serial number</th>
-        <th th:text="#{device.typeName}">Type Name</th>
-        <th th:text="#{device.user}">User</th>
-        <th th:text="#{device.subscription}">Subscription</th>
-        <th></th>
-      </tr>
+    <table class="table table-sm">
+      <thead>
+        <tr>
+          <th th:text="#{device.serialNumber}">Serial number</th>
+          <th th:text="#{device.typeName}">Type Name</th>
+          <th th:text="#{device.user}">User</th>
+          <th th:text="#{device.subscription}">Subscription</th>
+          <th></th>
+        </tr>
+      </thead>
       <tr th:each="device : ${devices}">
         <td th:text="${device.serialNumber}"></td>
         <td th:text="${device.typeName}"></td>
@@ -25,10 +29,10 @@
         <td th:text="${device.number}"></td>
         <td>
           <div class="btn-group">
-            <a th:href="'/device/' + ${device.id} + '/update'" class="btn btn-primary" th:title="#{button.edit}">
-              <img alt="edit" src="/img/edit.png" />
-            </a>
-            <a th:href="'/device/' + ${device.id} + '/view'" class="btn btn-primary" title="view">
+            <a th:href="'/device/' + ${device.id} + '/update'" class="btn btn-primary"
+              th:title="#{button.edit}"
+            > <img alt="edit" src="/img/edit.png" />
+            </a> <a th:href="'/device/' + ${device.id} + '/view'" class="btn btn-primary" title="view">
               <img alt="view" src="/img/visible.png" />
             </a>
           </div>
@@ -78,9 +82,9 @@
     <!--     </div> -->
 
     <script th:inline="javascript">
-    //<![CDATA[
-  	//]]>
-	</script>
+					//<![CDATA[
+					//]]>
+				</script>
 
   </div>
 </body>

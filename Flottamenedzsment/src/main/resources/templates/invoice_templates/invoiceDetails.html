@@ -7,101 +7,147 @@
 
   <div layout:fragment="loginContent">
 
-      <a href="/invoice/all" class="btn btn-sm btn-primary" >
-<!--         <img alt="Back" src="/img/left-arrow.png"> -->
-        <img alt="Back" src="/img/left.png">
-      </a>
-      <h2>Invoice details</h2>
+<!--     <div class="row"> -->
+<!--       <div class="col-1" style="margin-top: 30px"> -->
+<!--         <a style="float: left" href="/invoice/all" class="btn btn-primary"> -->
+<!--           <img alt="Back" src="/img/undo.png"> -->
+<!--         </a> -->
+<!--       </div> -->
+<!--       <div class="col-3"> -->
+        <h2 >Invoice details</h2>
+<!--       </div> -->
+<!--     </div> -->
+    
+    <div class="row my-2">
+      <div class="col-2">
+        <label th:text="#{bill.invoiceNumber}">Invoice number</label>
+      </div>
+      <div class="col-2">
+        <label th:text="${invoice.invoiceNumber}">Invoice number</label>
+      </div>
+    </div>
+    <div class="row my-2">
+      <div class="col-2">
+        <label th:text="#{bill.fromDate}">From</label>
+      </div>
+      <div class="col-2">
+        <label th:text="${invoice.beginDate}">From date</label>
+      </div>
+    </div>
+    <div class="row my-2">
+      <div class="col-2">
+        <label th:text="#{bill.emdDate}">To</label>
+      </div>
+      <div class="col-2">
+        <label th:text="${invoice.endDate}">End date</label>
+      </div>
+    </div>
+    <div class="row my-2">
+      <div class="col-2">
+        <label th:text="#{bill.invoiceNetAmount}">Net amount</label>
+      </div>
+      <div class="col-2">
+        <label th:text="${invoice.invoiceNetAmount} + ' Ft'">Net amount</label>
+      </div>
+    </div>
+    <div class="row my-2">
+      <div class="col-2">
+        <label th:text="#{bill.invoiceTaxAmount}">Tax amount</label>
+      </div>
+      <div class="col-2">
+        <label th:text="${invoice.invoiceTaxAmount} + ' Ft'">Tax amount</label>
+      </div>
+    </div>
 
-      <div class="row my-2">
-        <div class="col-2"><label th:text="#{bill.invoiceNumber}">Invoice number</label></div>
-        <div class="col-2"><label th:text="${invoice.invoiceNumber}">Invoice number</label></div>
-      </div>
-      <div class="row my-2">
-        <div class="col-2"><label th:text="#{bill.fromDate}">From</label></div>
-        <div class="col-2"><label th:text="${invoice.beginDate}">From date</label></div>
-      </div>
-      <div class="row my-2">
-        <div class="col-2"><label th:text="#{bill.emdDate}">To</label></div>
-        <div class="col-2"><label th:text="${invoice.endDate}">End date</label></div>
-      </div>
-      <div class="row my-2">
-        <div class="col-2"><label th:text="#{bill.invoiceNetAmount}">Net amount</label></div>
-        <div class="col-2"><label th:text="${invoice.invoiceNetAmount} + ' Ft'">Net amount</label></div>
-      </div>
-      <div class="row my-2">
-        <div class="col-2"><label th:text="#{bill.invoiceTaxAmount}">Tax amount</label></div>
-        <div class="col-2"><label th:text="${invoice.invoiceTaxAmount} + ' Ft'">Tax amount</label></div>
-      </div>
-
-      <table class="table table-sm table-hover">
-<!--       <thead> -->
-        <tr class="table-info">
+    <table class="table table-sm table-hover">
+      <thead>
+        <tr>
           <th>User</th>
           <th>Subscription</th>
           <th>Period</th>
           <th>Total gross</th>
           <th>User gross</th>
           <th>Comp. gross</th>
-          <th ></th>
+          <th></th>
         </tr>
-<!--         </thead> -->
-        <tbody>
+      </thead>
+      <tbody>
         <th:block th:each="partOfInvoice : ${invoice.invoicePart}">
-          <tr th:id="'part' + ${partOfInvoice.id}" th:classappend="${partOfInvoice.hasAnyRevisionNote() ? 'table-danger' : ''}" style="border-top: solid 2px; ">
+          <tr th:id="'part' + ${partOfInvoice.id}"
+            th:classappend="${partOfInvoice.hasAnyRevisionNote() ? 'table-danger' : ''}"
+            style="border-top: solid 2px;"
+          >
             <th th:text="${partOfInvoice.user != null ? partOfInvoice.user.fullName : 'Company'}"></th>
             <th th:text="${partOfInvoice?.subscription?.number}"></th>
             <th th:text="${partOfInvoice.getPeriod()}"></th>
             <th th:text="${#numbers.formatDecimal(partOfInvoice.totalGrossAmount, 1, 2)}"></th>
-            <th name="userGrossAmount" th:text="${#numbers.formatDecimal(partOfInvoice.userGrossAmount, 1, 2)}"></th>
-            <th name="compGrossAmount" th:text="${#numbers.formatDecimal(partOfInvoice.companyGrossAmount, 1, 2)}"></th>
+            <th name="userGrossAmount"
+              th:text="${#numbers.formatDecimal(partOfInvoice.userGrossAmount, 1, 2)}"
+            ></th>
+            <th name="compGrossAmount"
+              th:text="${#numbers.formatDecimal(partOfInvoice.companyGrossAmount, 1, 2)}"
+            ></th>
             <td>
               <button class="btn btn-sm btn-info" onclick="show_details(this)">
-                <img src="/img/down-arrow.png" alt="down-arrow"/>
+                <img src="/img/down-arrow.png" alt="down-arrow" />
               </button>
             </td>
           </tr>
           <tr th:if="${partOfInvoice.revisionNote != null}" style="border-top-style: hidden;">
-            <td th:id="'revisionNote' + ${partOfInvoice.id}" colspan="8" class="table-danger" th:text="${partOfInvoice.revisionNote}"></td>
+            <td th:id="'revisionNote' + ${partOfInvoice.id}" colspan="8" class="table-danger"
+              th:text="${partOfInvoice.revisionNote}"
+            ></td>
           </tr>
-          <th:block th:each="feeItem : ${partOfInvoice.fees}" >
-          <tr th:name="'feeItem' + ${partOfInvoice.id}" style="visibility: collapse" th:classappend="${feeItem.hasRevisionNote() ? 'table-danger' : ''}">
-            <td><input name="id" type="hidden" th:value="${feeItem.id}"/></td>
-<!--             <td name="subscription" th:text="${feeItem?.subscription}"></td> -->
-            <td name="description" th:text="${feeItem.description}"></td>
-            <td name="period" th:text="${feeItem.getPeriod()}"></td>
-            <td name="totalGrossAmount" th:text="${feeItem.totalGrossAmount}"></td>
-            <td name="userGrossAmount" th:text="${feeItem.userGrossAmount}"></td>
-            <td name="compGrossAmount" th:text="${feeItem.companyGrossAmount}"></td>
-            <td name="buttons" width="85px" th:style="${partOfInvoice.acceptedByCompany or partOfInvoice.user == null} ? 'visibility:hidden'">
-              <div id="prepareEditingButton">
-                <button type="button" class="btn btn-sm btn-primary" onclick="prepare_editing(this)">
-                  <img alt="Edit" src="/img/edit.png">
-                </button>
-              </div>
-              <div id="acceptOrCancelEditingButton" style="display: none" class="btn-group">
-                <button type="button" class="btn btn-sm btn-success" onclick="accept_editing(this)">
-                  <img alt="Accept" src="/img/checkmark.png">
-                </button><button type="button" class="btn btn-sm btn-danger" onclick="cancel_editing(this)">
-                  <img alt="Cancel" src="/img/cross.png">
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr th:if="${feeItem.revisionNote != null}" th:name="'feeItem' + ${partOfInvoice.id}" style="visibility: collapse;border-top-style: hidden;" >
-            <td colspan="8" th:id="'feeRevisionNote' + ${feeItem.id}" class="table-danger" th:text="${feeItem.revisionNote}">
-            </td>
-          </tr>
+          <th:block th:each="feeItem : ${partOfInvoice.fees}">
+            <tr th:name="'feeItem' + ${partOfInvoice.id}" style="visibility: collapse"
+              th:classappend="${feeItem.hasRevisionNote() ? 'table-danger' : ''}"
+            >
+              <td><input name="id" type="hidden" th:value="${feeItem.id}" /></td>
+              <!--             <td name="subscription" th:text="${feeItem?.subscription}"></td> -->
+              <td name="description" th:text="${feeItem.description}"></td>
+              <td name="period" th:text="${feeItem.getPeriod()}"></td>
+              <td name="totalGrossAmount" th:text="${feeItem.totalGrossAmount}"></td>
+              <td name="userGrossAmount" th:text="${feeItem.userGrossAmount}"></td>
+              <td name="compGrossAmount" th:text="${feeItem.companyGrossAmount}"></td>
+              <td name="buttons" width="85px"
+                th:style="${partOfInvoice.acceptedByCompany or partOfInvoice.user == null} ? 'visibility:hidden'"
+              >
+                <div id="prepareEditingButton">
+                  <button type="button" class="btn btn-sm btn-primary"
+                    onclick="prepare_editing(this)"
+                  >
+                    <img alt="Edit" src="/img/edit.png">
+                  </button>
+                </div>
+                <div id="acceptOrCancelEditingButton" style="display: none" class="btn-group">
+                  <button type="button" class="btn btn-sm btn-success"
+                    onclick="accept_editing(this)"
+                  >
+                    <img alt="Accept" src="/img/checkmark.png">
+                  </button>
+                  <button type="button" class="btn btn-sm btn-danger" onclick="cancel_editing(this)">
+                    <img alt="Cancel" src="/img/cross.png">
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr th:if="${feeItem.revisionNote != null}" th:name="'feeItem' + ${partOfInvoice.id}"
+              style="visibility: collapse; border-top-style: hidden;"
+            >
+              <td colspan="8" th:id="'feeRevisionNote' + ${feeItem.id}" class="table-danger"
+                th:text="${feeItem.revisionNote}"
+              ></td>
+            </tr>
           </th:block>
         </th:block>
-        </tbody>
-      </table>
-      
-      <a href="/invoice/all" class="btn btn-primary" th:text="#{button.back}">Back</a>
-      
+      </tbody>
+    </table>
+
+    <a href="/invoice/all" class="btn btn-primary" th:text="#{button.back}">Back</a>
+
     <script src="/js/invoiceDetails.js"></script>
-    
-    
+
+
   </div>
 
 

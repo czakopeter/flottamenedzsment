@@ -33,6 +33,8 @@ public class CategoryController {
   public String listCategories(Model model) {
     model.addAttribute("categories", service.findAllCategory());
     model.addAttribute("add", new String());
+    model.addAttribute("users", service.findAllUser());
+    model.addAttribute("chargeRatioNames", service.findAllChargeRatio());
     return "finance_templates/category";
   }
   
