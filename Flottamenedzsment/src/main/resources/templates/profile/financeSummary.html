@@ -15,8 +15,8 @@
       </div>
       
       <table th:unless="${#lists.isEmpty(invoiceParts)}" class="table table-sm">
-<!--         <thead class="table-info" > -->
-          <tr class="table-primary" style="border: solid 2px">
+        <thead>
+          <tr class="table-primary" >
             <th>
               <input id="select-all" type="checkbox" title="Select all" onclick="selectAll()" />
             </th>
@@ -25,9 +25,9 @@
             <th>Gross amount</th>
             <th id="action-col">Actions</th>
           </tr>
-<!--         </thead> -->
+        </thead>
         <tbody>
-          <tr th:each="invoicePart : ${invoiceParts}" th:classappend="${invoicePart.acceptedByUser ? 'table-success' : 'table-warning'}">
+          <tr th:each="invoicePart : ${invoiceParts}" >
             <td>
               <input th:id="'p' + ${invoicePart.id}" name="id" type="hidden" th:value="${invoicePart.id}" />
               <input name="invoiceNumber" type="hidden" th:value="${invoicePart.invoice.invoiceNumber}" />

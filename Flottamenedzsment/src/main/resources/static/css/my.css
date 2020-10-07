@@ -1,5 +1,6 @@
 :root {
 	--light-blue: #bee5eb;
+	--dark-blue: #bee5eb;
 	--light-gray: #f5f5f5;
 	--light-red: #fdd;
 }
@@ -36,6 +37,19 @@ table thead tr {
 .table th,
 .table td {
 	vertical-align: middle;
+}
+
+.row {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.text-right {
+	text-align: right;
+}
+
+.text-center {
+	text-align: center;
 }
 
 #wrapper {
@@ -93,4 +107,21 @@ a img, button img {
 
 .hasRevisionNote {
 	background-color: #ffdddd;
+}
+
+.uppercase {
+	text-transform: uppercase;
+}
+
+a.noneunderline {
+	color: black;
+	text-decoration: none;
+}
+
+.pull-left {
+	float: left
+}
+
+.pull-right {
+	float: right;
 }

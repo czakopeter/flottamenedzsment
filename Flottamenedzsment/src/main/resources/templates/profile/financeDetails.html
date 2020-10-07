@@ -12,49 +12,45 @@
       <form method="post">
         <div class="row my-2">
           <div class="col-2">Number</div>
-          <div class="col-2" th:text="${invoicePart.subscription.number}" style="text-align: right;">201234567</div>
+          <div class="col-2 text-right" th:text="${invoicePart.subscription.number}">201234567</div>
         </div>
         <div class="row my-2">
           <div class="col-2">Begin</div>
-          <div class="col-2" th:text="${invoicePart.beginDate}" style="text-align: right;">2020.01.10</div>
+          <div class="col-2 text-right" th:text="${invoicePart.beginDate}">2020.01.10</div>
         </div>
         <div class="row my-2">
           <div class="col-2">End</div>
-          <div class="col-2" th:text="${invoicePart.endDate}" style="text-align: right;">2020.01.31</div>
+          <div class="col-2 text-right" th:text="${invoicePart.endDate}">2020.01.31</div>
         </div>
         <div class="row my-2">
           <div class="col-2">Total gross amount</div>
-          <div class="col-2" th:text="${invoicePart.userGrossAmount} + ' Ft'" style="text-align: right;">1000</div>
+          <div class="col-2 text-right" th:text="${#numbers.formatDecimal(invoicePart.userGrossAmount, 1, 2)} + ' Ft'">1000 Ft</div>
         </div>
       
       <table class="table table-sm table-hover">
         <thead>
-          <tr class="table-info">
+          <tr>
             <th>
-              <label>Category</label>
+              Description
             </th>
             <th>
-              <label>Description</label>
+              Period
             </th>
-            <th>
-              <label>Period</label>
+            <th class="text-right">
+              Gross amount
             </th>
-            <th>
-              <label>Gross amount</label>
-            </th>
-            <th th:if="${not invoicePart.acceptedByUser}">
-              <label>Revision note</label>
+            <th class="text-center" th:if="${not invoicePart.acceptedByUser}">
+              Revision note
             </th>
           </tr>
         </thead>
         <tbody>
-          <tr name="fee" th:each="fee : ${invoicePart.fees}">
-            <td th:text="${fee.category}"></td>
-            <td th:text="${fee.description}"></td>
-            <td th:text="${fee.getPeriod()}"></td>
-            <td th:text="${fee.userGrossAmount} + ' Ft'"></td>
+          <tr name="fee" th:each="feeItem : ${invoicePart.fees}">
+            <td th:text="${feeItem.description}"></td>
+            <td th:text="${feeItem.getPeriod()}"></td>
+            <td class="text-right" th:text="${#numbers.formatDecimal(feeItem.userGrossAmount, 1, 2)} + ' Ft'"></td>
             <td th:if="${not invoicePart.acceptedByUser}">
-              <input type="text" class="form-control" th:name="${fee.id}" placeholder="Enter your note" oninput="modifyNotes()" />
+              <input type="text" class="form-control form-control-sm" th:name="${feeItem.id}" placeholder="Enter your note" oninput="modifyNotes()" />
             </td>
           </tr>
         </tbody>

@@ -72,6 +72,7 @@ public class InvoiceByUserAndPhoneNumberService {
   }
 
   public List<InvoiceByUserAndPhoneNumber> getInvoicesOfUser(User user) {
-    return invoiceByUserAndPhoneNumberRepository.findAllByUser(user);
+//    return invoiceByUserAndPhoneNumberRepository.findAllByUser(user);
+    return invoiceByUserAndPhoneNumberRepository.findAllByUserOrderByAcceptedByUserAscBeginDateAsc(user);
   }
 }

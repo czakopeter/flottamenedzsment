@@ -27,4 +27,10 @@ INSERT INTO description_category_map (description_category_coupler_id, descripti
 INSERT INTO description_category_map (description_category_coupler_id, description_category_map_id, description_category_map_key) VALUES (1, 2, 'Belfoldi mas mobilhalozat / Vodafone')
 INSERT INTO description_category_map (description_category_coupler_id, description_category_map_id, description_category_map_key) VALUES (1, 3, 'Mobil net 1GB')
 
+INSERT INTO Charge_ratio_by_category (name, available) VALUES ('default', true)
 
+INSERT INTO Category_ratio_map (CHARGE_RATIO_BY_CATEGORY_ID, CATEGORY_RATIO_MAP, CATEGORY_RATIO_MAP_KEY) VALUES (1, 30, 1)
+INSERT INTO Category_ratio_map (CHARGE_RATIO_BY_CATEGORY_ID, CATEGORY_RATIO_MAP, CATEGORY_RATIO_MAP_KEY) VALUES (1, 60, 2)
+INSERT INTO Category_ratio_map (CHARGE_RATIO_BY_CATEGORY_ID, CATEGORY_RATIO_MAP, CATEGORY_RATIO_MAP_KEY) VALUES (1, 100, 3)
+
+INSERT INTO Users_pay_devs (user_id, pay_devs_id) VALUES (1, 1)

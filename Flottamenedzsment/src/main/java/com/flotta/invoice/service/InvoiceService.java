@@ -24,6 +24,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.flotta.entity.User;
+import com.flotta.invoice.DescriptionCategoryCoupler;
 //import com.flotta.entity.viewEntity.OneCategoryOfUserFinance;
 import com.flotta.invoice.FeeItem;
 import com.flotta.invoice.Invoice;
@@ -44,6 +45,8 @@ public class InvoiceService {
   private SubscriptionServiceOnlyInfo subscriptionInfo;
 
   private InvoiceByUserAndPhoneNumberService invoiceByUserAndPhoneNumberService;
+  
+  private DescriptionCategoryCouplerServiceOnlyGet descriptionCategoryCouplerServiceOnlyGet;
   
   @Autowired
   public void setInvoiceRepository(InvoiceRepository invoiceRepository) {
@@ -70,12 +73,17 @@ public class InvoiceService {
   public void setInvoiceByUserAndPhoneNumberService(InvoiceByUserAndPhoneNumberService invoiceByUserAndPhoneNumberService) {
     this.invoiceByUserAndPhoneNumberService = invoiceByUserAndPhoneNumberService;
   }
+  
+  @Autowired
+  public void setDescriptionCategoryCouplerServiceOnlyGet(DescriptionCategoryCouplerServiceOnlyGet descriptionCategoryCouplerServiceOnlyGet) {
+    this.descriptionCategoryCouplerServiceOnlyGet = descriptionCategoryCouplerServiceOnlyGet;
+  }
 
   public Invoice uploadInvoice(MultipartFile file) throws FileUploadException {
     String xmlString = getXMLString(file);
 
     Invoice invoice = processInvoiceXmlString(xmlString);
-
+    
     if(!invoice.isConsistent()) {
       throw new FileUploadException("Invoice is NOT consistant!");
     }
@@ -92,6 +100,8 @@ public class InvoiceService {
 
     if (billTemplateService.invoiceTreeFormalCheck(root)) {
       Invoice invoice = parseToInvoice(root);
+      invoice.setCategoryOfFees(descriptionCategoryCouplerServiceOnlyGet.findById(1));
+      invoice.setAmountRatioOfFees();
       invoice.setXmlString(xml);
       return invoice;
 

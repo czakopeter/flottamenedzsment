@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 
@@ -16,7 +17,7 @@ import javax.persistence.JoinTable;
 public class ChargeRatioByCategory {
   
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
   
   private String name;
@@ -76,6 +77,10 @@ public class ChargeRatioByCategory {
     List<Category> result = new LinkedList<Category>(categoryRatioMap.keySet());
     Collections.sort(result);
     return result;
+  }
+
+  public int getRatioByCategory(Category category) {
+    return categoryRatioMap.get(category);
   }
   
 }

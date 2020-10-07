@@ -72,11 +72,6 @@ public class DescriptionCategoryCoupler {
     this.descriptionCategoryMap = descriptionCategoryMap;
   }
 
-  /**
-   * 
-   * @param description
-   * @param category
-   */
   public void addToDescriptionCategoryMap(String description, Category category) {
     Category cat = descriptionCategoryMap.get(description);
     if (cat == null) {
@@ -93,7 +88,7 @@ public class DescriptionCategoryCoupler {
         if (category == null) {
           unknownFreeItemDesc.add(fee.getDescription());
         } else {
-          fee.setCategory(category.getName());
+          fee.setCategory(category);
         }
         if (unknownFreeItemDesc.size() != 0) {
           List<FeeItem> value = result.get(category);
@@ -115,6 +110,10 @@ public class DescriptionCategoryCoupler {
     List<String> descriptions = new LinkedList<>(descriptionCategoryMap.keySet());
     Collections.sort(descriptions);
     return descriptions;
+  }
+  
+  public Category getCategoryByDescription(String description) {
+    return descriptionCategoryMap.get(description);
   }
 
 }

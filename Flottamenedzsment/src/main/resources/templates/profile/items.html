@@ -8,6 +8,13 @@
   <div layout:fragment="loginContent">
 
     <h2>Items</h2>
+    
+      <div>
+      <a href="#test" class="collapsed" data-toggle="collapse" role="button" aria-expanded="false">Subscription</a>
+      <div id="test" class="collapse">
+        <div>test</div>
+      </div>
+      </div>
 
       <h4>Subscriptions</h4>
       <div th:if="${#lists.isEmpty(subscriptions)}" class="text-center my-border">

@@ -24,18 +24,18 @@ public class FeeItemService {
     this.feeItemRepository = feeItemRepository;
   }
   
-  public List<OneCategoryOfUserFinance> getFinanceByUserId(long id) {
-    Map<String, OneCategoryOfUserFinance> tmp = new HashMap<String, OneCategoryOfUserFinance>();
-    for(FeeItem fee : feeItemRepository.findAllByUserId(id)) {
-      OneCategoryOfUserFinance o = tmp.get(fee.getCategory());
-      if(o == null) {
-        o = new OneCategoryOfUserFinance(fee.getUserId(), fee.getCategory());
-      }
-      o.addFeeItem(fee);
-      tmp.put(fee.getCategory(), o);
-    }
-    return new LinkedList<>(tmp.values());
-  }
+//  public List<OneCategoryOfUserFinance> getFinanceByUserId(long id) {
+//    Map<String, OneCategoryOfUserFinance> tmp = new HashMap<String, OneCategoryOfUserFinance>();
+//    for(FeeItem fee : feeItemRepository.findAllByUserId(id)) {
+//      OneCategoryOfUserFinance o = tmp.get(fee.getCategory());
+//      if(o == null) {
+//        o = new OneCategoryOfUserFinance(fee.getUserId(), fee.getCategory());
+//      }
+//      o.addFeeItem(fee);
+//      tmp.put(fee.getCategory(), o);
+//    }
+//    return new LinkedList<>(tmp.values());
+//  }
   
   //TODO upgrade to get fees between begin and end
 //  public List<OneCategoryOfUserFinance> getFinance(long userId, LocalDate begin, LocalDate end) {

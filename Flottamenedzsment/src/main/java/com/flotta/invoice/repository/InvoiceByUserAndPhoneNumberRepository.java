@@ -24,4 +24,6 @@ public interface InvoiceByUserAndPhoneNumberRepository extends CrudRepository<In
   InvoiceByUserAndPhoneNumber findByIdAndUserAndAcceptedByCompanyTrueAndAcceptedByUserTrue(long id, User user);
   
   List<InvoiceByUserAndPhoneNumber> findAllByUser(User user);
+  
+  List<InvoiceByUserAndPhoneNumber> findAllByUserOrderByAcceptedByUserAscBeginDateAsc(User user);
 }

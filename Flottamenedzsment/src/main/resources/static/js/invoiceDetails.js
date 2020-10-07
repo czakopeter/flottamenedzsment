@@ -147,3 +147,11 @@ function hide_details(btn) {
 //	btn.querySelector("img").src = "/img/down-arrow.png";
 //	btn.setAttribute("onclick", "show_revision_note(this)");
 //}
+
+function change(a) {
+	if(a.getAttribute('aria-expanded') == 'true') {
+		a.querySelector('img').src = "/img/down-arrow.png";
+	} else {
+		a.querySelector('img').src = "/img/up-arrow.png";
+	}
+}
