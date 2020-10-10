@@ -24,6 +24,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.flotta.entity.User;
+import com.flotta.invoice.CompanyData;
 import com.flotta.invoice.DescriptionCategoryCoupler;
 //import com.flotta.entity.viewEntity.OneCategoryOfUserFinance;
 import com.flotta.invoice.FeeItem;
@@ -119,26 +120,39 @@ public class InvoiceService {
       invoice.setInvoiceNetAmount(Double.valueOf(getFirstTagValue(root, "InvTotalNetA").replace(',', '.')));
       invoice.setInvoiceTaxAmount(Double.valueOf(getFirstTagValue(root, "InvTotalTaxA").replace(',', '.')));
       invoice.setInvoiceGrossAmount(Double.valueOf(getFirstTagValue(root, "InvTotalGrossA").replace(',', '.')));
-
+      
+      invoice.setCompanyData(parseToCompanyData((Element)root.getElementsByTagName("CompanyData").item(0)));
+      
       NodeList nodes = root.getElementsByTagName("FeeItem");
       for (int i = 0; i < nodes.getLength(); i++) {
         Element feeItem = (Element) nodes.item(i);
         invoice.addFeeItem(
             subscriptionInfo.findByNumber(getFirstTagValue(feeItem, "ItemNr")),
-            new FeeItem(
-                getFirstTagValue(feeItem, "ItemNr"), 
-                getFirstTagValue(feeItem, "Desc"), 
-                LocalDate.parse(getFirstTagValue(feeItem, "Begin"),DateTimeFormatter.ofPattern("uuuu.MM.dd.")), 
-                LocalDate.parse(getFirstTagValue(feeItem, "End"), DateTimeFormatter.ofPattern("uuuu.MM.dd.")),
-                Double.valueOf(getFirstTagValue(feeItem, "NetA").replace(',', '.')),
-                Double.valueOf(getFirstTagValue(feeItem, "TaxA").replace(',', '.')), 
-                Double.valueOf(getFirstTagValue(feeItem, "TaxP").replace(',', '.').replace("%", "")),
-                Double.valueOf(getFirstTagValue(feeItem, "GrossA").replace(',', '.'))));
+            parseToFeeItem(feeItem));
       }
       return invoice;
     } catch (DateTimeParseException | NumberFormatException e) {
       throw new FileUploadException(e.toString());
     }
+  }
+  
+  private FeeItem parseToFeeItem(Element feeItemElement) {
+    return new FeeItem(
+        getFirstTagValue(feeItemElement, "ItemNr"), 
+        getFirstTagValue(feeItemElement, "Desc"), 
+        LocalDate.parse(getFirstTagValue(feeItemElement, "Begin"),DateTimeFormatter.ofPattern("uuuu.MM.dd.")), 
+        LocalDate.parse(getFirstTagValue(feeItemElement, "End"), DateTimeFormatter.ofPattern("uuuu.MM.dd.")),
+        Double.valueOf(getFirstTagValue(feeItemElement, "NetA").replace(',', '.')),
+        Double.valueOf(getFirstTagValue(feeItemElement, "TaxA").replace(',', '.')), 
+        Double.valueOf(getFirstTagValue(feeItemElement, "TaxP").replace(',', '.').replace("%", "")),
+        Double.valueOf(getFirstTagValue(feeItemElement, "GrossA").replace(',', '.')));
+  }
+  
+  private CompanyData parseToCompanyData(Element root) {
+    return new CompanyData(
+        getFirstTagValue(root, "Name"),
+        getFirstTagValue(root, "City"));
+        
   }
 
   private String getFirstTagValue(Element root, String tagname) {

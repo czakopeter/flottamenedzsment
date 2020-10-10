@@ -1,13 +1,74 @@
 :root {
+	--body-background-edge: white;
+	--body-background: white;
+	--menu-background: var(--sky);
+	--menu-text: var(--dark-gray);
+	--menu-text-hover: var(--watermelon);
+	--table-header: var(--sky);
+	
+/* 	--body-background-edge: var(--neutral); */
+/* 	--body-background: var(--neutral); */
+	--menu-background: var(--dark-gray);
+	--menu-text: var(--sky);
+	--menu-text-hover: var(--watermelon);
+	--table-header: var(--sky);
+	
+	
 	--light-blue: #bee5eb;
 	--dark-blue: #bee5eb;
 	--light-gray: #f5f5f5;
 	--light-red: #fdd;
+	--blue: #4e89ae;
+	
+	--dark-blue: #43658b;
+	--red: #ed6663;
+	--orange: #ffa372;
+	
+	--blue: #65c5ff;
+	--orange: #FF9F65;
+	--green: #78FF65;
+	
+/* 	asiko */
+	--dark-gray: #272727;
+	--gray: #747474;
+	--orange: #FF652F;
+	--yellow: #FFE400;
+	--green: #14A76C;
+	
+/* 	locus */
+	--light-gray: #EAE7DC;
+	--light-brown: #D8C3A5;
+	--gray: #8E8D8A;
+	--light-red: #E98074;
+	--red: #E85A4F;
+	
+/* 	basik */
+	--sky: #CAEBF2;
+	--carbon: #A9A9A9;
+	--watermelon: #FF3B3F;
+	--neutral: #EFEFEF;
+	--dark-gray: #252525;
 }
 
 body {
 	font-size: 14px;
 	margin: 0;
+	background-color: var(--body-background-edge);
+}
+
+#wrapper {
+	height: auto;
+	min-height: 1px;
+	margin-bottom: 0;
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 1px;
+	position: relative;
+	text-align: left;
+	max-width: 90%;
+	background-color: var(--body-background);
 }
 
 table {
@@ -22,7 +83,7 @@ table {
 }
 
 .table tbody tr:hover {
-	background-color: var(--light-gray);
+	background-color: var(--neutral);
 }
 
 .table-sm th,
@@ -31,7 +92,7 @@ table {
 }
 
 table thead tr {
-	background-color: var(--light-blue);
+	background-color: var(--table-header);
 }
 
 .table th,
@@ -52,23 +113,60 @@ table thead tr {
 	text-align: center;
 }
 
-#wrapper {
-	margin-bottom: 0;
-	margin-left: auto;
-	margin-right: auto;
-	position: relative;
-	text-align: left;
-	max-width: 90%;
+
+#wrapper h3 {
+	margin-top: 2rem;
 }
 
 .my-menu {
-	margin: 5px;
-	border-width: 1px;
-	border-style: solid;
-	border-color: #8a9cff;
-	border-radius: 5px;
-	background-color: #f1f1ff;
-	background-color: #d4ffb4;
+/* 	border-color: var(--menu-background-border); */
+/* 	background-color: var(--menu-background); */
+}
+
+.navbar {
+	padding: 0;
+	font-weight: bold;
+	background-color: var(--menu-background);
+	color: var(--menu-text);
+}
+
+.nav-item:hover {
+	border-bottom: solid 3px;
+	border-bottom-color: var(--watermelon);
+}
+
+.nav-item a {
+	color: var(--menu-text);
+}
+
+.nav-item a:hover {
+	color: var(--menu-text-hover);
+}
+
+.dropdown-menu {
+	background-color: var(--menu-background);
+	border: solid 1px var(--carbon);
+}
+
+.dropdown-item {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.dropdown-item:hover {
+	font-size: 14px;
+	font-weight: bold;
+	color: var(--watermelon);
+	border-bottom: solid 3px;
+	border-bottom-color: var(--watermelon);
+	background-color: var(--menu-background);
+}
+
+.nav-pills .nav-link.active {
+	color: var(--watermelon);
+	background-color: var(--menu-background);
+	border-bottom: solid 3px;
+	border-bottom-color: var(--watermelon);
 }
 
 .my-border {
@@ -85,10 +183,6 @@ body h2 {
 	margin-top: 30px;
 	margin-bottom: 30px;
 }
-
-/* body { */
-/* 	height: 95%; */
-/* } */
 
 .center {
 	width: 40%;

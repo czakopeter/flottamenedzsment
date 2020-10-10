@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main}">
+<head>
+<title>Flotta</title>
+</head>
+<body>
+
+  <div layout:fragment="loginContent">
+
+    <h2 class="uppercase">Senders</h2>
+
+    <div class="container">
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>City</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="sender : ${senders}">
+            <td th:text="${sender.name}"></td>
+            <td th:text="${sender.city}"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+  </div>
+
+
+
+</body>
+</html>

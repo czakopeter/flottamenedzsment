@@ -49,7 +49,7 @@
 </head>
 <body>
 
-  <div class="navbar navbar-expand mx-1 my-menu">
+  <div class="navbar navbar-expand my-menu">
     <div sec:authorize="isAuthenticated()" class="navbar-nav">
       <ul class="nav nav-pills">
         <li sec:authorize="hasAnyAuthority('USER_MNGR','ADMIN')" class="nav-item"><a
@@ -78,6 +78,7 @@
             <a class="dropdown-item" href="/finance/category/all">Categories</a>
             <a class="dropdown-item" href="/finance/invoiceDescriptionCategoryCoupler/all">Description category couplers</a>
             <a class="dropdown-item" href="/finance/chargeRatio/all">Charge ratios</a>
+            <a class="dropdown-item" href="/finance/sender/all">Senders</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/invoice/all">Invoices</a>
           </div>

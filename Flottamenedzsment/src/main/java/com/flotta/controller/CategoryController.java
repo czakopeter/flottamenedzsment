@@ -126,4 +126,10 @@ public class CategoryController {
     return "finance_templates/chargeRatioByCategoryEdit";
   }
   
+  @GetMapping("/finance/sender/all")
+  public String listSenders(Model model) {
+    model.addAttribute("senders", service.findAllCompanyData());
+    return "finance_templates/senderAll";
+  }
+  
 }

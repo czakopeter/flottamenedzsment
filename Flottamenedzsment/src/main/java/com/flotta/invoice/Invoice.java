@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -29,7 +30,8 @@ public class Invoice {
   @Lob
   private String xmlString;
   
-  //TOTO createInvoiceHead 
+  @ManyToOne(cascade = CascadeType.ALL)
+  private CompanyData companyData;
   
   private LocalDate beginDate;
   
@@ -76,6 +78,14 @@ public class Invoice {
 
   public void setXmlString(String xmlString) {
     this.xmlString = xmlString;
+  }
+  
+  public CompanyData getCompanyData() {
+    return companyData;
+  }
+
+  public void setCompanyData(CompanyData companyData) {
+    this.companyData = companyData;
   }
 
   public LocalDate getBeginDate() {
