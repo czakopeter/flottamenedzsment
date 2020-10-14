@@ -15,12 +15,14 @@
           <tr>
             <th>Name</th>
             <th>City</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           <tr th:each="sender : ${senders}">
             <td th:text="${sender.name}"></td>
             <td th:text="${sender.city}"></td>
+            <td><a th:href="/finance/sender/ + 'sender.id'"></a></td>
           </tr>
         </tbody>
       </table>

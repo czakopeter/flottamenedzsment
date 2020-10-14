@@ -21,6 +21,45 @@
       />
     </form>
 
+
+    <div th:if="${#lists.isEmpty(rawInvoices)}" class="my-border text-center">
+      <b>There aren't any raw invoices</b>
+    </div>
+
+    <div th:unless="${#lists.isEmpty(rawInvoices)}">
+      <form method="post">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th th:text="#{bill.invoiceNumber}">Invoice number</th>
+              <th th:text="#{bill.fromDate}">From</th>
+              <th th:text="#{bill.emdDate}">To</th>
+              <th th:text="#{bill.invoiceNetAmount}">Net amount</th>
+              <th th:text="#{bill.invoiceTaxAmount}">Tax amount</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="rawInvoice : ${rawInvoices}">
+              <td name="invoiceNumber" th:text="${rawInvoice.invoiceNumber}"></td>
+              <td th:text="${rawInvoice.beginDate}"></td>
+              <td th:text="${rawInvoice.endDate}"></td>
+              <td th:text="${rawInvoice.invoiceNetAmount}"></td>
+              <td th:text="${rawInvoice.invoiceTaxAmount}"></td>
+              <td><a href="#" class="dropdown" data-toggle="dropdown" role="button"
+                aria-haspopup="true" aria-expanded="false"
+              >...</a>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">1.</a>
+                  <a class="dropdown-item" href="#">2.</a>
+                </div></td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+
+
     <div th:if="${#lists.isEmpty(invoices)}" class="my-border text-center">
       <b>There aren't any invoices</b>
     </div>

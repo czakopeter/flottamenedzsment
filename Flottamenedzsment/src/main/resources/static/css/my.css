@@ -8,10 +8,10 @@
 	
 /* 	--body-background-edge: var(--neutral); */
 /* 	--body-background: var(--neutral); */
-	--menu-background: var(--dark-gray);
-	--menu-text: var(--sky);
-	--menu-text-hover: var(--watermelon);
-	--table-header: var(--sky);
+/* 	--menu-background: var(--dark-gray); */
+/* 	--menu-text: var(--sky); */
+/* 	--menu-text-hover: var(--watermelon); */
+/* 	--table-header: var(--sky); */
 	
 	
 	--light-blue: #bee5eb;
@@ -123,6 +123,10 @@ table thead tr {
 /* 	background-color: var(--menu-background); */
 }
 
+.navbar-nav ul li a {
+	 border-bottom: 3px solid transparent;
+}
+
 .navbar {
 	padding: 0;
 	font-weight: bold;
@@ -130,17 +134,21 @@ table thead tr {
 	color: var(--menu-text);
 }
 
-.nav-item:hover {
+.nav-item .nav-link:hover {
+	color: var(--menu-text-hover);
 	border-bottom: solid 3px;
 	border-bottom-color: var(--watermelon);
 }
 
-.nav-item a {
-	color: var(--menu-text);
+.nav-item .nav-link.active {
+	color: var(--watermelon);
+	background-color: var(--menu-background);
+	border-bottom: solid 3px;
+	border-bottom-color: var(--watermelon);
 }
 
-.nav-item a:hover {
-	color: var(--menu-text-hover);
+.nav-item .nav-link {
+	color: var(--menu-text);
 }
 
 .dropdown-menu {
@@ -160,13 +168,6 @@ table thead tr {
 	border-bottom: solid 3px;
 	border-bottom-color: var(--watermelon);
 	background-color: var(--menu-background);
-}
-
-.nav-pills .nav-link.active {
-	color: var(--watermelon);
-	background-color: var(--menu-background);
-	border-bottom: solid 3px;
-	border-bottom-color: var(--watermelon);
 }
 
 .my-border {

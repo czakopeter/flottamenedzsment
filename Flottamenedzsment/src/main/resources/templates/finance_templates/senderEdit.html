@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main}">
+<head>
+<title>Flotta</title>
+</head>
+<body>
+
+  <div layout:fragment="loginContent">
+
+    <h2>Edit sender</h2>
+
+    <!--     <div class="container"> -->
+    <!--       <select th:if="${dates} != null" onchange="changeDate(this)" class="my-3"> -->
+    <!--         <option th:each="date : ${dates}" th:value="${date}" th:text="${date}" -->
+    <!--           th:selected="${date} == ${subscription.date}" -->
+    <!--         ></option> -->
+    <!--       </select> -->
+    <!--     </div> -->
+
+    <div class="container">
+      <input type="hidden" id="id" name="id" th:value="*{id}" />
+      <div class="row my-2">
+        <div class="col-2">
+          <label>Name</label>
+        </div>
+        <div class="col-4">
+          <input type="text" class="form-control" id="name" name="name" th:value="${sender.name}"
+            readonly="readonly"
+          />
+        </div>
+      </div>
+      <div class="row my-2">
+        <div class="col-2">
+          <label>City</label>
+        </div>
+        <div class="col-4">
+          <input type="text" id="city" name="city" th:value="${sender.city}" class="form-control"
+            readonly="readonly"
+          />
+        </div>
+      </div>
+      <div class="row my-2">
+        <div class="col-2">
+          <label th:text="#{subscription.user}">Description category couplers</label>
+        </div>
+        <div class="col-4">
+          <select class="form-control">
+            <option value="0" title="Default"></option>
+            <option th:each="descriptionCategoryCoupler : ${descriptionCategoryCouplers}"
+              th:value="${descriptionCategoryCoupler.id}"
+              th:text="${descriptionCategoryCoupler.name}"
+            ></option>
+          </select>
+        </div>
+      </div>
+      <div class="row my-2">
+        <div class="col-2">
+          <label th:text="#{subscription.note}">Note</label>
+        </div>
+        <div class="col-4">
+          <input type="text" class="form-control" id="note" name="note" th:value="*{note}" />
+        </div>
+      </div>
+      <div class="row my-2">
+        <div class="col-2">
+          <label th:text="#{subscription.date}">Date</label>
+        </div>
+        <div class="col-4">
+          <input type="date" class="form-control" id="date" name="date" required="required" />
+        </div>
+      </div>
+    </div>
+
+
+    <script src="/js/subscription.js"></script>
+
+  </div>
+
+
+
+</body>
+</html>

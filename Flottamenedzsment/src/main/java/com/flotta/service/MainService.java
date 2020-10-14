@@ -26,7 +26,8 @@ import com.flotta.entity.viewEntity.SubscriptionToView;
 //import com.flotta.exception.UnknownPhoneNumberException;
 import com.flotta.invoice.Category;
 import com.flotta.invoice.ChargeRatioByCategory;
-import com.flotta.invoice.CompanyData;
+import com.flotta.invoice.Participant;
+import com.flotta.invoice.RawInvoice;
 import com.flotta.invoice.DescriptionCategoryCoupler;
 import com.flotta.invoice.FeeItem;
 import com.flotta.invoice.Invoice;
@@ -531,8 +532,16 @@ public class MainService {
     return billingService.getInvoicesOfUser(getCurrentUser());
   }
 
-  public List<CompanyData> findAllCompanyData() {
+  public List<Participant> findAllCompanyData() {
     return new LinkedList<>();
+  }
+
+  public Participant findCompanyDataById(long id) {
+    return null;
+  }
+
+  public List<RawInvoice> findAllRawInvoice() {
+    return billingService.findAllRawInvoice();
   }
 
 }

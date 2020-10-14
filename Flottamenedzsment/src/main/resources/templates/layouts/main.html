@@ -51,7 +51,8 @@
 
   <div class="navbar navbar-expand my-menu">
     <div sec:authorize="isAuthenticated()" class="navbar-nav">
-      <ul class="nav nav-pills">
+<!--       <ul class="nav nav-pills"> -->
+      <ul class="nav">
         <li sec:authorize="hasAnyAuthority('USER_MNGR','ADMIN')" class="nav-item"><a
           class="nav-link" th:classappend="${title} == 'User' ? 'active' :''" href="/user/all"
           th:text="#{main.users}"

@@ -3,24 +3,24 @@ package com.flotta.entity.switchTable;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-import com.flotta.invoice.CompanyData;
+import com.flotta.invoice.Participant;
 import com.flotta.invoice.DescriptionCategoryCoupler;
 
 @Entity
-public class CompanyDataDescriptionCategoryCouplerST extends BasicSwitchTable {
+public class ParticipantDescriptionCategoryCouplerST extends BasicSwitchTable {
 
   @ManyToOne
-  private CompanyData companyData;
+  private Participant participant;
   
 //  private DescriptionCategoryCoupler descriptionCategoryCoupler;
 
-  public CompanyData getCompanyData() {
-    return companyData;
+  public Participant getParticipant() {
+    return participant;
   }
   
   
-  public void setCompanyData(CompanyData companyData) {
-    this.companyData = companyData;
+  public void setParticipant(Participant participant) {
+    this.participant = participant;
   }
 
 //  public DescriptionCategoryCoupler getDescriptionCategoryCoupler() {

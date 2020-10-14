@@ -34,6 +34,7 @@ public class InvoiceController {
   
   @GetMapping("/invoice/all")
   public String listInvoces(Model model) {
+    model.addAttribute("rawInvoices", service.findAllRawInvoice());
     model.addAttribute("invoices", service.findAllInvoice());
     return "invoice_templates/invoiceAll";
   }

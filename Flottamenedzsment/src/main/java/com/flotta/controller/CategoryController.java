@@ -132,4 +132,11 @@ public class CategoryController {
     return "finance_templates/senderAll";
   }
   
+  @GetMapping("/finance/sender/{id}")
+  public String prepareEditingSender(Model model, @PathVariable("id") long id) {
+    model.addAttribute("sender", service.findCompanyDataById(id));
+    model.addAttribute("descriptionCategoryCouplers", service.findAllDescriptionCategoryCoupler());
+    return "finance_templates/senderEdit";
+  }
+  
 }

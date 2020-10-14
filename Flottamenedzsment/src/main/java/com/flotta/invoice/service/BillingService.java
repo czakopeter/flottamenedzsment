@@ -19,6 +19,7 @@ import com.flotta.invoice.DescriptionCategoryCoupler;
 import com.flotta.invoice.FeeItem;
 import com.flotta.invoice.Invoice;
 import com.flotta.invoice.InvoiceByUserAndPhoneNumber;
+import com.flotta.invoice.RawInvoice;
 import com.flotta.invoice.exception.FileUploadException;
 
 @Service
@@ -216,6 +217,10 @@ public class BillingService {
 
   public List<InvoiceByUserAndPhoneNumber> getInvoicesOfUser(User user) {
     return invoiceService.getInvoicesOfUser(user);
+  }
+
+  public List<RawInvoice> findAllRawInvoice() {
+    return invoiceService.findAllRawInvoice();
   }
   
 }

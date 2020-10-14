@@ -27,11 +27,8 @@ public class Invoice {
   @GeneratedValue
   private long id;
   
-  @Lob
-  private String xmlString;
-  
   @ManyToOne(cascade = CascadeType.ALL)
-  private CompanyData companyData;
+  private Participant company;
   
   private LocalDate beginDate;
   
@@ -54,8 +51,7 @@ public class Invoice {
   
   public Invoice() {}
   
-  public Invoice(String xmlString, LocalDate fromDate, LocalDate endDate, String invoiceNumber, Double invoiceNetAmount, Double invoiceTaxAmount, double invoiceGrossAmount) {
-    this.xmlString = xmlString;
+  public Invoice(LocalDate fromDate, LocalDate endDate, String invoiceNumber, Double invoiceNetAmount, Double invoiceTaxAmount, double invoiceGrossAmount) {
     this.beginDate = fromDate;
     this.endDate = endDate;
     this.invoiceNumber = invoiceNumber;
@@ -72,20 +68,13 @@ public class Invoice {
     this.id = id;
   }
 
-  public String getXmlString() {
-    return xmlString;
-  }
-
-  public void setXmlString(String xmlString) {
-    this.xmlString = xmlString;
-  }
   
-  public CompanyData getCompanyData() {
-    return companyData;
+  public Participant getCompany() {
+    return company;
   }
 
-  public void setCompanyData(CompanyData companyData) {
-    this.companyData = companyData;
+  public void setCompany(Participant company) {
+    this.company = company;
   }
 
   public LocalDate getBeginDate() {
