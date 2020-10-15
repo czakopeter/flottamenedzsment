@@ -215,8 +215,8 @@ public class BillingService {
     return invoiceService.getAcceptedInvoiceOfUserById(user, id);
   }
 
-  public List<InvoiceByUserAndPhoneNumber> getInvoicesOfUser(User user) {
-    return invoiceService.getInvoicesOfUser(user);
+  public List<InvoiceByUserAndPhoneNumber> getAcceptedByCompanyInvoicesOfUser(User user) {
+    return invoiceService.getAcceptedByCompanyInvoicesOfUser(user);
   }
 
   public List<RawInvoice> findAllRawInvoice() {

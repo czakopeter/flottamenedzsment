@@ -10,6 +10,31 @@
     <h2>Invoices</h2>
 
     <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    
+    <div id="filter-wrapper" style="background: #eee; width: auto; border-radius: .5rem; margin: 1em;" class="my-border">
+      <div id="filer-button-wrapper" style="text-align: center">
+        <a href="#filter-options-wrapper" class="collapsed" data-toggle="collapse" role="button" aria-expanded="false" >Filters</a>
+      </div>
+      <div id="filter-options-wrapper" class="collapse">
+        <div>
+          <label for="invoice-number">Invoice number</label>
+          <input id="invoice-number" type="text" />
+        </div>
+        
+        <div>
+          <label for="begin-date">From</label>
+          <input id="begin-date" type="date" onchange="filterDateSet(this)" />
+          <label for="end-date">To</label>
+          <input id="end-date" type="date" onchange="filterDateSet(this)"/>
+        </div>
+        
+        <div class="btn-group">
+          <input type="button" class="btn btn-sm btn-primary" value="Search" onclick="search()" />
+          <input type="button" class="btn btn-sm btn-primary" value="Reset"/ onclick="resetFilter()">
+        </div>
+        
+      </div>
+    </div>
 
     <form action="/invoice/fileUpload" method="post" enctype="multipart/form-data">
       <label for="fileBtn">Select an invoice: </label> <input type="file" id="file" name="file"

@@ -23,6 +23,32 @@ function browseFile() {
 
 function selectFile(input) {
 	let fileName = input.value.substr(input.value.lastIndexOf("\\") + 1);
-//	fileName = fileName.replaceAll(" ", "_");
 	document.querySelector("#fileName").innerHTML = fileName;
+}
+
+function search() {
+	
+}
+
+function filterDateSet(input) {
+	if(input.id === "begin-date") {
+		let end = input.parentElement.querySelector("#end-date");
+		if(!input.value) {
+			end.removeAttribute("min");
+		} else {
+			end.setAttribute("min", input.value);
+		}
+	} else {
+		let begin = input.parentElement.querySelector("#begin-date");
+		if(!input.value) {
+			begin.removeAttribute("max");
+		} else {
+			begin.setAttribute("max", input.value);
+		}
+	}
+}
+
+function resetFilter() {
+	document.querySelector("#end-date").value = "";
+	document.querySelector("#begin-date").value = "";
 }

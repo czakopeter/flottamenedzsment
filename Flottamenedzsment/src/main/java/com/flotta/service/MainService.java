@@ -528,8 +528,8 @@ public class MainService {
     return billingService.getAcceptedInvoiceOfUserById(getCurrentUser(), id);
   }
 
-  public List<InvoiceByUserAndPhoneNumber> getInvoicesOfCurrentUser() {
-    return billingService.getInvoicesOfUser(getCurrentUser());
+  public List<InvoiceByUserAndPhoneNumber> getAcceptedByCompanyInvoicesOfCurrentUser() {
+    return billingService.getAcceptedByCompanyInvoicesOfUser(getCurrentUser());
   }
 
   public List<Participant> findAllCompanyData() {

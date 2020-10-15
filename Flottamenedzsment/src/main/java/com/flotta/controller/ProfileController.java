@@ -53,8 +53,7 @@ public class ProfileController {
   //TODO Felhasználóhoz kapcsolt összes visszaadása, javascript-ből szűrés rá(elfogadot vagy nem, min összeg stb.)
   @GetMapping("/profile/finance")
   public String showActualUserPendingInvoices(Model model) {
-    model.addAttribute("invoiceParts", service.getInvoicesOfCurrentUser());
-//    model.addAttribute("invoiceParts", service.getPendingInvoicesOfCurrentUser());
+    model.addAttribute("invoiceParts", service.getAcceptedByCompanyInvoicesOfCurrentUser());
     return "profile/financeSummary";
   }
   

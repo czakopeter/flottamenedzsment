@@ -71,8 +71,8 @@ public class InvoiceByUserAndPhoneNumberService {
     return invoiceByUserAndPhoneNumberRepository.findByIdAndUserAndAcceptedByCompanyTrueAndAcceptedByUserTrue(id, user);
   }
 
-  public List<InvoiceByUserAndPhoneNumber> getInvoicesOfUser(User user) {
+  public List<InvoiceByUserAndPhoneNumber> getAcceptedByCompanyInvoicesOfUser(User user) {
 //    return invoiceByUserAndPhoneNumberRepository.findAllByUser(user);
-    return invoiceByUserAndPhoneNumberRepository.findAllByUserOrderByAcceptedByUserAscBeginDateAsc(user);
+    return invoiceByUserAndPhoneNumberRepository.findAllByUserAndAcceptedByCompanyTrueOrderByAcceptedByUserAscBeginDateAsc(user);
   }
 }

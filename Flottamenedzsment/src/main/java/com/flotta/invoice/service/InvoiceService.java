@@ -104,7 +104,9 @@ public class InvoiceService {
 
     RawInvoice rawInvoice = parseXmlStringToRawInvoice(xmlString);
     
-    if(check(rawInvoice)) {
+    if(invoiceRepository.findByInvoiceNumber(rawInvoice.getInvoiceNumber()) != null || rawInvoiceRepository.findByInvoiceNumber(rawInvoice.getInvoiceNumber()) != null) {
+      
+    } else if(check(rawInvoice)) {
       Invoice invoice = parseRawInvoiceToInvoice(rawInvoice);
       invoiceRepository.save(invoice);
     } else {
@@ -148,12 +150,18 @@ public class InvoiceService {
     }
   }
 
+  //TODO a különböző hibák visszajelzése, először csak szöveges hibajegyzék, később megoldás ajánlása plusz átirányítás (hiányzó előfizetés -> új felvétele a számmal, hiányzó cég -> felvétele névvel címmel...)
   private boolean check(RawInvoice rawInvoice) {
     if(invoiceRepository.findByInvoiceNumber(rawInvoice.getInvoiceNumber()) != null || rawInvoiceRepository.findByInvoiceNumber(rawInvoice.getInvoiceNumber()) != null) {
       return false;
     }
     if(participantRepository.findByName(rawInvoice.getCompanyName()) == null) {
       participantRepository.save(new Participant(rawInvoice.getCompanyName(), rawInvoice.getCompanyAddress()));
+    }
+    for(RawFeeItem rawFeeItem : rawInvoice.getFeeItems()) {
+      if(subscriptionInfo.findByNumber(rawFeeItem.getSubscription()) == null) {
+        return false;
+      }
     }
     return true;
   }
@@ -171,7 +179,7 @@ public class InvoiceService {
     
     for(RawFeeItem rawFeeItem : rawInvoice.getFeeItems()) {
       FeeItem feeItem = parseRawFeeItemToFeeItem(rawFeeItem);
-      invoice.addFeeItem(subscriptionInfo.findByNumber(rawFeeItem.getSubscription()),feeItem);
+      invoice.addFeeItem(subscriptionInfo.findByNumber(rawFeeItem.getSubscription()), feeItem);
     }
     return invoice;
   }
@@ -394,8 +402,8 @@ public class InvoiceService {
     return invoiceByUserAndPhoneNumberService.getAcceptedInvoiceOfUserById(user, id);
   }
 
-  public List<InvoiceByUserAndPhoneNumber> getInvoicesOfUser(User user) {
-    return invoiceByUserAndPhoneNumberService.getInvoicesOfUser(user);
+  public List<InvoiceByUserAndPhoneNumber> getAcceptedByCompanyInvoicesOfUser(User user) {
+    return invoiceByUserAndPhoneNumberService.getAcceptedByCompanyInvoicesOfUser(user);
   }
 
   public List<RawInvoice> findAllRawInvoice() {
