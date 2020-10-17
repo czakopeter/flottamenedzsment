@@ -7,14 +7,40 @@
 
   <div layout:fragment="loginContent">
 
-    <h2 th:text="#{main.subscriptions}">Subscriptions</h2>
+    <h3 class="uppercase" th:text="#{main.subscriptions}">Subscriptions</h3>
+    
+    <div id="filter-wrapper" class="my-border">
+      <div id="filer-button-wrapper">
+        <a href="#filter-options-wrapper" class="collapsed" data-toggle="collapse" role="button"
+          aria-expanded="false"
+        >Filters</a>
+      </div>
+      <div id="filter-options-wrapper" class="collapse">
+        <div>
+          <label for="number" th:text="#{subscription.phoneNumber}">Number</label> <input id="number" type="text" class="form-control" />
+        </div>
+        <div>
+          <label for="imei">Imei</label> <input id="imei" type="text" class="form-control" />
+        </div>
+        <div>
+          <label for="userName" th:text="#{login.username}">User name</label> <input id="userName" type="text" class="form-control" />
+        </div>
+
+
+        <div class="btn-group">
+          <input type="button" class="btn btn-sm btn-primary" value="Search" onclick="filter()" />
+          <input type="button" class="btn btn-sm btn-primary" value="Reset" onclick="resetFilter()" />
+        </div>
+
+      </div>
+    </div>
 
     <a href="/subscription/new" class="btn btn-primary my-2"
       th:classappend="${canCreateNew ? '' : 'disabled'}" th:text="#{button.new}"
       th:disabled="${not canCreateNew}"
     >New</a>
 
-    <table class="table table-sm">
+    <table id="subscription-table" class="table table-sm">
       <thead>
         <tr>
           <th th:text="#{subscription.phoneNumber}">Number</th>
@@ -24,24 +50,28 @@
           <th></th>
         </tr>
       </thead>
-      <tr th:each="subscription : ${subscriptions}">
-        <td th:text="${subscription.number}"></td>
-        <td th:text="${subscription.imei}"></td>
-        <td th:text="${subscription.userName}"></td>
-        <td th:text="${subscription.deviceName}"></td>
-        <td>
-          <div class="btn-group">
-            <a th:href="'/subscription/' + ${subscription.id} + '/update'" class="btn btn-primary"
-              th:title="#{button.edit}"
-            > <img alt="edit" src="/img/edit.png" />
-            </a> <a th:href="'/subscription/' + ${subscription.id} + '/view'" class="btn btn-info"
-              title="view"
-            > <img alt="view" src="/img/visible.png" />
-            </a>
-          </div>
-        </td>
-      </tr>
+      <tbody>
+        <tr th:each="subscription : ${subscriptions}">
+          <td name="number" th:text="${subscription.number}"></td>
+          <td name="imei" th:text="${subscription.imei}"></td>
+          <td name="userName" th:text="${subscription.userName}"></td>
+          <td th:text="${subscription.deviceName}"></td>
+          <td>
+            <div class="btn-group">
+              <a th:href="'/subscription/' + ${subscription.id} + '/update'" class="btn btn-sm btn-primary"
+                th:title="#{button.edit}"
+              > <img alt="edit" src="/img/edit.png" />
+              </a> <a th:href="'/subscription/' + ${subscription.id} + '/view'" class="btn btn-sm btn-info"
+                title="view"
+              > <img alt="view" src="/img/visible.png" />
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
     </table>
+    
+    <script src="/js/subscription/subscriptionAll.js"></script>
 
   </div>
 

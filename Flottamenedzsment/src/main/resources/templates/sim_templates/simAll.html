@@ -7,15 +7,34 @@
 
   <div layout:fragment="loginContent">
 
-    <h2 th:text="#{main.sims}">Sims</h2>
+    <h3 class="uppercase" th:text="#{main.sims}">Sims</h3>
     
     <div th:replace="fragments/message :: message"></div>
+    
+    <div id="filter-wrapper" class="my-border">
+      <div id="filer-button-wrapper">
+        <a href="#filter-options-wrapper" class="collapsed" data-toggle="collapse" role="button"
+          aria-expanded="false"
+        >Filters</a>
+      </div>
+      <div id="filter-options-wrapper" class="collapse">
+        <div>
+          <label for="imei">IMEI</label> <input id="imei" type="text" class="form-control" />
+        </div>
+
+        <div class="btn-group">
+          <input type="button" class="btn btn-sm btn-primary" value="Search" onclick="filter()" />
+          <input type="button" class="btn btn-sm btn-primary" value="Reset" onclick="resetFilter()" />
+        </div>
+
+      </div>
+    </div>
     
     <a href="/sim/new" class="btn btn-primary my-2"
       th:text="#{button.new}"
     >New</a>
 
-    <table class="table table-sm table-hover">
+    <table id="sim-table" class="table table-sm">
       <thead>
         <tr>
           <th th:text="#{sim.imei}">IMEI</th>
@@ -26,13 +45,15 @@
       </thead>
       <tbody class="table-striped">
         <tr th:each="sim : ${sims}">
-          <td th:text="${sim.imei}"></td>
+          <td name="imei" th:text="${sim.imei}"></td>
           <td th:text="${sim.pin}"></td>
           <td th:text="${sim.puk}"></td>
           <td th:text="${sim.status}"></td>
         </tr>
       </tbody>
     </table>
+    
+    <script src="/js/sim/simAll.js"></script>
 
   </div>
 

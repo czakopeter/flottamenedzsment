@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+
+  <div id="filter-wrapper" th:fragment="filter-wrapper(filterOptionsName)">
+    <div id="filter-button-wrapper">
+      <a href="#filter-options-wrapper" class="collapsed" data-toggle="collapse" role="button"
+        aria-expanded="false"
+      >Filters</a>
+    </div>
+    <div id="filter-options-wrapper" class="">
+      <h4>Filter</h4>
+      <div th:replace="fragments/filter :: ${filterOptionsName}"></div>
+    </div>
+  </div>
+
+  <div id="filter-options-content" th:fragment="invoice-filter-options">
+      <label for="invoice-number">Invoice number</label> <input id="invoice-number" type="text"
+        class=""
+      />
+      <label for="begin-date">From</label> <input id="begin-date" type="date"
+        onchange="filterDateSet(this)"
+      /> <label for="end-date">To</label> <input id="end-date" type="date"
+        onchange="filterDateSet(this)"
+      />
+      
+    <div class="btn-group">
+      <input type="button" class="btn btn-sm btn-primary" value="Search" onclick="filter()" /> <input
+        type="button" class="btn btn-sm btn-primary" value="Reset" onclick="resetFilter()"
+      />
+    </div>
+
+  </div>
+
+
+</body>
+</html>

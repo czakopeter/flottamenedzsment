@@ -1,6 +1,7 @@
 package com.flotta.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.flotta.invoice.ChargeRatioByCategory;
+import com.flotta.invoice.Participant;
 import com.flotta.service.MainService;
 
 @Controller
@@ -33,8 +35,8 @@ public class CategoryController {
   public String listCategories(Model model) {
     model.addAttribute("categories", service.findAllCategory());
     model.addAttribute("add", new String());
-    model.addAttribute("users", service.findAllUser());
-    model.addAttribute("chargeRatioNames", service.findAllChargeRatio());
+//    model.addAttribute("users", service.findAllUser());
+//    model.addAttribute("chargeRatioNames", service.findAllChargeRatio());
     return "finance_templates/category";
   }
   
@@ -126,17 +128,22 @@ public class CategoryController {
     return "finance_templates/chargeRatioByCategoryEdit";
   }
   
-  @GetMapping("/finance/sender/all")
-  public String listSenders(Model model) {
-    model.addAttribute("senders", service.findAllCompanyData());
-    return "finance_templates/senderAll";
+  @GetMapping("/finance/participant/all")
+  public String listParticipant(Model model) {
+    model.addAttribute("participants", service.findAllParticipant());
+    return "finance_templates/participantAll";
   }
   
-  @GetMapping("/finance/sender/{id}")
-  public String prepareEditingSender(Model model, @PathVariable("id") long id) {
-    model.addAttribute("sender", service.findCompanyDataById(id));
-    model.addAttribute("descriptionCategoryCouplers", service.findAllDescriptionCategoryCoupler());
-    return "finance_templates/senderEdit";
+  @GetMapping("/finance/participant/{id}")
+  public String prepareEditingParticipant(Model model, @PathVariable("id") long id) {
+    Optional<Participant> participant = service.findParticipantById(id);
+    if(participant.isPresent()) {
+      model.addAttribute("participant", participant.get());
+      model.addAttribute("descriptionCategoryCouplers", service.findAllDescriptionCategoryCoupler());
+      return "finance_templates/participantEdit";
+    } else {
+      return "redirect:/finance/participant/all";
+    }
   }
   
 }

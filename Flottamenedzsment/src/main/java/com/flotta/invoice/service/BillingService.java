@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import com.flotta.invoice.DescriptionCategoryCoupler;
 import com.flotta.invoice.FeeItem;
 import com.flotta.invoice.Invoice;
 import com.flotta.invoice.InvoiceByUserAndPhoneNumber;
+import com.flotta.invoice.Participant;
 import com.flotta.invoice.RawInvoice;
 import com.flotta.invoice.exception.FileUploadException;
 
@@ -221,6 +223,14 @@ public class BillingService {
 
   public List<RawInvoice> findAllRawInvoice() {
     return invoiceService.findAllRawInvoice();
+  }
+
+  public List<Participant> findAllParticipant() {
+    return invoiceService.findAllParticipant();
+  }
+
+  public Optional<Participant> findParticipantById(long id) {
+    return invoiceService.findParticipantById(id);
   }
   
 }

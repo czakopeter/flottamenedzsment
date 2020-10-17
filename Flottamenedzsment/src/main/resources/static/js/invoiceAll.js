@@ -26,20 +26,17 @@ function selectFile(input) {
 	document.querySelector("#fileName").innerHTML = fileName;
 }
 
-function search() {
-	
-}
 
 function filterDateSet(input) {
 	if(input.id === "begin-date") {
-		let end = input.parentElement.querySelector("#end-date");
+		let end = input.parentElement.parentElement.querySelector("#end-date");
 		if(!input.value) {
 			end.removeAttribute("min");
 		} else {
 			end.setAttribute("min", input.value);
 		}
 	} else {
-		let begin = input.parentElement.querySelector("#begin-date");
+		let begin = input.parentElement.parentElement.querySelector("#begin-date");
 		if(!input.value) {
 			begin.removeAttribute("max");
 		} else {
@@ -49,6 +46,41 @@ function filterDateSet(input) {
 }
 
 function resetFilter() {
-	document.querySelector("#end-date").value = "";
-	document.querySelector("#begin-date").value = "";
+	let filterOptionsWrapper = document.querySelector("#filter-options-wrapper");
+	filterOptionsWrapper.querySelector("#invoice-number").value = "";
+	filterOptionsWrapper.querySelector("#begin-date").value = "";
+	filterOptionsWrapper.querySelector("#begin-date").removeAttribute("max");
+	filterOptionsWrapper.querySelector("#end-date").value = "";
+	filterOptionsWrapper.querySelector("#end-date").removeAttribute("min");
+	showAll();
+}
+
+function filter() {
+	let trs = document.querySelector("#invoice-table").querySelector("tbody").querySelectorAll("tr");
+	for(let tr of trs) {
+		console.log(tr);
+		if(filterCondicion(tr)) {
+			tr.classList.remove("collapse");
+		} else {
+			tr.classList.add("collapse");
+		}
+	}
+}
+
+function filterCondicion(tr) {
+	let filterOptionsWrapper = document.querySelector("#filter-options-wrapper");
+	let invoiceNumber = filterOptionsWrapper.querySelector("#invoice-number");
+	let minDate = filterOptionsWrapper.querySelector("#begin-date");
+	let maxDate = filterOptionsWrapper.querySelector("#end-date");
+	
+	return tr.querySelector("[name=invoiceNumber]").innerHTML.includes(invoiceNumber.value) && 
+		(!minDate.value || Date.parse(tr.querySelector("[name=beginDate]").innerHTML) >= Date.parse(minDate.value)) &&
+		(!maxDate.value || Date.parse(tr.querySelector("[name=endDate]").innerHTML) <= Date.parse(maxDate.value));
+}
+
+function showAll() {
+	let trs = document.querySelector("#invoice-table").querySelector("tbody").querySelectorAll("tr");
+	for(let tr of trs) {
+		tr.classList.remove("collapse");
+	}
 }

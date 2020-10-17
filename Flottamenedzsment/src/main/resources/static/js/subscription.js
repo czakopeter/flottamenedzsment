@@ -1,21 +1,3 @@
-//function sendData(type, url, data, callback) {
-//	let xhr = new XMLHttpRequest();
-//	xhr.open(type, url, true);
-//	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-//	xhr.onreadystatechange = function() {
-//	    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-//	    	try {
-//	    		callback(JSON.parse(xhr.responseText));
-//	    	} catch (e) {
-//	    		callback(JSON.parse('{"error":true}'));
-//	    	}
-//	    }
-//	}
-//	xhr.send(data);
-//}
-
-
-
 function dateChange(dateSelect) {
 	let id = document.querySelector("#id").value;
 	sendData("POST", "/subscription/" + id + "/view", "date=" + dateSelect.value, setViewData)

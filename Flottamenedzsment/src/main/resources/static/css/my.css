@@ -50,8 +50,11 @@
 	--dark-gray: #252525;
 }
 
-body {
+html {
 	font-size: 14px;
+}
+
+body {
 	margin: 0;
 	background-color: var(--body-background-edge);
 }
@@ -220,3 +223,4 @@ a.noneunderline {
 .pull-right {
 	float: right;
 }
+

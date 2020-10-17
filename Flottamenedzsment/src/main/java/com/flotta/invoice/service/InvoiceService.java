@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -408,5 +409,13 @@ public class InvoiceService {
 
   public List<RawInvoice> findAllRawInvoice() {
     return rawInvoiceRepository.findAll();
+  }
+
+  public List<Participant> findAllParticipant() {
+    return participantRepository.findAll();
+  }
+
+  public Optional<Participant> findParticipantById(long id) {
+    return participantRepository.findById(id);
   }
 }

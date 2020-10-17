@@ -7,11 +7,33 @@
 
   <div layout:fragment="loginContent">
 
-    <h2 th:text="#{main.users}">Users</h2>
+    <h3 class="uppercase" th:text="#{main.users}">Users</h3>
+    
+    <div id="filter-wrapper" class="my-border">
+      <div id="filer-button-wrapper">
+        <a href="#filter-options-wrapper" class="collapsed" data-toggle="collapse" role="button"
+          aria-expanded="false"
+        >Filters</a>
+      </div>
+      <div id="filter-options-wrapper" class="collapse">
+        <div>
+          <label for="email">Email</label> <input id="email" type="text" class="form-control" />
+        </div>
+        <div>
+          <label for="fullName">Full name</label> <input id="fullName" type="text" class="form-control" />
+        </div>
+
+        <div class="btn-group">
+          <input type="button" class="btn btn-sm btn-primary" value="Search" onclick="filter()" />
+          <input type="button" class="btn btn-sm btn-primary" value="Reset" onclick="resetFilter()" />
+        </div>
+
+      </div>
+    </div>
 
     <a href="/user/new" class="btn btn-primary my-2" th:text="#{button.new}"></a>
 
-    <table id="enabled" class="table table-sm">
+    <table id="user-table" class="table table-sm">
       <thead>
         <tr>
           <th>Email</th>
@@ -20,13 +42,19 @@
           <th></th>
         </tr>
       </thead>
-      <tr th:each="user : ${users}">
-        <td th:text="${user.email}"></td>
-        <td th:text="${user.fullName}"></td>
-        <td th:text="${user.getStatusName()}"></td>
-        <td><a th:href="'/user/' + ${user.id}" class="btn btn-primary" th:text="#{button.edit}">Edit</a></td>
-      </tr>
+      <tbody>
+        <tr th:each="user : ${users}">
+          <td name="email" th:text="${user.email}"></td>
+          <td name="fullName" th:text="${user.fullName}"></td>
+          <td th:text="${user.getStatusName()}"></td>
+          <td><a th:href="'/user/' + ${user.id}" class="btn btn-sm btn-primary" th:text="#{button.edit}">Edit</a></td>
+        </tr>
+      </tbody>
+      <tbody>
+      </tbody>
     </table>
+    
+    <script src="/js/user/userAll.js"></script>
 
   </div>
 

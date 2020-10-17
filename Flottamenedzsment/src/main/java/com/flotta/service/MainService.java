@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -532,12 +533,12 @@ public class MainService {
     return billingService.getAcceptedByCompanyInvoicesOfUser(getCurrentUser());
   }
 
-  public List<Participant> findAllCompanyData() {
-    return new LinkedList<>();
+  public List<Participant> findAllParticipant() {
+    return billingService.findAllParticipant();
   }
 
-  public Participant findCompanyDataById(long id) {
-    return null;
+  public Optional<Participant> findParticipantById(long id) {
+    return billingService.findParticipantById(id);
   }
 
   public List<RawInvoice> findAllRawInvoice() {

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main}">
+<head>
+<title>Flotta</title>
+</head>
+<body>
+
+  <div layout:fragment="loginContent">
+
+    <h2>Edit participant</h2>
+
+    <div class="container">
+      <input type="hidden" id="id" name="id" th:value="*{participant.id}" />
+      <div class="row my-2">
+        <div class="col-2">
+          <label>Name</label>
+        </div>
+        <div class="col-4">
+          <input type="text" class="form-control" id="name" name="name" th:value="${participant.name}"
+            readonly="readonly"
+          />
+        </div>
+      </div>
+      <div class="row my-2">
+        <div class="col-2">
+          <label>Address</label>
+        </div>
+        <div class="col-4">
+          <input type="text" id="address" name="address" th:value="${participant.address}" class="form-control"
+            readonly="readonly"
+          />
+        </div>
+      </div>
+      <div class="row my-2">
+        <div class="col-2">
+          <label>Description category couplers</label>
+        </div>
+        <div class="col-4">
+          <select class="form-control">
+            <option value="0" title="Default"></option>
+            <option th:each="descriptionCategoryCoupler : ${descriptionCategoryCouplers}"
+              th:value="${descriptionCategoryCoupler.id}"
+              th:text="${descriptionCategoryCoupler.name}"
+            ></option>
+          </select>
+        </div>
+      </div>
+<!--       <div class="row my-2"> -->
+<!--         <div class="col-2"> -->
+<!--           <label th:text="#{subscription.note}">Note</label> -->
+<!--         </div> -->
+<!--         <div class="col-4"> -->
+<!--           <input type="text" class="form-control" id="note" name="note" th:value="*{note}" /> -->
+<!--         </div> -->
+<!--       </div> -->
+<!--       <div class="row my-2"> -->
+<!--         <div class="col-2"> -->
+<!--           <label th:text="#{subscription.date}">Date</label> -->
+<!--         </div> -->
+<!--         <div class="col-4"> -->
+<!--           <input type="date" class="form-control" id="date" name="date" required="required" /> -->
+<!--         </div> -->
+<!--       </div> -->
+    </div>
+
+
+<!--     <script src="/js/subscription.js"></script> -->
+
+  </div>
+
+
+
+</body>
+</html>

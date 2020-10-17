@@ -10,33 +10,49 @@
     <h2>Invoices</h2>
 
     <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+<!--     <div id="filter-wrapper" -->
+<!--       style="background: #eee; width: auto; border-radius: .5rem; margin: 1em;" class="my-border" -->
+<!--     > -->
+<!--       <div id="filer-button-wrapper" style="text-align: center"> -->
+<!--         <a href="#filter-options-wrapper1" class="collapsed" data-toggle="collapse" role="button" -->
+<!--           aria-expanded="false" -->
+<!--         >Filters1</a> -->
+<!--       </div> -->
+<!--       <div id="filter-options-wrapper1" class="collapse"> -->
+<!--         <table class="table table-sm"> -->
+<!--           <thead> -->
+<!--             <tr> -->
+<!--               <th th:text="#{bill.invoiceNumber}">Invoice number</th> -->
+<!--               <th th:text="#{bill.fromDate}">From</th> -->
+<!--               <th th:text="#{bill.emdDate}">To</th> -->
+<!--               <th></th> -->
+<!--             </tr> -->
+<!--           </thead> -->
+<!--           <tbody> -->
+<!--             <tr> -->
+<!--               <td name="invoiceNumber"><input id="invoice-number" type="text" -->
+<!--                 class="form-control form-control-sm" -->
+<!--               /></td> -->
+<!--               <td><input id="begin-date" type="date" onchange="filterDateSet(this)" -->
+<!--                 class="form-control  form-control-sm" -->
+<!--               /></td> -->
+<!--               <td><input id="end-date" type="date" onchange="filterDateSet(this)" -->
+<!--                 class="form-control  form-control-sm" -->
+<!--               /></td> -->
+<!--               <td></td> -->
+<!--               <td></td> -->
+<!--               <td></td> -->
+<!--             </tr> -->
+<!--           </tbody> -->
+<!--         </table> -->
+<!--       </div> -->
+<!--     </div> -->
     
-    <div id="filter-wrapper" style="background: #eee; width: auto; border-radius: .5rem; margin: 1em;" class="my-border">
-      <div id="filer-button-wrapper" style="text-align: center">
-        <a href="#filter-options-wrapper" class="collapsed" data-toggle="collapse" role="button" aria-expanded="false" >Filters</a>
-      </div>
-      <div id="filter-options-wrapper" class="collapse">
-        <div>
-          <label for="invoice-number">Invoice number</label>
-          <input id="invoice-number" type="text" />
-        </div>
-        
-        <div>
-          <label for="begin-date">From</label>
-          <input id="begin-date" type="date" onchange="filterDateSet(this)" />
-          <label for="end-date">To</label>
-          <input id="end-date" type="date" onchange="filterDateSet(this)"/>
-        </div>
-        
-        <div class="btn-group">
-          <input type="button" class="btn btn-sm btn-primary" value="Search" onclick="search()" />
-          <input type="button" class="btn btn-sm btn-primary" value="Reset"/ onclick="resetFilter()">
-        </div>
-        
-      </div>
-    </div>
+    <div th:replace="fragments/filter :: filter-wrapper(invoice-filter-options)"></div>
 
     <form action="/invoice/fileUpload" method="post" enctype="multipart/form-data">
+      <h4>Invoice upload</h4>
       <label for="fileBtn">Select an invoice: </label> <input type="file" id="file" name="file"
         accept=".xml" onchange="selectFile(this)" style="display: none"
       /> <input type="button" id=fileBtn onclick="browseFile()" class="btn btn-sm"
@@ -46,21 +62,21 @@
       />
     </form>
 
-
+    <h4>Invoice tables</h4>
     <div th:if="${#lists.isEmpty(rawInvoices)}" class="my-border text-center">
       <b>There aren't any raw invoices</b>
     </div>
 
     <div th:unless="${#lists.isEmpty(rawInvoices)}">
       <form method="post">
-        <table class="table table-sm">
+        <table id="raw-invoice-table" class="table table-sm">
           <thead>
             <tr>
               <th th:text="#{bill.invoiceNumber}">Invoice number</th>
               <th th:text="#{bill.fromDate}">From</th>
               <th th:text="#{bill.emdDate}">To</th>
               <th th:text="#{bill.invoiceNetAmount}">Net amount</th>
-              <th th:text="#{bill.invoiceTaxAmount}">Tax amount</th>
+              <th th:text="#{bill.invoiceGrossAmount}">Gross amount</th>
               <th></th>
             </tr>
           </thead>
@@ -70,13 +86,12 @@
               <td th:text="${rawInvoice.beginDate}"></td>
               <td th:text="${rawInvoice.endDate}"></td>
               <td th:text="${rawInvoice.invoiceNetAmount}"></td>
-              <td th:text="${rawInvoice.invoiceTaxAmount}"></td>
+              <td th:text="${rawInvoice.invoiceGrossAmount}"></td>
               <td><a href="#" class="dropdown" data-toggle="dropdown" role="button"
                 aria-haspopup="true" aria-expanded="false"
               >...</a>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">1.</a>
-                  <a class="dropdown-item" href="#">2.</a>
+                  <a class="dropdown-item" href="#">1.</a> <a class="dropdown-item" href="#">2.</a>
                 </div></td>
             </tr>
           </tbody>
@@ -91,14 +106,14 @@
 
     <div th:unless="${#lists.isEmpty(invoices)}">
       <form method="post">
-        <table class="table table-sm">
+        <table id="invoice-table" class="table table-sm">
           <thead>
             <tr>
               <th th:text="#{bill.invoiceNumber}">Invoice number</th>
               <th th:text="#{bill.fromDate}">From</th>
               <th th:text="#{bill.emdDate}">To</th>
               <th th:text="#{bill.invoiceNetAmount}">Net amount</th>
-              <th th:text="#{bill.invoiceTaxAmount}">Tax amount</th>
+              <th th:text="#{bill.invoiceGrossAmount}">Gross amount</th>
               <th></th>
             </tr>
           </thead>
@@ -106,10 +121,10 @@
             th:classappend="${invoice.hasAnyRevisionNote() ? 'hasRevisionNote' : ''}"
           >
             <td name="invoiceNumber" th:text="${invoice.invoiceNumber}"></td>
-            <td th:text="${invoice.beginDate}"></td>
-            <td th:text="${invoice.endDate}"></td>
+            <td name="beginDate" th:text="${invoice.beginDate}"></td>
+            <td name="endDate" th:text="${invoice.endDate}"></td>
             <td th:text="${invoice.invoiceNetAmount}"></td>
-            <td th:text="${invoice.invoiceTaxAmount}"></td>
+            <td th:text="${invoice.invoiceGrossAmount}"></td>
             <td>
               <button th:unless="${invoice.hasProblem() or invoice.acceptedByCompany}" type="submit"
                 class="btn btn-sm btn-success"
@@ -147,16 +162,9 @@
 
 
     <script src="/js/invoiceAll.js"></script>
-    <script th:inline="javascript">
-					//<![CDATA[
-
-					//]]>
-				</script>
+    
 
 
   </div>
-
-
-
 </body>
 </html>

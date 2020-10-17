@@ -7,22 +7,22 @@
 
   <div layout:fragment="loginContent">
 
-    <h2 class="uppercase">Senders</h2>
+    <h2 class="uppercase">Participants</h2>
 
     <div class="container">
       <table class="table table-sm">
         <thead>
           <tr>
             <th>Name</th>
-            <th>City</th>
+            <th>Address</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          <tr th:each="sender : ${senders}">
-            <td th:text="${sender.name}"></td>
-            <td th:text="${sender.city}"></td>
-            <td><a th:href="/finance/sender/ + 'sender.id'"></a></td>
+          <tr th:each="participant : ${participants}">
+            <td th:text="${participant.name}"></td>
+            <td th:text="${participant.address}"></td>
+            <td><a class="btn btn-sm btn-primary" th:href="'/finance/participant/' + ${participant.id}">Edit</a></td>
           </tr>
         </tbody>
       </table>
