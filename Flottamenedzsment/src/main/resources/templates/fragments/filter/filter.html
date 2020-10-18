@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+  
+  <div th:fragment="test(href ,filterOptionsName)">
+    <div class="btn-group">
+      <a th:unless="${#strings.startsWith(href,'/')}" href="#add-wrapper" class="btn btn-info collapsed" data-toggle="collapse" role="button" aria-expanded="false">+++</a>
+      <a th:if="${#strings.startsWith(href,'/')}" th:href="${href}" class="btn btn-info " >Add</a>
+      <a href="#filter-options-wrapper" class=" btn btn-info collapsed" data-toggle="collapse" role="button" aria-expanded="false">Filter</a>
+    </div>
+    
+    <div th:unless="${#strings.startsWith(href,'/')}" id="add-wrapper" class="">
+      <div th:replace=" :: ${href}"></div>
+      
+    </div>
+    
+    <div id="filter-options-wrapper" class="">
+      <h4>Filter</h4>
+      <div th:replace="fragments/filter/filter :: ${filterOptionsName}"></div>
+    </div>
+    
+  </div>
+  
+  <div th:fragment="invoice-upload">
+    <form action="/invoice/fileUpload" method="post" enctype="multipart/form-data">
+      <h4>Invoice upload</h4>
+      <label for="fileBtn">Select an invoice: </label> <input type="file" id="file" name="file"
+        accept=".xml" onchange="selectFile(this)" style="display: none"
+      /> <input type="button" id=fileBtn onclick="browseFile()" class="btn btn-sm"
+        th:value="Browse..."
+      /> <label id="fileName">No file selected.</label> <input type="submit"
+        class="btn btn-sm btn-primary" th:value="#{button.add}"
+      />
+    </form>
+  </div>
+
+
+  <div th:fragment="filter-wrapper(filterOptionsName)" id="filter-wrapper">
+    <div id="filter-button-wrapper">
+      <a href="#filter-options-wrapper" class="collapsed" data-toggle="collapse" role="button"
+        aria-expanded="false"
+      >Filters</a>
+    </div>
+    <div id="filter-options-wrapper" class="">
+      <h4>Filter</h4>
+      <div th:replace="fragments/filter/filter :: ${filterOptionsName}"></div>
+    </div>
+  </div>
+
+  <div th:fragment="invoice-filter-options" id="filter-options-content">
+    <label for="invoice-number">Invoice number</label> <input id="invoice-number" type="text"
+      class=""
+    /> <label for="begin-date">From</label> <input id="begin-date" type="date"
+      onchange="filterDateSet(this)"
+    /> <label for="end-date">To</label> <input id="end-date" type="date"
+      onchange="filterDateSet(this)"
+    />
+
+    <div th:replace=" :: filter-button-group"></div>
+  </div>
+
+  <div th:fragment="invoice-filter-options-table" id="filter-options-content">
+    <table class="table table-sm">
+      <thead>
+        <tr>
+          <th th:text="#{bill.invoiceNumber}">Invoice number</th>
+          <th th:text="#{bill.fromDate}">From</th>
+          <th th:text="#{bill.emdDate}">To</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td name="invoiceNumber"><input id="invoice-number" type="text"
+            class="form-control form-control-sm"
+          /></td>
+          <td><input id="begin-date" type="date" onchange="filterDateSet(this)"
+            class="form-control  form-control-sm"
+          /></td>
+          <td><input id="end-date" type="date" onchange="filterDateSet(this)"
+            class="form-control  form-control-sm"
+          /></td>
+          <td class="pull-right"><div th:replace=" :: filter-button-group"></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div th:fragment="user-filter-options" id="filter-options-content">
+    <div>
+      <label for="email">Email</label> <input id="email" type="text" class="form-control" />
+    </div>
+    <div>
+      <label for="fullName">Full name</label> <input id="fullName" type="text" class="form-control" />
+    </div>
+
+    <div th:replace=" :: filter-button-group"></div>
+  </div>
+
+  <div th:fragment="subscription-filter-options" id="filter-options-content">
+    <div>
+      <label for="number" th:text="#{subscription.phoneNumber}">Number</label> <input id="number"
+        type="text" class="form-control"
+      />
+    </div>
+    <div>
+      <label for="imei">Imei</label> <input id="imei" type="text" class="form-control" />
+    </div>
+    <div>
+      <label for="userName" th:text="#{login.username}">User name</label> <input id="userName"
+        type="text" class="form-control"
+      />
+    </div>
+
+    <div th:replace=" :: filter-button-group"></div>
+  </div>
+
+  <div th:fragment="sim-filter-options" id="filter-options-content">
+    <div>
+      <label for="imei">IMEI</label> <input id="imei" type="text" class="form-control" />
+    </div>
+
+    <div th:replace=" :: filter-button-group"></div>
+  </div>
+
+  <div th:fragment="device-filter-options" id="filter-options-content">
+    <div>
+      <label for="serialNumber">Serial number</label> <input id="serialNumber" type="text"
+        class="form-control"
+      />
+    </div>
+    <div>
+      <label for="typeName">Type name</label> <input id="typeName" type="text" class="form-control" />
+    </div>
+    <div>
+      <label for="userName">User name</label> <input id="userName" type="text" class="form-control" />
+    </div>
+    <div th:replace=" :: filter-button-group"></div>
+  </div>
+
+  <div th:fragment="filter-button-group">
+    <div class="btn-group">
+      <input type="button" class="btn btn-sm btn-primary" value="Search" onclick="filter()" /> <input
+        type="button" class="btn btn-sm btn-primary" value="Reset" onclick="resetFilter()"
+      />
+    </div>
+  </div>
+
+
+
+
+</body>
+</html>

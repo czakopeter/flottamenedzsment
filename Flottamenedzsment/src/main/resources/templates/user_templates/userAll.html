@@ -9,29 +9,11 @@
 
     <h3 class="uppercase" th:text="#{main.users}">Users</h3>
     
-    <div id="filter-wrapper" class="my-border">
-      <div id="filer-button-wrapper">
-        <a href="#filter-options-wrapper" class="collapsed" data-toggle="collapse" role="button"
-          aria-expanded="false"
-        >Filters</a>
-      </div>
-      <div id="filter-options-wrapper" class="collapse">
-        <div>
-          <label for="email">Email</label> <input id="email" type="text" class="form-control" />
-        </div>
-        <div>
-          <label for="fullName">Full name</label> <input id="fullName" type="text" class="form-control" />
-        </div>
-
-        <div class="btn-group">
-          <input type="button" class="btn btn-sm btn-primary" value="Search" onclick="filter()" />
-          <input type="button" class="btn btn-sm btn-primary" value="Reset" onclick="resetFilter()" />
-        </div>
-
-      </div>
-    </div>
-
-    <a href="/user/new" class="btn btn-primary my-2" th:text="#{button.new}"></a>
+    <div th:replace="fragments/filter/filter :: test('/user/new', user-filter-options)"></div>
+    
+<!--     <div th:replace="fragments/filter/filter :: filter-wrapper(user-filter-options)"></div> -->
+    
+<!--     <a href="/user/new" class="btn btn-primary my-2" th:text="#{button.new}"></a> -->
 
     <table id="user-table" class="table table-sm">
       <thead>

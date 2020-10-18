@@ -8,59 +8,39 @@
   <div layout:fragment="loginContent">
 
     <h2>Invoices</h2>
+    
+    <div th:replace="fragments/filter/filter :: test(invoice-upload, invoice-filter-options)"></div>
+<!--     <div th:replace="fragments/filter/filter :: test('/user/new', 'invoice-filter-options')"></div> -->
+    
+    
+    
+    
+    
+<!--     <div> -->
+<!--       <div> -->
+<!--         <a href="#upload-wrapper" class="collapsed" data-toggle="collapse" role="button" -->
+<!--         aria-expanded="false">Upload</a> -->
+<!--       </div> -->
+<!--       <div id="upload-wrapper" class="collapse"> -->
+<!--         <form action="/invoice/fileUpload" method="post" enctype="multipart/form-data"> -->
+<!--       <h4>Invoice upload</h4> -->
+<!--       <label for="fileBtn">Select an invoice: </label> <input type="file" id="file" name="file" -->
+<!--         accept=".xml" onchange="selectFile(this)" style="display: none" -->
+<!--       /> <input type="button" id=fileBtn onclick="browseFile()" class="btn btn-sm" -->
+<!--         th:value="Browse..." -->
+<!--       /> <label id="fileName">No file selected.</label> <input type="submit" -->
+<!--         class="btn btn-sm btn-primary" th:value="#{button.add}" -->
+<!--       /> -->
+    </form>
+<!--       </div> -->
+<!--       <div th:replace="fragments/filter/filter :: filter-wrapper(invoice-filter-options-table)"></div> -->
+<!--     </div> -->
 
     <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-<!--     <div id="filter-wrapper" -->
-<!--       style="background: #eee; width: auto; border-radius: .5rem; margin: 1em;" class="my-border" -->
-<!--     > -->
-<!--       <div id="filer-button-wrapper" style="text-align: center"> -->
-<!--         <a href="#filter-options-wrapper1" class="collapsed" data-toggle="collapse" role="button" -->
-<!--           aria-expanded="false" -->
-<!--         >Filters1</a> -->
-<!--       </div> -->
-<!--       <div id="filter-options-wrapper1" class="collapse"> -->
-<!--         <table class="table table-sm"> -->
-<!--           <thead> -->
-<!--             <tr> -->
-<!--               <th th:text="#{bill.invoiceNumber}">Invoice number</th> -->
-<!--               <th th:text="#{bill.fromDate}">From</th> -->
-<!--               <th th:text="#{bill.emdDate}">To</th> -->
-<!--               <th></th> -->
-<!--             </tr> -->
-<!--           </thead> -->
-<!--           <tbody> -->
-<!--             <tr> -->
-<!--               <td name="invoiceNumber"><input id="invoice-number" type="text" -->
-<!--                 class="form-control form-control-sm" -->
-<!--               /></td> -->
-<!--               <td><input id="begin-date" type="date" onchange="filterDateSet(this)" -->
-<!--                 class="form-control  form-control-sm" -->
-<!--               /></td> -->
-<!--               <td><input id="end-date" type="date" onchange="filterDateSet(this)" -->
-<!--                 class="form-control  form-control-sm" -->
-<!--               /></td> -->
-<!--               <td></td> -->
-<!--               <td></td> -->
-<!--               <td></td> -->
-<!--             </tr> -->
-<!--           </tbody> -->
-<!--         </table> -->
-<!--       </div> -->
-<!--     </div> -->
     
-    <div th:replace="fragments/filter :: filter-wrapper(invoice-filter-options)"></div>
-
-    <form action="/invoice/fileUpload" method="post" enctype="multipart/form-data">
-      <h4>Invoice upload</h4>
-      <label for="fileBtn">Select an invoice: </label> <input type="file" id="file" name="file"
-        accept=".xml" onchange="selectFile(this)" style="display: none"
-      /> <input type="button" id=fileBtn onclick="browseFile()" class="btn btn-sm"
-        th:value="Browse..."
-      /> <label id="fileName">No file selected.</label> <input type="submit"
-        class="btn btn-sm btn-primary" th:value="#{button.add}"
-      />
-    </form>
+    
+    
 
     <h4>Invoice tables</h4>
     <div th:if="${#lists.isEmpty(rawInvoices)}" class="my-border text-center">

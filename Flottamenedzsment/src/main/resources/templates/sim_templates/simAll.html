@@ -11,24 +11,7 @@
     
     <div th:replace="fragments/message :: message"></div>
     
-    <div id="filter-wrapper" class="my-border">
-      <div id="filer-button-wrapper">
-        <a href="#filter-options-wrapper" class="collapsed" data-toggle="collapse" role="button"
-          aria-expanded="false"
-        >Filters</a>
-      </div>
-      <div id="filter-options-wrapper" class="collapse">
-        <div>
-          <label for="imei">IMEI</label> <input id="imei" type="text" class="form-control" />
-        </div>
-
-        <div class="btn-group">
-          <input type="button" class="btn btn-sm btn-primary" value="Search" onclick="filter()" />
-          <input type="button" class="btn btn-sm btn-primary" value="Reset" onclick="resetFilter()" />
-        </div>
-
-      </div>
-    </div>
+    <div th:replace="fragments/filter/filter :: filter-wrapper(sim-filter-options)"></div>
     
     <a href="/sim/new" class="btn btn-primary my-2"
       th:text="#{button.new}"
