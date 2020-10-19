@@ -9,12 +9,12 @@
 
     <h3 class="uppercase" th:text="#{main.subscriptions}">Subscriptions</h3>
     
-    <div th:replace="fragments/filter/filter :: filter-wrapper(subscription-filter-options)"></div>
+    <div th:replace="fragments/filter/filter :: add-and-filter-wrapper('/subscription/new', subscription-filter-options)"></div>
     
-    <a href="/subscription/new" class="btn btn-primary my-2"
-      th:classappend="${canCreateNew ? '' : 'disabled'}" th:text="#{button.new}"
-      th:disabled="${not canCreateNew}"
-    >New</a>
+<!--     <a href="/subscription/new" class="btn btn-primary my-2" -->
+<!--       th:classappend="${canCreateNew ? '' : 'disabled'}" th:text="#{button.new}" -->
+<!--       th:disabled="${not canCreateNew}" -->
+<!--     >New</a> -->
 
     <table id="subscription-table" class="table table-sm">
       <thead>

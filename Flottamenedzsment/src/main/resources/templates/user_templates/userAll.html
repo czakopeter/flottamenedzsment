@@ -9,11 +9,8 @@
 
     <h3 class="uppercase" th:text="#{main.users}">Users</h3>
     
-    <div th:replace="fragments/filter/filter :: test('/user/new', user-filter-options)"></div>
+    <div th:replace="fragments/filter/filter :: add-and-filter-wrapper('/user/new', user-filter-options)"></div>
     
-<!--     <div th:replace="fragments/filter/filter :: filter-wrapper(user-filter-options)"></div> -->
-    
-<!--     <a href="/user/new" class="btn btn-primary my-2" th:text="#{button.new}"></a> -->
 
     <table id="user-table" class="table table-sm">
       <thead>

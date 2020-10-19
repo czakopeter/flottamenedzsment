@@ -146,4 +146,16 @@ public class CategoryController {
     }
   }
   
+  @GetMapping("/finance/participant/new")
+  public String prepareAddingParticipant(Model model) {
+    model.addAttribute("participant", new Participant());
+    return "finance_templates/participantNew";
+  }
+  
+  @PostMapping("/finance/participant/new")
+  public String addParticipant(Model model, @ModelAttribute Participant participant) {
+    model.addAttribute("participant", new Participant());
+    return "finance_templates/participantNew";
+  }
+  
 }

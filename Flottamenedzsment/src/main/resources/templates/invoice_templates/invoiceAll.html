@@ -9,11 +9,7 @@
 
     <h2>Invoices</h2>
     
-    <div th:replace="fragments/filter/filter :: test(invoice-upload, invoice-filter-options)"></div>
-<!--     <div th:replace="fragments/filter/filter :: test('/user/new', 'invoice-filter-options')"></div> -->
-    
-    
-    
+    <div th:replace="fragments/filter/filter :: add-and-filter-wrapper(invoice-upload, invoice-filter-options)"></div>
     
     
 <!--     <div> -->
@@ -67,12 +63,16 @@
               <td th:text="${rawInvoice.endDate}"></td>
               <td th:text="${rawInvoice.invoiceNetAmount}"></td>
               <td th:text="${rawInvoice.invoiceGrossAmount}"></td>
-              <td><a href="#" class="dropdown" data-toggle="dropdown" role="button"
+              <td><a th:if="${rawInvoice.hasProblem()}" href="#" class="dropdown" data-toggle="dropdown" role="button"
                 aria-haspopup="true" aria-expanded="false"
               >...</a>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">1.</a> <a class="dropdown-item" href="#">2.</a>
-                </div></td>
+                  <form method="post">
+                    <button type="submit" class="btn btn-sm btn-warning" th:formaction="'/invoice/' + ${rawInvoice.invoiceNumber} + '/restartProcessing'">Reprocess</button>
+                    <span class="dropdown-item" th:each="problem : ${rawInvoice.getProblems()}" th:text="${problem}"></span>
+                  </form>
+                </div
+              ></td>
             </tr>
           </tbody>
         </table>

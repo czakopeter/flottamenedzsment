@@ -106,8 +106,14 @@ public class InvoiceService {
     RawInvoice rawInvoice = parseXmlStringToRawInvoice(xmlString);
     
     if(invoiceRepository.findByInvoiceNumber(rawInvoice.getInvoiceNumber()) != null || rawInvoiceRepository.findByInvoiceNumber(rawInvoice.getInvoiceNumber()) != null) {
-      
-    } else if(check(rawInvoice)) {
+      throw new FileUploadException("Already has invoice with this invoice number: " + rawInvoice.getInvoiceNumber());
+    } else  {
+      processRawInvoice(rawInvoice);
+    }
+  }
+  
+  private void processRawInvoice(RawInvoice rawInvoice) {
+    if(check(rawInvoice)) {
       Invoice invoice = parseRawInvoiceToInvoice(rawInvoice);
       invoiceRepository.save(invoice);
     } else {
@@ -153,18 +159,23 @@ public class InvoiceService {
 
   //TODO a különböző hibák visszajelzése, először csak szöveges hibajegyzék, később megoldás ajánlása plusz átirányítás (hiányzó előfizetés -> új felvétele a számmal, hiányzó cég -> felvétele névvel címmel...)
   private boolean check(RawInvoice rawInvoice) {
+    boolean ok = true;
     if(invoiceRepository.findByInvoiceNumber(rawInvoice.getInvoiceNumber()) != null || rawInvoiceRepository.findByInvoiceNumber(rawInvoice.getInvoiceNumber()) != null) {
-      return false;
+      rawInvoice.addProblem("Already has invoice with this invoice number: " + rawInvoice.getInvoiceNumber());
+      ok = false;
     }
     if(participantRepository.findByName(rawInvoice.getCompanyName()) == null) {
-      participantRepository.save(new Participant(rawInvoice.getCompanyName(), rawInvoice.getCompanyAddress()));
+//      participantRepository.save(new Participant(rawInvoice.getCompanyName(), rawInvoice.getCompanyAddress()));
+      rawInvoice.addProblem("Unknown company, name: " + rawInvoice.getCompanyName());
+      ok = false;
     }
     for(RawFeeItem rawFeeItem : rawInvoice.getFeeItems()) {
       if(subscriptionInfo.findByNumber(rawFeeItem.getSubscription()) == null) {
-        return false;
+        rawInvoice.addProblem("Unknown phone number: " + rawFeeItem.getSubscription());
+        ok = false;
       }
     }
-    return true;
+    return ok;
   }
   
   private Invoice parseRawInvoiceToInvoice(RawInvoice rawInvoice) {
@@ -251,13 +262,6 @@ public class InvoiceService {
         Double.valueOf(getFirstTagValue(feeItemElement, "GrossA").replace(',', '.')));
   }
 
-//  private Participant parseToParticipant(Element root) {
-//    return new Participant(
-//        getFirstTagValue(root, "Name"),
-//        getFirstTagValue(root, "City"));
-//        
-//  }
-
   private String getFirstTagValue(Element root, String tagname) {
     return root.getElementsByTagName(tagname).item(0).getFirstChild().getNodeValue();
   }
@@ -311,20 +315,9 @@ public class InvoiceService {
     return invoiceRepository.findById(id).orElse(null);
   }
 
-//  public List<FeeItem> findAllFeeItemByInvoiceId(long id) {
-//    List<FeeItem> result = new LinkedList<>();
-//    Invoice invoice = invoiceRepository.findById(id).orElse(null);
-//    if (invoice != null) {
-//      for (InvoiceByUserAndPhoneNumber part : invoice.getInvoicePart()) {
-//        result.addAll(part.getFees());
-//      }
-//    }
-//    return result;
+//  public void save(Invoice invoice) {
+//    invoiceRepository.save(invoice);
 //  }
-
-  public void save(Invoice invoice) {
-    invoiceRepository.save(invoice);
-  }
 
 //  public List<OneCategoryOfUserFinance> getFinanceByUserId(long id) {
 //    return feeItemService.getFinanceByUserId(id);
@@ -356,20 +349,11 @@ public class InvoiceService {
   }
 
   public void resetInvoiceByInvoiceNumber(String invoiceNumber) {
-//    Invoice invoice = invoiceRepository.findByInvoiceNumber(invoiceNumber);
-//
-//    if (invoice != null) {
-//      try {
-//        Invoice reprocess = processInvoiceXmlString(invoice.getXmlString());
-//        for (FeeItem item : reprocess.getFeeItems()) {
-//          System.out.println(item);
-//        }
-//        invoiceRepository.delete(invoice);
-//        invoiceRepository.save(reprocess);
-//      } catch (FileUploadException e) {
-//        System.err.println(e);
-//      }
-//    }
+    RawInvoice rawInvoice = rawInvoiceRepository.findByInvoiceNumber(invoiceNumber);
+    
+    if(rawInvoice != null) {
+      processRawInvoice(rawInvoice);
+    }
   }
 
   public void deleteInvoiceByInvoiceNumber(String invoiceNumber) {

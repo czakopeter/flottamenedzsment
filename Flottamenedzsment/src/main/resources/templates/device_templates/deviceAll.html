@@ -8,11 +8,11 @@
 
     <h3 class="uppercase">Devices</h3>
     
-    <div th:replace="fragments/filter/filter :: filter-wrapper(device-filter-options)"></div>
+    <div th:replace="fragments/filter/filter :: add-and-filter-wrapper('/device/new', device-filter-options)"></div>
 
-    <a href="/device/new" class="btn btn-primary my-2" th:text="#{button.new}"
-      th:classappend="${canCreateNew ? '' : 'disabled'}"
-    >New</a>
+<!--     <a href="/device/new" class="btn btn-primary my-2" th:text="#{button.new}" -->
+<!--       th:classappend="${canCreateNew ? '' : 'disabled'}" -->
+<!--     >New</a> -->
 
     <table id="device-table" class="table table-sm">
       <thead>

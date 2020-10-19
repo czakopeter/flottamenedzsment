@@ -11,11 +11,11 @@
     
     <div th:replace="fragments/message :: message"></div>
     
-    <div th:replace="fragments/filter/filter :: filter-wrapper(sim-filter-options)"></div>
+    <div th:replace="fragments/filter/filter :: add-and-filter-wrapper('/sim/new', sim-filter-options)"></div>
     
-    <a href="/sim/new" class="btn btn-primary my-2"
-      th:text="#{button.new}"
-    >New</a>
+<!--     <a href="/sim/new" class="btn btn-primary my-2" -->
+<!--       th:text="#{button.new}" -->
+<!--     >New</a> -->
 
     <table id="sim-table" class="table table-sm">
       <thead>

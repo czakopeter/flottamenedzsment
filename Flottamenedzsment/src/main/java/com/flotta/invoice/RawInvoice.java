@@ -1,10 +1,13 @@
 package com.flotta.invoice;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -40,6 +43,9 @@ public class RawInvoice {
   
   @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
   private List<RawFeeItem> feeItems = new LinkedList<>();
+  
+  @ElementCollection
+  private Set<String> problems = new HashSet<>();
   
   public RawInvoice() {}
   
@@ -143,14 +149,26 @@ public class RawInvoice {
     feeItem.setInvoice(this);
     feeItems.add(feeItem);
   }
-  
-  public boolean hasProblem() {
-    return false;
-  }
-  
-  public String getProblem() {
-    StringBuilder sb = new StringBuilder();
-    return sb.toString();
+
+  public Set<String> getProblems() {
+    return problems;
   }
 
+  public void setProblems(Set<String> problems) {
+    this.problems = problems;
+  }
+
+  
+  public void addProblem(String problem) {
+    problems.add(problem);
+  }
+  
+  public void clearProblem() {
+    problems.clear();
+  }
+
+  public boolean hasProblem() {
+    return !problems.isEmpty();
+  }
+  
 }

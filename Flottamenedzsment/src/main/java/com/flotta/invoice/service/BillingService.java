@@ -103,16 +103,16 @@ public class BillingService {
     return invoiceService.findById(id);
   }
 
-  public boolean billPartitionByTemplateId(long billId, long templateId) {
-    //TODO missing bill or template problem throw exception
-    Invoice invoice = invoiceService.findById(billId);
-    if(invoice != null) {
-      Map<Category, List<FeeItem> >  result =  descriptionCategoryCouplerService.partition(invoice, templateId);
-      invoiceService.save(invoice);
-      return result == null ?  false : true;
-    }
-    return false;
-  }
+//  public boolean billPartitionByTemplateId(long billId, long templateId) {
+//    //TODO missing bill or template problem throw exception
+//    Invoice invoice = invoiceService.findById(billId);
+//    if(invoice != null) {
+//      Map<Category, List<FeeItem> >  result =  descriptionCategoryCouplerService.partition(invoice, templateId);
+//      invoiceService.save(invoice);
+//      return result == null ?  false : true;
+//    }
+//    return false;
+//  }
   
   public List<String> getUnknownFeeDescToTemplate(long templateId) {
     return descriptionCategoryCouplerService.getMissingFeeItemDescription(templateId);
@@ -130,9 +130,9 @@ public class BillingService {
     return result;
   }
 
-  public void save(Invoice invoice) {
-    invoiceService.save(invoice);
-  }
+//  public void save(Invoice invoice) {
+//    invoiceService.save(invoice);
+//  }
 
 //  public List<OneCategoryOfUserFinance> getFinanceByUserId(long id) {
 //    return invoiceService.getFinanceByUserId(id);
