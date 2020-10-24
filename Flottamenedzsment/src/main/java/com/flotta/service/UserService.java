@@ -11,6 +11,7 @@ import javax.annotation.PostConstruct;
 
 //import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,7 +29,10 @@ import com.flotta.utility.Validator;
 
 @Service
 public class UserService extends ServiceWithMsg implements UserDetailsService {
-	
+  
+//  @Value("#{value.sendMail}")
+//  private static boolean SEND_MAIL;
+  
 	private UserRepository userRepository;
 	
 	private EmailService emailService;
@@ -82,14 +86,13 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
 		user.setStatus(UserStatusEnum.WAITING_FOR_ACTIVATION);
 		user.addRoles(roleRepository.findByRole("BASIC"));
 		user.setPassword(passwordEncoder.encode(password));
-		user.setPasswordRenewerKey(generateKey(16));
+		user.setActivationKey(generateKey(16));
 		if(emailService.sendMessage(user.getEmail(),
 		    "Activation email",
-		    emailService.createMessageText(EmailService.FAILED_PASSWORD_CHANGE, new String[] {user.getFullName(), user.getPasswordRenewerKey(), password}))) {
+		    emailService.createMessageText(EmailService.ACTIVATION_AND_INITIAL_PASSWORD, new String[] {user.getFullName(), user.getActivationKey(), password}))) {
 		  userRepository.save(user);
 		} else {
 		  appendMsg("Email send failed!");
-		  return false;
 		}
 		return true;
 	}
@@ -116,7 +119,6 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
     User user = getActualUser();
     if(user.getPassword().equals(passwordEncoder.encode(oldPsw)) && Validator.validPassword(newPsw) && newPsw.contentEquals(confirmPsw)) {
       user.setPassword(passwordEncoder.encode(newPsw));
-      user.setPasswordRenewerKey(null);
       user.setStatus(UserStatusEnum.ENABLED);
       userRepository.save(user);
       emailService.sendMessage(user.getEmail(),
@@ -144,11 +146,11 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
       user.addRoles(roleRepository.findByRole("ADMIN"));
       user.setStatus(UserStatusEnum.WAITING_FOR_ACTIVATION);
       user.setPassword(passwordEncoder.encode(password));
-      user.setPasswordRenewerKey(generateKey(16));
+      user.setActivationKey(generateKey(16));
       if(emailService.sendMessage(
           user.getEmail(),
           "Activation email", 
-          emailService.createMessageText(EmailService.ACTIVATION_AND_INITIAL_PASSWORD, new String[] {user.getFullName(), user.getPasswordRenewerKey() , password}))) {
+          emailService.createMessageText(EmailService.ACTIVATION_AND_INITIAL_PASSWORD, new String[] {user.getFullName(), user.getActivationKey() , password}))) {
         userRepository.save(user);
       } else {
         appendMsg("Email send failed!");
@@ -159,7 +161,7 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
   }
 
   public boolean activation(String key) {
-    User user = userRepository.findByPasswordRenewerKey(key);
+    User user = userRepository.findByActivationKey(key);
     if(user != null) {
       user.setEnabled(true);
       user.setStatus(UserStatusEnum.REQUIRED_PASSWORD_CHANGE);
@@ -202,11 +204,11 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
     User user = userRepository.findByEmail(email);
     if(user != null) {
       user.setPassword(passwordEncoder.encode(generateKey(16)));
-      user.setPasswordRenewerKey(generateKey(16));
+      user.setActivationKey(generateKey(16));
       user.setStatus(UserStatusEnum.WAITING_FOR_ACTIVATION);
       if(emailService.sendMessage(user.getEmail(),
           "Activation email",
-          emailService.createMessageText(EmailService.ACTIVATION_AND_INITIAL_PASSWORD, new String[] {user.getFullName(), user.getPasswordRenewerKey() , user.getPassword()}))) {
+          emailService.createMessageText(EmailService.ACTIVATION_AND_INITIAL_PASSWORD, new String[] {user.getFullName(), user.getActivationKey() , user.getPassword()}))) {
         userRepository.save(user);
       }
       return true;

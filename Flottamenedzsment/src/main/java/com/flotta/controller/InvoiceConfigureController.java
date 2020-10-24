@@ -17,8 +17,10 @@ import com.flotta.invoice.Participant;
 import com.flotta.service.MainService;
 
 @Controller
-public class CategoryController {
+public class InvoiceConfigureController {
 
+  private static final String TEMPLATE_PATH = "/invoice_config_templates";
+  
   private MainService service;
   
   @Autowired
@@ -28,37 +30,33 @@ public class CategoryController {
   
   @ModelAttribute
   private void title(Model model) {
-    model.addAttribute("title", "Category");
   }
   
   @GetMapping("/finance/category/all")
   public String listCategories(Model model) {
     model.addAttribute("categories", service.findAllCategory());
     model.addAttribute("add", new String());
-//    model.addAttribute("users", service.findAllUser());
-//    model.addAttribute("chargeRatioNames", service.findAllChargeRatio());
-    return "finance_templates/category";
+    return TEMPLATE_PATH + "/category";
   }
   
-//  @PostMapping("/finance/category/add")
   @PostMapping("/finance/category/all")
   public String addCategory(Model model, @ModelAttribute("add") String category) {
     if(service.addCategory(category)) {
     }
-    return "redirect:/finance/category/all";
+    return "redirect:" + TEMPLATE_PATH + "/category/all";
   }
   
   @GetMapping("finance/invoiceDescriptionCategoryCoupler/all")
   public String listInvoiceDescriptionCategoryCoupler(Model model) {
     model.addAttribute("couplers", service.findAllDescriptionCategoryCoupler());
-    return "finance_templates/invoiceDescriptionCategoryCouplerAll";
+    return TEMPLATE_PATH + "/invoiceDescriptionCategoryCouplerAll";
   }
   
   @GetMapping("/finance/invoiceDescriptionCategoryCoupler/{id}")
   public String prepareEditingInvoiceDescriptionCategoryCoupler(Model model, @PathVariable("id") long id) {
     model.addAttribute("coupler", service.findBillPartitionTemplateById(id));
     model.addAttribute("categories", service.findAllCategory());
-    return "finance_templates/invoiceDescriptionCategoryCouplerEdit";
+    return TEMPLATE_PATH + "/invoiceDescriptionCategoryCouplerEdit";
   }
   
   @PostMapping("/finance/invoiceDescriptionCategoryCoupler/{id}")
@@ -66,13 +64,13 @@ public class CategoryController {
     model.addAttribute("coupler", service.findBillPartitionTemplateById(id));
     model.addAttribute("categories", service.findAllCategory());
     service.upgradeDescriptionCategoryCoupler(id, descriptions, categories);
-    return "finance_templates/invoiceDescriptionCategoryCouplerEdit";
+    return TEMPLATE_PATH + "/invoiceDescriptionCategoryCouplerEdit";
   }
   
   @GetMapping("/finance/invoiceDescriptionCategoryCoupler/{id}/view")
   public String viewInvoiceDescriptionCategoryCoupler(Model model, @PathVariable("id") long id) {
     model.addAttribute("coupler", service.findBillPartitionTemplateById(id));
-    return "finance_templates/invoiceDescriptionCategoryCouplerView";
+    return TEMPLATE_PATH + "/invoiceDescriptionCategoryCouplerView";
   }
   
   @GetMapping("finance/invoiceDescriptionCategoryCoupler/{id}/update")
@@ -80,26 +78,26 @@ public class CategoryController {
     model.addAttribute("id", id);
     model.addAttribute("descriptions", service.getUnknownFeeDescToTemplate(id));
     model.addAttribute("categories", service.findAllCategory());
-    return "finance_templates/invoiceDescriptionCategoryCouplerUpgrade";
+    return TEMPLATE_PATH + "/invoiceDescriptionCategoryCouplerUpgrade";
   }
   
   @PostMapping("finance/invoiceDescriptionCategoryCoupler/{id}/update")
   public String updateInvoiceDescriptionCategoryCoupler(Model model, @PathVariable("id") long id, @RequestParam("description") List<String> descriptions, @RequestParam("category") List<Long> categories) {
     service.upgradeDescriptionCategoryCoupler(id, descriptions, categories);
-    return "redirect:/invoice/all";
+    return "redirect:" + TEMPLATE_PATH + "invoice/all";
   }
   
   @GetMapping("finance/chargeRatio/all")
   public String listChargeRatio(Model model) {
     model.addAttribute("chargeRatios", service.findAllChargeRatio());
-    return "/finance_templates/chargeRatioByCategoryAll";
+    return TEMPLATE_PATH + "/chargeRatioByCategoryAll";
   }
   
   @GetMapping("/finance/chargeRatio/new")
   public String prepareAddingChargeRatio(Model model) {
     model.addAttribute("unusedCategories", service.findAllCategory());
     model.addAttribute("chargeRatio", new ChargeRatioByCategory());
-    return "finance_templates/chargeRatioByCategoryNew";
+    return TEMPLATE_PATH + "/chargeRatioByCategoryNew";
   }
   
   @PostMapping("/finance/chargeRatio/new")
@@ -108,7 +106,7 @@ public class CategoryController {
       return "redirect:/finance/chargeRatio/all";
     }
     model.addAttribute("unusedCategories", service.findAllCategory());
-    return "finance_templates/chargeRatioByCategoryNew";
+    return TEMPLATE_PATH + "/chargeRatioByCategoryNew";
   }
   
   @GetMapping("/finance/chargeRatio/{id}")
@@ -116,7 +114,7 @@ public class CategoryController {
     model.addAttribute("categories", service.findAllCategory());
     model.addAttribute("chargeRatio", service.findChargeRatioById(id));
     model.addAttribute("unusedCategories", service.getUnusedCategoryOfChargeRatio(id));
-    return "finance_templates/chargeRatioByCategoryEdit";
+    return TEMPLATE_PATH + "/chargeRatioByCategoryEdit";
   }
   
   @PostMapping("/finance/chargeRatio/{id}")
@@ -125,13 +123,13 @@ public class CategoryController {
     }
     model.addAttribute("chargeRatio", service.findChargeRatioById(id));
     model.addAttribute("categories", service.findAllCategory());
-    return "finance_templates/chargeRatioByCategoryEdit";
+    return TEMPLATE_PATH + "/chargeRatioByCategoryEdit";
   }
   
   @GetMapping("/finance/participant/all")
   public String listParticipant(Model model) {
     model.addAttribute("participants", service.findAllParticipant());
-    return "finance_templates/participantAll";
+    return TEMPLATE_PATH + "/participantAll";
   }
   
   @GetMapping("/finance/participant/{id}")
@@ -140,22 +138,33 @@ public class CategoryController {
     if(participant.isPresent()) {
       model.addAttribute("participant", participant.get());
       model.addAttribute("descriptionCategoryCouplers", service.findAllDescriptionCategoryCoupler());
-      return "finance_templates/participantEdit";
+      return TEMPLATE_PATH + "/participantEdit";
     } else {
-      return "redirect:/finance/participant/all";
+      return "redirect:" + TEMPLATE_PATH + "/participant/all";
     }
   }
   
   @GetMapping("/finance/participant/new")
   public String prepareAddingParticipant(Model model) {
     model.addAttribute("participant", new Participant());
-    return "finance_templates/participantNew";
+    return TEMPLATE_PATH + "/participantNew";
   }
   
   @PostMapping("/finance/participant/new")
   public String addParticipant(Model model, @ModelAttribute Participant participant) {
-    model.addAttribute("participant", new Participant());
-    return "finance_templates/participantNew";
+    if(service.addParticipant(participant)) {
+    }
+    model.addAttribute("participant", participant);
+    return TEMPLATE_PATH +  "/participantNew";
+  }
+  
+  @GetMapping("/invoiceConfigure/main")
+  public String invoiceConfigureMain(Model model) {
+    model.addAttribute("categories", service.findAllCategory());
+    model.addAttribute("couplers", service.findAllDescriptionCategoryCoupler());
+    model.addAttribute("chargeRatios", service.findAllChargeRatio());
+    model.addAttribute("participants", service.findAllParticipant());
+    return TEMPLATE_PATH + "/invoiceConfigures";
   }
   
 }

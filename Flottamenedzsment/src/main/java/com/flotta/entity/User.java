@@ -36,7 +36,7 @@ public class User extends BasicEntity {
 	
 	private boolean enabled;
 	
-	private String passwordRenewerKey;
+	private String activationKey;
 	
   @OneToMany( mappedBy = "user" )
 	private Set<UserSub> userSubs;
@@ -83,12 +83,12 @@ public class User extends BasicEntity {
 		this.fullName = fullName;
 	}
 	
-	public String getPasswordRenewerKey() {
-    return passwordRenewerKey;
+	public String getActivationKey() {
+    return activationKey;
   }
 
-  public void setPasswordRenewerKey(String passwordRenewerKey) {
-    this.passwordRenewerKey = passwordRenewerKey;
+  public void setActivationKey(String activationKey) {
+    this.activationKey = activationKey;
   }
 
 //  public int getStatus() {
@@ -108,9 +108,6 @@ public class User extends BasicEntity {
 	}
 
 	public Set<Role> getRoles() {
-	  if(passwordRenewerKey != null) {
-      return new HashSet<>();
-    }
 		return roles;
 	}
 
@@ -127,7 +124,7 @@ public class User extends BasicEntity {
 	}
 
 	public void addRoles(Role role) {
-		if (this.roles == null || this.roles.isEmpty()) 
+		if (this.roles == null) 
 			this.roles = new HashSet<>();
 		this.roles.add(role);
 	}
@@ -138,11 +135,11 @@ public class User extends BasicEntity {
 				+ ", enabled=" + enabled + ", subscriptions=" + Objects.toString(userSubs, "NULL") + ", roles=" + Objects.toString(roles, "NULL") + "]";
 	}
 	
-	public boolean equalsByEmail(User u) {
-		if(u == null) {
+	public boolean equalsByEmail(User other) {
+		if(other == null) {
 			return false;
 		}
-		return email.equals(u.getEmail());
+		return email.equals(other.getEmail());
 	}
 	
 	public List<ChargeRatioByCategory> getPayDevs() {
@@ -186,9 +183,9 @@ public class User extends BasicEntity {
     this.status = status;
   }
 
-  public boolean isPasswordChangeRequired() {
-    return status.equals(UserStatusEnum.REQUIRED_PASSWORD_CHANGE);
-  }
+//  public boolean isPasswordChangeRequired() {
+//    return status.equals(UserStatusEnum.REQUIRED_PASSWORD_CHANGE);
+//  }
   
   
 }

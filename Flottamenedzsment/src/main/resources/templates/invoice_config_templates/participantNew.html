@@ -9,14 +9,13 @@
 
     <h2>New participant</h2>
 
-    <div class="container">
+    <form th:object="${participant}" method="post" id="form">
       <div class="row my-2">
         <div class="col-2">
           <label>Name</label>
         </div>
         <div class="col-4">
           <input type="text" class="form-control" id="name" name="name" th:value="${participant.name}"
-            readonly="readonly"
           />
         </div>
       </div>
@@ -26,11 +25,19 @@
         </div>
         <div class="col-4">
           <input type="text" id="address" name="address" th:value="${participant.address}" class="form-control"
-            readonly="readonly"
           />
         </div>
       </div>
-    </div>
+      <div class="row">
+        <div class="col-6 text-right">
+          <button type="submit" id="button" class="btn btn-primary"
+            formaction="/finance/participant/new"
+            th:text="#{button.save}"
+          >Save</button>
+          <a href="/invoiceConfigure/main" class="btn btn-primary" th:text="#{button.back}">Back</a>
+        </div>
+      </div>
+    </form>
 
 
   </div>

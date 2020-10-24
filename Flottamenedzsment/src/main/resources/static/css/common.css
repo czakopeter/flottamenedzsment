@@ -121,58 +121,6 @@ table thead tr {
 	margin-top: 2rem;
 }
 
-.my-menu {
-/* 	border-color: var(--menu-background-border); */
-/* 	background-color: var(--menu-background); */
-}
-
-.navbar-nav ul li a {
-	 border-bottom: 3px solid transparent;
-}
-
-.navbar {
-	padding: 0;
-	font-weight: bold;
-	background-color: var(--menu-background);
-	color: var(--menu-text);
-}
-
-.nav-item .nav-link:hover {
-	color: var(--menu-text-hover);
-	border-bottom: solid 3px;
-	border-bottom-color: var(--watermelon);
-}
-
-.nav-item .nav-link.active {
-	color: var(--watermelon);
-	background-color: var(--menu-background);
-	border-bottom: solid 3px;
-	border-bottom-color: var(--watermelon);
-}
-
-.nav-item .nav-link {
-	color: var(--menu-text);
-}
-
-.dropdown-menu {
-	background-color: var(--menu-background);
-	border: solid 1px var(--carbon);
-}
-
-.dropdown-item {
-	font-size: 14px;
-	font-weight: bold;
-}
-
-.dropdown-item:hover {
-	font-size: 14px;
-	font-weight: bold;
-	color: var(--watermelon);
-	border-bottom: solid 3px;
-	border-bottom-color: var(--watermelon);
-	background-color: var(--menu-background);
-}
-
 .my-border {
 	border-width: 1px;
 	border-style: solid;

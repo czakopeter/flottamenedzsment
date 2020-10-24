@@ -9,14 +9,7 @@
 
     <h2>Items</h2>
     
-      <div>
-      <a href="#test" class="collapsed" data-toggle="collapse" role="button" aria-expanded="false">Subscription</a>
-      <div id="test" class="collapse">
-        <div>test</div>
-      </div>
-      </div>
-
-      <h4>Subscriptions</h4>
+      <h4 class="uppercase" th:text="#{main.subscriptions}">Subscriptions</h4>
       <div th:if="${#lists.isEmpty(subscriptions)}" class="text-center my-border">
         <b>You don't have any subscriptions</b>
       </div>
@@ -27,6 +20,7 @@
             <th th:text="#{subscription.phoneNumber}">Number</th>
             <th th:text="#{subscription.imei}">IMEI</th>
             <th th:text="#{subscription.device}">Device</th>
+            <th>From</th>
           </tr>
         </thead>
         <tbody>
@@ -34,13 +28,14 @@
             <td th:text="${subscription.number}"></td>
             <td th:text="${subscription.imei}"></td>
             <td th:text="${subscription.deviceName}"></td>
+            <td th:text="${subscription.date}"></td>
           </tr>
         </tbody>
       </table>
 
     <br />
 
-    <h4>Devices</h4>
+    <h4 class="uppercase" th:text="#{main.devices}">Devices</h4>
       <div th:if="${#lists.isEmpty(devices)}" class="text-center my-border">
         <b>You don't have any devices</b>
       </div>
@@ -50,6 +45,7 @@
             <th th:text="#{device.serialNumber}">Serial number</th>
             <th th:text="#{device.typeName}">Type Name</th>
             <th th:text="#{device.subscription}">Subscription</th>
+            <th>From</th>
           </tr>
         </thead>
         <tbody>

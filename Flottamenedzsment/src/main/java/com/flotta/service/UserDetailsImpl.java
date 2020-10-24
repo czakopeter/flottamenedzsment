@@ -22,17 +22,14 @@ public class UserDetailsImpl implements UserDetails {
 		this.user = user;
 	}
 
+	//TODO kötelező jelszó csere nem kell
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
-		if(user.getPasswordRenewerKey() == null) {
-		  Set<Role> roles = user.getRoles();
-	    for (Role role : roles) {
-	      authorities.add(new SimpleGrantedAuthority(role.getRole()));
-	    }
-		} else {
-		  authorities.add(new SimpleGrantedAuthority("PASSWORD"));
-		}
+	  Set<Role> roles = user.getRoles();
+    for (Role role : roles) {
+      authorities.add(new SimpleGrantedAuthority(role.getRole()));
+    }
 		return authorities;
 	}
 
@@ -70,9 +67,9 @@ public class UserDetailsImpl implements UserDetails {
 	  return user.getFullName();
 	}
 	
-	public boolean isPasswordExpired() {
-	  return user.isPasswordChangeRequired();
-	}
+//	public boolean isPasswordExpired() {
+//	  return user.isPasswordChangeRequired();
+//	}
 	
 	public boolean hasRole(String role) {
 	  return user.hasRole(role);

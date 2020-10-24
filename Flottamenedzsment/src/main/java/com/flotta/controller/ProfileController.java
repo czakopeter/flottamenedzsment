@@ -43,11 +43,10 @@ public class ProfileController {
   public String passwordChange(Model model, RedirectAttributes ra, @RequestParam Map<String, String> params) {
     if(service.changePassword(params.get("old-password"), params.get("new-password"), params.get("confirm-new-password"))) {
       ra.addFlashAttribute("success", "Change password was success");
-      return "redirect:/logout";
     } else {
       model.addAttribute("error", service.getUserError());
-      return "profile/passwordChange";
     }
+    return "profile/passwordChange";
   }
   
   //TODO Felhasználóhoz kapcsolt összes visszaadása, javascript-ből szűrés rá(elfogadot vagy nem, min összeg stb.)

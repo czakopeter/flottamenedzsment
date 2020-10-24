@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main}">
+<head>
+<title>Flotta</title>
+</head>
+<body>
+
+  <div layout:fragment="loginContent">
+
+    <div th:fragment="charge-ratio-all">
+      <h4 class="uppercase">Charge ratios</h4>
+  
+      <a href="/finance/chargeRatio/new" class="btn btn-primary" th:text="#{button.new}"></a>
+  
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tr th:each="chargeRatio : ${chargeRatios}">
+          <td th:text="${chargeRatio.name}"></td>
+          <td><a th:href="${'/finance/chargeRatio/' + chargeRatio.id}" class="btn btn-primary"
+            th:text="#{button.edit}"
+          ></a></td>
+        </tr>
+      </table>
+    </div>
+    
+
+
+  </div>
+
+</body>
+</html>

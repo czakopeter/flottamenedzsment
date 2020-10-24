@@ -232,5 +232,10 @@ public class BillingService {
   public Optional<Participant> findParticipantById(long id) {
     return invoiceService.findParticipantById(id);
   }
+
+  public boolean addParticipant(Participant participant) {
+    return invoiceService.addParticipant(participant);
+    
+  }
   
 }

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main}">
+<head>
+<title>Flotta</title>
+</head>
+<body>
+
+  <div layout:fragment="loginContent">
+
+    <h2 class="uppercase">Invoice configures</h2>
+    
+    <div>
+      <div class="btn-group my-2">
+        <a href="#category" class="btn btn-sm btn-primary" data-toggle="collapse" role="button" aria-expanded="false" onclick="test(this)">Category</a>
+        <a href="#description-category-coupler" class="btn btn-sm btn-primary" data-toggle="collapse" role="button" aria-expanded="false" onclick="test(this)">Description category coupler</a>
+        <a href="#charge-ratio" class="btn btn-sm btn-primary" data-toggle="collapse" role="button" aria-expanded="false" onclick="test(this)">Charge ratio</a>
+        <a href="#participant" class="btn btn-sm btn-primary" data-toggle="collapse" role="button" aria-expanded="false" onclick="test(this)">Participant</a>
+      </div>
+      
+      <div id="category" class="collapse" th:insert="/invoice_config_templates/category :: category-all"></div>
+      <div id="description-category-coupler" class="collapse" th:insert="/invoice_config_templates/invoiceDescriptionCategoryCouplerAll :: description-category-coupler-all"></div>
+      <div id="charge-ratio" class="collapse" th:insert="/invoice_config_templates/chargeRatioByCategoryAll :: charge-ratio-all"></div>
+      <div id="participant" class="collapse" th:insert="/invoice_config_templates/participantAll :: participant-all"></div>
+    </div>
+
+  <script src="/js/invoiceConfigure/invoiceConfigure.js"></script>
+
+  </div>
+
+
+
+</body>
+</html>

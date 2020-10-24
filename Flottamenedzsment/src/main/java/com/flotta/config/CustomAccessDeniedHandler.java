@@ -19,14 +19,13 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
   public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
 
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+//    UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
 
-    if (auth != null && userDetails.isPasswordExpired()) {
-      response.sendRedirect(request.getContextPath() + "/profile");
-    } else {
+//    if (auth != null && userDetails.isPasswordExpired()) {
+//      response.sendRedirect(request.getContextPath() + "/profile");
+//    } else {
       response.sendRedirect(request.getContextPath() + "/accessDenied");
-    }
-
+//    }
   }
 
 }

@@ -6,10 +6,12 @@
 <body>
 
   <div layout:fragment="loginContent">
+  
+    <div th:fragment="participant-all">
+      <h4 class="uppercase">Participants</h4>
 
-    <h2 class="uppercase">Participants</h2>
+      <a href="/finance/participant/new" class="btn btn-sm btn-primary">Add</a>
 
-    <div class="container">
       <table class="table table-sm">
         <thead>
           <tr>
@@ -22,12 +24,13 @@
           <tr th:each="participant : ${participants}">
             <td th:text="${participant.name}"></td>
             <td th:text="${participant.address}"></td>
-            <td><a class="btn btn-sm btn-primary" th:href="'/finance/participant/' + ${participant.id}">Edit</a></td>
+            <td><a class="btn btn-sm btn-primary"
+              th:href="'/finance/participant/' + ${participant.id}"
+            >Edit</a></td>
           </tr>
         </tbody>
       </table>
     </div>
-
 
   </div>
 

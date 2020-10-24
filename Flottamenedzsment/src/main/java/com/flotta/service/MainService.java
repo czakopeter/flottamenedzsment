@@ -545,4 +545,9 @@ public class MainService {
     return billingService.findAllRawInvoice();
   }
 
+  public boolean addParticipant(Participant participant) {
+    return billingService.addParticipant(participant);
+    
+  }
+
 }

@@ -16,8 +16,9 @@
   crossorigin="anonymous"
 />
 
-<link rel="stylesheet" href="/css/my.css" th:href="@{/css/my.css}" />
+<link rel="stylesheet" href="/css/common.css" th:href="@{/css/common.css}" />
 <link rel="stylesheet" href="/css/filter.css" th:href="@{/css/filter.css}" />
+<link rel="stylesheet" href="/css/menu.css" th:href="@{/css/menu.css}" />
 
 <!-- <link rel="stylesheet" href="/css/bootstrap.min.css"/> -->
 
@@ -77,10 +78,7 @@
         <li class="nav-item dropdown" th:classappend="${title} == 'Invoice' ? 'active' :''"><a class="nav-link dropdown-toggle"
           data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Invoice</a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="/finance/category/all">Categories</a>
-            <a class="dropdown-item" href="/finance/invoiceDescriptionCategoryCoupler/all">Description category couplers</a>
-            <a class="dropdown-item" href="/finance/chargeRatio/all">Charge ratios</a>
-            <a class="dropdown-item" href="/finance/participant/all">Participants</a>
+            <a class="dropdown-item" href="/invoiceConfigure/main">Configure</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/invoice/all">Invoices</a>
           </div>
@@ -92,12 +90,11 @@
         <label class="mr-1" th:text="#{main.greeting}">Wellcome</label>
         <label class="mr-1" th:text="${#authentication.getPrincipal().getFullName()}">Somebody</label>
         <div class="dropdown">
-          <button class="btn dropdown-toggle" type="button" role="button" id="dropdownProfileMenuButton" data-toggle="dropdown" style="background-color : #f1f1ff">
+          <button class="btn dropdown-toggle" type="button" role="button" id="dropdownProfileMenuButton" data-toggle="dropdown">
             <img alt="Settings" src="/img/settings-male.png" style="height: 25px"/>
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownProfileMenuButton" style="position: absolute; ">
             <a class="dropdown-item" href="/profile/finance">Invoice</a>
-<!--             <a class="dropdown-item" href="/profile/finance/history">Invoice history</a> -->
             <a class="dropdown-item" href="/profile/items">Items</a>
             <a class="dropdown-item" href="/profile/changePassword">Change password</a>
           </div>
