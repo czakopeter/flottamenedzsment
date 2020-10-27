@@ -6,7 +6,7 @@
 <body>
   <div layout:fragment="loginContent">
 
-    <h3 class="uppercase">Devices</h3>
+    <h3 class="uppercase" th:text="#{main.devices}">Devices</h3>
     
     <div th:replace="fragments/filter/filter :: add-and-filter-wrapper('/device/new', device-filter-options)"></div>
 

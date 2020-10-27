@@ -1,6 +1,7 @@
 package com.flotta.service;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,6 +36,7 @@ import com.flotta.invoice.Invoice;
 import com.flotta.invoice.InvoiceByUserAndPhoneNumber;
 import com.flotta.invoice.exception.FileUploadException;
 import com.flotta.invoice.service.BillingService;
+import com.flotta.utility.MessageToView;
 //import com.flotta.invoice.service.ChargeRatioService;
 
 
@@ -206,8 +208,10 @@ public class MainService {
     return userService.changePassword(oldPsw, newPsw, confirmPsw);
  }
 
- public String getUserError() {
-   return userService.removeMsg();
+ public List<MessageToView> getUserError() {
+   MessageToView mtv = new MessageToView(userService.removeMsg());
+   mtv.setToDanger();
+   return Arrays.asList(mtv);
  }
  
  public boolean firstUserRegistration(User user) {

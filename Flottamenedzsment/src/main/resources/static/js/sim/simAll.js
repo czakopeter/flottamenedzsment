@@ -10,7 +10,7 @@ function filter() {
 	}
 }
 
-function resetFilter() {
+function clearFilter() {
 	let filterOptionsWrapper = document.querySelector("#filter-options-wrapper");
 	filterOptionsWrapper.querySelector("#imei").value = "";
 	showAll();

@@ -21,14 +21,14 @@ public class I18n implements WebMvcConfigurer {
 //        return slr;
 //    }
   
-// TODO   ezzel az bizonyos oldalakon a locale nem változik nyelvválasztásnál
+// TODO   ezzel bizonyos oldalakon a locale nem változik nyelvválasztásnál
   @Bean
-  public LocaleResolver localeResolver()  {
+  public CookieLocaleResolver localeResolver()  {
       CookieLocaleResolver resolver= new CookieLocaleResolver();
       resolver.setCookieName("lang");
       resolver.setCookieMaxAge(60000);
       resolver.setDefaultLocale(Locale.ENGLISH);
-      resolver.setCookiePath("/");
+//      resolver.setCookiePath("/");
       return resolver;
   } 
   

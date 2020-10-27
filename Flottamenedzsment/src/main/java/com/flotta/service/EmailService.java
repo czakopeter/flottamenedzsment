@@ -33,7 +33,7 @@ public class EmailService extends ServiceWithMsg {
     
     public static String ACTIVATION_AND_INITIAL_PASSWORD = 
         "Dear $name$!\n\n"
-        + "Please activate your profile <a href=\"localhost:8080/activation/$key$\">here</a>!\n" 
+        + "Please activate your profile <a href=\"http://localhost:8080/activation/$key$\"  target=\"_blank\">here</a>!\n" 
         + "Your initial password: $initialPassword$";
 
 	
@@ -83,6 +83,7 @@ public class EmailService extends ServiceWithMsg {
 	    sb.append(template.substring(from, template.length()));
 	  }
 	  System.out.println(sb.toString());
-	  return sb.toString();
+	  
+	  return sb.toString().replaceAll("\n", "<br />");
 	}
 }

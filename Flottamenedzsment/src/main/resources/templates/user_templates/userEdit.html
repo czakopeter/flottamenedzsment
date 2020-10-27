@@ -7,9 +7,9 @@
 
   <div layout:fragment="loginContent">
 
-    <h2 th:text="#{user.editUser}">Edit user</h2>
+    <h3 class="uppercase" th:text="#{user.editUser}">Edit user</h3>
     
-    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    <div th:replace="fragments/message :: message"></div>
     
     <form th:object="${user}" method="post" id="form">
       <div class="container">
@@ -43,39 +43,41 @@
             <label th:text="#{role.admin}">Admin</label>
           </div>
           <div class="col-2">
-            <input type="checkbox" class="form-control" id="admin" name="admin" th:checked="${user.hasRole('admin')}" />
+            <input type="checkbox" class="form-control" id="admin" name="admin" th:checked="${user.hasRole('admin')}" onclick="adminCheckboxClick(this)"/>
           </div>
         </div>
-        <div class="row my-2">
-          <div class="col-2">
-            <label th:text="#{role.userMngr}">User manager</label>
+        <div id="normal-roles-wrapper">
+          <div class="row my-2">
+            <div class="col-2">
+              <label th:text="#{role.userMngr}">User manager</label>
+            </div>
+            <div class="col-2">
+              <input type="checkbox" class="form-control" id="user_mngr" name="user_mngr" th:checked="${user.hasRole('user_mngr')}" th:disabled="${user.hasRole('admin')}" />
+            </div>
           </div>
-          <div class="col-2">
-            <input type="checkbox" class="form-control" id="user_mngr" name="user_mngr" th:checked="${user.hasRole('user_mngr')}" />
+          <div class="row my-2">
+            <div class="col-2">
+              <label th:text="#{role.subscriptionMngr}">Subscription manager</label>
+            </div>
+            <div class="col-2">
+              <input type="checkbox" class="form-control" id="subscription_mngr" name="subscription_mngr" th:checked="${user.hasRole('subscription_mngr')}" th:disabled="${user.hasRole('admin')}" />
+            </div>
           </div>
-        </div>
-        <div class="row my-2">
-          <div class="col-2">
-            <label th:text="#{role.subscriptionMngr}">Subscription manager</label>
+          <div class="row my-2">
+            <div class="col-2">
+              <label th:text="#{role.deviceMngr}">Device manager</label>
+            </div>
+            <div class="col-2">
+              <input type="checkbox" class="form-control" id="device_mngr" name="device_mngr" th:checked="${user.hasRole('device_mngr')}" th:disabled="${user.hasRole('admin')}" />
+            </div>
           </div>
-          <div class="col-2">
-            <input type="checkbox" class="form-control" id="subscription_mngr" name="subscription_mngr" th:checked="${user.hasRole('subscription_mngr')}" />
-          </div>
-        </div>
-        <div class="row my-2">
-          <div class="col-2">
-            <label th:text="#{role.deviceMngr}">Device manager</label>
-          </div>
-          <div class="col-2">
-            <input type="checkbox" class="form-control" id="device_mngr" name="device_mngr" th:checked="${user.hasRole('device_mngr')}" />
-          </div>
-        </div>
-        <div class="row my-2">
-          <div class="col-2">
-            <label th:text="#{role.financeMngr}">Finance</label>
-          </div>
-          <div class="col-2">
-            <input type="checkbox" class="form-control" id="finance_mngr" name="finance_mngr" th:checked="${user.hasRole('finance_mngr')}" />
+          <div class="row my-2">
+            <div class="col-2">
+              <label th:text="#{role.financeMngr}">Finance</label>
+            </div>
+            <div class="col-2">
+              <input type="checkbox" class="form-control" id="finance_mngr" name="finance_mngr" th:checked="${user.hasRole('finance_mngr')}" th:disabled="${user.hasRole('admin')}" />
+            </div>
           </div>
         </div>
         <div class="row">
@@ -89,6 +91,8 @@
         </div>
       </div>
     </form>
+    
+    <script src="/js/user/userEdit.js"></script>
     
 
   </div>

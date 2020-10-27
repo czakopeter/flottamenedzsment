@@ -28,9 +28,9 @@ public class InvoiceConfigureController {
     this.service = service;
   }
   
-  @ModelAttribute
-  private void title(Model model) {
-  }
+//  @ModelAttribute
+//  private void title(Model model) {
+//  }
   
   @GetMapping("/finance/category/all")
   public String listCategories(Model model) {
@@ -40,10 +40,10 @@ public class InvoiceConfigureController {
   }
   
   @PostMapping("/finance/category/all")
-  public String addCategory(Model model, @ModelAttribute("add") String category) {
+  public String addCategory(@ModelAttribute("add") String category) {
     if(service.addCategory(category)) {
     }
-    return "redirect:" + TEMPLATE_PATH + "/category/all";
+    return "redirect:/invoiceConfigure/main";
   }
   
   @GetMapping("finance/invoiceDescriptionCategoryCoupler/all")
@@ -61,9 +61,9 @@ public class InvoiceConfigureController {
   
   @PostMapping("/finance/invoiceDescriptionCategoryCoupler/{id}")
   public String editInvoiceDescriptionCategoryCoupler(Model model, @PathVariable("id") long id, @RequestParam("description") List<String> descriptions, @RequestParam("category") List<Long> categories, @RequestParam(name = "available", defaultValue = "false") boolean available) {
+    service.upgradeDescriptionCategoryCoupler(id, descriptions, categories);
     model.addAttribute("coupler", service.findBillPartitionTemplateById(id));
     model.addAttribute("categories", service.findAllCategory());
-    service.upgradeDescriptionCategoryCoupler(id, descriptions, categories);
     return TEMPLATE_PATH + "/invoiceDescriptionCategoryCouplerEdit";
   }
   
@@ -160,6 +160,7 @@ public class InvoiceConfigureController {
   
   @GetMapping("/invoiceConfigure/main")
   public String invoiceConfigureMain(Model model) {
+//    model.addAttribute("active", "category");
     model.addAttribute("categories", service.findAllCategory());
     model.addAttribute("couplers", service.findAllDescriptionCategoryCoupler());
     model.addAttribute("chargeRatios", service.findAllChargeRatio());

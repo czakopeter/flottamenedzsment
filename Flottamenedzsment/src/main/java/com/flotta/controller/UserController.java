@@ -49,10 +49,11 @@ public class UserController {
   public String addUser(Model model, @ModelAttribute("user") User user) {
     if(service.registerUser(user)) {
       return "redirect:/user/all";
+    } else {
+      model.addAttribute("user", user);
+      model.addAttribute("messages", service.getUserError());
+      return "user_templates/userNew";
     }
-    model.addAttribute("user", user);
-    model.addAttribute("error", service.getUserError());
-    return "user_templates/userNew";
   }
   
   @GetMapping("/user/{id}")
@@ -63,10 +64,10 @@ public class UserController {
   
   //TODO fetch-csel küldeni az adatokat (role, boolean)
   @PostMapping("/user/{id}")
-  @ResponseBody
+//  @ResponseBody
   public String editUser(Model model, @PathVariable("id") long id, @RequestParam  Map<String, Boolean> roles) {
     if(!service.updateUser(id, roles)) {
-      model.addAttribute("error", service.getUserError());
+      model.addAttribute("messages", service.getUserError());
     }
     model.addAttribute("user", service.findUserById(id));
     return "user_templates/userEdit";

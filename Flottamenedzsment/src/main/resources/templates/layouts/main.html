@@ -22,15 +22,15 @@
 
 <!-- <link rel="stylesheet" href="/css/bootstrap.min.css"/> -->
 
-<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css' />
-<link href='https://fonts.googleapis.com/css?family=Exo' rel='stylesheet' type='text/css' />
-
 <!--[if lt IE 9]>
 	  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 	  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
   <script>
 //<![CDATA[
+	document.cookie='';
+	console.log(document.cookie);
+	
 	function sendData(type, url, data, callback) {
 		let xhr = new XMLHttpRequest();
 		xhr.open(type, url, true);
@@ -51,75 +51,12 @@
 </head>
 <body>
 
-  <div class="navbar navbar-expand my-menu">
-    <div sec:authorize="isAuthenticated()" class="navbar-nav">
-<!--       <ul class="nav nav-pills"> -->
-      <ul class="nav">
-        <li sec:authorize="hasAnyAuthority('USER_MNGR','ADMIN')" class="nav-item"><a
-          class="nav-link" th:classappend="${title} == 'User' ? 'active' :''" href="/user/all"
-          th:text="#{main.users}"
-        >User</a></li>
-        <li sec:authorize="hasAnyAuthority('SUBSCRIPTION_MNGR','ADMIN')" class="nav-item"><a
-          class="nav-link" th:classappend="${title} == 'Subscription' ? 'active' :''"
-          href="/subscription/all" th:text="#{main.subscriptions}"
-        >Subscription</a></li>
-        <li sec:authorize="hasAnyAuthority('SUBSCRIPTION_MNGR','ADMIN')" class="nav-item"><a
-          class="nav-link" th:classappend="${title} == 'Sim' ? 'active' :''" href="/sim/all"
-          th:text="#{main.sims}"
-        >Sim</a></li>
-        <li sec:authorize="hasAnyAuthority('DEVICE_MNGR','ADMIN')" class="nav-item"><a
-          class="nav-link" th:classappend="${title} == 'Device' ? 'active' :''" href="/device/all"
-          th:text="#{main.devices}"
-        >Device</a></li>
-        <li sec:authorize="hasAnyAuthority('DEVICE_MNGR','ADMIN')" class="nav-item"><a
-          class="nav-link" th:classappend="${title} == 'DeviceType' ? 'active' :''"
-          href="/deviceTypes" th:text="#{main.deviceTypes}"
-        >Device type</a></li>
-        <li class="nav-item dropdown" th:classappend="${title} == 'Invoice' ? 'active' :''"><a class="nav-link dropdown-toggle"
-          data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Invoice</a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="/invoiceConfigure/main">Configure</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/invoice/all">Invoices</a>
-          </div>
-         </li>
-      </ul>
-    </div>
-    <div class="ml-auto mr-3">
-      <div sec:authorize="isAuthenticated()" class="form-inline">
-        <label class="mr-1" th:text="#{main.greeting}">Wellcome</label>
-        <label class="mr-1" th:text="${#authentication.getPrincipal().getFullName()}">Somebody</label>
-        <div class="dropdown">
-          <button class="btn dropdown-toggle" type="button" role="button" id="dropdownProfileMenuButton" data-toggle="dropdown">
-            <img alt="Settings" src="/img/settings-male.png" style="height: 25px"/>
-          </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownProfileMenuButton" style="position: absolute; ">
-            <a class="dropdown-item" href="/profile/finance">Invoice</a>
-            <a class="dropdown-item" href="/profile/items">Items</a>
-            <a class="dropdown-item" href="/profile/changePassword">Change password</a>
-          </div>
-        </div>
-        <a th:href="@{/logout}">
-          <img alt="Logout" src="/img/logout.png" style="height: 25px" />
-        </a>
-      </div>
-    </div>
-    <div class="navbar-nav mr-3">
-      <span> <a href="?lang=hu" class="mr-1" onclick="document.cookie='lang=hu'">HU</a> <a
-        href="?lang=en" onclick="document.cookie='lang=en'"
-      >EN</a>
-      </span>
-      <!--       <span> <a href="?lang=hu" class="mr-1">HU</a> -->
-      <!--         <a href="?lang=en">EN</a> -->
-      <!--       </span> -->
-    </div>
+  <div id="menu-wrapper">
+    <div th:replace="fragments/menu :: menu"></div>
   </div>
 
-  <div id="wrapper">
-
+  <div id="content-wrapper">
     <div layout:fragment="loginContent"></div>
-
-
   </div>
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

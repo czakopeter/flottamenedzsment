@@ -2,9 +2,8 @@ package com.flotta.enums;
 
 public enum UserStatusEnum {
   WAITING_FOR_ACTIVATION(0),
-  REQUIRED_PASSWORD_CHANGE(1),
-  ENABLED(2),
-  DISABLED(3);
+  ENABLED(1),
+  DISABLED(2);
   
   private int code;
   

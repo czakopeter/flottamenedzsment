@@ -7,7 +7,7 @@
 
   <div layout:fragment="loginContent">
 
-    <h2>Device Types</h2>
+    <h3 class="uppercase" th:text="#{main.deviceTypes}">Device Types</h3>
 
     <div class="row">
       <div class="col">
@@ -17,9 +17,9 @@
       </div>
       <div class="col-2">
         <select class="form-control" onchange="changeVisibilityFormSelect(this)">
-          <option value="all" th:text="#{deviceType.filer.all}">All</option>
-          <option value="active" selected="selected" th:text="#{deviceType.filer.active}">Active</option>
-          <option value="archived" th:text="#{deviceType.filer.archived}">Archived</option>
+          <option value="all" th:text="#{deviceType.filter.all}">All</option>
+          <option value="active" selected="selected" th:text="#{deviceType.filter.active}">Active</option>
+          <option value="archived" th:text="#{deviceType.filter.archived}">Archived</option>
         </select>
       </div>
     </div>

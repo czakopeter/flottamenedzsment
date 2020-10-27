@@ -59,7 +59,7 @@ body {
 	background-color: var(--body-background-edge);
 }
 
-#wrapper {
+#content-wrapper {
 	height: auto;
 	min-height: 1px;
 	margin-bottom: 0;
@@ -72,6 +72,11 @@ body {
 	text-align: left;
 	max-width: 90%;
 	background-color: var(--body-background);
+}
+
+h3 {
+	padding-top: 2rem;
+	padding-bottom: 3rem;
 }
 
 table {
