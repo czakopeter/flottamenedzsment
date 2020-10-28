@@ -6,7 +6,7 @@
 <body>
   <div layout:fragment="loginContent">
 
-    <h2>Device edit</h2>
+    <h3 th:text="#{device.editDevice}">Device edit</h3>
 
     <form th:action="'/device/' + ${device.id} + '/update'" method="post" th:object="${device}" id="form">
       <input type="hidden" id="order" name="order" />

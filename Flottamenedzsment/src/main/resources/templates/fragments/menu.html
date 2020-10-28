@@ -32,7 +32,7 @@
           <div class="dropdown-menu">
             <a class="dropdown-item" href="/invoiceConfigure/main">Configure</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/invoice/all">Invoices</a>
+            <a class="dropdown-item" href="/invoice/all" th:text="#{main.invoices}">Invoices</a>
           </div>
          </li>
       </ul>
@@ -58,14 +58,9 @@
     </div>
     <div class="navbar-nav mr-3">
       <span>
-<!--         <a href="?lang=hu" class="mr-1">HU</a> -->
-<!--         <a href="?lang=en">EN</a> -->
-        <a href="?lang=hu" class="mr-1" onclick="document.cookie='lang=hu'">HU</a>
-        <a href="?lang=en" onclick="document.cookie='lang=en'">EN</a>
+        <a href="?lang=hu" class="mr-1">HU</a>
+        <a href="?lang=en">EN</a>
       </span>
-      <!--       <span> <a href="?lang=hu" class="mr-1">HU</a> -->
-      <!--         <a href="?lang=en">EN</a> -->
-      <!--       </span> -->
     </div>
   </div>
 </body>

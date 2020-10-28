@@ -8,15 +8,15 @@
   <div layout:fragment="loginContent">
   
     <div th:fragment="participant-all">
-      <h4 class="uppercase">Participants</h4>
+      <h3 th:text="#{participant.participants}">Participants</h3>
 
-      <a href="/finance/participant/new" class="btn btn-sm btn-primary">Add</a>
+      <a href="/finance/participant/new" class="btn btn-sm btn-primary mb-2" th:text="#{button.add}">Add</a>
 
       <table class="table table-sm">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Address</th>
+            <th th:text="#{participant.name}">Name</th>
+            <th th:text="#{participant.address}">Address</th>
             <th></th>
           </tr>
         </thead>
@@ -25,7 +25,7 @@
             <td th:text="${participant.name}"></td>
             <td th:text="${participant.address}"></td>
             <td><a class="btn btn-sm btn-primary"
-              th:href="'/finance/participant/' + ${participant.id}"
+              th:href="'/finance/participant/' + ${participant.id}" th:text="#{button.edit}"
             >Edit</a></td>
           </tr>
         </tbody>

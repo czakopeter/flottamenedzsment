@@ -7,12 +7,12 @@
 
   <div layout:fragment="loginContent">
 
-    <h3 class="uppercase" th:text="#{main.deviceTypes}">Device Types</h3>
+    <h3 th:text="#{main.deviceTypes}">Device Types</h3>
 
     <div class="row">
       <div class="col">
         <button type="submit" class="btn btn-primary" data-target="#edit" data-backdrop="static"
-          data-toggle="modal" onclick="reset_modal()"
+          data-toggle="modal" onclick="reset_modal()" th:text="#{button.new}"
           >New</button>
       </div>
       <div class="col-2">
@@ -30,9 +30,9 @@
     <table class="table table-sm table-hover mt-3" id="table">
       <thead>
         <tr>
-          <th>Brand</th>
+          <th th:text="#{deviceType.brand}">Brand</th>
           <th>Model</th>
-          <th>Name</th>
+          <th th:text="#{deviceType.name}">Name</th>
           <th>SIM number</th>
           <th>Has MicroSD slot</th>
           <th></th>
@@ -48,7 +48,7 @@
           <td th:id="simNumber + ${i.count}" th:text="${deviceType.simNumber}"></td>
           <td th:id="microsd + ${i.count}" th:text="${deviceType.microsd}"></td>
           <td><button type="button" class="btn btn-primary" th:onclick="|set_modal(${i.count})|"
-              data-target="#edit" data-backdrop="static" data-toggle="modal"
+              data-target="#edit" data-backdrop="static" data-toggle="modal" th:text="#{button.edit}"
             >Edit</button>
           </td>
         </tr>

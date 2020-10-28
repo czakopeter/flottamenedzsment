@@ -80,7 +80,7 @@
         <table class="table table-sm">
           <thead>
             <tr>
-              <td th:text="${partOfInvoice?.subscription?.number}"></td>
+              <td th:text="${partOfInvoice?.subscription?.number} + ' - ' + ${partOfInvoice.user != null ? partOfInvoice.user.fullName : 'Company'}"></td>
               <td th:text="${#numbers.formatDecimal(partOfInvoice.totalGrossAmount, 1, 2)} + ' Ft'"></td>
               <td class="text-right">
                 <button class="btn btn-sm" style="background-color: transparent;">

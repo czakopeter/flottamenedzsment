@@ -8,7 +8,7 @@
   <div layout:fragment="loginContent">
 
 
-      <h2>Category</h2>
+      <h4 th:text="#{category.category}">Category</h4>
 
       <div th:fragment="category-all">
         <h4 class="uppercase">Category</h4>
@@ -23,7 +23,7 @@
               <input type="text" class="form-control mb-2" id="add" name="add"
                 placeholder="Enter new category" required="required"
               />
-              <button type="submit" class="btn btn-primary">Add</button>
+              <button type="submit" class="btn btn-primary" th:text="#{button.add}">Add</button>
             </form>
           </div>
         </div>

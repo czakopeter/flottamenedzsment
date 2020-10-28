@@ -25,17 +25,17 @@ public class I18n implements WebMvcConfigurer {
   @Bean
   public CookieLocaleResolver localeResolver()  {
       CookieLocaleResolver resolver= new CookieLocaleResolver();
-      resolver.setCookieName("lang");
+      resolver.setCookieName("locale");
       resolver.setCookieMaxAge(60000);
       resolver.setDefaultLocale(Locale.ENGLISH);
-//      resolver.setCookiePath("/");
+      resolver.setCookiePath("/");
       return resolver;
   } 
   
   @Bean
   public LocaleChangeInterceptor getLocaleChangeInterception() {
     LocaleChangeInterceptor localeInterceptor = new LocaleChangeInterceptor();
-//    localeInterceptor.setParamName("lang");
+    localeInterceptor.setParamName("lang");
     return localeInterceptor;
   }
   

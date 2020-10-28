@@ -49,7 +49,8 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 			//TODO adatbázishoz csak ADMIN,
 //			  .antMatchers("/db/**").hasRole("ADMIN")
-			  .antMatchers("/db/**").permitAll()
+//			  .antMatchers("/login").permitAll()
+			  .antMatchers("/db/**", "/login").permitAll()
 			  .antMatchers("/activation/**", "/registration", "/accessDennied", "/passwordReset", "/requestNewPassword", "/css/*", "/favicon.ico").permitAll()
 			  .antMatchers("/billing/**", "/finance/**").hasAnyAuthority("FINANCE_MNGR", "ADMIN")
 			  .antMatchers("/subscription/**", "/sim/**").hasAnyAuthority("SUBSCRIPTION_MNGR", "ADMIN")

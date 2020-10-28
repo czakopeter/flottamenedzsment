@@ -7,10 +7,10 @@
 
   <div layout:fragment="loginContent">
 
-      <h2>Invoice description category coupler view</h2>
+      <h3 th:text="#{descCatCoupler.viewInvoiceDescriptionAndCategoryCoupler}">View invoice description category coupler</h3>
 
       <div class="container">
-        <label>Name</label>
+        <label th:text="#{descCatCoupler.name}">Name</label>
         <input type="text" class="form-control" id="name" name="name" th:value="${coupler.name}" readonly="readonly"/>
         <label for="available">Available</label>
         <input type="checkbox" id="available" name="available" th:checked="${coupler.available}" onclick="return false;" />

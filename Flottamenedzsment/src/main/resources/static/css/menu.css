@@ -15,17 +15,23 @@
 	--dark-gray: #252525;
 }
 
+#menu-wrapper {
+}
+
 #menu {
-	padding: .5rem 1rem;
-	height: 50px;
+	padding: 0rem 1rem;
+	height: 41px;
+	font-weight: bold;
+	align-items: center;
 }
 
 .navbar-nav ul li a, .dropdown-menu a {
-	 border-bottom: 3px solid transparent;
+	border-top: 3px solid transparent;
+	border-bottom: 3px solid transparent;
 }
 
 .navbar {
-	font-weight: bold;
+	
 	background-color: var(--menu-background);
 	color: var(--menu-text);
 }
@@ -37,7 +43,7 @@
 }
 
 .nav-item .nav-link.active {
-	color: var(--watermelon);
+/* 	color: var(--watermelon); */
 	background-color: var(--menu-background);
 	border-bottom: solid 3px;
 	border-bottom-color: var(--watermelon);

@@ -7,12 +7,12 @@
 
   <div layout:fragment="loginContent">
 
-    <h2>Edit charge ratio</h2>
+    <h3 th:text="#{chargeRatio.editChargeRatio}">Edit charge ratio</h3>
 
     <form th:action="'/finance/chargeRatio/' + ${chargeRatio.id}" method="post" th:object="${chargeRatio}" >
       <div class="row mb-3">
         <div class="col-2">
-          <label>Name</label>
+          <label th:text="#{chargeRatio.name}">Name</label>
         </div>
         <div class="col-4">
           <input type="text" class="form-control" id="name" name="name" th:value="*{name}"
@@ -26,10 +26,10 @@
       <table id="table" class="table table-sm table-hover" style="width: 500px">
         <thead>
           <tr>
-            <th>Category</th>
-            <th class="text-center" colspan="2">Company</th>
+            <th th:text="#{chargeRatio.category}">Category</th>
+            <th class="text-center" colspan="2" th:text="#{chargeRatio.company}">Company</th>
             <th></th>
-            <th class="text-center" colspan="2">User</th>
+            <th class="text-center" colspan="2" th:text="#{chargeRatio.user}">User</th>
           </tr>
         </thead>
         <tbody>
@@ -76,7 +76,7 @@
       <div class="form-check">
         <input id="confirmSelect" type="checkbox" class="form-check-input"
           onclick="clickOnConfirmButton()" checked="checked"
-        /> <label for="confirmSelect">Confirm categories settings!</label>
+        /> <label for="confirmSelect" th:text="#{chargeRatio.chargeRatio.confirmChargeRatioSettings}">Confirm charge ratio settings!</label>
       </div>
 
 

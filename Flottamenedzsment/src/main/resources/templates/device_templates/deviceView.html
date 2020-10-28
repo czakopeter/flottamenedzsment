@@ -6,9 +6,7 @@
 <body>
   <div layout:fragment="loginContent">
 
-    <h2>Device view</h2>
-
-    <hr />
+    <h3 th:text="#{device.viewDevice}">Device view</h3>
     
     <div th:replace="fragments/device :: dateSliceSelector"></div>
 

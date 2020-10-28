@@ -4,7 +4,7 @@
 </head>
 <body>
   
-  <div th:fragment="add-and-filter-wrapper(href ,filterOptionsName)" class="my-2">
+  <div th:fragment="add-and-filter-wrapper(href ,filterOptionsName)" class="mb-2">
     <div class="btn-group">
       <a th:unless="${#strings.startsWith(href,'/')}" href="#add-wrapper" class="btn btn-info collapsed" data-toggle="collapse" role="button" aria-expanded="false" th:text="#{button.new}">New</a>
       <a th:if="${#strings.startsWith(href,'/')}" th:href="${href}" class="btn btn-info" th:text="#{button.new}">New</a>
@@ -25,12 +25,12 @@
   
   <div th:fragment="invoice-upload">
     <form action="/invoice/fileUpload" method="post" enctype="multipart/form-data">
-      <h4>Invoice upload</h4>
-      <label for="fileBtn">Select an invoice: </label> <input type="file" id="file" name="file"
+      <h4 th:text="#{invoice.uploadInvoice}">Invoice upload</h4>
+      <label for="fileBtn" th:text="#{invoice.selectAnInvoice} + ': '">Select an invoice: </label> <input type="file" id="file" name="file"
         accept=".xml" onchange="selectFile(this)" style="display: none"
       /> <input type="button" id=fileBtn onclick="browseFile()" class="btn btn-sm"
-        th:value="Browse..."
-      /> <label id="fileName">No file selected.</label> <input type="submit"
+        th:value="#{invoice.browse} + '...'"
+      /> <label id="fileName" th:text="#{invoice.noFileSelected}">No file selected</label> <input type="submit"
         class="btn btn-sm btn-primary" th:value="#{button.add}"
       />
     </form>
@@ -50,11 +50,11 @@
 <!--   </div> -->
 
   <div th:fragment="invoice-filter-options" id="filter-options-content">
-    <label for="invoice-number">Invoice number</label> <input id="invoice-number" type="text"
+    <label for="invoice-number" th:text="#{bill.invoiceNumber}">Invoice number</label> <input id="invoice-number" type="text"
       class=""
-    /> <label for="begin-date">From</label> <input id="begin-date" type="date"
+    /> <label for="begin-date" th:text="#{bill.from}">From</label> <input id="begin-date" type="date"
       onchange="filterDateSet(this)"
-    /> <label for="end-date">To</label> <input id="end-date" type="date"
+    /> <label for="end-date" th:text="#{bill.to}">To</label> <input id="end-date" type="date"
       onchange="filterDateSet(this)"
     />
   </div>
@@ -91,7 +91,7 @@
       <label for="email">Email</label> <input id="email" type="text" class="form-control" />
     </div>
     <div>
-      <label for="fullName">Full name</label> <input id="fullName" type="text" class="form-control" />
+      <label for="fullName" th:text="#{user.fullName}">Full name</label> <input id="fullName" type="text" class="form-control" />
     </div>
   </div>
 

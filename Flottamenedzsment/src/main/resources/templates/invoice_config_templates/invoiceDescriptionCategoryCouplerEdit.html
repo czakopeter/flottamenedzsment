@@ -7,11 +7,11 @@
 
   <div layout:fragment="loginContent">
 
-      <h2>Invoice description category coupler edit</h2>
+      <h3 th:text="#{descCatCoupler.editInvoiceDescriptionAndCategoryCoupler}">Edit invoice description category coupler</h3>
 
       <form th:action="${'/finance/invoiceDescriptionCategoryCoupler/' + coupler.id}" method="post">
       <div class="container">
-        <label>Name</label>
+        <label th:text="#{descCatCoupler.name}">Name</label>
         <input type="text" class="form-control" id="name" name="name" th:value="${coupler.name}"/>
         <label for="available">Available</label>
         <input type="checkbox" id="available" name="available" th:checked="*{coupler.available}" />
@@ -26,7 +26,7 @@
             </select>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="submit" class="btn btn-primary" th:text="#{button.save}">Save</button>
         <a href="/invoiceConfigure/main" class="btn btn-primary" th:text="#{button.back}"></a>
       </div>
       </form>

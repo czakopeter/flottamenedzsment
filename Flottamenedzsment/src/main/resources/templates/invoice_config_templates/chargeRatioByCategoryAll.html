@@ -8,14 +8,14 @@
   <div layout:fragment="loginContent">
 
     <div th:fragment="charge-ratio-all">
-      <h4 class="uppercase">Charge ratios</h4>
+      <h4 th:text="#{chargeRatio.chargeRatios}">Charge ratios</h4>
   
       <a href="/finance/chargeRatio/new" class="btn btn-primary" th:text="#{button.new}"></a>
   
       <table class="table table-sm">
         <thead>
           <tr>
-            <th>Name</th>
+            <th th:text="#{chargeRatio.name}">Name</th>
             <th>Action</th>
           </tr>
         </thead>

@@ -7,7 +7,7 @@
 
   <div layout:fragment="loginContent">
 
-    <h2>View subscription</h2>
+    <h3 th:text="#{subscription.viewSubscription}">View subscription</h3>
 
     <div class="container">
       <select th:if="${dates} != null" onchange="dateChange(this)" class="my-3">

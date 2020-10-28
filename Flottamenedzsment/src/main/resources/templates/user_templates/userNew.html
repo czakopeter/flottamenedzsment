@@ -7,7 +7,7 @@
 
   <div layout:fragment="loginContent">
 
-    <h2 th:text="#{user.newUser}">New user</h2>
+    <h3 th:text="#{user.newUser}">New user</h3>
     
     <div th:replace="fragments/message :: message"></div>
     <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
