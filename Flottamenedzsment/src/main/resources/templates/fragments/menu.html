@@ -10,27 +10,27 @@
         <li sec:authorize="hasAnyAuthority('USER_MNGR','ADMIN')" class="nav-item"><a
           class="nav-link" th:classappend="${title} == 'User' ? 'active' :''" href="/user/all"
           th:text="#{main.users}"
-        >User</a></li>
+        >Users</a></li>
         <li sec:authorize="hasAnyAuthority('SUBSCRIPTION_MNGR','ADMIN')" class="nav-item"><a
           class="nav-link" th:classappend="${title} == 'Subscription' ? 'active' :''"
           href="/subscription/all" th:text="#{main.subscriptions}"
-        >Subscription</a></li>
+        >Subscriptions</a></li>
         <li sec:authorize="hasAnyAuthority('SUBSCRIPTION_MNGR','ADMIN')" class="nav-item"><a
           class="nav-link" th:classappend="${title} == 'Sim' ? 'active' :''" href="/sim/all"
           th:text="#{main.sims}"
-        >Sim</a></li>
+        >Sims</a></li>
         <li sec:authorize="hasAnyAuthority('DEVICE_MNGR','ADMIN')" class="nav-item"><a
           class="nav-link" th:classappend="${title} == 'Device' ? 'active' :''" href="/device/all"
           th:text="#{main.devices}"
-        >Device</a></li>
+        >Devices</a></li>
         <li sec:authorize="hasAnyAuthority('DEVICE_MNGR','ADMIN')" class="nav-item"><a
           class="nav-link" th:classappend="${title} == 'DeviceType' ? 'active' :''"
-          href="/deviceTypes" th:text="#{main.deviceTypes}"
-        >Device type</a></li>
+          href="/deviceType/all" th:text="#{main.deviceTypes}"
+        >Device types</a></li>
         <li sec:authorize="hasAnyAuthority('FINANCE_MNGR','ADMIN')" class="nav-item dropdown" th:classappend="${title} == 'Invoice' ? 'active' :''"><a class="nav-link dropdown-toggle"
           data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" th:text="#{main.invoices}">Invoices</a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="/invoiceConfigure/main">Configure</a>
+            <a class="dropdown-item" href="/invoiceConfigure/main" th:text="#{main.configurations}">Configurations</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/invoice/all" th:text="#{main.invoices}">Invoices</a>
           </div>
@@ -43,12 +43,12 @@
         <label class="mr-1" th:text="${#authentication.getPrincipal().getFullName()}">Somebody</label>
         <div class="dropdown">
           <a class="nav-link dropdown-toggle" id="dropdownProfileMenuButton" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-            <img alt="Settings" src="/img/settings-male.png" style="height: 25px"/>
+            <img th:alt="#{profile.profile}" src="/img/settings-male.png" style="height: 25px"/>
           </a>
           <div class="dropdown-menu" style="position: absolute; ">
-            <a class="dropdown-item" href="/profile/finance">Invoice</a>
+            <a class="dropdown-item" href="/profile/finance" th:text="#{profile.invoices}">Invoices</a>
             <a class="dropdown-item" href="/profile/items">Items</a>
-            <a class="dropdown-item" href="/profile/changePassword">Change password</a>
+            <a class="dropdown-item" href="/profile/changePassword" th:text="#{profile.changePassword}">Change password</a>
           </div>
         </div>
         <a th:href="@{/logout}">

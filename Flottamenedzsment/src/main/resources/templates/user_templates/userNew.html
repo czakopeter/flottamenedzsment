@@ -8,10 +8,10 @@
   <div layout:fragment="loginContent">
 
     <h3 th:text="#{user.newUser}">New user</h3>
-    
+
     <div th:replace="fragments/message :: message"></div>
     <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
-    
+
     <form th:object="${user}" method="post" id="form">
       <input type="hidden" id="order" name="order" />
       <div class="container">
@@ -20,8 +20,10 @@
             <label th:text="#{user.fullName}">Full name</label>
           </div>
           <div class="col-4">
-<!--             <input type="text" class="form-control" id="fullName" name="fullName" th:value="*{fullName}" required="required"/> -->
-            <input type="text" class="form-control" id="fullName" name="fullName" value="Czako Peter" required="required"/>
+            <!--             <input type="text" class="form-control" id="fullName" name="fullName" th:value="*{fullName}" required="required"/> -->
+            <input type="text" class="form-control" id="fullName" name="fullName"
+              value="Czako Peter" required="required"
+            />
           </div>
         </div>
         <div class="row my-2">
@@ -29,22 +31,23 @@
             <label th:text="#{user.email}">Email</label>
           </div>
           <div class="col-4">
-<!--             <input type="email" class="form-control" id="email" name="email" th:value="*{email}" required="required" /> -->
-            <input type="email" class="form-control" id="email" name="email" value="czakopeter94@gmail.com" required="required" />
+            <!--             <input type="email" class="form-control" id="email" name="email" th:value="*{email}" required="required" /> -->
+            <input type="email" class="form-control" id="email" name="email"
+              value="czakopeter94@gmail.com" required="required"
+            />
           </div>
         </div>
         <div class="row">
           <div class="col-6">
-            <button type="submit" id="button" class="btn btn-primary"
-              formaction="/user/new" formmethod="post"
-              th:text="#{button.save}"
+            <button type="submit" id="button" class="btn btn-primary" formaction="/user/new"
+              formmethod="post" th:text="#{button.save}"
             >Save</button>
             <a href="/user/all" class="btn btn-primary" th:text="#{button.back}">Back</a>
           </div>
         </div>
       </div>
     </form>
-    
+
 
   </div>
 

@@ -7,7 +7,7 @@
 
   <div layout:fragment="loginContent">
 
-    <h3 th:text="#{main.invoiceProcessConfigure}">Invoice process configures</h3>
+    <h3 th:text="#{main.configurations}">Configuration</h3>
     
     <div>
       <div class="btn-group my-2">
@@ -23,7 +23,7 @@
 <!--       <div id="participant" th:classappend="${active == 'participant'} ? '' : collapse" th:insert="/invoice_config_templates/participantAll :: participant-all"></div> -->
       
       <div id="category" class="collapse" th:insert="/invoice_config_templates/category :: category-all"></div>
-      <div id="description-category-coupler" class="" th:insert="/invoice_config_templates/invoiceDescriptionCategoryCouplerAll :: description-category-coupler-all"></div>
+      <div id="description-category-coupler" class="collapse" th:insert="/invoice_config_templates/invoiceDescriptionCategoryCouplerAll :: description-category-coupler-all"></div>
       <div id="charge-ratio" class="collapse" th:insert="/invoice_config_templates/chargeRatioByCategoryAll :: charge-ratio-all"></div>
       <div id="participant" class="collapse" th:insert="/invoice_config_templates/participantAll :: participant-all"></div>
     </div>

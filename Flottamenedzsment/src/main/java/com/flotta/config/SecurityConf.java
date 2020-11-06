@@ -61,7 +61,7 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
 				.and()
 			.formLogin()
 				.loginPage("/login")
-				.failureUrl("/loginError")
+				.failureUrl("/login?error")
 				//belépést követően a kezdőlapra irányítsa át
 				.defaultSuccessUrl("/profile/items", true)
 				.permitAll()

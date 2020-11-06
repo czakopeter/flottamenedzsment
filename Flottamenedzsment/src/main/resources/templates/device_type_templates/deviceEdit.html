@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main}">
+<head>
+<title>Flotta</title>
+</head>
+<body>
+  <div layout:fragment="loginContent">
+
+    <h3 th:text="#{device.editDevice}">Device edit</h3>
+
+    <form th:action="'/device/' + ${device.id} + '/update'" method="post" th:object="${device}" id="form">
+      <input type="hidden" id="order" name="order" />
+      <div class="container">
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{device.serialNumber}">Serial number</label>
+          </div>
+          <div class="col-4">
+            <input type="text" class="form-control" id="serialNumber" name="serialNumber"
+              th:value="*{serialNumber}" readonly="readonly"
+            />
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{device.typeName}">Type name</label>
+          </div>
+          <div class="col-4">
+            <input type="text" class="form-control" id="typeName" name="typeName"
+              th:value="*{typeName}" readonly="readonly"
+            />
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{device.user}">User</label>
+          </div>
+          <div class="col-4">
+            <select class="form-control" id="userId" name="userId" th:field="*{userId}">
+              <option value="0" title="Nobody"></option>
+              <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.fullName}" th:title="${user.email}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{device.note}">Note</label>
+          </div>
+          <div class="col-4">
+            <input type="text" class="form-control" id="note" name="note" th:value="*{note}" />
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">
+            <label th:text="#{device.date}">Date</label>
+          </div>
+          <div class="col-4">
+            <input type="date" class="form-control" id="date" name="date" th:value="*{date}"
+              required="required" th:min="*{min}"
+            />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" th:text="#{button.save}"
+        >Save</button>
+        <a href="/device/all" class="btn btn-primary" th:text="#{button.back}">Back</a>
+      </div>
+    </form>
+
+
+
+
+
+
+    <script th:inline="javascript">
+					//<![CDATA[
+					window.onload = function() {
+					};
+
+					function changeDate(d) {
+						document.getElementById('order').value = 'dateSliceCh ' + d.value;
+						document.getElementById('form').submit();
+					}
+
+					function userUpdate(u) {
+						document.getElementById('order').value = 'userCh ' + u.value;
+						document.getElementById('form').submit();
+					}
+
+					//]]>
+				</script>
+
+  </div>
+</body>
+</html>

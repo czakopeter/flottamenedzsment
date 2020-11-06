@@ -32,7 +32,7 @@
           <td name="imei" th:text="${subscription.imei}"></td>
           <td name="userName" th:text="${subscription.userName}"></td>
           <td th:text="${subscription.deviceName}"></td>
-          <td>
+          <td class="text-right">
             <div class="btn-group">
               <a th:href="'/subscription/' + ${subscription.id} + '/update'" class="btn btn-sm btn-primary"
                 th:title="#{button.edit}"

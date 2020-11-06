@@ -214,8 +214,8 @@ public class MainService {
    return Arrays.asList(mtv);
  }
  
- public boolean firstUserRegistration(User user) {
-   return userService.firstUserRegistration(user);
+ public boolean firstAdminRegistration(User user) {
+   return userService.firstAdminRegistration(user);
  }
  
  public boolean registrationAvailable() {
@@ -258,8 +258,8 @@ public class MainService {
     return deviceTypeService.findAllBrandOfDevicesType();
   }
 
-  public void saveDeviceType(DeviceType deviceType) {
-    deviceTypeService.save(deviceType);
+  public boolean saveDeviceType(DeviceType deviceType) {
+    return deviceTypeService.save(deviceType);
   }
 
 //-------- DEVICE SERVICE --------
@@ -551,6 +551,16 @@ public class MainService {
 
   public boolean addParticipant(Participant participant) {
     return billingService.addParticipant(participant);
+    
+  }
+
+  public DeviceType findDeviceTypeById(long id) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public void updateDeviceType(DeviceType deviceType) {
+    // TODO Auto-generated method stub
     
   }
 

@@ -7,8 +7,8 @@
   <div th:fragment="add-and-filter-wrapper(href ,filterOptionsName)" class="mb-2">
     <div class="btn-group">
       <a th:unless="${#strings.startsWith(href,'/')}" href="#add-wrapper" class="btn btn-info collapsed" data-toggle="collapse" role="button" aria-expanded="false" th:text="#{button.new}">New</a>
-      <a th:if="${#strings.startsWith(href,'/')}" th:href="${href}" class="btn btn-info" th:text="#{button.new}">New</a>
-      <a href="#filter-options-wrapper" class=" btn btn-info collapsed" data-toggle="collapse" role="button" aria-expanded="false" th:text="#{button.filter}">Filter</a>
+      <a th:if="${#strings.startsWith(href,'/')}" th:href="${href}" class="btn btn-info" th:classappend="${disabled}" th:text="#{button.new}">New</a>
+      <a href="#filter-options-wrapper" class=" btn btn-info collapsed" data-toggle="collapse" role="button" aria-expanded="false" th:text="#{button.search}">Search</a>
     </div>
     
     <div th:unless="${#strings.startsWith(href,'/')}" id="add-wrapper" class="collapse">
@@ -17,7 +17,7 @@
     </div>
     
     <div id="filter-options-wrapper" class="collapse">
-      <h4>Filter</h4>
+      <h4 th:text="#{button.search}">Search</h4>
       <div th:replace=" :: ${filterOptionsName}"></div>
       <div th:replace=" :: filter-button-group"></div>
     </div>
@@ -35,19 +35,6 @@
       />
     </form>
   </div>
-
-
-<!--   <div th:fragment="filter-wrapper(filterOptionsName)" id="filter-wrapper"> -->
-<!--     <div id="filter-button-wrapper"> -->
-<!--       <a href="#filter-options-wrapper" class="collapsed" data-toggle="collapse" role="button" -->
-<!--         aria-expanded="false" -->
-<!--       >Filters</a> -->
-<!--     </div> -->
-<!--     <div id="filter-options-wrapper" class=""> -->
-<!--       <h4>Filter</h4> -->
-<!--       <div th:replace="fragments/filter/filter :: ${filterOptionsName}"></div> -->
-<!--     </div> -->
-<!--   </div> -->
 
   <div th:fragment="invoice-filter-options" id="filter-options-content">
     <label for="invoice-number" th:text="#{bill.invoiceNumber}">Invoice number</label> <input id="invoice-number" type="text"
@@ -130,16 +117,39 @@
       <label for="userName">User name</label> <input id="userName" type="text" class="form-control" />
     </div>
   </div>
+  
+  <div th:fragment="device-type-filter-options" id="filter-options-content">
+    <div>
+      <label for="brand" th:text="#{deviceType.brand}">Brand</label> <input id="brand" type="text"
+        class="form-control"
+      />
+    </div>
+    <div>
+      <label for="name">Name</label> <input id="name" type="text"
+        class="form-control"
+      />
+    </div>
+    <div>
+      <label for="brand" th:text="#{deviceType.name}">Brand</label> <input id="brand" type="text"
+        class="form-control"
+      />
+    </div>
+    <div>
+        <select class="form-control" onchange="changeVisibilityFormSelect(this)">
+          <option value="all" th:text="#{deviceType.filter.all}">All</option>
+          <option value="active" selected="selected" th:text="#{deviceType.filter.active}">Active</option>
+          <option value="archived" th:text="#{deviceType.filter.archived}">Archived</option>
+        </select>
+      </div>
+  </div>
 
   <div th:fragment="filter-button-group">
     <div class="btn-group my-2">
-      <input type="button" class="btn btn-sm btn-primary" value="Search" onclick="filter()" /> <input
-        type="button" class="btn btn-sm btn-primary" value="Clear" onclick="clearFilter()"
+      <input type="button" class="btn btn-sm btn-primary" value="Search" th:value="#{button.search}" onclick="filter()" />
+      <input type="button" class="btn btn-sm btn-primary" value="Clear" th:value="#{button.clear}" onclick="clearFilter()"
       />
     </div>
   </div>
-
-
 
 
 </body>

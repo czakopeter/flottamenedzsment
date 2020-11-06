@@ -29,10 +29,12 @@ public class DeviceTypeService {
     return deviceTypeRepository.findAllBrandOfDevicesType();
   }
 
-  public void save(DeviceType deviceType) {
-    if (deviceIsSaveable(deviceType)) {
+  public boolean save(DeviceType deviceType) {
+    boolean saveable = deviceIsSaveable(deviceType);
+    if (saveable) {
         deviceTypeRepository.save(deviceType);
     }
+    return saveable;
   }
   
   private boolean deviceIsSaveable(DeviceType deviceType) {

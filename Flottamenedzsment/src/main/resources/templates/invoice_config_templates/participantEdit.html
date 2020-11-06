@@ -7,13 +7,13 @@
 
   <div layout:fragment="loginContent">
 
-    <h2>Edit participant</h2>
+    <h3 th:text="#{participant.editParticipant}">Edit participant</h3>
 
     <div class="container">
       <input type="hidden" id="id" name="id" th:value="*{participant.id}" />
       <div class="row my-2">
         <div class="col-2">
-          <label>Name</label>
+          <label th:text="#{participant.name}">Name</label>
         </div>
         <div class="col-4">
           <input type="text" class="form-control" id="name" name="name" th:value="${participant.name}"

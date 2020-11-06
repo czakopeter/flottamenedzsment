@@ -10,10 +10,6 @@
     
     <div th:replace="fragments/filter/filter :: add-and-filter-wrapper('/device/new', device-filter-options)"></div>
 
-<!--     <a href="/device/new" class="btn btn-primary my-2" th:text="#{button.new}" -->
-<!--       th:classappend="${canCreateNew ? '' : 'disabled'}" -->
-<!--     >New</a> -->
-
     <table id="device-table" class="table table-sm">
       <thead>
         <tr>
@@ -29,7 +25,7 @@
         <td name="typeName" th:text="${device.typeName}"></td>
         <td name="userName" th:text="${device.userName}"></td>
         <td th:text="${device.number}"></td>
-        <td>
+        <td class="text-right">
           <div class="btn-group">
             <a th:href="'/device/' + ${device.id} + '/update'" class="btn btn-sm btn-primary"
               th:title="#{button.edit}"

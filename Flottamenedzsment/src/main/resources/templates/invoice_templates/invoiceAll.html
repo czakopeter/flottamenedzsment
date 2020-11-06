@@ -39,7 +39,7 @@
               <td th:text="${rawInvoice.endDate}"></td>
               <td th:text="${rawInvoice.invoiceNetAmount}"></td>
               <td th:text="${rawInvoice.invoiceGrossAmount}"></td>
-              <td><a th:if="${rawInvoice.hasProblem()}" href="#" class="dropdown" data-toggle="dropdown" role="button"
+              <td class="text-right"><a th:if="${rawInvoice.hasProblem()}" href="#" class="dropdown" data-toggle="dropdown" role="button"
                 aria-haspopup="true" aria-expanded="false"
               >...</a>
                 <div class="dropdown-menu">
@@ -82,7 +82,7 @@
             <td name="endDate" th:text="${invoice.endDate}"></td>
             <td th:text="${invoice.invoiceNetAmount}"></td>
             <td th:text="${invoice.invoiceGrossAmount}"></td>
-            <td>
+            <td class="text-right">
               <button th:unless="${invoice.hasProblem() or invoice.acceptedByCompany}" type="submit"
                 class="btn btn-sm btn-success"
                 th:formaction="'/invoice/' + ${invoice.invoiceNumber} + '/accept'"

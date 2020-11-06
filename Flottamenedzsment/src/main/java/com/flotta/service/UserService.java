@@ -9,7 +9,6 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
-//import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -29,9 +28,6 @@ import com.flotta.utility.Validator;
 
 @Service
 public class UserService extends ServiceWithMsg implements UserDetailsService {
-  
-//  @Value("#{value.sendMail}")
-//  private static boolean SEND_MAIL;
   
 	private UserRepository userRepository;
 	
@@ -56,7 +52,7 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
   public void setRoleRepository(RoleRepository roleRepository) {
     this.roleRepository = roleRepository;
   }
-
+	
   @Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.findByEmail(username);
@@ -148,27 +144,26 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
   }
   
 
-  public boolean firstUserRegistration(User user) {
-    if(userRepository.findAll().isEmpty()) {
-      String password = generateKey(16);
-      user.setEnabled(false);
-      user.addRoles(roleRepository.findByRole("ADMIN"));
-      user.setStatus(UserStatusEnum.WAITING_FOR_ACTIVATION);
-      user.setPassword(passwordEncoder.encode(password));
-      user.setActivationKey(generateKey(16));
-      if(emailService.sendMessage(
-          user.getEmail(),
-          "Activation email", 
-          emailService.createMessageText(
-              EmailService.ACTIVATION_AND_INITIAL_PASSWORD,
-              new String[] {user.getFullName(),
-                  user.getActivationKey() ,
-                  password}))) {
-        userRepository.save(user);
-      } else {
-        appendMsg("Email send failed!");
-        return false;
-      }
+  public boolean firstAdminRegistration(User user) {
+    String password = generateKey(16);
+    user.setEnabled(false);
+    user.addRoles(roleRepository.findByRole("ADMIN"));
+    user.addRoles(roleRepository.findByRole("BASIC"));
+    user.setStatus(UserStatusEnum.WAITING_FOR_ACTIVATION);
+    user.setPassword(passwordEncoder.encode(password));
+    user.setActivationKey(generateKey(16));
+    if(emailService.sendMessage(
+        user.getEmail(),
+        "Activation email", 
+        emailService.createMessageText(
+            EmailService.ACTIVATION_AND_INITIAL_PASSWORD,
+            new String[] {user.getFullName(),
+                user.getActivationKey() ,
+                password}))) {
+      userRepository.save(user);
+    } else {
+      appendMsg("Email send failed!");
+      return false;
     }
     return true;
   }
@@ -240,15 +235,18 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
   }
   
   @PostConstruct
-  public void createAnAdmin() {
-    User user = new User();
-    user.setEmail("admin");
-    user.setFullName("Admin");
-    user.setPassword(passwordEncoder.encode("admin"));
-    user.addRoles(new Role("ADMIN"));
-    user.addRoles(new Role("BASIC"));
-    user.setEnabled(true);
-    user.setStatus(UserStatusEnum.ENABLED);
-    userRepository.save(user);
+  private void createFirstAdmin() {
+      User user = new User();
+      user.setEmail("admin.user@email.hu");
+      user.setFullName("Admin User");
+      user.setPassword(passwordEncoder.encode("admin"));
+      user.addRoles(new Role("ADMIN"));
+      user.addRoles(new Role("BASIC"));
+      user.setEnabled(true);
+      user.setStatus(UserStatusEnum.ENABLED);
+      userRepository.save(user);
+      
   }
+  
+  
 }

@@ -74,7 +74,7 @@ public class UserController {
   }
   
   @GetMapping("/registration")
-  public String firstUserRegistration(Model model, RedirectAttributes redirectAttributes) {
+  public String firstAdminRegistration(Model model, RedirectAttributes redirectAttributes) {
     if(service.registrationAvailable()) {
       model.addAttribute("user", new User());
       return "registration";
@@ -85,8 +85,8 @@ public class UserController {
   }
   
   @PostMapping("/registration")
-  public String firstUserRegistration(Model model, @ModelAttribute User user, RedirectAttributes redirectAttributes) {
-    if(service.firstUserRegistration(user)) {
+  public String firstAdminRegistration(Model model, @ModelAttribute User user, RedirectAttributes redirectAttributes) {
+    if(service.firstAdminRegistration(user)) {
       redirectAttributes.addFlashAttribute("success", "Successful registration! Activation link and initial password have been sent to "
           + user.getEmail() + 
           " address!");

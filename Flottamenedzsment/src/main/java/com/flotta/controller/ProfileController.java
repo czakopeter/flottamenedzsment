@@ -42,7 +42,7 @@ public class ProfileController {
   @PostMapping("/profile/changePassword")
   public String passwordChange(Model model, RedirectAttributes ra, @RequestParam Map<String, String> params) {
     if(service.changePassword(params.get("old-password"), params.get("new-password"), params.get("confirm-new-password"))) {
-      ra.addFlashAttribute("success", "Change password was success");
+      model.addAttribute("success", "Change password was success");
     } else {
       model.addAttribute("error", service.getUserError());
     }
