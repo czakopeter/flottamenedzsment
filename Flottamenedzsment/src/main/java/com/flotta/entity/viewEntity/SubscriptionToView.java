@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.flotta.entity.Device;
 import com.flotta.entity.Sim;
 import com.flotta.entity.User;
+import com.flotta.utility.Utility;
 
 public class SubscriptionToView {
   private long id;
@@ -30,11 +31,12 @@ public class SubscriptionToView {
 	private String note;
 	
   @DateTimeFormat (pattern="yyyy-MM-dd")
-	private LocalDate date;
+	private LocalDate beginDate;
+  
+  @DateTimeFormat (pattern="yyyy-MM-dd")
+  private LocalDate endDate;
 	
 	private String min;
-	
-	private boolean editable;
 	
 	public SubscriptionToView() {
 	}
@@ -119,15 +121,23 @@ public class SubscriptionToView {
     this.note = note;
   }
   
-  public LocalDate getDate() {
-		return date;
+  public LocalDate getBeginDate() {
+		return beginDate;
 	}
 
-	public void setDate(LocalDate date) {
-		this.date = date;
+	public void setBeginDate(LocalDate beginDate) {
+		this.beginDate = beginDate;
 	}
+	
+	public LocalDate getEndDate() {
+    return endDate;
+  }
 
-	public String getMin() {
+  public void setEndDate(LocalDate endDate) {
+    this.endDate = endDate;
+  }
+
+  public String getMin() {
 		return min;
 	}
 
@@ -135,17 +145,9 @@ public class SubscriptionToView {
 		this.min = min;
 	}
 
-	public boolean isEditable() {
-		return editable;
-	}
-
-	public void setEditable(boolean editable) {
-		this.editable = editable;
-	}
-
   @Override
   public String toString() {
-    return "SubscriptionToView [number=" + number + ", imei=" + imei + ", simChangeReason=" + simChangeReason + ", userId=" + userId + ", userName=" + userName + ", deviceId=" + deviceId + ", deviceName=" + deviceName + ", date=" + date + ", min=" + min + "]";
+    return "SubscriptionToView [number=" + number + ", imei=" + imei + ", simChangeReason=" + simChangeReason + ", userId=" + userId + ", userName=" + userName + ", deviceId=" + deviceId + ", deviceName=" + deviceName + ", beginDate=" + beginDate + ", min=" + min + "]";
   }
 
   public void setUser(User user) {
@@ -161,6 +163,10 @@ public class SubscriptionToView {
   public void setDevice(Device device) {
     this.deviceId = device != null ? device.getId() : 0;
     this.deviceName = device != null ? device.getDeviceType().getName() : "";
+  }
+  
+  public String getPeriod() {
+    return Utility.getPeriod(beginDate, endDate);
   }
 	
 }

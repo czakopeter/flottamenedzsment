@@ -2,8 +2,11 @@ package com.flotta.invoice;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.flotta.entity.BasicEntity;
 import com.flotta.entity.Subscription;
 import com.flotta.entity.User;
+import com.flotta.utility.Utility;
 
 @Entity
 @Table(name = "invoice_parts")
@@ -224,11 +228,7 @@ public class InvoiceByUserAndPhoneNumber extends BasicEntity {
   }
   
   public String getPeriod() {
-    if(beginDate == null) {
-      return "";
-    } else {
-      return beginDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")) + " - " + endDate.format(DateTimeFormatter.ofPattern("MM.dd"));
-    }
+    return Utility.getPeriod(beginDate, endDate);
   }
 
   public void setRevisionNoteOfFeeItem(long id, String note) {
@@ -254,6 +254,14 @@ public class InvoiceByUserAndPhoneNumber extends BasicEntity {
       }
     }
     return false;
+  }
+
+  public Set<String> getAllDescription() {
+    Set<String> descriptions = new HashSet<>();
+    for(FeeItem feeItem : fees) {
+      descriptions.add(feeItem.getDescription());
+    }
+    return descriptions;
   }
 
   

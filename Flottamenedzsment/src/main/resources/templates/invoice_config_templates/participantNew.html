@@ -12,7 +12,7 @@
     <form th:object="${participant}" method="post" id="form">
       <div class="row my-2">
         <div class="col-2">
-          <label th:text="#{participant.name}">Name</label>
+          <label th:text="#{name}">Name</label>
         </div>
         <div class="col-4">
           <input type="text" class="form-control" id="name" name="name" th:value="${participant.name}"
@@ -21,7 +21,7 @@
       </div>
       <div class="row my-2">
         <div class="col-2">
-          <label>Address</label>
+          <label th:text="#{participant.address}">Address</label>
         </div>
         <div class="col-4">
           <input type="text" id="address" name="address" th:value="${participant.address}" class="form-control"
@@ -30,10 +30,10 @@
       </div>
       <div class="row my-2">
         <div class="col-2">
-          <label>Description category couplers</label>
+          <label th:text="#{participant.descCatCoupler}">Description category coupler</label>
         </div>
         <div class="col-4">
-          <select class="form-control">
+          <select class="form-control" id="descriptionCategoryCoupler" name="descriptionCategoryCoupler">
             <option th:each="descriptionCategoryCoupler : ${descriptionCategoryCouplers}"
               th:value="${descriptionCategoryCoupler.id}"
               th:text="${descriptionCategoryCoupler.name}"
@@ -47,7 +47,7 @@
             formaction="/finance/participant/new"
             th:text="#{button.save}"
           >Save</button>
-          <a href="/invoiceConfigure/main" class="btn btn-primary" th:text="#{button.back}">Back</a>
+          <a href="/invoiceConfiguration/main" class="btn btn-primary" th:text="#{button.back}">Back</a>
         </div>
       </div>
     </form>

@@ -1,7 +1,5 @@
 package com.flotta.invoice.service;
 
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.flotta.entity.User;
-import com.flotta.entity.viewEntity.InvoiceOfUserByNumber;
-import com.flotta.entity.viewEntity.OneCategoryOfUserFinance;
 import com.flotta.invoice.FeeItem;
 import com.flotta.invoice.repository.FeeItemRepository;
 

@@ -30,7 +30,7 @@
         <li sec:authorize="hasAnyAuthority('FINANCE_MNGR','ADMIN')" class="nav-item dropdown" th:classappend="${title} == 'Invoice' ? 'active' :''"><a class="nav-link dropdown-toggle"
           data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" th:text="#{main.invoices}">Invoices</a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="/invoiceConfigure/main" th:text="#{main.configurations}">Configurations</a>
+            <a class="dropdown-item" href="/invoiceConfiguration/main" th:text="#{main.configurations}">Configurations</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/invoice/all" th:text="#{main.invoices}">Invoices</a>
           </div>
@@ -45,9 +45,9 @@
           <a class="nav-link dropdown-toggle" id="dropdownProfileMenuButton" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
             <img th:alt="#{profile.profile}" src="/img/settings-male.png" style="height: 25px"/>
           </a>
-          <div class="dropdown-menu" style="position: absolute; ">
-            <a class="dropdown-item" href="/profile/finance" th:text="#{profile.invoices}">Invoices</a>
-            <a class="dropdown-item" href="/profile/items">Items</a>
+          <div class="dropdown-menu dropdown-menu-right" style="position: absolute; ">
+            <a class="dropdown-item" href="/profile/finance" th:text="#{main.invoices}">Invoices</a>
+            <a class="dropdown-item" href="/profile/items" th:text="#{profile.subscriptionsAndDevices}">Items</a>
             <a class="dropdown-item" href="/profile/changePassword" th:text="#{profile.changePassword}">Change password</a>
           </div>
         </div>

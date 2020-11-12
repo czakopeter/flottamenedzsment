@@ -11,6 +11,7 @@ import com.flotta.entity.Subscription;
 import com.flotta.entity.User;
 import com.flotta.entity.switchTable.UserSub;
 import com.flotta.entity.switchTable.repository.UserSubRepository;
+import com.flotta.entity.viewEntity.SubscriptionToView;
 import com.flotta.service.SubscriptionService;
 
 @Service
@@ -90,4 +91,17 @@ public class UserSubService {
     return us.getUser();
   }
   
+  public List<SubscriptionToView> findAllSubscriptionByUser(User user) {
+    List<SubscriptionToView> result = new LinkedList<>();
+    List<UserSub> userSubs = userSubRepository.findAllByUserOrderByBeginDateDesc(user);
+    for(UserSub userSub : userSubs) {
+      if(userSub.getSub() != null) {
+        SubscriptionToView actual = userSub.getSub().toView(userSub.getBeginDate());
+        actual.setEndDate(userSub.getEndDate());
+        result.add(actual);
+      }
+    }
+    return result;
+    
+  }
 }

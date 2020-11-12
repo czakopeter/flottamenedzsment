@@ -146,3 +146,8 @@ a.noneunderline {
 	float: right;
 }
 
+.small {
+	padding: .25rem .5rem;
+	font-size: .875rem;
+	line-height: 1.5;
+}

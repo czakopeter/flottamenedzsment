@@ -7,7 +7,7 @@
 
   <div layout:fragment="loginContent">
 
-    <h3>Items</h3>
+    <h3 th:text="#{profile.subscriptionsAndDevices}">Subscription and devices</h3>
     
       <h4 class="uppercase" th:text="#{main.subscriptions}">Subscriptions</h4>
       <div th:if="${#lists.isEmpty(subscriptions)}" class="text-center my-border">
@@ -28,7 +28,7 @@
             <td th:text="${subscription.number}"></td>
             <td th:text="${subscription.imei}"></td>
             <td th:text="${subscription.deviceName}"></td>
-            <td th:text="${subscription.date}"></td>
+            <td th:text="${subscription.getPeriod()}"></td>
           </tr>
         </tbody>
       </table>

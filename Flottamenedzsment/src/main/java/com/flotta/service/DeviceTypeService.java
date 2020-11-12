@@ -56,4 +56,12 @@ public class DeviceTypeService {
   public DeviceType findByName(String name) {
     return deviceTypeRepository.findByNameIgnoreCase(name);
   }
+
+  public void update(DeviceType deviceType) {
+    deviceTypeRepository.save(deviceType);
+  }
+
+  public List<DeviceType> findAllVisibleDeviceTypes() {
+    return deviceTypeRepository.findAllDeviceTypeByVisibleTrue();
+  }
 }

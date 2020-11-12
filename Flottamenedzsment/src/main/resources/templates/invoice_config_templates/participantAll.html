@@ -8,14 +8,14 @@
   <div layout:fragment="loginContent">
   
     <div th:fragment="participant-all">
-      <h3 th:text="#{participant.participants}">Participants</h3>
+      <h4 th:text="#{participant.participants}">Participants</h4>
 
       <a href="/finance/participant/new" class="btn btn-sm btn-primary mb-2" th:text="#{button.add}">Add</a>
 
       <table class="table table-sm">
         <thead>
           <tr>
-            <th th:text="#{participant.name}">Name</th>
+            <th th:text="#{name}">Name</th>
             <th th:text="#{participant.address}">Address</th>
             <th></th>
           </tr>

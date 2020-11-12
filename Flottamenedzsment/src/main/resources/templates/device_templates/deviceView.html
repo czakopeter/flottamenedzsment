@@ -53,10 +53,10 @@
         </div>
         <div class="row my-2">
           <div class="col-2">
-            <label th:text="#{device.date}">Date</label>
+            <label th:text="#{date}">Date</label>
           </div>
           <div class="col-4">
-            <input type="date" class="form-control" id="date" name="date" th:value="*{date}" readonly="readonly" />
+            <input type="date" class="form-control" id="beginDate" name="beginDate" th:value="*{beginDate}" readonly="readonly" />
           </div>
         </div>
         <div class="row">
@@ -70,41 +70,9 @@
       </div>
     </form>
 
-
-
-    <script th:inline="javascript">
-					//<![CDATA[
-					
-					function changeDate(d) {
-						console.log(d.value);
-						let id = document.querySelector("#id").value;
-						console.log(id);
-						sendData("POST", "/device/" + id + "/view", "date=" + d.value, setViewData);
-						console.log("END");
-					}
-					
-					function setViewData(data) {
-						console.log("setViewData")
-						document.querySelector("#userName").value = data.userName;
-						document.querySelector("#note").value = data.note;
-						document.querySelector("#date").value = jsonDateToString(data.date);
-					}
-					
-					function jsonDateToString(date) {
-						let inputDate = date.year + '-';
-						if(date.monthValue < 10) {
-							inputDate += '0';
-						}
-						inputDate += date.monthValue + '-';
-						if(date.dayOfMonth < 10) {
-							inputDate += '0';
-						}
-						inputDate += date.dayOfMonth;
-						return inputDate
-					}
-
-					//]]>
-				</script>
+    <script src="/js/device/deviceView.js"></script>
+    
+    
 
   </div>
 </body>

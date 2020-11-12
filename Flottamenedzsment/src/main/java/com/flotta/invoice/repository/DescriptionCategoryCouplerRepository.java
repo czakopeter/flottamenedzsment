@@ -1,6 +1,7 @@
 package com.flotta.invoice.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
@@ -15,6 +16,6 @@ public interface DescriptionCategoryCouplerRepository extends CrudRepository<Des
   
   List<DescriptionCategoryCoupler> findAllByAvailableFalse();
   
-  DescriptionCategoryCoupler findByName(String name);
+  Optional<DescriptionCategoryCoupler> findByName(String name);
 
 }

@@ -9,13 +9,37 @@
 
       <h3 th:text="#{descCatCoupler.editInvoiceDescriptionAndCategoryCoupler}">Edit invoice description category coupler</h3>
 
-      <form th:action="${'/finance/invoiceDescriptionCategoryCoupler/' + coupler.id}" method="post">
+      <form method="post">
       <div class="container">
         <label th:text="#{descCatCoupler.name}">Name</label>
         <input type="text" class="form-control" id="name" name="name" th:value="${coupler.name}"/>
         <label for="available">Available</label>
         <input type="checkbox" id="available" name="available" th:checked="*{coupler.available}" />
         <hr />
+        
+        <div th:if="${not #lists.isEmpty(invoices)}">
+          <div>
+            <label for="invoices">Invoice description add</label>
+            <form method="post">
+            <select id="selectedInvoice" name="selectedInvoice">
+              <option th:each="invoice : ${invoices}" th:value="${invoice.id}" th:text="${invoice.invoiceNumber} + ' (' + ${invoice.getPeriod()} +')'"></option>
+            </select>
+            <button type="submit" th:formaction="'/finance/invoiceDescriptionCategoryCoupler/' + ${coupler.id} + '/test'" th:text="#{button.add}" onclick="getDescriptionsOfInvoice()">Add</button>
+            </form>
+          </div>
+          <div class="row my-2" th:each="description : ${descriptions}">
+            <div class="col-4">
+              <input type="text" class="form-control" id="description" name="description" th:value="${description}" readonly="readonly" />
+            </div>
+            <div class="col-2">
+              <select id="category" name="category" class="form-control">
+                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}" ></option>
+              </select>
+            </div>
+          </div>
+        <hr />
+        </div>
+        
         <div class="row my-2" th:each="description : ${coupler.getSortedDescriptions()}">
           <div class="col-4">
             <input type="text" class="form-control" id="description" name="description" th:value="${description}" readonly="readonly" />
@@ -26,10 +50,12 @@
             </select>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary" th:text="#{button.save}">Save</button>
-        <a href="/invoiceConfigure/main" class="btn btn-primary" th:text="#{button.back}"></a>
+        <button type="submit" class="btn btn-primary" th:formaction="${'/finance/invoiceDescriptionCategoryCoupler/' + coupler.id}" th:text="#{button.save}">Save</button>
+        <a href="/invoiceConfiguration/main" class="btn btn-primary" th:text="#{button.back}"></a>
       </div>
       </form>
+      
+      <script src="/js/invoiceConfiguration/descriptionCategoryCouplerEdit.js"></script>
       
 
   </div>

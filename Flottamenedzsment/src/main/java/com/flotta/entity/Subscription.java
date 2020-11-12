@@ -144,14 +144,16 @@ public class Subscription extends BasicEntityWithCreateDate {
     SubscriptionToView stv = new SubscriptionToView();
     stv.setId(id);
     stv.setNumber(number);
-    stv.setDate(firstAvailableDate);
+    stv.setBeginDate(getAllModificationDateDesc().get(0));
+    stv.setEndDate(null);
     stv.setMin(firstAvailableDate.toString());
-    stv.setEditable(true);
 
     stv.setSim(subSim.get(Utility.getLatestDate(subSim)).getSim());
 
     stv.setUser(subUsers.get(Utility.getLatestDate(subUsers)).getUser());
 
+    System.err.println(Utility.getLatestDate(subDev));
+    
     stv.setDevice(subDev.get(Utility.getLatestDate(subDev)).getDev());
 
     stv.setNote(notes.get(Utility.getLatestDate(notes)).getNote());
@@ -166,7 +168,7 @@ public class Subscription extends BasicEntityWithCreateDate {
     SubscriptionToView stv = new SubscriptionToView();
     stv.setId(id);
     stv.setNumber(number);
-    stv.setDate(date);
+    stv.setBeginDate(date);
 
     stv.setSim(subSim.get(Utility.floorDate(subSim, date)).getSim());
 
@@ -177,6 +179,7 @@ public class Subscription extends BasicEntityWithCreateDate {
     stv.setNote(notes.get(Utility.floorDate(notes, date)).getNote());
     return stv;
   }
+  
 
   public List<LocalDate> getAllModificationDateDesc() {
     Set<LocalDate> dates = new HashSet<>();
@@ -226,6 +229,7 @@ public class Subscription extends BasicEntityWithCreateDate {
       } else if (date.isAfter(lastUserModDate)) {
         UserSub last = subUsers.get(lastUserModDate);
         if (!Utility.isSameByIdOrBothNull(user, last.getUser())) {
+          last.setEndDate(date.minusDays(1));
           subUsers.put(date, new UserSub(user, this, date));
           firstAvailableDate = date;
         }

@@ -39,7 +39,7 @@ public class SubscriptionService extends ServiceWithMsg {
   
   public boolean add(SubscriptionToView stv) {
     if(subscriptionRepository.findByNumber(stv.getNumber()) == null) {
-      Subscription entity = new Subscription(stv.getNumber(), stv.getDate());
+      Subscription entity = new Subscription(stv.getNumber(), stv.getBeginDate());
       subscriptionRepository.save(entity);
       return true;
     } else {

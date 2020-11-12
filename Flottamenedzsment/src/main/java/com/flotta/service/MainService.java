@@ -20,7 +20,7 @@ import com.flotta.entity.Sim;
 import com.flotta.entity.Subscription;
 import com.flotta.entity.User;
 import com.flotta.entity.switchTable.Service.UserDevService;
-//import com.flotta.entity.switchTable.Service.UserSubService;
+import com.flotta.entity.switchTable.Service.UserSubService;
 import com.flotta.entity.viewEntity.DeviceToView;
 //import com.flotta.entity.viewEntity.InvoiceOfUserByNumber;
 //import com.flotta.entity.viewEntity.OneCategoryOfUserFinance;
@@ -55,7 +55,7 @@ public class MainService {
 	
 //	private SubSimService subSimService;
 	
-//	private UserSubService userSubService;
+	private UserSubService userSubService;
 	
 	private UserDevService userDevService;
 	
@@ -84,10 +84,10 @@ public class MainService {
 //    this.subSimService = subSimService;
 //  }
 	
-//	@Autowired
-//	public void setUserSubService(UserSubService userSubService) {
-//    this.userSubService = userSubService;
-//  }
+	@Autowired
+	public void setUserSubService(UserSubService userSubService) {
+    this.userSubService = userSubService;
+  }
 	
 	@Autowired
 	public void setUserService(UserService userService) {
@@ -162,7 +162,7 @@ public class MainService {
     Sim sim = simService.findByImei(stv.getImei());
     if(sim != null && subscriptionService.add(stv)) {
       Subscription saved = subscriptionService.findByNumber(stv.getNumber());
-      saved.addSim(sim, null, stv.getDate());
+      saved.addSim(sim, null, stv.getBeginDate());
       subscriptionService.save(saved);
       return true;
     }
@@ -175,10 +175,10 @@ public class MainService {
     User user = userService.findById(stv.getUserId());
     Device dev = deviceService.findById(stv.getDeviceId());
     
-    sub.addSim(sim, stv.getSimChangeReason(), stv.getDate());
-    sub.addUser(user, stv.getDate());
-    sub.addDevice(dev, stv.getDate());
-    sub.addNote(stv.getNote(), stv.getDate());
+    sub.addSim(sim, stv.getSimChangeReason(), stv.getBeginDate());
+    sub.addUser(user, stv.getBeginDate());
+    sub.addDevice(dev, stv.getBeginDate());
+    sub.addNote(stv.getNote(), stv.getBeginDate());
     subscriptionService.save(sub);
     return true;
   }
@@ -329,8 +329,8 @@ public class MainService {
     Device device = deviceService.findById(dtv.getId());
     User user = userService.findById(dtv.getUserId());
     
-    device.addUser(user, dtv.getDate());
-    device.addNote(dtv.getNote(), dtv.getDate());
+    device.addUser(user, dtv.getBeginDate());
+    device.addNote(dtv.getNote(), dtv.getBeginDate());
     
     deviceService.save(device);
     return true;
@@ -371,38 +371,6 @@ public class MainService {
     return billingService.findAllDescriptionCategoryCoupler();
   }
   
-//  public boolean invoiceDivisionByTemplateId(long billId, long templateId) {
-//    List<FeeItem> fees = billingService.findAllFeeItemByBillId(billId);
-//
-//    fees = divideFeeItemsByUserChanges(fees);
-//    fees = setFeeItemsUser(fees);
-//    billingService.save(fees);
-//    
-//    return billingService.billPartitionByTemplateId(billId, templateId);
-//  }
-  
-//  private List<FeeItem> divideFeeItemsByUserChanges(List<FeeItem> fees) {
-//    List<FeeItem> result = new LinkedList<>();
-//    for(FeeItem fee : fees) {
-//      String number = fee.getSubscription();
-//      LocalDate begin = fee.getBeginDate();
-//      LocalDate end = fee.getEndDate();
-//      List<LocalDate> allNewUserBegin = userSubService.findAllBeginDateBySubBetween(number, begin, end);
-//      result.addAll(fee.splitBeforeDate(allNewUserBegin));
-//    }
-//    return result;
-//  }
-  
-//  private List<FeeItem> setFeeItemsUser(List<FeeItem> fees) {
-//    for(FeeItem fee : fees) {
-//      User user = userSubService.getUser(fee.getSubscription(), fee.getBeginDate(), fee.getEndDate());
-//      if(user != null) {
-//        fee.setUserId(user.getId());
-//      }
-//    }
-//    return fees;
-//  }
-  
   public List<Category> findAllCategory() {
     return billingService.findAllCategory();
   }
@@ -415,20 +383,18 @@ public class MainService {
     return billingService.getUnknownFeeDescToTemplate(templateId);
   }
 
-  public void upgradeDescriptionCategoryCoupler(long id, List<String> descriptions, List<Long> categories) {
-    billingService.upgradeDescriptionCategoryCoupler(id, descriptions, categories);
+  public void upgradeDescriptionCategoryCoupler(long id, List<String> descriptions, List<Long> categories, boolean available) {
+    billingService.upgradeDescriptionCategoryCoupler(id, descriptions, categories, available);
   }
 
-//  public List<OneCategoryOfUserFinance> getUserFinance(String email) {
-//    User user = userService.findByEmail(email);
-//    return billingService.getFinanceByUserId(user.getId());
-//  }
-
+  //TODO visszamenőlegesen kiírtnál a kezdeti dátumnál levő egyéb infomációkat írja ki, lehet volt változás az időszak alatt amíg a felhasználónál volt
   public List<SubscriptionToView> findAllCurrentSubscriptionOfUser() {
-    return subscriptionService.findAllCurrentByUser(getCurrentUser());
+    return userSubService.findAllSubscriptionByUser(getCurrentUser());
+//    return subscriptionService.findAllCurrentByUser(getCurrentUser());
   }
   
   public List<DeviceToView> findAllCurrentDeviceOfUser() {
+    
     return deviceService.findAllCurrentByUser(getCurrentUser());
   }
 
@@ -549,19 +515,28 @@ public class MainService {
     return billingService.findAllRawInvoice();
   }
 
-  public boolean addParticipant(Participant participant) {
-    return billingService.addParticipant(participant);
-    
+  public boolean addParticipant(Participant participant, long descriptionCategoryCouplerId) {
+    return billingService.addParticipant(participant, descriptionCategoryCouplerId);
   }
 
   public DeviceType findDeviceTypeById(long id) {
-    // TODO Auto-generated method stub
-    return null;
+    return deviceTypeService.findById(id);
   }
 
   public void updateDeviceType(DeviceType deviceType) {
-    // TODO Auto-generated method stub
-    
+    deviceTypeService.update(deviceType);
+  }
+
+  public List<DeviceType> findAllVisibleDeviceTypes() {
+    return deviceTypeService.findAllVisibleDeviceTypes();
+  }
+
+  public boolean addDescriptionCategoryCoupler(DescriptionCategoryCoupler dcc) {
+    return billingService.addDescriptionCategoryCoupler(dcc);
+  }
+
+  public List<String> findDescriptionsOfInvoiceById(long id) {
+    return billingService.findDescriptionsOfInvoiceById(id);
   }
 
 }

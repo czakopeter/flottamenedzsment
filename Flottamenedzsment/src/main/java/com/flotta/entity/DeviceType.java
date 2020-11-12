@@ -88,7 +88,7 @@ public class DeviceType extends BasicEntity {
 
   @Override
   public String toString() {
-    return "DeviceType [id=" + id + ", visible=" + visible + ", brand=" + brand + ", model=" + model + ", name=" + name + ", simNumber=" + simNumber + ", microsd=" + microsd + "]";
+    return "DeviceType [id=" + id + ", visible=" + visible + ", brand=" + brand + ", model=" + model + ", name=" + name + "]";
   }
   
 }

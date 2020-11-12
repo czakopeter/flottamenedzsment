@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main}">
+<head>
+<title>Flotta</title>
+</head>
+<body>
+  <div layout:fragment="loginContent">
+
+    <h3 th:text="#{deviceType.editDeviceType}">Device type edit</h3>
+
+    <form th:action="'/deviceType/' + ${deviceType.id} + '/update'" method="post" th:object="${deviceType}" id="form">
+        <div class="form-group">
+        <label class="form-control-label" for="brand">Name</label> <input type="text"
+          class="form-control" id="name" name="name" th:value="*{name}" readonly="readonly"
+          />
+        </div>
+      <div class="form-group">
+        <label class="form-control-label" for="brand">Brand</label> <input id="brand"
+          name="brand" th:value="*{brand}" class="form-control" readonly="readonly"
+        />
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">Model</label> <input type="text" id="model" name="model" th:value="*{model}"
+          class="form-control" readonly="readonly"
+        />
+      </div>
+      <div class="form-group">
+        <label class="form-control-label" for="visible">Visible</label> <input type="checkbox" id="visible"
+          name="visible" th:checked="*{visible}"
+        />
+      </div>
+
+        <button type="submit" class="btn btn-primary" th:text="#{button.save}">Save</button>
+        <a href="/deviceType/all" class="btn btn-secondary" th:text="#{button.back}">Back</a>
+    </form>
+
+
+
+  </div>
+</body>
+</html>

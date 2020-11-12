@@ -46,7 +46,7 @@ public class DeviceService extends ServiceWithMsg{
   
   public boolean add(DeviceToView dtv) {
     if(deviceRepository.findBySerialNumber(dtv.getSerialNumber()) == null) {
-      Device entity = new Device(dtv.getSerialNumber(), dtv.getDate());
+      Device entity = new Device(dtv.getSerialNumber(), dtv.getBeginDate());
       deviceRepository.save(entity);
       return true;
     } else {

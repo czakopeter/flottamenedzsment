@@ -3,6 +3,7 @@ package com.flotta.utility;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class Utility {
   }
   
   public static LocalDate floorDate(Map<LocalDate, ? extends BasicSwitchTable> map, LocalDate date) {
-    if (map == null || map.isEmpty()) {
+    if (map == null || map.isEmpty() || date == null) {
       return null;
     }
     List<LocalDate> dates = new LinkedList<>(map.keySet());
@@ -34,6 +35,24 @@ public class Utility {
     LocalDate r = null;
     for (LocalDate act : dates) {
       if (date.isBefore(act)) {
+        break;
+      }
+      r = act;
+    }
+    return r;
+  }
+  
+  public static LocalDate ceilDate(List<LocalDate> dates, LocalDate date) {
+    if (dates == null || dates.isEmpty() || date == null) {
+      return null;
+    }
+    if (dates.contains(date)) {
+      return date;
+    }
+    Collections.sort(dates, Collections.reverseOrder());
+    LocalDate r = null;
+    for (LocalDate act : dates) {
+      if (date.isAfter(act)) {
         break;
       }
       r = act;
@@ -81,5 +100,22 @@ public class Utility {
     BigDecimal bd = BigDecimal.valueOf(value);
     bd = bd.setScale(places, RoundingMode.HALF_UP);
     return bd.doubleValue();
-}
+  }
+  
+  public static String getPeriod(LocalDate beginDate, LocalDate endDate) {
+    StringBuilder sb = new StringBuilder();
+    if(beginDate == null || (endDate != null && beginDate.isAfter(endDate))) {
+    } else {
+      sb.append(beginDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+      sb.append(" - ");
+      if(endDate != null) {
+        if(beginDate.getYear() < endDate.getYear()) {
+          sb.append(endDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
+        } else {
+          sb.append(endDate.format(DateTimeFormatter.ofPattern("MM.dd")));
+        }
+      }
+    }
+    return sb.toString();
+  }
 }

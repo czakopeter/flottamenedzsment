@@ -1,8 +1,7 @@
 function filter() {
 	let trs = document.querySelector("#device-table").querySelector("tbody").querySelectorAll("tr");
 	for(let tr of trs) {
-		console.log(tr);
-		if(filterCondicion(tr)) {
+		if(filterCondition(tr)) {
 			tr.classList.remove("collapse");
 		} else {
 			tr.classList.add("collapse");
@@ -18,7 +17,7 @@ function clearFilter() {
 	showAll();
 }
 
-function filterCondicion(tr) {
+function filterCondition(tr) {
 	let filterOptionsWrapper = document.querySelector("#filter-options-wrapper");
 	let serialNumber = filterOptionsWrapper.querySelector("#serialNumber");
 	let typeName = filterOptionsWrapper.querySelector("#typeName");

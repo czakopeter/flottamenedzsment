@@ -9,7 +9,6 @@
     <h3 th:text="#{device.editDevice}">Device edit</h3>
 
     <form th:action="'/device/' + ${device.id} + '/update'" method="post" th:object="${device}" id="form">
-      <input type="hidden" id="order" name="order" />
       <div class="container">
         <div class="row my-2">
           <div class="col-2">
@@ -55,7 +54,7 @@
             <label th:text="#{device.date}">Date</label>
           </div>
           <div class="col-4">
-            <input type="date" class="form-control" id="date" name="date" th:value="*{date}"
+            <input type="date" class="form-control" id="beginDate" name="beginDate" th:value="*{beginDate}"
               required="required" th:min="*{min}"
             />
           </div>
@@ -67,27 +66,6 @@
     </form>
 
 
-
-
-
-
-    <script th:inline="javascript">
-					//<![CDATA[
-					window.onload = function() {
-					};
-
-					function changeDate(d) {
-						document.getElementById('order').value = 'dateSliceCh ' + d.value;
-						document.getElementById('form').submit();
-					}
-
-					function userUpdate(u) {
-						document.getElementById('order').value = 'userCh ' + u.value;
-						document.getElementById('form').submit();
-					}
-
-					//]]>
-				</script>
 
   </div>
 </body>

@@ -12,7 +12,7 @@
     <div th:replace="fragments/filter/filter :: add-and-filter-wrapper('/deviceType/new', device-type-filter-options)"></div>
     
 
-    <table class="table table-sm table-hover mt-3" id="table">
+    <table class="table table-sm table-hover mt-3" id="device-type-table">
       <thead>
         <tr>
           <th th:text="#{deviceType.brand}">Brand</th>
@@ -27,66 +27,16 @@
           <td name="brand" th:text="${deviceType.brand}"></td>
           <td name="model" th:text="${deviceType.model}"></td>
           <td name="name" th:text="${deviceType.name}"></td>
-          <td class="text-right"><a class="btn btn-primary" th:href="'/deviceType/' + ${deviceType.id} + '/edit'" th:text="#{button.edit}"
+          <td class="text-right"><a class="btn btn-primary" th:href="'/deviceType/' + ${deviceType.id} + '/update'" th:text="#{button.edit}"
             >Edit</a>
           </td>
         </tr>
       </tbody>
     </table>
 
-    </div>
-
-
-    <script th:inline="javascript">
-					//<![CDATA[
-						
-					changeVisibility('active');
-
-					
-					
-					function changeVisibilityFormSelect(type) {
-						changeVisibility(type.value);
-					}
-					
-					function changeVisibility(type) {
-						var rows = document.getElementById('table').rows;
-						var i = 1;
-						for(i; i < rows.length; i++) {
-							switch (type) {
-							case 'all':
-								if(rows[i].cells.namedItem('visible' + rows[i].id).innerHTML == 'true') {
-									rows[i].style.background = '#aaffaa';
-								} else {
-									rows[i].style.background = '#ffaaaa';
-								}
-								rows[i].style.display = null;
-								continue;
-							case 'active':
-								if(rows[i].cells.namedItem('visible' + rows[i].id).innerHTML == 'true') {
-									rows[i].style.display = null;
-								} else {
-									rows[i].style.display = 'none';
-								}
-								rows[i].style.background = '';
-								continue;
-							case 'archived':
-								if(rows[i].cells.namedItem('visible' + rows[i].id).innerHTML == 'false') {
-									rows[i].style.display = null;
-								} else {
-									rows[i].style.display = 'none';
-								}
-								rows[i].style.background = '';
-								continue;
-							}
-							
-						}
-						
-					}
-					
-
-					//]]>
-				</script>
+    <script src="/js/deviceType/deviceTypeAll.js"></script>
 
   </div>
+
 </body>
 </html>

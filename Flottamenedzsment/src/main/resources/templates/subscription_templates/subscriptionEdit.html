@@ -9,21 +9,6 @@
 
     <h3 th:text="#{subscription.editSubscription}">Edit subscription</h3>
 
-<!--     <div class="container"> -->
-<!--       <select th:if="${dates} != null" onchange="changeDate(this)" class="my-3"> -->
-<!--         <option th:each="date : ${dates}" th:value="${date}" th:text="${date}" -->
-<!--           th:selected="${date} == ${subscription.date}" -->
-<!--         ></option> -->
-<!--       </select> -->
-<!--     </div> -->
-
-<!--     <form method="get"> -->
-<!--       <div class="btn-group"> -->
-<!--         <button class="btn btn-default disabled" th:formaction="'/subscription/' + ${subscription.id} + '/edit'">Edit</button> -->
-<!--         <button class="btn btn-primary" th:formaction="'/subscription/' + ${subscription.id} + '/view'">View</button> -->
-<!--       </div> -->
-<!--     </form> -->
-
     <form th:action="'/subscription/' + ${subscription.id} + '/update'" th:object="${subscription}" method="post" id="form">
       <div class="container">
         <input type="hidden" id="id" name="id" th:value="*{id}" /> 
@@ -82,7 +67,7 @@
         </div>
         <div class="row my-2">
           <div class="col-2">
-            <label th:text="#{subscription.note}">Note</label>
+            <label th:text="#{note}">Note</label>
           </div>
           <div class="col-4">
             <input type="text" class="form-control" id="note" name="note" th:value="*{note}"/>
@@ -90,10 +75,10 @@
         </div>
         <div class="row my-2">
           <div class="col-2">
-            <label th:text="#{subscription.date}">Date</label>
+            <label th:text="#{date}">Date</label>
           </div>
           <div class="col-4">
-            <input type="date" class="form-control" id="date" name="date" th:value="*{date}" required="required"
+            <input type="date" class="form-control" id="beginDate" name="beginDate" th:value="*{beginDate}" required="required"
               th:min="${subscription.min}"
             />
             <input type="hidden" id="min" name="min" th:value="*{min}" />
@@ -134,80 +119,7 @@
       </div>
     </div>
 
-    <script src="/js/subscription.js"></script>
-
-    <script th:inline="javascript">
-					//<![CDATA[
-					//simStatus
-// 						-1 sub dont have sim
-					//	0 sub have own sim
-					//	1 sub change sim
-// 					var simStatus;
-// 					if(document.getElementById('oldImei').value == '') {
-// 						simStatus = -1;
-// 					} else {
-// 						simStatus = document.getElementById('imei').value != document.getElementById('oldImei').value ? 1 : 0;
-// 					}
-// 					var simChanged = document.getElementById('imei').value != document.getElementById('oldImei').value;
-					
-// 					window.onload = function() {
-// 						switch(simStatus) {
-// 							case -1:
-// 								if(document.getElementById('imei').value == '') {
-// 									document.getElementById('button').disabled = true;
-// 								}
-// 								document.getElementById('simChangeBtn').value = 'Select';
-// 								document.getElementById('simChangeResetBtn').style.display = 'none';
-// 								break;
-// 							case 0:
-// 								document.getElementById('simChangeResetBtn').disabled = true;
-// 								break;
-// 							case 1:
-// 								document.getElementById('reasonRow').style.display = null;
-// 								document.getElementById('simChangeReason').required = true;
-// 								break;
-// 						}
-// 					};
-
-// 					function changeDate(d) {
-// 						document.getElementById('order').value = 'dateSliceCh ' + d.value;
-// 						document.getElementById('form').submit();
-// 					}
-
-// 					function simChange(imei) {
-// 						switch(simStatus) {
-// 							case -1:
-// 								document.getElementById('button').disabled = false;
-// 								break;
-// 							default:
-// 								document.getElementById('reasonRow').style.display = null;
-// 								document.getElementById('simChangeReason').required = true;
-// 								document.getElementById('simChangeResetBtn').disabled = false;
-// 								break;
-// 						}
-// 						document.getElementById('imei').value = imei;
-// 					}
-					
-// 					function resetSimChange() {
-// 						document.getElementById('imei').value = document.getElementById('oldImei').value;
-// 						document.getElementById('simChangeReason').value = null;
-// 						document.getElementById('simChangeReason').required = false;
-// 						document.getElementById('reasonRow').style.display = 'none';
-// 						document.getElementById('simChangeResetBtn').disabled = true;
-// 					}
-
-// 					function userUpdate(user) {
-// 						document.getElementById('order').value = 'userCh ' + user.value;
-// 						document.getElementById('form').submit();
-// 					}
-					
-// 					function deviceUpdate(device) {
-// 						document.getElementById('order').value = 'deviceCh';
-// 						document.getElementById('form').submit();
-// 					}
-					
-					//]]>
-				</script>
+    <script src="/js/subscription/subscriptionEdit.js"></script>
 
   </div>
 

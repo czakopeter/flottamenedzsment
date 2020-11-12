@@ -27,9 +27,6 @@ public class UserSub extends BasicSwitchTable {
 	@JoinColumn( name = "sub_id")
 	private Subscription sub;
 	
-	@DateTimeFormat (pattern="yyyy-MM-dd")
-	private LocalDate disconnect;
-
 	public UserSub() {
 	}
 
@@ -55,20 +52,13 @@ public class UserSub extends BasicSwitchTable {
 		this.sub = sub;
 	}
 
-	public LocalDate getDisconnect() {
-		return disconnect;
-	}
-
-	public void setDisconnect(LocalDate disconnect) {
-		this.disconnect = disconnect;
-	}
 
 	@Override
 	public String toString() {
 		return "UserSub [user=" + (user != null ? user.getFullName().toString() : "no user") + 
 				", sub=" + (sub != null ? sub.getNumber().toString() : "no sub") + 
-				", connect=" + Objects.toString(beginDate, "no connect") +
-				", disconnect=" + Objects.toString(disconnect, "no disconnect") + "]";
+				", connect=" + Objects.toString(beginDate, "no begin date") +
+				", disconnect=" + Objects.toString(endDate, "no end date") + "]";
 	}
 	
 //	static class UserSubDateAscComperator implements Comparator<UserSub> {

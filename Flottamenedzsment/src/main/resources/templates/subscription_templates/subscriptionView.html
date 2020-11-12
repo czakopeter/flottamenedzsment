@@ -12,17 +12,10 @@
     <div class="container">
       <select th:if="${dates} != null" onchange="dateChange(this)" class="my-3">
         <option th:each="date : ${dates}" th:value="${date}" th:text="${date}"
-          th:selected="${date} == ${subscription.date}"
+          th:selected="${date} == ${subscription.beginDate}"
         ></option>
       </select>
     </div>
-    
-<!--     <form method="get"> -->
-<!--       <div class="btn-group"> -->
-<!--         <button class="btn btn-primary" th:formaction="'/subscription/' + ${subscription.id} + '/edit'">Edit</button> -->
-<!--         <button class="btn btn-default disabled" th:formaction="'/subscription/' + ${subscription.id} + '/view'">View</button> -->
-<!--       </div> -->
-<!--     </form> -->
     
     <form th:object="${subscription}" method="post" id="form">
       <input type="hidden" id="id" name="id" th:value="*{id}"/>
@@ -81,7 +74,7 @@
             <label th:text="#{subscription.date}">Date</label>
           </div>
           <div class="col-4">
-            <input type="date" class="form-control" id="date" name="date" th:value="*{date}" readonly="readonly" />
+            <input type="date" class="form-control" id="beginDate" name="beginDate" th:value="*{beginDate}" readonly="readonly" />
           </div>
         </div>
         <div class="row">
@@ -92,7 +85,7 @@
       </div>
     </form>
 
-    <script src="/js/subscription.js"></script>
+    <script src="/js/subscription/subscriptionView.js"></script>
 
 
 

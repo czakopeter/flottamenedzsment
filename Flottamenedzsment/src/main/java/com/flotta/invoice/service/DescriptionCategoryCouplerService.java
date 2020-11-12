@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +31,6 @@ public class DescriptionCategoryCouplerService {
     this.descriptionCategoryCouplerRepository = descriptionCategoryCouplerRepository;
   }
 
-  public void save(DescriptionCategoryCoupler bpt) {
-    DescriptionCategoryCoupler saved = descriptionCategoryCouplerRepository.findByName(bpt.getName());
-    if(saved == null) {
-      descriptionCategoryCouplerRepository.save(bpt);
-    }
-  }
-
   public DescriptionCategoryCoupler findById(long id) {
     return descriptionCategoryCouplerRepository.findById(id).orElse(null);
   }
@@ -57,16 +51,16 @@ public class DescriptionCategoryCouplerService {
     return descriptions;
   }
 
-  public void upgradeDescriptionCategoryCoupler(long id, List<String> descriptions, List<Category> categories) {
-    DescriptionCategoryCoupler bpt = descriptionCategoryCouplerRepository.findById(id).orElse(null);
-    Map<String, Category> descriptionCategoryMap = bpt.getDescriptionCategoryMap();
-    
-    if(descriptions.size() == categories.size()) {
+  public void upgradeDescriptionCategoryCoupler(long id, List<String> descriptions, List<Category> categories, boolean available) {
+    Optional<DescriptionCategoryCoupler> optional = descriptionCategoryCouplerRepository.findById(id);
+    if(optional.isPresent()) {
+      DescriptionCategoryCoupler dcc = optional.get();
+      Map<String, Category> descriptionCategoryMap = dcc.getDescriptionCategoryMap();
       for(int i = 0; i < descriptions.size(); i++) {
         descriptionCategoryMap.put(descriptions.get(i), categories.get(i));
       }
-      
-      descriptionCategoryCouplerRepository.save(bpt);
+      dcc.setAvailable(available);
+      descriptionCategoryCouplerRepository.save(dcc);
     }
   }
 
@@ -82,6 +76,19 @@ public class DescriptionCategoryCouplerService {
     List<String> result = new LinkedList<>(descriptions);
     Collections.sort(result);
     return result;
+  }
+
+  public boolean add(DescriptionCategoryCoupler dcc) {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  public boolean descripttionCategoryCoupler(DescriptionCategoryCoupler dcc) {
+    Optional<DescriptionCategoryCoupler> optional = descriptionCategoryCouplerRepository.findByName(dcc.getName());
+    if(!optional.isPresent()) {
+      descriptionCategoryCouplerRepository.save(dcc);
+    }
+    return !optional.isPresent();
   }
   
 }

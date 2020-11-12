@@ -1,0 +1,22 @@
+.dropdown {
+	position: relative;
+ 	display: inline-block;
+}
+
+.dropdownBtn {
+/* 	display: inline-block; */
+}
+
+.dropdown-menu {
+	display: none;
+ 	position: absolute;
+}
+
+.dropdown-menu a {
+	text-decoration: none;
+ 	display: block;
+}
+
+.dropdown:hover .dropdown-menu {
+	display: block;
+}

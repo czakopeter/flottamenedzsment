@@ -7,6 +7,7 @@ import java.io.StringReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -161,23 +162,23 @@ public class InvoiceService {
 
   //TODO a különböző hibák visszajelzése, először csak szöveges hibajegyzék, később megoldás ajánlása plusz átirányítás (hiányzó előfizetés -> új felvétele a számmal, hiányzó cég -> felvétele névvel címmel...)
   private boolean check(RawInvoice rawInvoice) {
-    boolean ok = true;
-//    if(invoiceRepository.findByInvoiceNumber(rawInvoice.getInvoiceNumber()) != null || rawInvoiceRepository.findByInvoiceNumber(rawInvoice.getInvoiceNumber()) != null) {
-//      rawInvoice.addProblem("Already has invoice with this invoice number: " + rawInvoice.getInvoiceNumber());
-//      ok = false;
-//    }
-    if(participantRepository.findByName(rawInvoice.getCompanyName()).isPresent()) {
+    Optional<Participant> optionalParticipant = participantRepository.findByName(rawInvoice.getCompanyName());
+    if(optionalParticipant.isPresent()) {
+      DescriptionCategoryCoupler dcc = optionalParticipant.get().getDescriptionCategoryCoupler();
+      for(RawFeeItem rawFeeItem : rawInvoice.getFeeItems()) {
+        if(dcc.getCategoryByDescription(rawFeeItem.getDescription()) == null) {
+          rawInvoice.addProblem("Unknown description: " + rawFeeItem.getDescription());
+        }
+      }
     } else {
       rawInvoice.addProblem("Unknown company, name: " + rawInvoice.getCompanyName());
-      ok = false;
     }
     for(RawFeeItem rawFeeItem : rawInvoice.getFeeItems()) {
       if(subscriptionInfo.findByNumber(rawFeeItem.getSubscription()) == null) {
         rawInvoice.addProblem("Unknown phone number: " + rawFeeItem.getSubscription());
-        ok = false;
       }
     }
-    return ok;
+    return !rawInvoice.hasProblem();
   }
   
   private Invoice parseRawInvoiceToInvoice(RawInvoice rawInvoice) {
@@ -408,11 +409,21 @@ public class InvoiceService {
     return participantRepository.findById(id);
   }
 
-  public boolean addParticipant(Participant participant) {
+  public boolean addParticipant(Participant participant, long descriptionCategoryCouplerId) {
+    DescriptionCategoryCoupler dcc = descriptionCategoryCouplerServiceOnlyGet.findById(descriptionCategoryCouplerId);
     Optional<Participant> result = participantRepository.findByName(participant.getName());
     if(!result.isPresent()) {
+      participant.setDescriptionCategoryCoupler(dcc);
       participantRepository.save(participant);
     }
     return !result.isPresent();
+  }
+
+  public List<String> findDescriptionsOfInvoiceById(long id) {
+    Optional<Invoice> optional = invoiceRepository.findById(id);
+    if(optional.isPresent()) {
+      return optional.get().getAllDescription();
+    }
+    return new LinkedList<>();
   }
 }

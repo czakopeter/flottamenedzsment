@@ -18,10 +18,6 @@ import javax.persistence.ManyToMany;
 
 import com.flotta.invoice.exception.UnknonwFeeItemDescriptionException;
 
-/**
- * @author CzP
- *
- */
 @Entity
 public class DescriptionCategoryCoupler {
 

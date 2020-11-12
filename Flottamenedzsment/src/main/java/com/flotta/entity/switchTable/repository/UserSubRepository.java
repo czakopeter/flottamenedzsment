@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 
 import com.flotta.entity.Subscription;
+import com.flotta.entity.User;
 import com.flotta.entity.switchTable.UserSub;
 
 public interface UserSubRepository extends CrudRepository<UserSub, Long> {
@@ -21,5 +22,7 @@ public interface UserSubRepository extends CrudRepository<UserSub, Long> {
   void deleteAllBySub(Subscription sub);
 
   List<UserSub> findAllBySubAndBeginDateBetween(Subscription sub, LocalDate begin, LocalDate end);
+
+  List<UserSub> findAllByUserOrderByBeginDateDesc(User user);
 
 }

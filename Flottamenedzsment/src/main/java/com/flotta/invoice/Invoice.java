@@ -18,6 +18,7 @@ import javax.persistence.Table;
 
 import com.flotta.entity.Subscription;
 import com.flotta.entity.User;
+import com.flotta.utility.Utility;
 
 @Entity
 @Table(name = "invoices")
@@ -299,5 +300,17 @@ public class Invoice {
         part.updateAmountsByFeeItems();
       }
     }
+  }
+  
+  public String getPeriod() {
+    return Utility.getPeriod(beginDate, endDate);
+  }
+
+  public List<String> getAllDescription() {
+    Set<String> descriptions = new HashSet<>();
+    for(InvoiceByUserAndPhoneNumber part : invoicePart) {
+      descriptions.addAll(part.getAllDescription());
+    }
+    return new LinkedList<>(descriptions);
   }
 }

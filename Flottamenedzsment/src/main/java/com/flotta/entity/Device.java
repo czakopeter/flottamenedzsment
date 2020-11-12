@@ -32,10 +32,6 @@ import com.flotta.utility.Utility;
 @Table(name = "devices")
 public class Device extends BasicEntityWithCreateDate {
 
-  @Id
-  @GeneratedValue
-  private Long id;
-
   private String serialNumber;
 
   @ManyToOne
@@ -130,7 +126,8 @@ public class Device extends BasicEntityWithCreateDate {
     dtv.setId(id);
     dtv.setSerialNumber(serialNumber);
     dtv.setTypeName(deviceType.getName());
-    dtv.setDate(getAllModificationDateDesc().get(0));
+    dtv.setBeginDate(getAllModificationDateDesc().get(0));
+    dtv.setMin(firstAvailableDate.toString());
     
     dtv.setUser(devUsers.get(Utility.getLatestDate(devUsers)).getUser());
     
@@ -146,8 +143,7 @@ public class Device extends BasicEntityWithCreateDate {
     dtv.setId(id);
     dtv.setSerialNumber(serialNumber);
     dtv.setTypeName(deviceType.getName());
-    dtv.setDate(date);
-    dtv.setEditable(!date.isBefore(getAllModificationDateDesc().get(0)));
+    dtv.setBeginDate(date);
 
     dtv.setUser(devUsers.get(Utility.floorDate(devUsers, date)).getUser());
     

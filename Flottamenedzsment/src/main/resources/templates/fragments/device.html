@@ -7,53 +7,10 @@
   <div class="container" th:fragment="dateSliceSelector">
     <select th:if="${dates} != null" onchange="changeDate(this)" class="my-3">
       <option th:each="date : ${dates}" th:value="${date}" th:text="${date}"
-        th:selected="${date} == ${device.date}"
+        th:selected="${date} == ${device.beginDate}"
       ></option>
     </select>
   </div>
-
-
-  <div class="container" th:fragment="deviceForm">
-    <form th:object="${device}" method="post">
-      <div class="row my-2">
-        <div class="col-2">
-          <label th:text="#{device.serialNumber}">Serial number</label>
-        </div>
-        <div class="col-4">
-          <input type="text" class="form-control" id="serialNumber" name="serialNumber"
-            th:value="*{serialNumber}"
-          />
-        </div>
-      </div>
-      <div class="row my-2">
-        <div class="col-2">
-          <label th:text="#{device.typeName}">Type name</label>
-        </div>
-        <div class="col-4">
-          <select th:field="*{typeName}" class="form-control" id="deviceType">
-            <option th:each="type : ${deviceTypes}" th:value="${type.name}" th:text="${type.name}"></option>
-          </select>
-        </div>
-      </div>
-      <div class="row my-2">
-        <div class="col-2">
-          <label th:text="#{device.date}">Date</label>
-        </div>
-        <div class="col-4">
-          <input type="date" class="form-control" id="date" name="date" required="required" />
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-4"></div>
-        <div class="col-2">
-          <button type="submit" id="saveBtn" class="btn" formmethod="post" th:text="#{button.save}">Save</button>
-          <a href="/device/all" class="btn btn-primary" th:text="#{button.back}">Back</a>
-        </div>
-      </div>
-    </form>
-  </div>
-
-
 
   <div th:fragment="editDeviceTableForm">
     <form th:object="${device}" method="post">
@@ -81,7 +38,7 @@
         </tr>
         <tr>
           <td>Date</td>
-          <td><input type="date" id="date" name="date" th:value="*{date}" required="required" /></td>
+          <td><input type="date" id="beginDate" name="beginDate" th:value="*{beginDate}" required="required" /></td>
         </tr>
       </table>
       <button type="submit" class="btn btn-primary" th:formaction="'/device/edit/' + ${device.id}">Save</button>

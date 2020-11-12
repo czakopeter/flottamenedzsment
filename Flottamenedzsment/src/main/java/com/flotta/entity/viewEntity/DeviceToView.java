@@ -23,11 +23,9 @@ public class DeviceToView {
 	private String note;
 	
 	@DateTimeFormat (pattern="yyyy-MM-dd")
-	private LocalDate date;
+	private LocalDate beginDate;
 	
 	private String min;
-	
-	private boolean editable;
 	
 	public DeviceToView() {
 	}
@@ -88,12 +86,12 @@ public class DeviceToView {
     this.number = number;
   }
 
-  public LocalDate getDate() {
-    return date;
+  public LocalDate getBeginDate() {
+    return beginDate;
   }
 
-  public void setDate(LocalDate date) {
-    this.date = date;
+  public void setBeginDate(LocalDate beginDate) {
+    this.beginDate = beginDate;
   }
 
   public String getMin() {
@@ -104,17 +102,9 @@ public class DeviceToView {
     this.min = min;
   }
 
-  public boolean isEditable() {
-    return editable;
-  }
-
-  public void setEditable(boolean editable) {
-    this.editable = editable;
-  }
-
   @Override
   public String toString() {
-    return "DeviceToView [serialNumber=" + serialNumber + ", typeName=" + typeName + ", date=" + date + ", min=" + min + ", editable=" + editable + "]";
+    return "DeviceToView [serialNumber=" + serialNumber + ", typeName=" + typeName + ", beginDate=" + beginDate + ", min=" + min + "]";
   }
 
   public void setUser(User user) {

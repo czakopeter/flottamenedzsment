@@ -44,7 +44,7 @@ public class DeviceController {
   @GetMapping("/device/new")
   public String prepareAddingDevice(Model model) {
     model.addAttribute("device", new DeviceToView());
-    model.addAttribute("deviceTypes", service.findAllDeviceTypes());
+    model.addAttribute("deviceTypes", service.findAllVisibleDeviceTypes());
     return "device_templates/deviceNew";
   }
   
@@ -87,7 +87,6 @@ public class DeviceController {
   @PostMapping("/device/{id}/view")
   @ResponseBody
   public DeviceToView viewChangeDate(@PathVariable("id") long id, @RequestParam("date")@DateTimeFormat(pattern = "yyyy-MM-dd")  LocalDate date) {
-    System.out.println("post view");
     return service.findDeviceByIdAndDate(id, date);
   }
 }

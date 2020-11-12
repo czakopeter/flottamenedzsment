@@ -122,19 +122,9 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
       user.setPassword(passwordEncoder.encode(newPsw));
       user.setStatus(UserStatusEnum.ENABLED);
       userRepository.save(user);
-      emailService.sendMessage(user.getEmail(),
-          "Password change",
-          emailService.createMessageText(
-              EmailService.SUCCESS_PASSWORD_CHANGE,
-              new String[] {user.getFullName()}));
       return true;
     } else {
       appendMsg("Problem with the added data!");
-      emailService.sendMessage(user.getEmail(),
-          "Password change",
-          emailService.createMessageText(
-              EmailService.FAILED_PASSWORD_CHANGE, 
-              new String[] {user.getFullName()}));
       return false;
     }
   }

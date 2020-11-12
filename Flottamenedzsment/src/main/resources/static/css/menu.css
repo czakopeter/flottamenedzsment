@@ -25,13 +25,13 @@
 	align-items: center;
 }
 
+
 .navbar-nav ul li a, .dropdown-menu a {
 	border-top: 3px solid transparent;
 	border-bottom: 3px solid transparent;
 }
 
 .navbar {
-	
 	background-color: var(--menu-background);
 	color: var(--menu-text);
 }
@@ -43,7 +43,6 @@
 }
 
 .nav-item .nav-link.active {
-/* 	color: var(--watermelon); */
 	background-color: var(--menu-background);
 	border-bottom: solid 3px;
 	border-bottom-color: var(--watermelon);
@@ -81,4 +80,24 @@
 #dropdownProfileMenuButton:focus {
 	outline: 0;
 	box-shadow: none;
+}
+
+.vertical-menu {
+	max-width: 100%;
+}
+
+.vertical-menu .menu-item  {
+	background-color: var(--menu-background);
+	text-align: center;
+	display: block;
+	color: var(--menu-text);
+	font-weight: bold;
+	border-bottom: solid 3px transparent;
+}
+
+.vertical-menu .menu-item:hover {
+	color: var(--menu-text-hover);
+	border-bottom-color: var(--watermelon);
+	background-color: var(--menu-background);
+	text-decoration: none;
 }

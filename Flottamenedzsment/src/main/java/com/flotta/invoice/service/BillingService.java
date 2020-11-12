@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.flotta.entity.Subscription;
 import com.flotta.entity.User;
-import com.flotta.entity.viewEntity.InvoiceOfUserByNumber;
-import com.flotta.entity.viewEntity.OneCategoryOfUserFinance;
 import com.flotta.invoice.Category;
 import com.flotta.invoice.ChargeRatioByCategory;
 import com.flotta.invoice.DescriptionCategoryCoupler;
@@ -95,13 +92,10 @@ public class BillingService {
     return  descriptionCategoryCouplerService.findAll();
   }
   
-//  public List<FeeItem> findAllFeeItemByBillId(long id) {
-//    return invoiceService.findAllFeeItemByInvoiceId(id);
+//  
+//  public Invoice findBillById(long id) {
+//    return invoiceService.findById(id);
 //  }
-  
-  public Invoice findBillById(long id) {
-    return invoiceService.findById(id);
-  }
 
 //  public boolean billPartitionByTemplateId(long billId, long templateId) {
 //    //TODO missing bill or template problem throw exception
@@ -118,8 +112,8 @@ public class BillingService {
     return descriptionCategoryCouplerService.getMissingFeeItemDescription(templateId);
   }
 
-  public void upgradeDescriptionCategoryCoupler(long id, List<String> descriptions, List<Long> categories) {
-    descriptionCategoryCouplerService.upgradeDescriptionCategoryCoupler(id, descriptions, idListToCategoryList(categories));
+  public void upgradeDescriptionCategoryCoupler(long id, List<String> descriptions, List<Long> categories, boolean available) {
+    descriptionCategoryCouplerService.upgradeDescriptionCategoryCoupler(id, descriptions, idListToCategoryList(categories), available);
   }
   
   private List<Category> idListToCategoryList(List<Long> catIds) {
@@ -233,9 +227,17 @@ public class BillingService {
     return invoiceService.findParticipantById(id);
   }
 
-  public boolean addParticipant(Participant participant) {
-    return invoiceService.addParticipant(participant);
+  public boolean addParticipant(Participant participant, long descriptionCategoryCouplerId) {
+    return invoiceService.addParticipant(participant, descriptionCategoryCouplerId);
     
+  }
+
+  public boolean addDescriptionCategoryCoupler(DescriptionCategoryCoupler dcc) {
+    return descriptionCategoryCouplerService.descripttionCategoryCoupler(dcc);
+  }
+
+  public List<String> findDescriptionsOfInvoiceById(long id) {
+    return invoiceService.findDescriptionsOfInvoiceById(id);
   }
   
 }

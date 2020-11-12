@@ -1,14 +1,17 @@
 package com.flotta.entity.switchTable.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.flotta.entity.Device;
 import com.flotta.entity.Subscription;
+import com.flotta.entity.User;
 import com.flotta.entity.switchTable.SubDev;
 import com.flotta.entity.switchTable.repository.SubDevRepository;
+import com.flotta.entity.viewEntity.SubscriptionToView;
 import com.flotta.utility.Utility;
 
 @Service
@@ -176,5 +179,5 @@ public class SubDevService {
   public Subscription findLastSub(Device device) {
     return subDevRepository.findFirstByDevOrderByBeginDateDesc(device).getSub();
   }
-
+  
 }

@@ -17,4 +17,6 @@ public interface DeviceTypeRepository extends CrudRepository<DeviceType, Long> {
 
   DeviceType findByBrandAndModelIgnoreCase(String brand, String model);
 
+  List<DeviceType> findAllDeviceTypeByVisibleTrue();
+
 }
