@@ -27,7 +27,7 @@
       <h4 th:text="#{invoice.uploadInvoice}">Invoice upload</h4>
       <label for="fileBtn" th:text="#{invoice.selectAnInvoice} + ': '">Select an invoice: </label> <input type="file" id="file" name="file"
         accept=".xml" onchange="selectFile(this)" style="display: none"
-      /> <input type="button" id=fileBtn onclick="browseFile()" class="btn btn-sm"
+      /> <input type="button" id=fileBtn onclick="browseFile()" class="btn btn-sm btn-primary"
         th:value="#{invoice.browse} + '...'"
       /> <label id="fileName" th:text="#{invoice.noFileSelected}">No file selected</label> <input type="submit"
         class="btn btn-sm btn-primary" th:value="#{button.add}"
@@ -36,22 +36,27 @@
   </div>
 
   <div th:fragment="invoice-filter-options" id="filter-options-content">
-    <label for="invoice-number" th:text="#{bill.invoiceNumber}">Invoice number</label> <input id="invoice-number" type="text"
-      class=""
-    /> <label for="begin-date" th:text="#{bill.from}">From</label> <input id="begin-date" type="date"
-      onchange="filterDateSet(this)"
-    /> <label for="end-date" th:text="#{bill.to}">To</label> <input id="end-date" type="date"
-      onchange="filterDateSet(this)"
-    />
+    <div>
+      <label for="invoice-number" th:text="#{invoice.invoiceNumber}">Invoice number</label>
+      <input id="invoice-number" type="text" class="form-control" />
+    </div>
+    <div>
+      <label for="begin-date" th:text="#{invoice.from}">From</label>
+      <input id="begin-date" type="date" onchange="filterDateSet(this)" class="form-control" />
+    </div>
+    <div>
+      <label for="end-date" th:text="#{invoice.to}">To</label>
+      <input id="end-date" type="date" onchange="filterDateSet(this)" class="form-control" />
+    </div>
   </div>
 
   <div th:fragment="invoice-filter-options-table" id="filter-options-content">
     <table class="table table-sm">
       <thead>
         <tr>
-          <th th:text="#{bill.invoiceNumber}">Invoice number</th>
-          <th th:text="#{bill.fromDate}">From</th>
-          <th th:text="#{bill.emdDate}">To</th>
+          <th th:text="#{invoice.invoiceNumber}">Invoice number</th>
+          <th th:text="#{invoice.fromDate}">From</th>
+          <th th:text="#{invoice.emdDate}">To</th>
           <th></th>
         </tr>
       </thead>
@@ -88,7 +93,7 @@
       />
     </div>
     <div>
-      <label for="imei">Imei</label> <input id="imei" type="text" class="form-control" />
+      <label for="imei" th:text="#{imeiNumber}">IMEI number</label> <input id="imei" type="text" class="form-control" />
     </div>
     <div>
       <label for="userName" th:text="#{login.username}">User name</label> <input id="userName"
@@ -99,7 +104,7 @@
 
   <div th:fragment="sim-filter-options" id="filter-options-content">
     <div>
-      <label for="imei">IMEI</label> <input id="imei" type="text" class="form-control" />
+      <label for="imei" th:text="#{imeiNumber}">IMEI number</label> <input id="imei" type="text" class="form-control" />
     </div>
   </div>
 

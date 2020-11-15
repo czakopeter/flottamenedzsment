@@ -6,8 +6,8 @@ import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.flotta.entity.User;
-import com.flotta.invoice.InvoiceByUserAndPhoneNumber;
+import com.flotta.entity.invoice.InvoiceByUserAndPhoneNumber;
+import com.flotta.entity.record.User;
 
 public interface InvoiceByUserAndPhoneNumberRepository extends CrudRepository<InvoiceByUserAndPhoneNumber, Long> {
   

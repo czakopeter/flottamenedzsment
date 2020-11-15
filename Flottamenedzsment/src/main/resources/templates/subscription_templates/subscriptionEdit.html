@@ -22,7 +22,7 @@
         </div>
         <div class="row my-2">
           <div class="col-2">
-            <label th:text="#{subscription.imei}">IMEI</label>
+            <label th:text="#{imeiNumber}">IMEI</label>
           </div>
           <div class="col-4">
             <input type="hidden" id="oldImei" name="oldImei" th:value="*{oldImei}" readonly="readonly" />
@@ -86,7 +86,7 @@
         </div>
         <div class="row">
           <div class="col-6 text-right">
-            <button type="submit" id="button" class="btn" th:text="#{button.save}">Save</button>
+            <button type="submit" id="button" class="btn btn-primary" th:text="#{button.save}">Save</button>
             <a href="/subscription/all" class="btn btn-primary" th:text="#{button.back}">Back</a>
           </div>
         </div>

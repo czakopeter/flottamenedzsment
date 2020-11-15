@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.flotta.entity.Device;
+import com.flotta.entity.record.Device;
 import com.flotta.enums.DeviceStatusEnum;
 
 

@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.flotta.entity.Device;
-import com.flotta.entity.User;
+import com.flotta.entity.record.Device;
+import com.flotta.entity.record.User;
 import com.flotta.entity.viewEntity.DeviceToView;
 import com.flotta.repository.DeviceRepository;
 import com.flotta.utility.Utility;

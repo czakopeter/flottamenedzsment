@@ -1,4 +1,4 @@
- package com.flotta.entity;
+ package com.flotta.entity.record;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -15,10 +15,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.flotta.entity.invoice.ChargeRatioByCategory;
 import com.flotta.entity.switchTable.UserDev;
 import com.flotta.entity.switchTable.UserSub;
 import com.flotta.enums.UserStatusEnum;
-import com.flotta.invoice.ChargeRatioByCategory;
 
 import javax.persistence.JoinColumn;
 

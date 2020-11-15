@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.flotta.invoice.Category;
+import com.flotta.entity.invoice.Category;
 import com.flotta.invoice.repository.CategoryRepository;
 
 @Service

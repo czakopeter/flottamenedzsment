@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.flotta.entity.Device;
+import com.flotta.entity.record.Device;
 import com.flotta.status.DeviceStatus;
 
 public interface DeviceStatusRepository extends CrudRepository<DeviceStatus, Long> {

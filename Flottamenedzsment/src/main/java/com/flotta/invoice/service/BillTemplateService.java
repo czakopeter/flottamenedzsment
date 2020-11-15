@@ -10,7 +10,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.flotta.invoice.MyNode;
+import com.flotta.entity.invoice.MyNode;
 import com.flotta.invoice.repository.BillTemplateRepository;
 
 @Service

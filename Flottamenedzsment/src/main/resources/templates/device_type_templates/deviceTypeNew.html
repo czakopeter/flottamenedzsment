@@ -17,12 +17,12 @@
         />
       </div>
       <div class="form-group">
-        <label class="form-control-label" for="brand">Name</label> <input type="text"
+        <label class="form-control-label" for="name" th:text="#{name}">Name</label> <input type="text"
           class="form-control" id="name" name="name" readonly="readonly" required="required"
         />
         </div>
       <div class="form-group">
-        <label class="form-control-label" for="brand">Brand</label> <input list="brands" id="brand"
+        <label class="form-control-label" for="brand" th:text="#{deviceType.brand}">Brand</label> <input list="brands" id="brand"
           name="brand" class="form-control" oninput="nameAutoComplete()" required="required"
         />
         <datalist id="brands">
@@ -30,18 +30,22 @@
         </datalist>
       </div>
       <div class="form-group">
-        <label class="form-control-label">Model</label> <input type="text" id="model" name="model"
+        <label class="form-control-label" for="model" th:text="#{deviceType.model}">Model</label> <input type="text" id="model" name="model"
           class="form-control" oninput="nameAutoComplete()" required="required"
         />
       </div>
       <div class="form-group">
-        <label class="form-control-label" for="visible">Visible</label> <input type="checkbox" id="visible"
+        <label class="form-control-label" for="visible" th:text="#{visible}">Visible</label> <input type="checkbox" id="visible"
           name="visible" checked="checked"
         />
       </div>
-
+      <div class="row">
+       <div  class=" col text-right">
         <button type="submit" class="btn btn-primary" formaction="/deviceType/new" th:text="#{button.save}">Save</button>
-        <a href="/deviceType/all" class="btn btn-secondary" th:text="#{button.back}">Back</a>
+        <a href="/deviceType/all" class="btn btn-primary" th:text="#{button.back}">Back</a>
+       </div>
+      </div>
+        
     </form>
     
     <script src="/js/deviceType/deviceTypeNew.js"></script>

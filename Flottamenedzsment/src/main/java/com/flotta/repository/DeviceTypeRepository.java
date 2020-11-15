@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import com.flotta.entity.DeviceType;
+import com.flotta.entity.record.DeviceType;
 
 public interface DeviceTypeRepository extends CrudRepository<DeviceType, Long> {
 

@@ -7,10 +7,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.flotta.entity.Subscription;
-import com.flotta.entity.User;
-import com.flotta.invoice.Invoice;
-import com.flotta.invoice.InvoiceByUserAndPhoneNumber;
+import com.flotta.entity.invoice.Invoice;
+import com.flotta.entity.invoice.InvoiceByUserAndPhoneNumber;
+import com.flotta.entity.record.Subscription;
+import com.flotta.entity.record.User;
 import com.flotta.invoice.repository.InvoiceByUserAndPhoneNumberRepository;
 import com.flotta.utility.Utility;
 

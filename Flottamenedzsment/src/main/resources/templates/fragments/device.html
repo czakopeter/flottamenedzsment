@@ -5,7 +5,7 @@
 <body>
 
   <div class="container" th:fragment="dateSliceSelector">
-    <select th:if="${dates} != null" onchange="changeDate(this)" class="my-3">
+    <select th:if="${dates} != null" onchange="changeDate(this)" class="my-3 form-control" style="width: 130px">
       <option th:each="date : ${dates}" th:value="${date}" th:text="${date}"
         th:selected="${date} == ${device.beginDate}"
       ></option>

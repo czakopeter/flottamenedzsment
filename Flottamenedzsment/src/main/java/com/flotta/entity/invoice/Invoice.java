@@ -1,4 +1,4 @@
-package com.flotta.invoice;
+package com.flotta.entity.invoice;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -16,8 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.flotta.entity.Subscription;
-import com.flotta.entity.User;
+import com.flotta.entity.record.Subscription;
+import com.flotta.entity.record.User;
 import com.flotta.utility.Utility;
 
 @Entity

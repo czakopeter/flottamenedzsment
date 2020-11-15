@@ -1,4 +1,4 @@
-package com.flotta.invoice;
+package com.flotta.entity.invoice;
 
 import java.time.LocalDate;
 import java.util.HashMap;

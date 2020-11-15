@@ -6,8 +6,8 @@ import java.util.Set;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.flotta.entity.Role;
-import com.flotta.entity.User;
+import com.flotta.entity.record.Role;
+import com.flotta.entity.record.User;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

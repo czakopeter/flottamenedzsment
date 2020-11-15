@@ -39,15 +39,14 @@
     </div>
     <div class="ml-auto mr-3">
       <div sec:authorize="isAuthenticated()" class="form-inline">
-        <label class="mr-1" th:text="#{main.greeting}">Wellcome</label>
-        <label class="mr-1" th:text="${#authentication.getPrincipal().getFullName()}">Somebody</label>
+        <label class="mr-1" th:text="${#authentication.getPrincipal().getFullName()}">Full names</label>
         <div class="dropdown">
           <a class="nav-link dropdown-toggle" id="dropdownProfileMenuButton" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
             <img th:alt="#{profile.profile}" src="/img/settings-male.png" style="height: 25px"/>
           </a>
           <div class="dropdown-menu dropdown-menu-right" style="position: absolute; ">
             <a class="dropdown-item" href="/profile/finance" th:text="#{main.invoices}">Invoices</a>
-            <a class="dropdown-item" href="/profile/items" th:text="#{profile.subscriptionsAndDevices}">Items</a>
+            <a class="dropdown-item" href="/profile/subscriptionAndDevice" th:text="#{profile.subscriptionsAndDevices}">Subscriptions and devices</a>
             <a class="dropdown-item" href="/profile/changePassword" th:text="#{profile.changePassword}">Change password</a>
           </div>
         </div>

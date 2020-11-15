@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.flotta.invoice.FeeItem;
+import com.flotta.entity.invoice.FeeItem;
 
 public interface FeeItemRepository extends CrudRepository<FeeItem, Long> {
 

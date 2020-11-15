@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.flotta.entity.Subscription;
+import com.flotta.entity.record.Subscription;
 import com.flotta.entity.switchTable.BasicSwitchTable;
 import com.flotta.utility.Utility;
 

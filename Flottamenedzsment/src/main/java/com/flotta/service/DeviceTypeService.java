@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.flotta.entity.DeviceType;
+import com.flotta.entity.record.DeviceType;
 import com.flotta.repository.DeviceTypeRepository;
 
 @Service

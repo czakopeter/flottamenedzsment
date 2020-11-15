@@ -1,4 +1,4 @@
-package com.flotta.invoice;
+package com.flotta.entity.invoice;
 
 import java.util.Collections;
 import java.util.HashMap;

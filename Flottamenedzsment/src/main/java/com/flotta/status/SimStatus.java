@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.flotta.entity.Sim;
+import com.flotta.entity.record.Sim;
 import com.flotta.enums.SimStatusEnum;
 
 

@@ -19,41 +19,10 @@
         </div>
       </div>
       
-      <table id="table" class="table table-sm table-hover" style="width: 500px">
-        <thead>
-          <tr>
-            <th th:text="#{chargeRatio.category}">Category</th>
-            <th class="text-center" colspan="2" th:text="#{chargeRatio.company}">Company</th>
-            <th></th>
-            <th class="text-center" colspan="2" th:text="#{chargeRatio.user}">User</th>
-          </tr>
-        </thead>
-        <tbody>
-        </tbody>
-      </table>
       
-      <div id="category-adder" th:if="${unusedCategories != null and not #lists.isEmpty(unusedCategories)}" class="form-group form-inline">
-        <select id="selectUnusedCategory" class="form-control">
-          <option th:each="unusedCategory : ${unusedCategories}" th:text="${unusedCategory.name}"
-            th:value="${unusedCategory.id}"
-          ></option>
-        </select>
-        <button type="button" th:text="#{button.add}" class="btn btn-sm btn-primary ml-2"
-          onclick="addCategory()"
-        ></button>
-      </div>
-      
-      <div class="form-check">
-        <input id="confirmSelect" type="checkbox" class="form-check-input"
-          onclick="clickOnConfirmButton()" disabled="disabled"
-        /> <label for="confirmSelect" th:text="#{chargeRatio.confirmChargeRatioSettings}">Confirm categories settings!</label>
-      </div>
-      
-      <button type="submit" id="saveButton" class="btn btn-primary" th:text="#{button.save}" disabled="disabled">Save</button>
-      <a href="/invoiceConfiguration/main" class="btn btn-primary" th:text="#{button.back}">Back</a>
+      <button type="submit" id="saveButton" class="btn btn-primary" th:text="#{button.save}">Save</button>
+      <a href="/invoiceConfiguration/main?active=charge-ratio" class="btn btn-primary" th:text="#{button.back}">Back</a>
     </form>
-
-    <script src="/js/chargeRatioByCategory.js"></script>
 
   </div>
 

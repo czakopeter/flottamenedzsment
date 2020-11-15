@@ -1,4 +1,4 @@
-package com.flotta.entity;
+package com.flotta.entity.record;
 
 import java.util.HashSet;
 import java.util.Set;

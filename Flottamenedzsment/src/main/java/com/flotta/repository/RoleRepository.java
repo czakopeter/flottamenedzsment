@@ -3,7 +3,7 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.flotta.entity.Role;
+import com.flotta.entity.record.Role;
 
 public interface RoleRepository extends CrudRepository<Role, Long> {
 

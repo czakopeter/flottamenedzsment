@@ -19,8 +19,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.flotta.entity.Role;
-import com.flotta.entity.User;
+import com.flotta.entity.record.Role;
+import com.flotta.entity.record.User;
 import com.flotta.enums.UserStatusEnum;
 import com.flotta.repository.RoleRepository;
 import com.flotta.repository.UserRepository;
@@ -227,8 +227,8 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
   @PostConstruct
   private void createFirstAdmin() {
       User user = new User();
-      user.setEmail("admin.user@email.hu");
-      user.setFullName("Admin User");
+      user.setEmail("admin@gmail.com");
+      user.setFullName("Admin");
       user.setPassword(passwordEncoder.encode("admin"));
       user.addRoles(new Role("ADMIN"));
       user.addRoles(new Role("BASIC"));

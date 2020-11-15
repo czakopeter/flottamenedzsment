@@ -1,4 +1,4 @@
-package com.flotta.invoice;
+package com.flotta.entity.invoice;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -16,9 +16,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.flotta.entity.BasicEntity;
-import com.flotta.entity.Subscription;
-import com.flotta.entity.User;
+import com.flotta.entity.record.BasicEntity;
+import com.flotta.entity.record.Subscription;
+import com.flotta.entity.record.User;
 import com.flotta.utility.Utility;
 
 @Entity

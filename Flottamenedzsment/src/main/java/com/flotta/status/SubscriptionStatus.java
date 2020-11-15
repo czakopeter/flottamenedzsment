@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.flotta.entity.Subscription;
+import com.flotta.entity.record.Subscription;
 import com.flotta.enums.SubscriptionStatusEnum;
 
 

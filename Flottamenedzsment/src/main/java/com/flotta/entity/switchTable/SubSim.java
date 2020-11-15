@@ -11,8 +11,8 @@ import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.flotta.entity.Sim;
-import com.flotta.entity.Subscription;
+import com.flotta.entity.record.Sim;
+import com.flotta.entity.record.Subscription;
 import com.flotta.utility.Utility;
 
 @Entity

@@ -1,4 +1,4 @@
-package com.flotta.entity;
+package com.flotta.entity.record;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -152,8 +152,6 @@ public class Subscription extends BasicEntityWithCreateDate {
 
     stv.setUser(subUsers.get(Utility.getLatestDate(subUsers)).getUser());
 
-    System.err.println(Utility.getLatestDate(subDev));
-    
     stv.setDevice(subDev.get(Utility.getLatestDate(subDev)).getDev());
 
     stv.setNote(notes.get(Utility.getLatestDate(notes)).getNote());

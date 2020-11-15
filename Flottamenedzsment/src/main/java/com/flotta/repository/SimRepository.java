@@ -3,7 +3,7 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.flotta.entity.Sim;
+import com.flotta.entity.record.Sim;
 
 public interface SimRepository extends CrudRepository<Sim, Long> {
 

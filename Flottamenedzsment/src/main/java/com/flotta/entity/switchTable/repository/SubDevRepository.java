@@ -4,8 +4,8 @@ import java.time.LocalDate;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.flotta.entity.Device;
-import com.flotta.entity.Subscription;
+import com.flotta.entity.record.Device;
+import com.flotta.entity.record.Subscription;
 import com.flotta.entity.switchTable.SubDev;
 
 public interface SubDevRepository extends CrudRepository<SubDev, Long> {

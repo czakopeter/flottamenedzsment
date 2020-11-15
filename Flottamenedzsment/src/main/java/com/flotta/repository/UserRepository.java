@@ -3,7 +3,7 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.flotta.entity.User;
+import com.flotta.entity.record.User;
 
 public interface UserRepository extends CrudRepository<User, Long> {
 

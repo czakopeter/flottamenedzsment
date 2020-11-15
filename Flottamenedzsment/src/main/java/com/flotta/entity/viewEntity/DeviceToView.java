@@ -4,8 +4,9 @@ import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.flotta.entity.Subscription;
-import com.flotta.entity.User;
+import com.flotta.entity.record.Subscription;
+import com.flotta.entity.record.User;
+import com.flotta.utility.Utility;
 
 public class DeviceToView {
   private long id;
@@ -22,8 +23,11 @@ public class DeviceToView {
 	
 	private String note;
 	
-	@DateTimeFormat (pattern="yyyy-MM-dd")
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private LocalDate beginDate;
+	
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private LocalDate endDate;
 	
 	private String min;
 	
@@ -93,6 +97,14 @@ public class DeviceToView {
   public void setBeginDate(LocalDate beginDate) {
     this.beginDate = beginDate;
   }
+  
+  public LocalDate getEndDate() {
+    return endDate;
+  }
+
+  public void setEndDate(LocalDate endDate) {
+    this.endDate = endDate;
+  }
 
   public String getMin() {
     return min;
@@ -114,6 +126,10 @@ public class DeviceToView {
 
   public void setSubscription(Subscription sub) {
     this.number = sub != null ? sub.getNumber() : "";
+  }
+  
+  public String getPeriod() {
+    return Utility.getPeriod(beginDate, endDate);
   }
 
 }

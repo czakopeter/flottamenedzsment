@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.flotta.entity.Device;
-import com.flotta.entity.Subscription;
-import com.flotta.entity.User;
+import com.flotta.entity.record.Device;
+import com.flotta.entity.record.Subscription;
+import com.flotta.entity.record.User;
 import com.flotta.entity.switchTable.SubDev;
 import com.flotta.entity.switchTable.repository.SubDevRepository;
 import com.flotta.entity.viewEntity.SubscriptionToView;

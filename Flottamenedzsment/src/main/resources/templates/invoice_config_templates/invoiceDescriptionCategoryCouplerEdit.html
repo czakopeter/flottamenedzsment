@@ -24,7 +24,7 @@
             <select id="selectedInvoice" name="selectedInvoice">
               <option th:each="invoice : ${invoices}" th:value="${invoice.id}" th:text="${invoice.invoiceNumber} + ' (' + ${invoice.getPeriod()} +')'"></option>
             </select>
-            <button type="submit" th:formaction="'/finance/invoiceDescriptionCategoryCoupler/' + ${coupler.id} + '/test'" th:text="#{button.add}" onclick="getDescriptionsOfInvoice()">Add</button>
+            <button type="submit" th:formaction="'/finance/invoiceDescriptionCategoryCoupler/' + ${coupler.id} + '/addDescriptionsOfInvoice'" th:text="#{button.add}" onclick="getDescriptionsOfInvoice()">Add</button>
             </form>
           </div>
           <div class="row my-2" th:each="description : ${descriptions}">
@@ -51,7 +51,7 @@
           </div>
         </div>
         <button type="submit" class="btn btn-primary" th:formaction="${'/finance/invoiceDescriptionCategoryCoupler/' + coupler.id}" th:text="#{button.save}">Save</button>
-        <a href="/invoiceConfiguration/main" class="btn btn-primary" th:text="#{button.back}"></a>
+        <a href="/invoiceConfiguration/main?active=description-category-coupler" class="btn btn-primary" th:text="#{button.back}"></a>
       </div>
       </form>
       

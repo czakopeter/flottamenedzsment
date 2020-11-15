@@ -14,26 +14,25 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.flotta.entity.Device;
-import com.flotta.entity.DeviceType;
-import com.flotta.entity.Sim;
-import com.flotta.entity.Subscription;
-import com.flotta.entity.User;
+import com.flotta.entity.invoice.Category;
+import com.flotta.entity.invoice.ChargeRatioByCategory;
+import com.flotta.entity.invoice.DescriptionCategoryCoupler;
+import com.flotta.entity.invoice.FeeItem;
+import com.flotta.entity.invoice.Invoice;
+import com.flotta.entity.invoice.InvoiceByUserAndPhoneNumber;
+import com.flotta.entity.invoice.Participant;
+import com.flotta.entity.invoice.RawInvoice;
+import com.flotta.entity.record.Device;
+import com.flotta.entity.record.DeviceType;
+import com.flotta.entity.record.Sim;
+import com.flotta.entity.record.Subscription;
+import com.flotta.entity.record.User;
 import com.flotta.entity.switchTable.Service.UserDevService;
 import com.flotta.entity.switchTable.Service.UserSubService;
 import com.flotta.entity.viewEntity.DeviceToView;
 //import com.flotta.entity.viewEntity.InvoiceOfUserByNumber;
 //import com.flotta.entity.viewEntity.OneCategoryOfUserFinance;
 import com.flotta.entity.viewEntity.SubscriptionToView;
-//import com.flotta.exception.UnknownPhoneNumberException;
-import com.flotta.invoice.Category;
-import com.flotta.invoice.ChargeRatioByCategory;
-import com.flotta.invoice.Participant;
-import com.flotta.invoice.RawInvoice;
-import com.flotta.invoice.DescriptionCategoryCoupler;
-import com.flotta.invoice.FeeItem;
-import com.flotta.invoice.Invoice;
-import com.flotta.invoice.InvoiceByUserAndPhoneNumber;
 import com.flotta.invoice.exception.FileUploadException;
 import com.flotta.invoice.service.BillingService;
 import com.flotta.utility.MessageToView;
@@ -430,15 +429,15 @@ public class MainService {
     return billingService.findAllBillDescription();
   }
 
-  public boolean addChargeRatio(ChargeRatioByCategory payDevision, List<Long> categories, List<Integer> ratios) {
-    return billingService.addPayDivision(payDevision, categories, ratios);
+  public boolean addChargeRatio(ChargeRatioByCategory chargeRatio) {
+    return billingService.addChargeRatio(chargeRatio);
   }
 
   public List<ChargeRatioByCategory> findAllChargeRatio() {
     return billingService.findAllChargeRatio();
   }
 
-  public ChargeRatioByCategory findChargeRatioById(long id) {
+  public Optional<ChargeRatioByCategory> findChargeRatioById(long id) {
     return billingService.findChargeRatioById(id);
   }
 

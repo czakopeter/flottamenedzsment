@@ -10,15 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.flotta.entity.User;
-import com.flotta.invoice.Category;
-import com.flotta.invoice.ChargeRatioByCategory;
-import com.flotta.invoice.DescriptionCategoryCoupler;
-import com.flotta.invoice.FeeItem;
-import com.flotta.invoice.Invoice;
-import com.flotta.invoice.InvoiceByUserAndPhoneNumber;
-import com.flotta.invoice.Participant;
-import com.flotta.invoice.RawInvoice;
+import com.flotta.entity.invoice.Category;
+import com.flotta.entity.invoice.ChargeRatioByCategory;
+import com.flotta.entity.invoice.DescriptionCategoryCoupler;
+import com.flotta.entity.invoice.FeeItem;
+import com.flotta.entity.invoice.Invoice;
+import com.flotta.entity.invoice.InvoiceByUserAndPhoneNumber;
+import com.flotta.entity.invoice.Participant;
+import com.flotta.entity.invoice.RawInvoice;
+import com.flotta.entity.record.User;
 import com.flotta.invoice.exception.FileUploadException;
 
 @Service
@@ -144,15 +144,15 @@ public class BillingService {
     return descriptionCategoryCouplerService.findAllInvoiceDescription();
   }
 
-  public boolean addPayDivision(ChargeRatioByCategory payDevision, List<Long> categories, List<Integer> ratios) {
-    return chargeRatioService.addChargeRatio(payDevision, idListToCategoryList(categories), ratios);
+  public boolean addChargeRatio(ChargeRatioByCategory chargeRatio) {
+    return chargeRatioService.addChargeRatio(chargeRatio);
   }
 
   public List<ChargeRatioByCategory> findAllChargeRatio() {
     return chargeRatioService.findAll();
   }
 
-  public ChargeRatioByCategory findChargeRatioById(long id) {
+  public Optional<ChargeRatioByCategory> findChargeRatioById(long id) {
     return chargeRatioService.findChargeRatioById(id);
   }
 
@@ -162,8 +162,10 @@ public class BillingService {
 
   public List<Category> getUnusedCategoryOfChargeRatio(long id) {
     List<Category> result = new LinkedList<>(categoryService.findAll());
-    ChargeRatioByCategory crbc = chargeRatioService.findChargeRatioById(id);
-    result.removeAll(crbc.getCategoryRatioMap().keySet());
+    Optional<ChargeRatioByCategory> optional = chargeRatioService.findChargeRatioById(id);
+    if(optional.isPresent()) {
+      result.removeAll(optional.get().getCategoryRatioMap().keySet());
+    }
     return result;
   }
 

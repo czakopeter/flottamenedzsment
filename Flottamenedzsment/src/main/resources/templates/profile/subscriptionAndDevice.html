@@ -20,7 +20,7 @@
             <th th:text="#{subscription.phoneNumber}">Number</th>
             <th th:text="#{subscription.imei}">IMEI</th>
             <th th:text="#{subscription.device}">Device</th>
-            <th>Period</th>
+            <th th:text="#{period}">Period</th>
           </tr>
         </thead>
         <tbody>
@@ -45,7 +45,7 @@
             <th th:text="#{device.serialNumber}">Serial number</th>
             <th th:text="#{device.typeName}">Type Name</th>
             <th th:text="#{device.subscription}">Subscription</th>
-            <th>From</th>
+            <th th:text="#{period}">Period</th>
           </tr>
         </thead>
         <tbody>
@@ -53,6 +53,7 @@
             <td th:text="${device.serialNumber}"></td>
             <td th:text="${device.typeName}"></td>
             <td th:text="${device.number}"></td>
+            <td th:text="${device.getPeriod()}"></td>
           </tr>
         </tbody>
       </table>

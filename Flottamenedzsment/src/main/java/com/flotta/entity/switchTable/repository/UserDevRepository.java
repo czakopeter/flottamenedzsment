@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.flotta.entity.Device;
-import com.flotta.entity.User;
+import com.flotta.entity.record.Device;
+import com.flotta.entity.record.User;
 import com.flotta.entity.switchTable.UserDev;
 
 public interface UserDevRepository extends CrudRepository<UserDev, Long>{

@@ -6,7 +6,7 @@ import javax.persistence.MappedSuperclass;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.flotta.entity.BasicEntity;
+import com.flotta.entity.record.BasicEntity;
 
 @MappedSuperclass
 public abstract class BasicSwitchTable extends BasicEntity {

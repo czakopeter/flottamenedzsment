@@ -6,8 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.flotta.entity.User;
-import com.flotta.invoice.FeeItem;
+import com.flotta.entity.invoice.FeeItem;
+import com.flotta.entity.record.User;
 import com.flotta.invoice.repository.FeeItemRepository;
 
 @Service

@@ -27,11 +27,11 @@ public class ProfileController {
     this.service = service;
   }
 
-  @GetMapping("/profile/items")
+  @GetMapping("/profile/subscriptionAndDevice")
   public String listItems(Model model) {
     model.addAttribute("devices", service.findAllCurrentDeviceOfUser());
     model.addAttribute("subscriptions", service.findAllCurrentSubscriptionOfUser());
-    return "profile/items";
+    return "profile/subscriptionAndDevice";
   }
   
   @GetMapping("/profile/changePassword")
