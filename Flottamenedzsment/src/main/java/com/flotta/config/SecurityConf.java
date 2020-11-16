@@ -52,7 +52,8 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
 //			  .antMatchers("/login").permitAll()
 			  .antMatchers("/db/**", "/login").permitAll()
 			  .antMatchers("/activation/**", "/registration", "/accessDennied", "/passwordReset", "/requestNewPassword", "/css/*", "/favicon.ico").permitAll()
-			  .antMatchers("/billing/**", "/finance/**").hasAnyAuthority("FINANCE_MNGR", "ADMIN")
+			  //TODO finance kiszed
+			  .antMatchers("/invoice/**", "/rawInvoice/**", "/invoiceConfiguration/**", "/finance/**").hasAnyAuthority("FINANCE_MNGR", "ADMIN")
 			  .antMatchers("/subscription/**", "/sim/**").hasAnyAuthority("SUBSCRIPTION_MNGR", "ADMIN")
         .antMatchers("/device/**", "/deviceType/**").hasAnyAuthority("DEVICE_MNGR", "ADMIN")
         .antMatchers("/user/**").hasAnyAuthority("USER_MNGR","ADMIN")

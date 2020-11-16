@@ -11,7 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
-import com.flotta.service.UserDetailsImpl;
+import com.flotta.service.record.UserDetailsImpl;
 
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 

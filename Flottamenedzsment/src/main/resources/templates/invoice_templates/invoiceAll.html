@@ -46,6 +46,7 @@
                   <form method="post">
                     <button type="submit" class="dropdown-item" th:formaction="'/invoice/' + ${rawInvoice.invoiceNumber} + '/restartProcessing'">Reprocess</button>
                     <span class="dropdown-item" th:each="problem : ${rawInvoice.getProblems()}" th:text="${problem}"></span>
+                    <button type="submit" class="dropdown-item" th:formaction="'/invoice/' + ${rawInvoice.invoiceNumber} + '/delete'">Delete</button>
                   </form>
                 </div
               ></td>

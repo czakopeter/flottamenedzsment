@@ -13,6 +13,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import com.flotta.service.record.ServiceWithMsg;
+
 @Service
 public class EmailService extends ServiceWithMsg {
     private final Log log = LogFactory.getLog(this.getClass());

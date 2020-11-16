@@ -10,7 +10,7 @@
     <div th:fragment="charge-ratio-all">
       <h4 th:text="#{chargeRatio.chargeRatios}">Charge ratios</h4>
   
-      <a href="/finance/chargeRatio/new" class="btn btn-primary" th:text="#{button.new}"></a>
+      <a href="/invoiceConfiguration/chargeRatio/new" class="btn btn-primary" th:text="#{button.new}"></a>
   
       <table class="table table-sm">
         <thead>
@@ -21,7 +21,7 @@
         </thead>
         <tr th:each="chargeRatio : ${chargeRatios}">
           <td th:text="${chargeRatio.name}"></td>
-          <td><a th:href="${'/finance/chargeRatio/' + chargeRatio.id}" class="btn btn-primary"
+          <td><a th:href="${'/invoiceConfiguration/chargeRatio/' + chargeRatio.id}" class="btn btn-primary"
             th:text="#{button.edit}"
           ></a></td>
         </tr>

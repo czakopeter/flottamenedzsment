@@ -161,7 +161,10 @@ public class Device extends BasicEntityWithCreateDate {
     } else if(date.isAfter(lastUserModDate)) {
       UserDev last = devUsers.get(lastUserModDate);
       if(!Utility.isSameByIdOrBothNull(user, last.getUser())) {
+        last.setEndDate(date.minusDays(1));
         devUsers.put(date, new UserDev(user, this, date));
+        firstAvailableDate = date;
+        addSubscription(null, date);
       }
     } else if(date.isEqual(lastUserModDate)) {
       
@@ -169,12 +172,13 @@ public class Device extends BasicEntityWithCreateDate {
   }
   
   public void addSubscription(Subscription sub, LocalDate date) {
-    LocalDate lastUserModDate = Utility.getLatestDate(devUsers);
+    LocalDate lastUserModDate = Utility.getLatestDate(devSubs);
     if(lastUserModDate == null) {
       
     } else if(date.isAfter(lastUserModDate)) {
       SubDev last = devSubs.get(lastUserModDate);
       if(!Utility.isSameByIdOrBothNull(sub, last.getSub())) {
+        last.setEndDate(date.minusDays(1));
         devSubs.put(date, new SubDev(sub, this, date));
       }
     } else if(date.isEqual(lastUserModDate)) {

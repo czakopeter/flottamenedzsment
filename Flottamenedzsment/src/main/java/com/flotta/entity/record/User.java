@@ -1,5 +1,6 @@
  package com.flotta.entity.record;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,6 +20,7 @@ import com.flotta.entity.invoice.ChargeRatioByCategory;
 import com.flotta.entity.switchTable.UserDev;
 import com.flotta.entity.switchTable.UserSub;
 import com.flotta.enums.UserStatusEnum;
+import com.flotta.utility.Utility;
 
 import javax.persistence.JoinColumn;
 

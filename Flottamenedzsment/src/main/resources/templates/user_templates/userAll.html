@@ -26,7 +26,7 @@
           <td name="email" th:text="${user.email}"></td>
           <td name="fullName" th:text="${user.fullName}"></td>
           <td th:text="${user.getStatusName()}"></td>
-          <td class="text-right"><a th:href="'/user/' + ${user.id}" class="btn btn-sm btn-primary" th:text="#{button.edit}">Edit</a></td>
+          <td class="text-right"><a th:href="'/user/' + ${user.id} + '/update'" class="btn btn-sm btn-primary" th:text="#{button.edit}">Edit</a></td>
         </tr>
       </tbody>
       <tbody>

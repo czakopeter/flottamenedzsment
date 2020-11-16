@@ -50,13 +50,13 @@ public class ProfileController {
   }
   
   //TODO Felhasználóhoz kapcsolt összes visszaadása, javascript-ből szűrés rá(elfogadot vagy nem, min összeg stb.)
-  @GetMapping("/profile/finance")
+  @GetMapping("/profile/invoice")
   public String showActualUserPendingInvoices(Model model) {
     model.addAttribute("invoiceParts", service.getAcceptedByCompanyInvoicesOfCurrentUser());
-    return "profile/financeSummary";
+    return "profile/invoiceSummary";
   }
   
-  @PostMapping("/profile/finance/accept")
+  @PostMapping("/profile/invoice/accept")
   @ResponseBody
   public List<Long> acceptInvoicesOfCurrentUserByNumbers(@RequestParam("ids") List<Long> ids) {
     if(service.acceptInvoicesOfCurrentUserByInvoiceNumbersAndPhoneNumbers(ids)) {
@@ -65,28 +65,16 @@ public class ProfileController {
     return new LinkedList<>();
   }
 
-  @PostMapping("/profile/finance/{id}")
+  @PostMapping("/profile/invoice/{id}")
   public String details(Model model, @PathVariable ("id") long id) {
     model.addAttribute("invoicePart", service.getPendingInvoiceOfCurrentUserById(id));
-    return "profile/financeDetails";
+    return "profile/invoiceDetails";
   }
   
-  @PostMapping("/profile/finance/{id}/revision")
+  @PostMapping("/profile/invoice/{id}/revision")
   public String createRevisionText(Model model, @PathVariable ("id") long id, @RequestParam Map<String, String> map) {
     service.askForRevision(id, map);
-    return "redirect:/profile/finance";
+    return "redirect:/profile/invoice";
   }
-  
-//  @GetMapping("/profile/finance/history")
-//  public String listAcceptedInvoiceOfCurrentUser(Model model) {
-//    model.addAttribute("invoiceParts", service.getAcceptedInvoicesOfCurrentUser());
-//    return "profile/acceptedInvoices";
-//  }
-//  
-//  @PostMapping("/profile/finance/{id}/view")
-//  public String detailsOfOneAcceptedInvoice(Model model, @PathVariable ("id") long id) {
-//    model.addAttribute("invoicePart", service.getAcceptedInvoiceOfCurrentUserById(id));
-//    return "profile/financeDetails";
-//  }
   
 }

@@ -28,9 +28,6 @@ public class SubSim extends BasicSwitchTable {
   @JoinColumn( name = "sim_id")
   private Sim sim;
   
-  @DateTimeFormat(pattern = "yyyy-MM-dd")
-  private LocalDate beginDate;
-
   public SubSim() {
   }
 
@@ -54,14 +51,6 @@ public class SubSim extends BasicSwitchTable {
 
   public void setSim(Sim sim) {
     this.sim = sim;
-  }
-
-  public LocalDate getBeginDate() {
-    return beginDate;
-  }
-
-  public void setBeginDate(LocalDate beginDate) {
-    this.beginDate = beginDate;
   }
 
   @Override

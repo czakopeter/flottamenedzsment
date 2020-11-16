@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.flotta.entity.record.User;
@@ -56,14 +55,14 @@ public class UserController {
     }
   }
   
-  @GetMapping("/user/{id}")
+  @GetMapping("/user/{id}/update")
   public String user(Model model, @PathVariable("id") long id) {
     model.addAttribute("user", service.findUserById(id));
     return "user_templates/userEdit";
   }
   
   //TODO fetch-csel küldeni az adatokat (role, boolean)
-  @PostMapping("/user/{id}")
+  @PostMapping("/user/{id}/update")
 //  @ResponseBody
   public String editUser(Model model, @PathVariable("id") long id, @RequestParam  Map<String, Boolean> roles) {
     if(!service.updateUser(id, roles)) {

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main}">
+<head>
+<title>Flotta</title>
+</head>
+<body>
+
+  <div layout:fragment="loginContent">
+
+    <h3 th:text="#{main.invoiceDetails}">Invoice details</h3>
+      
+      <form method="post">
+        <div class="row my-2">
+          <div class="col-2">Number</div>
+          <div class="col-2 text-right" th:text="${invoicePart.subscription.number}">201234567</div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">Begin</div>
+          <div class="col-2 text-right" th:text="${invoicePart.beginDate}">2020.01.10</div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">End</div>
+          <div class="col-2 text-right" th:text="${invoicePart.endDate}">2020.01.31</div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">Total gross amount</div>
+          <div class="col-2 text-right" th:text="${#numbers.formatDecimal(invoicePart.userGrossAmount, 1, 2)} + ' Ft'">1000 Ft</div>
+        </div>
+      
+      <table class="table table-sm table-hover">
+        <thead>
+          <tr>
+            <th>
+              Description
+            </th>
+            <th>
+              Period
+            </th>
+            <th class="text-right">
+              Gross amount
+            </th>
+            <th class="text-center" th:if="${not invoicePart.acceptedByUser}">
+              Revision note
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr name="fee" th:each="feeItem : ${invoicePart.fees}">
+            <td th:text="${feeItem.description}"></td>
+            <td th:text="${feeItem.getPeriod()}"></td>
+            <td class="text-right" th:text="${#numbers.formatDecimal(feeItem.userGrossAmount, 1, 2)} + ' Ft'"></td>
+            <td th:if="${not invoicePart.acceptedByUser}">
+              <input type="text" class="form-control form-control-sm" th:name="${feeItem.id}" placeholder="Enter your note" oninput="modifyNotes()" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <textarea th:if="${not invoicePart.acceptedByUser}" class="form-control mb-2" name="textarea" placeholder="Enter your note for entiry invoice" oninput="modifyNotes()"></textarea>
+      
+      <div class="btn-group">
+        <button id="revisionBtn" type="submit" th:formaction="'/profile/invoice/' + ${invoicePart.id} + '/revision'" class="btn btn-warning" th:if="${not invoicePart.acceptedByUser}" style="visibility: hidden; ">Ask for revision</button>
+        <a class="btn btn-primary" href="/profile/invoice" th:text="#{button.back}"></a>
+      </div>
+      </form>
+
+  <script src="/js/profile/invoiceDetails.js"></script>
+
+  </div>
+
+
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main}">
+<head>
+<title>Flotta</title>
+</head>
+<body>
+
+  <div layout:fragment="loginContent">
+
+    <h3 th:text="#{main.invoices}">Invoices</h3>
+    
+      <form method="post">
+      
+      <div th:if="${#lists.isEmpty(invoiceParts)}" class="my-border text-center">
+        <b>You don't have any invoice</b>
+      </div>
+      
+      <table th:unless="${#lists.isEmpty(invoiceParts)}" class="table table-sm">
+        <thead>
+          <tr class="table-primary" >
+            <th>
+              <input id="select-all" type="checkbox" title="Select all" th:title="#{profile.selectAll}" onclick="selectAll()" />
+            </th>
+            <th th:text="#{phoneNumber}">Phone number</th>
+            <th th:text="#{invoice.period}">Period</th>
+            <th th:text="#{invoice.invoiceGrossAmount}">Gross amount</th>
+            <th id="action-col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="invoicePart : ${invoiceParts}" >
+            <td>
+              <input th:id="'p' + ${invoicePart.id}" name="id" type="hidden" th:value="${invoicePart.id}" />
+              <input name="invoiceNumber" type="hidden" th:value="${invoicePart.invoice.invoiceNumber}" />
+              <input name="numberCheckBox" type="checkbox" onclick="selectSingleCheckbox(this)"/>
+            </td>
+            <td name="number" th:text="${invoicePart.subscription.number}"></td>
+            <td th:text="${invoicePart.getPeriod()}"></td>
+            <td th:text="${#numbers.formatDecimal(invoicePart.userGrossAmount, 1, 2)} + ' Ft'"></td>
+            <td>
+              <div class="btn-group">
+                <button type="button" onclick="acceptOneInvoice(this)" class="btn btn-sm btn-success" style="color: black;" th:if="${not invoicePart.acceptedByUser}">
+                  <img alt="Accept" src="/img/checkmark.png" />
+                </button>
+                <button type="submit" th:formaction="'/profile/invoice/' + ${invoicePart.id}" class="btn btn-sm btn-info"  style="color: black;">
+                  <img alt="Details" src="/img/list.png" />
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <button id="accept-all-selected" type="button" onclick="acceptAllSelectedInvoice()" class="btn btn-primary" style="visibility: hidden;">Accept all selected</button>
+      </form>
+      
+    <script src="/js/profile/invoiceSummary.js"></script>
+
+  </div>
+
+
+</body>
+</html>

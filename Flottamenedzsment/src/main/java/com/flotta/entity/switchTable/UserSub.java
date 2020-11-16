@@ -9,8 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.flotta.entity.record.Subscription;
 import com.flotta.entity.record.User;
 import com.flotta.utility.Utility;
@@ -60,21 +58,6 @@ public class UserSub extends BasicSwitchTable {
 				", connect=" + Objects.toString(beginDate, "no begin date") +
 				", disconnect=" + Objects.toString(endDate, "no end date") + "]";
 	}
-	
-//	static class UserSubDateAscComperator implements Comparator<UserSub> {
-//		@Override
-//		public int compare(UserSub o1, UserSub o2) {
-//			return o1.beginDate.compareTo(o2.beginDate);
-//		}
-//	}
-//	
-//	static class UserSubDateDescComperator implements Comparator<UserSub> {
-//		@Override
-//		public int compare(UserSub o1, UserSub o2) {
-//			return o2.beginDate.compareTo(o1.beginDate);
-//		}
-//	}
-
 	
 	@Override
   public <Other extends BasicSwitchTable> boolean isSameSwitchedPairs(Other other) {

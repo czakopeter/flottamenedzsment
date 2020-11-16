@@ -44,4 +44,4 @@ INSERT INTO Category_ratio_map (CHARGE_RATIO_BY_CATEGORY_ID, CATEGORY_RATIO_MAP,
 
 INSERT INTO Users_pay_devs (user_id, pay_devs_id) VALUES (1, 1)
 
-INSERT INTO Participants (address, name, description_category_coupler_id) VALUES ('Budapest', 'Magyar Telekom Nyrt.', 1)
+INSERT INTO Participants (address, name, description_category_coupler_id) VALUES ('Budapest', 'Test participant', 1)

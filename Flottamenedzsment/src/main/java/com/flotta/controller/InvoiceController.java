@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.flotta.invoice.exception.FileUploadException;
+import com.flotta.exception.invoice.FileUploadException;
 import com.flotta.service.MainService;
 
 @Controller
@@ -82,38 +82,17 @@ public class InvoiceController {
     service.modifyFeeItemGrossAmountRatio(id, userAmount, compAmount);
   }
   
-  
-//  @PostMapping("/finance/invoicePartition")
-//  public String billPartitionTemplate(Model model, @RequestParam(name = "bill_id") long billId, @RequestParam(name = "template_id") long templateId) {
-//    if(service.billDivisionByTemplateId(billId, templateId)) {
-//      return "redirect:/billing/all";
-//      model.addAttribute("userFeeMap", service.splitting);
-//      return "billing_templates/splittedBill";
-//    } else {
-//      model.addAttribute("templateId", templateId);
-//      model.addAttribute("feeDescriptions", service.getUnknownFeeDescToTemplate(templateId));
-//      model.addAttribute("categories", service.findAllCategory());
-//      return "billing_templates/invoiceDescriptionCategoryCouplerUpgrade";
-//    }
-//  }
-//  
-//  @PostMapping("billing/billPartitionUpdate")
-//  public String billPartitionTemplate(Model model, @RequestParam long templateId, @RequestParam(name = "description") List<String> descriptions, @RequestParam(name = "category") List<Long> categories) {
-//    System.out.println("billing/billPartitionUpdate");
-//    service.upgradeBillPartitionTemplate(templateId, descriptions, categories);
-//    return "redirect:/billing/all";
+//  @PostMapping("/invoice/getDescriptionsOfInvoice")
+//  @ResponseBody
+//  public List<String> getDescriptionsOfInvoice(@RequestParam ("id") long id) {
+//    return service.findDescriptionsOfInvoiceById(id);
 //  }
   
-  @GetMapping("/invoice/settings")
-  public String invoicePartitionSettings(Model model) {
-    model.addAttribute("categories", service.findAllCategory());
-    return "finance_templates/financeSettings";
+  @PostMapping("/rawInvoice/{invoiceNumber}/delete")
+  @ResponseStatus(value = HttpStatus.OK)
+  public void deleteRawInvoice(@PathVariable("invoiceNumber") String invoiceNumber) {
+    service.deleteRawInvoiceByInvoiceNumber(invoiceNumber);
   }
   
-  @PostMapping("/invoice/getDescriptionsOfInvoice")
-  @ResponseBody
-  public List<String> getDescriptionsOfInvoice(@RequestParam ("id") long id) {
-    return service.findDescriptionsOfInvoiceById(id);
-  }
 }
  

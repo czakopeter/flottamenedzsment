@@ -236,13 +236,6 @@ public class Subscription extends BasicEntityWithCreateDate {
     }
   }
   
-//  private boolean notValidForAdd(Map<LocalDate, ? extends BasicSwitchTable> map, BasicEntity entity, LocalDate date) {
-//    if(map == null || map.isEmpty() || date == null) {
-//      return false;
-//    }
-//    return false;
-//  }
-
   public void addDevice(Device device, LocalDate date) {
     if (subDev == null || date == null) {
       System.out.println("Subscription: subDev switch table can't be null");
@@ -255,6 +248,7 @@ public class Subscription extends BasicEntityWithCreateDate {
       } else if (date.isAfter(lastDeviceModDate)) {
         SubDev last = subDev.get(lastDeviceModDate);
         if (!Utility.isSameByIdOrBothNull(device, last.getDev())) {
+          last.getEndDate().minusDays(1);
           subDev.put(date, new SubDev(this, device, date));
           firstAvailableDate = date;
         }

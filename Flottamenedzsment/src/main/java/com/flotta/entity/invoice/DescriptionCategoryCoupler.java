@@ -16,7 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-import com.flotta.invoice.exception.UnknonwFeeItemDescriptionException;
+import com.flotta.exception.invoice.UnknonwFeeItemDescriptionException;
 
 @Entity
 public class DescriptionCategoryCoupler {

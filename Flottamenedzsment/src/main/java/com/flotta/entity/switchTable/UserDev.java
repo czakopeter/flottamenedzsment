@@ -27,9 +27,6 @@ public class UserDev extends BasicSwitchTable {
 	@JoinColumn( name = "dev_id")
 	private Device dev;
 	
-	@DateTimeFormat (pattern="yyyy-MM-dd")
-	private LocalDate disconnect;
-
 	public UserDev() {
 	}
 
@@ -55,20 +52,13 @@ public class UserDev extends BasicSwitchTable {
     this.dev = dev;
   }
 
-	public LocalDate getDisconnect() {
-		return disconnect;
-	}
-
-	public void setDisconnect(LocalDate disconnect) {
-		this.disconnect = disconnect;
-	}
 
 	@Override
 	public String toString() {
 		return "UserSub [user=" + (user != null ? user.getFullName().toString() : "no user") + 
 				", sub=" + (dev != null ? dev.getSerialNumber().toString() : "no dev") + 
 				", connect=" + Objects.toString(beginDate, "no beginDate") +
-				", disconnect=" + Objects.toString(disconnect, "no disconnect") + "]";
+				", disconnect=" + Objects.toString(endDate, "no endDate") + "]";
 	}
 
   @Override

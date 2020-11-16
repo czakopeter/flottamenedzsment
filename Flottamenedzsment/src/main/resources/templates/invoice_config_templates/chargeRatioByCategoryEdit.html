@@ -9,7 +9,7 @@
 
     <h3 th:text="#{chargeRatio.editChargeRatio}">Edit charge ratio</h3>
 
-    <form th:action="'/finance/chargeRatio/' + ${chargeRatio.id}" method="post" th:object="${chargeRatio}" >
+    <form th:action="'/invoiceConfiguration/chargeRatio/' + ${chargeRatio.id}" method="post" th:object="${chargeRatio}" >
       <div class="row mb-3">
         <div class="col-2">
           <label th:text="#{chargeRatio.name}">Name</label>

@@ -15,7 +15,7 @@
         <div id="category" class="collapse" th:classappend="${active == 'category'} ? 'show' : ''" th:insert="/invoice_config_templates/category :: category-all"></div>
         
         <a href="#description-category-coupler" class="small menu-item" data-toggle="collapse" role="button" th:aria-expanded="${active == 'description-category-coupler'}" onclick="test(this)" th:text="#{descCatCoupler.descriptionCategoryCouplers}">Description category couplers</a>
-        <div id="description-category-coupler" class="collapse" th:classappend="${active == 'description-category-coupler'} ? 'show' : ''" th:insert="/invoice_config_templates/invoiceDescriptionCategoryCouplerAll :: description-category-coupler-all"></div>
+        <div id="description-category-coupler" class="collapse" th:classappend="${active == 'description-category-coupler'} ? 'show' : ''" th:insert="/invoice_config_templates/descriptionCategoryCouplerAll :: description-category-coupler-all"></div>
         
         <a href="#charge-ratio" class="small menu-item" data-toggle="collapse" role="button" th:aria-expanded="${active == 'charge-ratio'}" onclick="test(this)" th:text="#{chargeRatio.chargeRatios}">Charge ratios</a>
         <div id="charge-ratio" class="collapse" th:classappend="${active == 'charge-ratio'} ? 'show' : ''" th:insert="/invoice_config_templates/chargeRatioByCategoryAll :: charge-ratio-all"></div>

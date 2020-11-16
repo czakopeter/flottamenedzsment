@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.flotta.entity.record.Role;
+import com.flotta.repository.record.RoleRepository;
 
 //@SpringBootTest
 @DataJpaTest
