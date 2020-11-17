@@ -93,14 +93,6 @@ public class User extends BasicEntity {
     this.activationKey = activationKey;
   }
 
-//  public int getStatus() {
-//    return status;
-//  }
-//
-//  public void setStatus(int status) {
-//    this.status = status;
-//  }
-
   public Set<UserSub> getUserSubs() {
 		return userSubs;
 	}
@@ -165,14 +157,6 @@ public class User extends BasicEntity {
     return false;
   }
   
-//  public String getStatusName() {
-//    return STATUS_STRING[status];
-//  }
-//
-//  public boolean isPasswordExpired() {
-//    return status == REQUIRED_PASSWORD_CHANGE;
-//  }
-  
   public String getStatusName() {
     return status.toString();
   }
@@ -184,10 +168,4 @@ public class User extends BasicEntity {
   public void setStatus(UserStatusEnum status) {
     this.status = status;
   }
-
-//  public boolean isPasswordChangeRequired() {
-//    return status.equals(UserStatusEnum.REQUIRED_PASSWORD_CHANGE);
-//  }
-  
-  
 }

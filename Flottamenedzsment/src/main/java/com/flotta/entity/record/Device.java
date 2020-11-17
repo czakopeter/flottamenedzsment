@@ -75,7 +75,6 @@ public class Device extends BasicEntityWithCreateDate {
     this.createDate = date;
     this.firstAvailableDate = date;
     this.deviceType = null;
-    notes.put(date, new DevNote(this, "", date));
   }
 
   public String getSerialNumber() {
@@ -125,6 +124,10 @@ public class Device extends BasicEntityWithCreateDate {
   public void setStatuses(Map<LocalDate, DeviceStatus> statuses) {
     this.statuses = statuses;
   }
+  
+  public LocalDate getFirstAvailableDate() {
+    return firstAvailableDate;
+  }
 
   public DeviceToView toView() {
     DeviceToView dtv = new DeviceToView();
@@ -165,6 +168,7 @@ public class Device extends BasicEntityWithCreateDate {
       if (user != null) {
         //Most hozzárendelik egy felhasználóhoz
         devUsers.put(date, new UserDev(user, this, date));
+        firstAvailableDate = date;
       }
     } else {
       //Már legalább egyszer hozzárendelték egy felhazsnálóhoz
@@ -179,12 +183,14 @@ public class Device extends BasicEntityWithCreateDate {
             last.setEndDate(null);
           } else {
             devUsers.put(date, new UserDev(user, this, date));
+            firstAvailableDate = date;
           }
         } else if(date.minusDays(1).isAfter(last.getEndDate())) {
           if(user == null) {
             //nem csinálunk semmit
           } else {
             devUsers.put(date, new UserDev(user, this, date));
+            firstAvailableDate = date;
           }
         }
       } else {
@@ -195,6 +201,7 @@ public class Device extends BasicEntityWithCreateDate {
           if(date.isAfter(lastUserModDate)) {
             last.setEndDate(date.minusDays(1));
             devUsers.put(date, new UserDev(user, this, date));
+            firstAvailableDate = date;
           } else if(date.isEqual(lastUserModDate)) {
          // Módosítjuk az új felhasználóval vagy nem történik módosítás
           }
