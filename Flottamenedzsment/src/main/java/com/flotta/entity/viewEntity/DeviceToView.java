@@ -8,6 +8,7 @@ import com.flotta.entity.note.DevNote;
 import com.flotta.entity.record.Subscription;
 import com.flotta.entity.record.User;
 import com.flotta.entity.switchTable.BasicSwitchTable;
+import com.flotta.entity.switchTable.SubDev;
 import com.flotta.entity.switchTable.UserDev;
 import com.flotta.entity.switchTable.UserSub;
 import com.flotta.utility.Utility;
@@ -135,10 +136,10 @@ public class DeviceToView {
   }
 
   public void setSubscription(BasicSwitchTable bst) {
-    if(bst == null || !(bst instanceof UserSub)) {
+    if(bst == null || !(bst instanceof SubDev)) {
       this.number = "";
     } else {
-      Subscription subscription = ((UserSub) bst).getSub();
+      Subscription subscription = ((SubDev) bst).getSub();
       this.number = subscription != null ? subscription.getNumber() : "";
     }
   }

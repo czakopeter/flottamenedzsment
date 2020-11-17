@@ -55,7 +55,7 @@ public class RecordService {
   public List<DeviceToView> findAllDevices() {
     List<DeviceToView> list = new LinkedList<>();
     deviceService.findAll().forEach(
-        d -> list.add(d.toView()));
+        device -> list.add(device.toView()));
     return list;
   }
 
