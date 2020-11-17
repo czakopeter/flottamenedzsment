@@ -88,6 +88,9 @@ public class InvoiceController {
 //    return service.findDescriptionsOfInvoiceById(id);
 //  }
   
+  /**
+   * @param invoiceNumber
+   */
   @PostMapping("/rawInvoice/{invoiceNumber}/delete")
   @ResponseStatus(value = HttpStatus.OK)
   public void deleteRawInvoice(@PathVariable("invoiceNumber") String invoiceNumber) {
