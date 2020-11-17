@@ -178,7 +178,7 @@ public class MainService {
   }
 
   public void deleteRawInvoiceByInvoiceNumber(String invoiceNumber) {
-    // TODO Auto-generated method stub
+    invoiceService.deleteRawInvoiceByInvoiceNumber(invoiceNumber);
 
   }
   

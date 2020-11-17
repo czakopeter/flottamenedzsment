@@ -12,4 +12,6 @@ public interface RawInvoiceRepository extends CrudRepository<RawInvoice, Long> {
 
   RawInvoice findByInvoiceNumber(String invoiceNumber);
 
+  void deleteByInvoiceNumber(String invoiceNumber);
+
 }

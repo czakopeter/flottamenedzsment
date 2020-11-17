@@ -306,6 +306,9 @@ public class Invoice {
     return Utility.getPeriod(beginDate, endDate);
   }
 
+  /**
+   * @return List<String> that contains all different descriptions from FeeItems 
+   */
   public List<String> getAllDescription() {
     Set<String> descriptions = new HashSet<>();
     for(InvoiceByUserAndPhoneNumber part : invoicePart) {
