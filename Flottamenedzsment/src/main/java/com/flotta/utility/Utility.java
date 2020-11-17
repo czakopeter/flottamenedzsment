@@ -121,17 +121,6 @@ public class Utility {
     return sb.toString();
   }
   
-  public static User getUserDev(Map<LocalDate, UserDev> map) {
-    if(map == null || map.isEmpty()) {
-      return null;
-    }
-    List<LocalDate> beginDates = new LinkedList<>(map.keySet());
-    Collections.sort(beginDates, Collections.reverseOrder());
-    LocalDate lastBeginDate = beginDates.get(0);
-    UserDev last = map.get(lastBeginDate);
-    return last.getEndDate() == null ? last.getUser() : null;
-  }
-  
   public static BasicSwitchTable getBasicSwitchTable(Map<LocalDate, ? extends BasicSwitchTable> map) {
     if(map == null || map.isEmpty()) {
       return null;
