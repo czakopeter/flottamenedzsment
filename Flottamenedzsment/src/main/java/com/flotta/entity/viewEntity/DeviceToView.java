@@ -4,8 +4,12 @@ import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.flotta.entity.note.DevNote;
 import com.flotta.entity.record.Subscription;
 import com.flotta.entity.record.User;
+import com.flotta.entity.switchTable.BasicSwitchTable;
+import com.flotta.entity.switchTable.UserDev;
+import com.flotta.entity.switchTable.UserSub;
 import com.flotta.utility.Utility;
 
 public class DeviceToView {
@@ -119,17 +123,37 @@ public class DeviceToView {
     return "DeviceToView [serialNumber=" + serialNumber + ", typeName=" + typeName + ", beginDate=" + beginDate + ", min=" + min + "]";
   }
 
-  public void setUser(User user) {
-    this.userId = user != null ? user.getId() : 0;
-    this.userName = user != null ? user.getFullName() : "";
+  public void setUser(BasicSwitchTable bst) {
+    if(bst == null || !(bst instanceof UserDev)) {
+      this.userId = 0;
+      this.userName = "";
+    } else {
+      User user = ((UserDev)bst).getUser();
+      this.userId = user != null ? user.getId() : 0;
+      this.userName = user != null ? user.getFullName() : "";
+    }
   }
 
-  public void setSubscription(Subscription sub) {
-    this.number = sub != null ? sub.getNumber() : "";
+  public void setSubscription(BasicSwitchTable bst) {
+    if(bst == null || !(bst instanceof UserSub)) {
+      this.number = "";
+    } else {
+      Subscription subscription = ((UserSub) bst).getSub();
+      this.number = subscription != null ? subscription.getNumber() : "";
+    }
   }
   
   public String getPeriod() {
     return Utility.getPeriod(beginDate, endDate);
+  }
+
+  public void setNote(BasicSwitchTable bst) {
+    if(bst == null || !(bst instanceof DevNote)) {
+      this.note = "";
+    } else {
+      String note = ((DevNote) bst).getNote();
+      this.note = note != null ? note : "";
+    }
   }
 
 }

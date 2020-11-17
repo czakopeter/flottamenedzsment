@@ -17,12 +17,6 @@ INSERT INTO Device_types (brand, model, name, sim_number, microsd, visible) VALU
 INSERT INTO Device_types (brand, model, name, sim_number, microsd, visible) VALUES ('Motorola', 'C380', 'Motorola C380', 1, false, false)
 
 INSERT INTO Devices (serial_number, type_id, create_date, first_available_date) VALUES ('R58J900J1W', 1, to_date('20-01-01', 'RR-MM-DD'), to_date('20-01-10', 'RR-MM-DD'))
-INSERT INTO Sub_dev_st (sub_id, dev_id, begin_date) VALUES (null, 1, to_date('20-01-01', 'RR-MM-DD'))
-INSERT INTO Dev_note (note, dev_id, begin_date) VALUES ('', 1, to_date('20-01-01', 'RR-MM-DD'))
-INSERT INTO User_dev_st (user_id, dev_id, begin_date) VALUES (null, 1, to_date('20-01-01', 'RR-MM-DD'))
-INSERT INTO User_dev_st (user_id, dev_id, begin_date) VALUES (1, 1, to_date('20-01-10', 'RR-MM-DD'))
-
-INSERT INTO Sub_dev_st (sub_id, dev_id, begin_date) VALUES (1, 1, to_date('20-01-10', 'RR-MM-DD'))
 
 INSERT INTO Categories (name) VALUES ('Monthly')
 INSERT INTO Categories (name) VALUES ('Call')

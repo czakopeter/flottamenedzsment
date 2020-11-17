@@ -16,9 +16,12 @@ import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.flotta.entity.note.DevNote;
 import com.flotta.entity.note.SubNote;
+import com.flotta.entity.switchTable.BasicSwitchTable;
 import com.flotta.entity.switchTable.SubDev;
 import com.flotta.entity.switchTable.SubSim;
+import com.flotta.entity.switchTable.UserDev;
 import com.flotta.entity.switchTable.UserSub;
 import com.flotta.entity.viewEntity.SubscriptionToView;
 import com.flotta.enums.SimStatusEnum;
@@ -53,7 +56,7 @@ public class Subscription extends BasicEntityWithCreateDate {
   private Map<LocalDate, SubscriptionStatus> statuses = new HashMap<>();
 
   private LocalDate firstAvailableDate;
-  
+
   public Subscription() {
   }
 
@@ -65,10 +68,10 @@ public class Subscription extends BasicEntityWithCreateDate {
     this.number = number;
     this.createDate = date;
     this.firstAvailableDate = date;
-    this.subSim.put(date, new SubSim(this, null, date));
-    this.notes.put(date, new SubNote(this, "", date));
-    this.subDev.put(date, new SubDev(this, null, date));
-    this.subUsers.put(date, new UserSub(null, this, date));
+//    this.subSim.put(date, new SubSim(this, null, date));
+//    this.notes.put(date, new SubNote(this, "", date));
+//    this.subDev.put(date, new SubDev(this, null, date));
+//    this.subUsers.put(date, new UserSub(null, this, date));
   }
 
   public String getNumber() {
@@ -126,7 +129,7 @@ public class Subscription extends BasicEntityWithCreateDate {
   public void setCreateDate(LocalDate createDate) {
     this.createDate = createDate;
   }
-  
+
   public LocalDate getFirstAvailableDate() {
     return firstAvailableDate;
   }
@@ -162,7 +165,7 @@ public class Subscription extends BasicEntityWithCreateDate {
   public SubscriptionToView toView(LocalDate date) {
     if (date.isBefore(createDate)) {
     }
-      
+
     SubscriptionToView stv = new SubscriptionToView();
     stv.setId(id);
     stv.setNumber(number);
@@ -177,65 +180,86 @@ public class Subscription extends BasicEntityWithCreateDate {
     stv.setNote(notes.get(Utility.floorDate(notes, date)).getNote());
     return stv;
   }
-  
-
-  public List<LocalDate> getAllModificationDateDesc() {
-    Set<LocalDate> dates = new HashSet<>();
-    dates.addAll(subUsers.keySet());
-    dates.addAll(subSim.keySet());
-    dates.addAll(subDev.keySet());
-    dates.addAll(notes.keySet());
-
-    List<LocalDate> result = new LinkedList<>(dates);
-    Collections.sort(result, Collections.reverseOrder());
-    return result;
-  }
 
   public void addSim(Sim sim, String reason, LocalDate date) {
-    if (subSim == null) {
-      System.out.println("Subscription: subSim switch table can't be null");
-    } else if (subSim.isEmpty()) {
-      System.out.println("Subscription: subSim switch table can't be empty");
+    if (sim == null) {
+      System.err.println("Never happened");
+      return;
+    }
+    if (subSim.isEmpty()) {
+      subSim.put(date, new SubSim(this, sim, date));
     } else {
-      LocalDate lastSimModDate = Utility.getLatestDate(subSim);
-      SubSim last = subSim.get(lastSimModDate);
-      if(last.getSim() == null) {
-        sim.setStatus(SimStatusEnum.ACTIVE);
-        last.setSim(sim);
-      } else if (date.isAfter(lastSimModDate)) {
-        if (!Sim.isSameByIdOrBothNull(sim, last.getSim())) {
-          subSim.put(date, new SubSim(this, sim, date));
-          last.getSim().setStatus(SimStatusEnum.CHANGED);
-          last.getSim().setReason(reason);
-          firstAvailableDate = date;
+      LocalDate lastModDate = Utility.getLatestDate(subSim);
+      SubSim last = subSim.get(lastModDate);
+      if (last.getEndDate() == null) {
+        // Valakihez éppen hozzá van rendelve
+        if (last.getSim().equals(sim)) {
+          // nem csinálunk semmit
+        } else {
+          if (date.isAfter(lastModDate)) {
+            last.setEndDate(date.minusDays(1));
+            last.getSim().setReason(reason);
+            last.getSim().setStatus(SimStatusEnum.CHANGED);
+            sim.setStatus(SimStatusEnum.ACTIVE);
+            subSim.put(date, new SubSim(this, sim, date));
+          } else if (date.isEqual(lastModDate)) {
+            // Módosítjuk az új simmel vagy nem történik módosítás
+          }
         }
       }
     }
   }
 
   public void addUser(User user, LocalDate date) {
-    System.out.println(Utility.areTwoLastAreSame(subUsers));
-    
-    if (subUsers == null) {
-      System.out.println("Subscription: subUser switch table can't be null");
-    } else if (subUsers.isEmpty()) {
-      System.out.println("Subscription: subUser switch table can't be empty");
+    if (subUsers.isEmpty()) {
+      //Még nem rendelték felhasználóhoz
+      if (user != null) {
+        //Most hozzárendelik egy felhasználóhoz
+        subUsers.put(date, new UserSub(user, this, date));
+      }
     } else {
+      //Már legalább egyszer hozzárendelték egy felhazsnálóhoz
       LocalDate lastUserModDate = Utility.getLatestDate(subUsers);
-      if (lastUserModDate == null) {
-        System.out.println("Subscription: last user modification date can't be null");
-      } else if (date.isAfter(lastUserModDate)) {
-        UserSub last = subUsers.get(lastUserModDate);
-        if (!Utility.isSameByIdOrBothNull(user, last.getUser())) {
-          last.setEndDate(date.minusDays(1));
-          subUsers.put(date, new UserSub(user, this, date));
-          firstAvailableDate = date;
+      UserSub last = subUsers.get(lastUserModDate);
+      if(last.getEndDate() != null) {
+        //Az utolsó hozzárendelést már lezárták jelenleg nem tartozik senkihez
+        if(date.minusDays(1).isEqual(last.getEndDate())) {
+          if(user == null) {
+          //nem csinálunk semmit
+          } else if(last.getUser().equals(user)) {
+            last.setEndDate(null);
+          } else {
+            subUsers.put(date, new UserSub(user, this, date));
+          }
+        } else if(date.minusDays(1).isAfter(last.getEndDate())) {
+          if(user == null) {
+            //nem csinálunk semmit
+          } else {
+            subUsers.put(date, new UserSub(user, this, date));
+          }
         }
-      } else if (date.isEqual(lastUserModDate)) {
+      } else {
+        //Valakihez éppen hozzá van rendelve
+        if(last.getUser().equals(user)) {
+          //nem csinálunk semmit
+        } else if(user != null) {
+          if(date.isAfter(lastUserModDate)) {
+            last.setEndDate(date.minusDays(1));
+            subUsers.put(date, new UserSub(user, this, date));
+          } else if(date.isEqual(lastUserModDate)) {
+         // Módosítjuk az új felhasználóval vagy nem történik módosítás
+          }
+        } else {
+          if(date.isAfter(lastUserModDate)) {
+            last.setEndDate(date.minusDays(1));
+          } else if(date.isEqual(lastUserModDate)) {
+            // Még nem tudom mi történjen
+          }
+        }
       }
     }
   }
-  
+
   public void addDevice(Device device, LocalDate date) {
     if (subDev == null || date == null) {
       System.out.println("Subscription: subDev switch table can't be null");
@@ -252,26 +276,58 @@ public class Subscription extends BasicEntityWithCreateDate {
           subDev.put(date, new SubDev(this, device, date));
           firstAvailableDate = date;
         }
-      } else if(date.isEqual(lastDeviceModDate)) {
+      } else if (date.isEqual(lastDeviceModDate)) {
       }
     }
   }
-  
+
   public User getActualUser() {
     return subUsers.get(Utility.getLatestDate(subUsers)).getUser();
   }
 
   public void addNote(String note, LocalDate date) {
-    LocalDate lastNoteModDate = Utility.getLatestDate(notes);
-    if(lastNoteModDate == null) {
-      
-    } else if(date.isAfter(lastNoteModDate)) {
-      SubNote last = notes.get(lastNoteModDate);
-      if(!note.equals(last.getNote())) {
+    if(notes.isEmpty()) {
+      if (note != null) {
         notes.put(date, new SubNote(this, note, date));
-        firstAvailableDate = date;
       }
-    } else if(date.isEqual(lastNoteModDate)) {
+    } else {
+      LocalDate lastNoteModDate = Utility.getLatestDate(notes);
+      SubNote last = notes.get(lastNoteModDate);
+      if(last.getEndDate() != null) {
+        if(date.minusDays(1).isEqual(last.getEndDate())) {
+          if(note == null) {
+          //nem csinálunk semmit
+          } else if(last.getNote().equals(note)) {
+            last.setEndDate(null);
+          } else {
+            notes.put(date, new SubNote(this, note, date));
+          }
+        } else if(date.minusDays(1).isAfter(last.getEndDate())) {
+          if(note == null) {
+            //nem csinálunk semmit
+          } else {
+            notes.put(date, new SubNote(this, note, date));
+          }
+        }
+      } else {
+        //Valakihez éppen hozzá van rendelve
+        if(last.getNote().equals(note)) {
+          //nem csinálunk semmit
+        } else if(note != null) {
+          if(date.isAfter(lastNoteModDate)) {
+            last.setEndDate(date.minusDays(1));
+            notes.put(date, new SubNote(this, note, date));
+          } else if(date.isEqual(lastNoteModDate)) {
+         // Módosítjuk az új felhasználóval vagy nem történik módosítás
+          }
+        } else {
+          if(date.isAfter(lastNoteModDate)) {
+            last.setEndDate(date.minusDays(1));
+          } else if(date.isEqual(lastNoteModDate)) {
+            // Még nem tudom mi történjen
+          }
+        }
+      }
     }
   }
 
@@ -279,8 +335,8 @@ public class Subscription extends BasicEntityWithCreateDate {
     List<LocalDate> result = new LinkedList<>();
     List<LocalDate> dates = new LinkedList<>(subUsers.keySet());
     Collections.sort(dates);
-    for(LocalDate date : dates) {
-      if(date.isAfter(beginDate) && !date.isAfter(endDate)) {
+    for (LocalDate date : dates) {
+      if (date.isAfter(beginDate) && !date.isAfter(endDate)) {
         result.add(date);
       }
     }
@@ -289,11 +345,47 @@ public class Subscription extends BasicEntityWithCreateDate {
 
   public User getUserByDate(LocalDate date) {
     LocalDate floor = Utility.floorDate(subUsers, date);
-    if(floor == null) {
+    if (floor == null) {
       return null;
     } else {
       return subUsers.get(floor).getUser();
     }
   }
-  
+
+  /**
+   * visszaadja a Subscription objektum létrehozásának és adatainak változásának
+   * dátumát csökkenő sorrendben
+   * 
+   * @return List<LocalDate>
+   */
+  public List<LocalDate> getAllModificationDateDesc() {
+    Set<LocalDate> dates = new HashSet<>();
+    dates.add(createDate);
+    dates.addAll(getModificationDates(subUsers));
+    dates.addAll(getModificationDates(subSim));
+    dates.addAll(getModificationDates(subDev));
+    dates.addAll(getModificationDates(notes));
+
+    List<LocalDate> result = new LinkedList<>(dates);
+    Collections.sort(result, Collections.reverseOrder());
+    return result;
+  }
+
+  /**
+   * visszaadja a map-ben tárolt BasicSwitchTable-k egyedi kezdeti dátumait és a
+   * vég dátumai utáni első napokat
+   * 
+   * @param Map<LocalDate, ? extends BasicSwitchTable>
+   * @return Set<LocalDate>
+   */
+  private Set<LocalDate> getModificationDates(Map<LocalDate, ? extends BasicSwitchTable> map) {
+    Set<LocalDate> dates = new HashSet<>();
+    for (BasicSwitchTable bst : map.values()) {
+      dates.add(bst.getBeginDate());
+      if (bst.getEndDate() != null) {
+        dates.add(bst.getEndDate().plusDays(1));
+      }
+    }
+    return dates;
+  }
 }

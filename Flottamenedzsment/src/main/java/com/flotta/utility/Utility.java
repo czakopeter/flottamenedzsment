@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.flotta.entity.record.BasicEntity;
+import com.flotta.entity.record.User;
 import com.flotta.entity.switchTable.BasicSwitchTable;
+import com.flotta.entity.switchTable.UserDev;
 
 public class Utility {
   
@@ -117,5 +119,56 @@ public class Utility {
       }
     }
     return sb.toString();
+  }
+  
+  public static User getUserDev(Map<LocalDate, UserDev> map) {
+    if(map == null || map.isEmpty()) {
+      return null;
+    }
+    List<LocalDate> beginDates = new LinkedList<>(map.keySet());
+    Collections.sort(beginDates, Collections.reverseOrder());
+    LocalDate lastBeginDate = beginDates.get(0);
+    UserDev last = map.get(lastBeginDate);
+    return last.getEndDate() == null ? last.getUser() : null;
+  }
+  
+  public static BasicSwitchTable getBasicSwitchTable(Map<LocalDate, ? extends BasicSwitchTable> map) {
+    if(map == null || map.isEmpty()) {
+      return null;
+    }
+    List<LocalDate> beginDates = new LinkedList<>(map.keySet());
+    Collections.sort(beginDates, Collections.reverseOrder());
+    LocalDate lastBeginDate = beginDates.get(0);
+    BasicSwitchTable last = map.get(lastBeginDate);
+    return last.getEndDate() == null ? last : null;
+  }
+  
+  public static BasicSwitchTable getBasicSwitchTable(Map<LocalDate, ? extends BasicSwitchTable> map, LocalDate ceil) {
+    if(map == null || map.isEmpty()) {
+      return null;
+    }
+    if(map.containsKey(ceil)) {
+      return map.get(ceil);
+    }
+    
+    List<LocalDate> beginDates = new LinkedList<>(map.keySet());
+    Collections.sort(beginDates, Collections.reverseOrder());
+    LocalDate floorBeginDate = null;
+    for(LocalDate date : beginDates) {
+      if(ceil.isAfter(date)) {
+        floorBeginDate = date;
+        break;
+      }
+    }
+    if(floorBeginDate == null) {
+      return null;
+    }
+    BasicSwitchTable last = map.get(floorBeginDate);
+    if(last.getEndDate() == null) {
+      return last;
+    } else {
+      return last.getEndDate().isBefore(ceil) ? null : last;
+    }
+    
   }
 }
