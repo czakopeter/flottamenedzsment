@@ -143,10 +143,6 @@ public class DeviceToView {
     }
   }
   
-  public String getPeriod() {
-    return Utility.getPeriod(beginDate, endDate);
-  }
-
   public void setNote(BasicSwitchTable bst) {
     if(bst == null || !(bst instanceof DevNote)) {
       this.note = "";
@@ -155,5 +151,8 @@ public class DeviceToView {
       this.note = note != null ? note : "";
     }
   }
-
+  
+  public String getPeriod() {
+    return Utility.getPeriod(beginDate, endDate);
+  }
 }

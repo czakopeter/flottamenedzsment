@@ -1,6 +1,7 @@
 package com.flotta.repository.record;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
@@ -11,5 +12,5 @@ public interface SubscriptionRepository extends CrudRepository<Subscription, Lon
 
 	List<Subscription> findAll();
 	
-	Subscription findByNumber(String number);
+	Optional<Subscription> findByNumber(String number);
 }

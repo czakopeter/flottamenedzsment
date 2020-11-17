@@ -16,12 +16,10 @@ import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.flotta.entity.note.DevNote;
 import com.flotta.entity.note.SubNote;
 import com.flotta.entity.switchTable.BasicSwitchTable;
 import com.flotta.entity.switchTable.SubDev;
 import com.flotta.entity.switchTable.SubSim;
-import com.flotta.entity.switchTable.UserDev;
 import com.flotta.entity.switchTable.UserSub;
 import com.flotta.entity.viewEntity.SubscriptionToView;
 import com.flotta.enums.SimStatusEnum;
@@ -68,10 +66,6 @@ public class Subscription extends BasicEntityWithCreateDate {
     this.number = number;
     this.createDate = date;
     this.firstAvailableDate = date;
-//    this.subSim.put(date, new SubSim(this, null, date));
-//    this.notes.put(date, new SubNote(this, "", date));
-//    this.subDev.put(date, new SubDev(this, null, date));
-//    this.subUsers.put(date, new UserSub(null, this, date));
   }
 
   public String getNumber() {
@@ -151,13 +145,13 @@ public class Subscription extends BasicEntityWithCreateDate {
     stv.setEndDate(null);
     stv.setMin(firstAvailableDate.toString());
 
-    stv.setSim(subSim.get(Utility.getLatestDate(subSim)).getSim());
+    stv.setSim(Utility.getBasicSwitchTable(subSim));
 
-    stv.setUser(subUsers.get(Utility.getLatestDate(subUsers)).getUser());
+    stv.setUser(Utility.getBasicSwitchTable(subUsers));
 
-    stv.setDevice(subDev.get(Utility.getLatestDate(subDev)).getDev());
+    stv.setDevice(Utility.getBasicSwitchTable(subDev));
 
-    stv.setNote(notes.get(Utility.getLatestDate(notes)).getNote());
+    stv.setNote(Utility.getBasicSwitchTable(notes));
 
     return stv;
   }
@@ -171,13 +165,13 @@ public class Subscription extends BasicEntityWithCreateDate {
     stv.setNumber(number);
     stv.setBeginDate(date);
 
-    stv.setSim(subSim.get(Utility.floorDate(subSim, date)).getSim());
+    stv.setSim(Utility.getBasicSwitchTable(subSim, date));
 
-    stv.setUser(subUsers.get(Utility.floorDate(subUsers, date)).getUser());
+    stv.setUser(Utility.getBasicSwitchTable(subUsers, date));
 
-    stv.setDevice(subDev.get(Utility.floorDate(subDev, date)).getDev());
+    stv.setDevice(Utility.getBasicSwitchTable(subDev, date));
 
-    stv.setNote(notes.get(Utility.floorDate(notes, date)).getNote());
+    stv.setNote(Utility.getBasicSwitchTable(notes, date));
     return stv;
   }
 
@@ -261,28 +255,49 @@ public class Subscription extends BasicEntityWithCreateDate {
   }
 
   public void addDevice(Device device, LocalDate date) {
-    if (subDev == null || date == null) {
-      System.out.println("Subscription: subDev switch table can't be null");
-    } else if (subDev.isEmpty()) {
-      System.out.println("Subscription: subDev switch table can't be empty");
+    if (subDev.isEmpty()) {
+      if (device != null) {
+        subDev.put(date, new SubDev(this, device, date));
+      }
     } else {
-      LocalDate lastDeviceModDate = Utility.getLatestDate(subDev);
-      if (lastDeviceModDate == null) {
-        System.out.println("Subscription: last device modification date can't be null");
-      } else if (date.isAfter(lastDeviceModDate)) {
-        SubDev last = subDev.get(lastDeviceModDate);
-        if (!Utility.isSameByIdOrBothNull(device, last.getDev())) {
-          last.getEndDate().minusDays(1);
-          subDev.put(date, new SubDev(this, device, date));
-          firstAvailableDate = date;
+      LocalDate lastModDate = Utility.getLatestDate(subDev);
+      SubDev last = subDev.get(lastModDate);
+      if(last.getEndDate() != null) {
+        if(date.minusDays(1).isEqual(last.getEndDate())) {
+          if(device == null) {
+          //nem csinálunk semmit
+          } else if(last.getDev().equals(device)) {
+            last.setEndDate(null);
+          } else {
+            subDev.put(date, new SubDev(this, device, date));
+          }
+        } else if(date.minusDays(1).isAfter(last.getEndDate())) {
+          if(device == null) {
+            //nem csinálunk semmit
+          } else {
+            subDev.put(date, new SubDev(this, device, date));
+          }
         }
-      } else if (date.isEqual(lastDeviceModDate)) {
+      } else {
+        //Valakihez éppen hozzá van rendelve
+        if(last.getDev().equals(device)) {
+          //nem csinálunk semmit
+        } else if(device != null) {
+          if(date.isAfter(lastModDate)) {
+            last.setEndDate(date.minusDays(1));
+            subDev.put(date, new SubDev(this, device, date));
+          } else if(date.isEqual(lastModDate)) {
+         // Módosítjuk az új felhasználóval vagy nem történik módosítás
+          }
+        } else {
+          if(date.isAfter(lastModDate)) {
+            last.setEndDate(date.minusDays(1));
+          } else if(date.isEqual(lastModDate)) {
+            // Még nem tudom mi történjen
+          }
+        }
       }
     }
-  }
-
-  public User getActualUser() {
-    return subUsers.get(Utility.getLatestDate(subUsers)).getUser();
   }
 
   public void addNote(String note, LocalDate date) {
@@ -330,6 +345,11 @@ public class Subscription extends BasicEntityWithCreateDate {
       }
     }
   }
+  
+//  public User getActualUser() {
+//    UserSub userSub = subUsers.get(Utility.getLatestDate(subUsers));
+//    return userSub.getEndDate() == null ? userSub.getUser() : null;
+//  }
 
   public List<LocalDate> getUserModificationDatesBetween(LocalDate beginDate, LocalDate endDate) {
     List<LocalDate> result = new LinkedList<>();

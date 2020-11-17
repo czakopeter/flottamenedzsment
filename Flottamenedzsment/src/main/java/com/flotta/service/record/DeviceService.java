@@ -73,16 +73,16 @@ public class DeviceService extends ServiceWithMsg{
 
   
   //TODO nem kell az összes eszköz, csak ami valaha a felhasználónál volt és aktív
-  public List<DeviceToView> findAllCurrentByUser(User user) {
-    List<DeviceToView> result = new LinkedList<DeviceToView>();
-    List<Device> all = deviceRepository.findAll();
-    for(Device d : all) {
-      if(Utility.isSameByIdOrBothNull(user, d.getActualUser())) {
-        result.add(d.toView());
-      }
-    }
-    return result;
-  }
+//  public List<DeviceToView> findAllCurrentByUser(User user) {
+//    List<DeviceToView> result = new LinkedList<DeviceToView>();
+//    List<Device> all = deviceRepository.findAll();
+//    for(Device d : all) {
+//      if(Utility.isSameByIdOrBothNull(user, d.getActualUser())) {
+//        result.add(d.toView());
+//      }
+//    }
+//    return result;
+//  }
 
   public void save(Device device) {
     deviceRepository.save(device);

@@ -18,6 +18,7 @@ import com.flotta.entity.invoice.Participant;
 import com.flotta.entity.invoice.RawInvoice;
 import com.flotta.entity.record.DeviceType;
 import com.flotta.entity.record.Sim;
+import com.flotta.entity.record.Subscription;
 import com.flotta.entity.record.User;
 import com.flotta.entity.viewEntity.DeviceToView;
 import com.flotta.entity.viewEntity.SubscriptionToView;
@@ -216,10 +217,6 @@ public class MainService {
     return recordService.getDeviceServiceError();
   }
   
-  public List<DeviceToView> findAllDevicesByUser(long userId) {
-    return recordService.findAllCurrentDeviceOfUser();
-  }
-
 //-------- DEVICE TYPE SERVICE --------
 
   public List<DeviceType> findAllDeviceTypes() {
@@ -278,7 +275,7 @@ public class MainService {
     return recordService.findAllSubscription();
   }
 
-  public SubscriptionToView findSubscriptionById(long id) {
+  public Optional<Subscription> findSubscriptionById(long id) {
     return recordService.findSubscriptionById(id);
   }
 
@@ -286,9 +283,9 @@ public class MainService {
     return recordService.findSubscriptionByIdAndDate(id, date);
   }
 
-  public SubscriptionToView findSubscriptionByNumber(String number) {
-    return recordService.findSubscriptionByNumber(number);
-  }
+//  public Optional<Subscription> findSubscriptionByNumber(String number) {
+//    return recordService.findSubscriptionByNumber(number);
+//  }
 
   public SubscriptionToView findSubscriptionByNumberAndDate(String number, LocalDate date) {
     return recordService.findSubscriptionByNumberAndDate(number, date);
@@ -362,12 +359,15 @@ public class MainService {
 
   // --- SWITCH TABLE SERVICE ---
   
-  public List<SubscriptionToView> findAllCurrentSubscriptionOfUser() {
+  public List<SubscriptionToView> findAllSubscriptionOfCurrentUser() {
     return switchTableService.findAllCurrentSubscriptionByUser(getCurrentUser());
   }
   
-  public List<DeviceToView> findAllCurrentDeviceOfUser() {
-    return switchTableService.findAllCurrentDeviceByUser(getCurrentUser());
+  public List<DeviceToView> findAllDeviceOfCurrentUser() {
+    return switchTableService.findAllDeviceByUser(getCurrentUser());
   }
-
+  
+  public List<DeviceToView> findAllCurrentDeviceByUser(long userId) {
+    return switchTableService.findAllCurrentDeviceByUser(recordService.findUserById(userId));
+  }
 }

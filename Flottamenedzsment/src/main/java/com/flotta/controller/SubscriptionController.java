@@ -2,6 +2,7 @@ package com.flotta.controller;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.flotta.entity.record.Subscription;
 import com.flotta.entity.viewEntity.DeviceToView;
 import com.flotta.entity.viewEntity.SubscriptionToView;
 import com.flotta.service.MainService;
@@ -65,12 +67,17 @@ public class SubscriptionController {
 
   @GetMapping("/subscription/{id}/update")
   public String prepareUpdatingSubscription(Model model, @PathVariable("id") long id) {
-    SubscriptionToView stv = service.findSubscriptionById(id);
-    model.addAttribute("subscription", stv);
-    model.addAttribute("freeSims", service.findAllFreeSim());
-    model.addAttribute("users", service.findAllUser());
-    model.addAttribute("devices", service.findAllDevicesByUser(stv.getUserId()));
-    return "subscription_templates/subscriptionEdit";
+    Optional<Subscription> optional = service.findSubscriptionById(id);
+    if(optional.isPresent()) {
+      SubscriptionToView stv = optional.get().toView();
+      model.addAttribute("subscription", stv);
+      model.addAttribute("freeSims", service.findAllFreeSim());
+      model.addAttribute("users", service.findAllUser());
+      model.addAttribute("devices", service.findAllCurrentDeviceByUser(stv.getUserId()));
+      return "subscription_templates/subscriptionEdit";
+    } else {
+      return "redirect:/subscription/all";
+    }
   }
 
   @PostMapping("/subscription/{id}/update")
@@ -78,10 +85,10 @@ public class SubscriptionController {
     if(!service.updateSubscription(stv)) {
       model.addAttribute("error", service.getSubscriptionServiceError());
     }
-    stv = service.findSubscriptionById(stv.getId());
+    stv = service.findSubscriptionById(stv.getId()).get().toView();
     model.addAttribute("freeSims", service.findAllFreeSim());
     model.addAttribute("users", service.findAllUser());
-    model.addAttribute("devices", service.findAllDevicesByUser(stv.getUserId()));
+    model.addAttribute("devices", service.findAllCurrentDeviceByUser(stv.getUserId()));
     model.addAttribute("subscription", stv);
     return "subscription_templates/subscriptionEdit";
   }
@@ -102,7 +109,7 @@ public class SubscriptionController {
   @PostMapping("/subscription/getDevicesByUser")
   @ResponseBody
   public List<DeviceToView> getDevicesByUser(@RequestParam ("userId") long userId) {
-    return service.findAllDevicesByUser(userId);
+    return service.findAllCurrentDeviceByUser(userId);
   }
   
   @PostMapping("/subscription/getDeviceById")

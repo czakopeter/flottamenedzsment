@@ -75,21 +75,21 @@ public class UserSubService {
 //    }
 //  }
 
-  public List<LocalDate> findAllBeginDateBySubBetween(String number, LocalDate begin, LocalDate end) {
-    Subscription sub = subscriptionService.findByNumber(number);
-    List<UserSub> list = userSubRepository.findAllBySubAndBeginDateBetween(sub, begin, end);
-    List<LocalDate> dates = new LinkedList<>();
-    for(UserSub us : list) {
-      dates.add(us.getBeginDate());
-    }
-    return dates;
-  }
+//  public List<LocalDate> findAllBeginDateBySubBetween(String number, LocalDate begin, LocalDate end) {
+//    Subscription sub = subscriptionService.findByNumber(number);
+//    List<UserSub> list = userSubRepository.findAllBySubAndBeginDateBetween(sub, begin, end);
+//    List<LocalDate> dates = new LinkedList<>();
+//    for(UserSub us : list) {
+//      dates.add(us.getBeginDate());
+//    }
+//    return dates;
+//  }
 
-  public User getUser(String number, LocalDate begin, LocalDate end) {
-    Subscription sub = subscriptionService.findByNumber(number);
-    UserSub us = userSubRepository.findFirstBySubAndBeginDateBeforeOrderByBeginDateDesc(sub, end);
-    return us.getUser();
-  }
+//  public User getUser(String number, LocalDate begin, LocalDate end) {
+//    Subscription sub = subscriptionService.findByNumber(number);
+//    UserSub us = userSubRepository.findFirstBySubAndBeginDateBeforeOrderByBeginDateDesc(sub, end);
+//    return us.getUser();
+//  }
   
   public List<SubscriptionToView> findAllSubscriptionByUser(User user) {
     List<SubscriptionToView> result = new LinkedList<>();

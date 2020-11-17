@@ -2,9 +2,11 @@ package com.flotta.service.record;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -96,13 +98,13 @@ public class RecordService {
     return deviceService.getError();
   }
   
-  public List<DeviceToView> findAllCurrentDeviceOfUser() {
-    return deviceService.findAllCurrentByUser(getCurrentUser());
-  }
-  
-  public List<DeviceToView> findAllCurrentDeviceOfUser(long userId) {
-    return deviceService.findAllCurrentByUser(userService.findById(userId));
-  }
+//  public List<DeviceToView> findAllCurrentDeviceOfUser() {
+//    return deviceService.findAllCurrentByUser(getCurrentUser());
+//  }
+//  
+//  public List<DeviceToView> findAllCurrentDeviceOfUser(long userId) {
+//    return deviceService.findAllCurrentByUser(userService.findById(userId));
+//  }
   
 //-------- DEVICE TYPE SERVICE --------
 
@@ -170,30 +172,43 @@ public class RecordService {
     return list;
   }
   
-  public SubscriptionToView findSubscriptionById(long id) {
-    return subscriptionService.findById(id).toView();
+  public Optional<Subscription> findSubscriptionById(long id) {
+    return subscriptionService.findById(id);
   }
   
   public SubscriptionToView findSubscriptionByIdAndDate(long id, LocalDate date) {
-    return subscriptionService.findById(id).toView(date);
+    Optional<Subscription> optional = subscriptionService.findById(id);
+    if(optional.isPresent()) {
+      return optional.get().toView(date);
+    }
+    return null;
   }
   
-  public SubscriptionToView findSubscriptionByNumber(String number) {
-    return subscriptionService.findByNumber(number).toView();
+  public Optional<Subscription> findSubscriptionByNumber(String number) {
+    return subscriptionService.findByNumber(number);
   }
   
   public SubscriptionToView findSubscriptionByNumberAndDate(String number, LocalDate date) {
-    return subscriptionService.findByNumber(number).toView(date);
+    Optional<Subscription> optional = subscriptionService.findByNumber(number);
+    if(optional.isPresent()) {
+      return optional.get().toView(date);
+    }
+    return null;
   }
   
   public List<LocalDate> findSubscriptionDatesById(long id) {
-    return subscriptionService.findById(id).getAllModificationDateDesc();
+    Optional<Subscription> optional = subscriptionService.findById(id);
+    if(optional.isPresent()) {
+      return optional.get().getAllModificationDateDesc();
+    } else {
+      return Collections.emptyList();
+    }
   }
   
   public boolean addSubscription(SubscriptionToView stv) {
     Sim sim = simService.findByImei(stv.getImei());
     if(sim != null && subscriptionService.add(stv)) {
-      Subscription saved = subscriptionService.findByNumber(stv.getNumber());
+      Subscription saved = subscriptionService.findByNumber(stv.getNumber()).get();
       saved.addSim(sim, null, stv.getBeginDate());
       subscriptionService.save(saved);
       return true;
@@ -202,17 +217,21 @@ public class RecordService {
   }
   
   public boolean updateSubscription(SubscriptionToView stv) {
-    Subscription sub = subscriptionService.findById(stv.getId());
-    Sim sim = simService.findByImei(stv.getImei());
-    User user = userService.findById(stv.getUserId());
-    Device dev = deviceService.findById(stv.getDeviceId());
+    Optional<Subscription> optional = subscriptionService.findById(stv.getId()); 
+    if(optional.isPresent()) {
+      Subscription sub = optional.get();
+      Sim sim = simService.findByImei(stv.getImei());
+      User user = userService.findById(stv.getUserId());
+      Device dev = deviceService.findById(stv.getDeviceId());
+      
+      sub.addSim(sim, stv.getSimChangeReason(), stv.getBeginDate());
+      sub.addUser(user, stv.getBeginDate());
+      sub.addDevice(dev, stv.getBeginDate());
+      sub.addNote(stv.getNote(), stv.getBeginDate());
+      subscriptionService.save(sub);
+    }
     
-    sub.addSim(sim, stv.getSimChangeReason(), stv.getBeginDate());
-    sub.addUser(user, stv.getBeginDate());
-    sub.addDevice(dev, stv.getBeginDate());
-    sub.addNote(stv.getNote(), stv.getBeginDate());
-    subscriptionService.save(sub);
-    return true;
+    return optional.isPresent();
   }
   
   public String getSubscriptionServiceError() {

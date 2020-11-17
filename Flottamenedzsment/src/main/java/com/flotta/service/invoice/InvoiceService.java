@@ -177,7 +177,7 @@ public class InvoiceService {
 
     for (RawFeeItem rawFeeItem : rawInvoice.getFeeItems()) {
       FeeItem feeItem = parseRawFeeItemToFeeItem(rawFeeItem);
-      invoice.addFeeItem(subscriptionInfo.findByNumber(rawFeeItem.getSubscription()), feeItem);
+      invoice.addFeeItem(subscriptionInfo.findByNumber(rawFeeItem.getSubscription()).get(), feeItem);
     }
     return invoice;
   }

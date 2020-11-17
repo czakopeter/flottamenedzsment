@@ -306,9 +306,9 @@ public class Device extends BasicEntityWithCreateDate {
     return "Device [id=" + id + ", serialNumber=" + serialNumber + ", deviceType=" + deviceType + "]";
   }
 
-  public User getActualUser() {
-    return devUsers.get(Utility.getLatestDate(devUsers)).getUser();
-  }
+//  public User getActualUser() {
+//    return devUsers.get(Utility.getLatestDate(devUsers)).getUser();
+//  }
 
   /**
    * visszaadja a Device objektum létrehozásának és adatainak változásának dátumát csökkenő sorrendben

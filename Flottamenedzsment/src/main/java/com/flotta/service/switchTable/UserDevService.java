@@ -14,6 +14,10 @@ import com.flotta.entity.switchTable.UserDev;
 import com.flotta.entity.viewEntity.DeviceToView;
 import com.flotta.repository.switchTable.UserDevRepository;
 
+/**
+ * @author CzP
+ *
+ */
 @Service
 public class UserDevService {
 
@@ -42,6 +46,10 @@ public class UserDevService {
     return userDevRepository.findFirstByDevOrderByBeginDateDesc(device).getUser();
   }
 
+  /**
+   * @param user
+   * @return visszadja az eszközet melyeket a felhasználó birtokol vagy valaha birtokolt
+   */
   public List<DeviceToView> findAllDeviceByUser(User user) {
     List<DeviceToView> result = new LinkedList<>();
     List<UserDev> userDevs = userDevRepository.findAllByUserOrderByBeginDateDesc(user);
@@ -51,6 +59,19 @@ public class UserDevService {
         actual.setEndDate(userDev.getEndDate());
         result.add(actual);
       }
+    }
+    return result;
+  }
+  
+  /**
+   * @param user
+   * @return visszadja az eszközet melyeket a felhasználó birtokol
+   */
+  public List<DeviceToView> findAllCurrentDeviceByUser(User user) {
+    List<DeviceToView> result = new LinkedList<>();
+    List<UserDev> userDevs = userDevRepository.findAllByUserAndEndDateNull(user);
+    for(UserDev userDev : userDevs) {
+      result.add(userDev.getDev().toView());
     }
     return result;
   }

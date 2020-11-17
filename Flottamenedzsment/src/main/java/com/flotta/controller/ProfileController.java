@@ -29,8 +29,8 @@ public class ProfileController {
 
   @GetMapping("/profile/subscriptionAndDevice")
   public String listItems(Model model) {
-    model.addAttribute("devices", service.findAllCurrentDeviceOfUser());
-    model.addAttribute("subscriptions", service.findAllCurrentSubscriptionOfUser());
+    model.addAttribute("devices", service.findAllDeviceOfCurrentUser());
+    model.addAttribute("subscriptions", service.findAllSubscriptionOfCurrentUser());
     return "profile/subscriptionAndDevice";
   }
   

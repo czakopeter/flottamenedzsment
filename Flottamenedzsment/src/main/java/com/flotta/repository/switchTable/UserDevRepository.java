@@ -21,4 +21,6 @@ public interface UserDevRepository extends CrudRepository<UserDev, Long>{
 
   List<UserDev> findAllByUserOrderByBeginDateDesc(User user);
 
+  List<UserDev> findAllByUserAndEndDateNull(User user);
+
 }

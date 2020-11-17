@@ -37,8 +37,12 @@ public class SwitchTableService {
 //    return subscriptionService.findAllCurrentByUser(getCurrentUser());
   }
 
-  public List<DeviceToView> findAllCurrentDeviceByUser(User user) {
+  public List<DeviceToView> findAllDeviceByUser(User user) {
     return userDevService.findAllDeviceByUser(user);
+  }
+  
+  public List<DeviceToView> findAllCurrentDeviceByUser(User user) {
+    return userDevService.findAllCurrentDeviceByUser(user);
   }
   
 }
