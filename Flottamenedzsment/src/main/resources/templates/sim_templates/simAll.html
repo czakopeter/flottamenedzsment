@@ -13,10 +13,6 @@
     
     <div th:replace="fragments/filter/filter :: add-and-filter-wrapper('/sim/new', sim-filter-options)"></div>
     
-<!--     <a href="/sim/new" class="btn btn-primary my-2" -->
-<!--       th:text="#{button.new}" -->
-<!--     >New</a> -->
-
     <table id="sim-table" class="table table-sm">
       <thead>
         <tr>
@@ -26,12 +22,22 @@
           <th th:text="#{status}">Status</th>
         </tr>
       </thead>
-      <tbody class="table-striped">
+      <tbody id="content-body" class="table-striped">
         <tr th:each="sim : ${sims}">
           <td name="imei" th:text="${sim.imei}"></td>
           <td th:text="${sim.pin}"></td>
           <td th:text="${sim.puk}"></td>
           <td th:text="${sim.status}"></td>
+        </tr>
+      </tbody>
+      <tbody id="no-result-body" th:classappend="${#lists.isEmpty(sims)} ? '' : collapse">
+        <tr>
+          <th colspan="4" class="text-center" th:text="#{noResult}">No result</th>
+        </tr>
+      </tbody>
+      <tbody id="no-element-body" th:classappend="${#lists.isEmpty(sims)} ? '' : 'collapse'">
+        <tr>
+          <th colspan="4" th:text="#{noElement}">No element</th>
         </tr>
       </tbody>
     </table>

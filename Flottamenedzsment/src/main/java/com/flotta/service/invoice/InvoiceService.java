@@ -87,7 +87,7 @@ public class InvoiceService {
 
     RawInvoice rawInvoice = parseXmlStringToRawInvoice(xmlString);
 
-    if (invoiceRepository.findByInvoiceNumber(rawInvoice.getInvoiceNumber()) != null || rawInvoiceRepository.findByInvoiceNumber(rawInvoice.getInvoiceNumber()) != null) {
+    if (invoiceRepository.findByInvoiceNumber(rawInvoice.getInvoiceNumber()).isPresent() || rawInvoiceRepository.findByInvoiceNumber(rawInvoice.getInvoiceNumber()).isPresent()) {
       throw new FileUploadException("Already has invoice with this invoice number: " + rawInvoice.getInvoiceNumber());
     } else {
       processRawInvoice(rawInvoice);
@@ -157,7 +157,7 @@ public class InvoiceService {
       rawInvoice.addProblem("Unknown company, name: " + rawInvoice.getCompanyName());
     }
     for (RawFeeItem rawFeeItem : rawInvoice.getFeeItems()) {
-      if (subscriptionInfo.findByNumber(rawFeeItem.getSubscription()) == null) {
+      if (!subscriptionInfo.findByNumber(rawFeeItem.getSubscription()).isPresent()) {
         rawInvoice.addProblem("Unknown phone number: " + rawFeeItem.getSubscription());
       }
     }
@@ -283,7 +283,7 @@ public class InvoiceService {
     return invoiceRepository.findAll();
   }
 
-  public Invoice findInvoiceByInvoiceNumber(String invoiceNumber) {
+  public Optional<Invoice> findInvoiceByInvoiceNumber(String invoiceNumber) {
     return invoiceRepository.findByInvoiceNumber(invoiceNumber);
   }
 
@@ -324,10 +324,11 @@ public class InvoiceService {
     invoiceByUserAndPhoneNumberService.askForRevision(user, id, map);
   }
 
-  public void resetInvoiceByInvoiceNumber(String invoiceNumber) {
-    RawInvoice rawInvoice = rawInvoiceRepository.findByInvoiceNumber(invoiceNumber);
+  public void restartProcessingInvoiceBy(String invoiceNumber) {
+    Optional<RawInvoice> optional = rawInvoiceRepository.findByInvoiceNumber(invoiceNumber);
 
-    if (rawInvoice != null) {
+    if (optional.isPresent()) {
+      RawInvoice rawInvoice = optional.get();
       rawInvoice.clearProblem();
       if (processRawInvoice(rawInvoice)) {
         rawInvoiceRepository.delete(rawInvoice);
@@ -336,17 +337,17 @@ public class InvoiceService {
   }
 
   public void deleteInvoiceByInvoiceNumber(String invoiceNumber) {
-    Invoice invoice = invoiceRepository.findByInvoiceNumber(invoiceNumber);
-    if (invoice.canDelete()) {
-      invoiceRepository.delete(invoice);
+    Optional<Invoice> invoice = invoiceRepository.findByInvoiceNumber(invoiceNumber);
+    if (invoice.isPresent() && invoice.get().canDelete()) {
+      invoiceRepository.delete(invoice.get());
     }
   }
 
   public void acceptInvoiceByInvoiceNumber(String invoiceNumber) {
-    Invoice invoice = invoiceRepository.findByInvoiceNumber(invoiceNumber);
-    if (invoice != null) {
-      invoice.setAcceptedByCompany();
-      invoiceRepository.save(invoice);
+    Optional<Invoice> invoice = invoiceRepository.findByInvoiceNumber(invoiceNumber);
+    if (invoice.isPresent()) {
+      invoice.get().setAcceptedByCompany();
+      invoiceRepository.save(invoice.get());
     }
   }
 
@@ -499,6 +500,9 @@ public class InvoiceService {
 
   
   public void deleteRawInvoiceByInvoiceNumber(String invoiceNumber) {
-    rawInvoiceRepository.deleteByInvoiceNumber(invoiceNumber);
+    Optional<RawInvoice> optional = rawInvoiceRepository.findByInvoiceNumber(invoiceNumber);
+    if(optional.isPresent()) {
+      rawInvoiceRepository.delete(optional.get());
+    }
   }
 }

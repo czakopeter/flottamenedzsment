@@ -20,71 +20,38 @@
           <th></th>
         </tr>
       </thead>
-      <tr th:each="device : ${devices}">
-        <td name="serialNumber" th:text="${device.serialNumber}"></td>
-        <td name="typeName" th:text="${device.typeName}"></td>
-        <td name="userName" th:text="${device.userName}"></td>
-        <td th:text="${device.number}"></td>
-        <td class="text-right">
-          <div class="btn-group">
-            <a th:href="'/device/' + ${device.id} + '/update'" class="btn btn-sm btn-primary"
-              th:title="#{button.edit}"
-            > <img alt="edit" src="/img/edit.png" />
-            </a> <a th:href="'/device/' + ${device.id} + '/view'" class="btn btn-sm btn-primary" title="view">
-              <img alt="view" src="/img/visible.png" />
-            </a>
-          </div>
-        </td>
-      </tr>
+      <tbody id="content-body">
+        <tr th:each="device : ${devices}">
+          <td name="serialNumber" th:text="${device.serialNumber}"></td>
+          <td name="typeName" th:text="${device.typeName}"></td>
+          <td name="userName" th:text="${device.userName}"></td>
+          <td th:text="${device.number}"></td>
+          <td class="text-right">
+            <div class="btn-group">
+              <a th:href="'/device/' + ${device.id} + '/update'" class="btn btn-sm btn-primary"
+                th:title="#{button.edit}"
+              > <img alt="edit" src="/img/edit.png" />
+              </a> <a th:href="'/device/' + ${device.id} + '/view'" class="btn btn-sm btn-primary" title="view">
+                <img alt="view" src="/img/visible.png" />
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+      <tbody id="no-result-body" th:classappend="${#lists.isEmpty(devices)} ? '' : collapse">
+        <tr>
+          <th colspan="5" class="text-center" th:text="#{noResult}">No result</th>
+        </tr>
+      </tbody>
+      <tbody id="no-element-body" th:classappend="${#lists.isEmpty(devices)} ? '' : 'collapse'">
+        <tr>
+          <th colspan="5" th:text="#{noElement}">No element</th>
+        </tr>
+      </tbody>
     </table>
-
-
-    <!--     Modal new device basic data -->
-    <!--     <div class="modal" id="edit" tabindex="-1" role="dialog" aria-hidden="true"> -->
-    <!--       <div class="modal-dialog" role="document"> -->
-    <!--         <div class="modal-content"> -->
-    <!--           <form id="modalForm" action="/device/all" th:object="${device}" method="post"> -->
-    <!--             <div class="modal-header"> -->
-    <!--               <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
-    <!--                 <span aria-hidden="true">x</span> -->
-    <!--               </button> -->
-    <!--               <h4 class="modal-title" id="exampleModalLabel">Basic device</h4> -->
-    <!--             </div> -->
-    <!--             <div class="modal-body"> -->
-    <!--               <div class="form-group"> -->
-    <!--                 <label class="form-control-label">Serial number</label> <span><input -->
-    <!--                   type="text" class="form-control" id="serialNumber" name="serialNumber" -->
-    <!--                   required="required" -->
-    <!--                 /></span> -->
-    <!--               </div> -->
-    <!--               <div class="form-group"> -->
-    <!--                 <label class="form-control-label">Device type</label> <select th:field="*{typeName}" -->
-    <!--                   id="deviceType" required="required" -->
-    <!--                 > -->
-    <!--                   <option th:each="type : ${types}" th:value="${type.name}" th:text="${type.name}"></option> -->
-    <!--                 </select> -->
-    <!--               </div> -->
-    <!--               <div class="form-group"> -->
-    <!--                 <label class="form-control-label">Date</label> <input type="date" -->
-    <!--                   required="required" -->
-    <!--                 /> -->
-    <!--               </div> -->
-    <!--             </div> -->
-    <!--             <div class="modal-footer"> -->
-    <!--               <button type="submit" class="btn btn-primary">Save</button> -->
-    <!--               <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button> -->
-    <!--             </div> -->
-    <!--           </form> -->
-    <!--         </div> -->
-    <!--       </div> -->
-    <!--     </div> -->
 
     <script src="/js/device/deviceAll.js"></script>
 
-    <script th:inline="javascript">
-					//<![CDATA[
-					//]]>
-				</script>
 
   </div>
 </body>

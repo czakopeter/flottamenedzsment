@@ -1,6 +1,7 @@
 package com.flotta.repository.invoice;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
@@ -10,6 +11,6 @@ public interface InvoiceRepository extends CrudRepository<Invoice, Long> {
   
   List<Invoice> findAll();
 
-  Invoice findByInvoiceNumber(String invoiceNumber);
+  Optional<Invoice> findByInvoiceNumber(String invoiceNumber);
 
 }

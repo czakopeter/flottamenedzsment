@@ -8,13 +8,15 @@
   <div layout:fragment="loginContent">
 
     <h3 th:text="#{main.invoices}">Invoices</h3>
-    
-    <div th:replace="fragments/filter/filter :: add-and-filter-wrapper(invoice-upload, invoice-filter-options)"></div>
-    
+
+    <div
+      th:replace="fragments/filter/filter :: add-and-filter-wrapper(invoice-upload, invoice-filter-options)"
+    ></div>
+
     <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-    <h4>Raw invoice table</h4>
-    
+    <h4 th:text="#{rawInvoices}">Raw invoices</h4>
+
     <div th:if="${#lists.isEmpty(rawInvoices)}" class="my-border text-center">
       <b>There aren't any raw invoices</b>
     </div>
@@ -33,36 +35,44 @@
             </tr>
           </thead>
           <tbody>
-            <tr th:each="rawInvoice : ${rawInvoices}">
+            <tr th:each="rawInvoice : ${rawInvoices}"
+              th:id="'invoiceNumber' + ${rawInvoice.invoiceNumber}"
+            >
               <td name="invoiceNumber" th:text="${rawInvoice.invoiceNumber}"></td>
-              <td th:text="${rawInvoice.beginDate}"></td>
-              <td th:text="${rawInvoice.endDate}"></td>
+              <td name="beginDate" th:text="${rawInvoice.beginDate}"></td>
+              <td name="endDate" th:text="${rawInvoice.endDate}"></td>
               <td th:text="${rawInvoice.invoiceNetAmount}"></td>
               <td th:text="${rawInvoice.invoiceGrossAmount}"></td>
-              <td class="text-right"><a th:if="${rawInvoice.hasProblem()}" href="#" class="dropdown" data-toggle="dropdown" role="button"
-                aria-haspopup="true" aria-expanded="false"
+              <td class="text-right"><a th:if="${rawInvoice.hasProblem()}" href="#"
+                class="dropdown" data-toggle="dropdown" role="button" aria-haspopup="true"
+                aria-expanded="false"
               >...</a>
                 <div class="dropdown-menu">
-                  <form method="post">
-                    <button type="submit" class="dropdown-item" th:formaction="'/invoice/' + ${rawInvoice.invoiceNumber} + '/restartProcessing'">Reprocess</button>
-                    <span class="dropdown-item" th:each="problem : ${rawInvoice.getProblems()}" th:text="${problem}"></span>
-                    <button type="submit" class="dropdown-item" th:formaction="'/invoice/' + ${rawInvoice.invoiceNumber} + '/delete'">Delete</button>
-                  </form>
-                </div
-              ></td>
+                  <button type="submit" class="dropdown-item"
+                    th:formaction="'/invoice/' + ${rawInvoice.invoiceNumber} + '/restartProcessing'"
+                    th:text="#{button.restartProcessing}"
+                  >Restart processing</button>
+                  <span class="dropdown-item" th:each="problem : ${rawInvoice.getProblems()}"
+                    th:text="${problem}"
+                  ></span>
+                  <button type="button" class="dropdown-item" onclick="sendRawRemove(this)"
+                    th:text="#{button.delete}"
+                  >Delete</button>
+                </div></td>
             </tr>
           </tbody>
         </table>
       </form>
     </div>
 
-    <h4>Invoice table</h4>
-    
-    <div th:if="${#lists.isEmpty(invoices)}" class="my-border text-center">
-      <b>There aren't any invoices</b>
-    </div>
+    <h4 th:text="#{invoices}">Invoices</h4>
 
-    <div th:unless="${#lists.isEmpty(invoices)}">
+<!--     <div th:if="${#lists.isEmpty(invoices)}" class="my-border text-center"> -->
+<!--       <b>There aren't any invoices</b> -->
+<!--     </div> -->
+
+<!--     <div th:unless="${#lists.isEmpty(invoices)}"> -->
+    <div>
       <form method="post">
         <table id="invoice-table" class="table table-sm">
           <thead>
@@ -75,43 +85,55 @@
               <th></th>
             </tr>
           </thead>
-          <tr th:each="invoice : ${invoices}"
-            th:classappend="${invoice.hasAnyRevisionNote() ? 'hasRevisionNote' : ''}"
-          >
-            <td name="invoiceNumber" th:text="${invoice.invoiceNumber}"></td>
-            <td name="beginDate" th:text="${invoice.beginDate}"></td>
-            <td name="endDate" th:text="${invoice.endDate}"></td>
-            <td th:text="${invoice.invoiceNetAmount}"></td>
-            <td th:text="${invoice.invoiceGrossAmount}"></td>
-            <td class="text-right">
-              <button th:unless="${invoice.hasProblem() or invoice.acceptedByCompany}" type="submit"
-                class="btn btn-sm btn-success"
-                th:formaction="'/invoice/' + ${invoice.invoiceNumber} + '/accept'"
-                th:title="#{button.accept}"
-              >
-                <img alt="Accept" src="/img/checkmark.png">
-              </button> <a th:unless="${invoice.hasProblem()}"
-              th:href="'/invoice/' + ${invoice.invoiceNumber} + '/details'"
-              class="btn btn-sm btn-primary"
-            > <img th:alt="#{button.details}" src="/img/list.png" />
-            </a>
-              <div class="btn-group">
-                <button type="submit" class="btn btn-sm btn-warning"
-                  th:formaction="'/invoice/' + ${invoice.invoiceNumber} + '/restartProcessing'"
+          <tbody>
+            <tr th:each="invoice : ${invoices}"
+              th:classappend="${invoice.hasAnyRevisionNote() ? 'hasRevisionNote' : ''}"
+            >
+              <td name="invoiceNumber" th:text="${invoice.invoiceNumber}"></td>
+              <td name="beginDate" th:text="${invoice.beginDate}"></td>
+              <td name="endDate" th:text="${invoice.endDate}"></td>
+              <td th:text="${invoice.invoiceNetAmount}"></td>
+              <td th:text="${invoice.invoiceGrossAmount}"></td>
+              <td class="text-right">
+                <button th:unless="${invoice.hasProblem() or invoice.acceptedByCompany}"
+                  type="submit" class="btn btn-sm btn-success"
+                  th:formaction="'/invoice/' + ${invoice.invoiceNumber} + '/accept'"
+                  th:title="#{button.accept}"
                 >
-                  <img alt="refresh" src="/img/refresh.png" />
-                </button>
-                <button th:if="${invoice.canDelete()}" type="submit" class="btn btn-sm btn-danger"
-                  th:formaction="'/invoice/' + ${invoice.invoiceNumber} + '/delete'"
-                  th:title="#{button.delete}"
-                >
-                  <img alt="Delete" src="/img/trash.png" />
-                </button>
-              </div> <img th:if="${invoice.hasProblem()}" alt="Problem" src="/img/problem.png"
-              th:title="${invoice.getProblem()}" style="height: 20px;"
-            />
-            </td>
-          </tr>
+                  <img alt="Accept" src="/img/checkmark.png">
+                </button> <a th:unless="${invoice.hasProblem()}"
+                th:href="'/invoice/' + ${invoice.invoiceNumber} + '/details'"
+                class="btn btn-sm btn-primary"
+              > <img th:alt="#{button.details}" src="/img/list.png" />
+              </a>
+                <div class="btn-group">
+                  <button type="submit" class="btn btn-sm btn-warning"
+                    th:formaction="'/invoice/' + ${invoice.invoiceNumber} + '/restartProcessing'"
+                  >
+                    <img alt="refresh" src="/img/refresh.png" />
+                  </button>
+                  <button th:if="${invoice.canDelete()}" type="submit" class="btn btn-sm btn-danger"
+                    th:formaction="'/invoice/' + ${invoice.invoiceNumber} + '/delete'"
+                    th:title="#{button.delete}"
+                  >
+                    <img alt="Delete" src="/img/trash.png" />
+                  </button>
+                </div> <img th:if="${invoice.hasProblem()}" alt="Problem" src="/img/problem.png"
+                th:title="${invoice.getProblem()}" style="height: 20px;"
+              />
+              </td>
+            </tr>
+          </tbody>
+          <tbody id="noResult">
+           <tr>
+             <td></td>
+           </tr>
+          </tbody>
+          <tbody id="noElement" th:if="${#lists.isEmpty(invoices)}">
+            <tr class="">
+              <th colspan="6" class="text-center" th:text="#{noElement}">There aren't any elements</th>
+            </tr>
+          </tbody>
         </table>
       </form>
     </div>
@@ -120,7 +142,7 @@
 
 
     <script src="/js/invoiceAll.js"></script>
-    
+
 
 
   </div>

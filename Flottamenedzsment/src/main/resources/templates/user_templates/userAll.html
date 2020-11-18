@@ -21,7 +21,7 @@
           <th></th>
         </tr>
       </thead>
-      <tbody>
+      <tbody id="content-body">
         <tr th:each="user : ${users}">
           <td name="email" th:text="${user.email}"></td>
           <td name="fullName" th:text="${user.fullName}"></td>
@@ -29,7 +29,10 @@
           <td class="text-right"><a th:href="'/user/' + ${user.id} + '/update'" class="btn btn-sm btn-primary" th:text="#{button.edit}">Edit</a></td>
         </tr>
       </tbody>
-      <tbody>
+      <tbody id="no-result-body" th:classappend="${#lists.isEmpty(users)} ? '' : collapse">
+        <tr>
+          <th colspan="4" class="text-center" th:text="#{noResult}">No result</th>
+        </tr>
       </tbody>
     </table>
     

@@ -23,9 +23,10 @@ public class InvoiceTemplateService {
   @Autowired
   public void setBillTemplateRepository(BillTemplateRepository billTemplateRepository) {
     this.billTemplateRepository = billTemplateRepository;
+    createBasicTemplate();
   }
 
-  public void createBasicTemplate() {
+  private void createBasicTemplate() {
 
     MyNode root = MyNode.createRoot(1, "Account");
 

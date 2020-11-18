@@ -17,8 +17,6 @@ function resetSimChange() {
 	document.querySelector("#simChangeReason").value = null;
 }
 
-
-
 function selectUser(userSelect) {
 	sendData("POST", "/subscription/getDevicesByUser", "userId=" + userSelect.value, setDeviceSelect);
 }

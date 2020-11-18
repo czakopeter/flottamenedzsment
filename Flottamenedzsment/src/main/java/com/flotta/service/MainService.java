@@ -54,7 +54,7 @@ public class MainService {
     return invoiceService.findAllInvoice();
   }
 
-  public Invoice findInvoiceByInvoiceNumber(String invoiceNumber) {
+  public Optional<Invoice> findInvoiceByInvoiceNumber(String invoiceNumber) {
     return invoiceService.findInvoiceByInvoiceNumber(invoiceNumber);
   }
 
@@ -126,8 +126,8 @@ public class MainService {
     invoiceService.askForRevision(getCurrentUser(), id, map);
   }
 
-  public void restartPorcessingOfInvoice(String invoiceNumber) {
-    invoiceService.resetInvoiceByInvoiceNumber(invoiceNumber);
+  public void restartProcessingInvoiceBy(String invoiceNumber) {
+    invoiceService.restartProcessingInvoiceBy(invoiceNumber);
   }
 
   public void deleteInvoiceByInvoiceNumber(String invoiceNumber) {

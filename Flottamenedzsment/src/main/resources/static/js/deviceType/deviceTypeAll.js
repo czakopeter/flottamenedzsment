@@ -1,10 +1,19 @@
 function filter() {
-	let trs = document.querySelector("#device-type-table").querySelector("tbody").querySelectorAll("tr");
-	for(let tr of trs) {
-		if(filterCondition(tr)) {
-			tr.classList.remove("collapse");
+	let trs = document.querySelector("#device-type-table").querySelector("#content-body").querySelectorAll("tr");
+	if(trs.length != 0) {
+		let counter = 0;
+		for(let tr of trs) {
+			if(filterCondition(tr)) {
+				tr.classList.remove("collapse");
+				counter++;
+			} else {
+				tr.classList.add("collapse");
+			}
+		}
+		if(counter == 0) {
+			document.querySelector("#device-type-table").querySelector("#no-result-body").classList.remove("collapse");
 		} else {
-			tr.classList.add("collapse");
+			document.querySelector("#device-type-table").querySelector("#no-result-body").classList.add("collapse");
 		}
 	}
 }
@@ -39,8 +48,11 @@ function conditionForStatus(tr) {
 }
 
 function showAll() {
-	let trs = document.querySelector("#device-type-table").querySelector("tbody").querySelectorAll("tr");
-	for(let tr of trs) {
-		tr.classList.remove("collapse");
+	let trs = document.querySelector("#device-type-table").querySelector("#content-body").querySelectorAll("tr");
+	if(trs.length != 0) {
+		for(let tr of trs) {
+			tr.classList.remove("collapse");
+		}
+		document.querySelector("#device-type-table").querySelector("#no-result-body").classList.add("collapse");
 	}
 }

@@ -28,9 +28,6 @@
 	<![endif]-->
   <script>
 //<![CDATA[
-	document.cookie='';
-	console.log(document.cookie);
-	
 	function sendData(type, url, data, callback) {
 		let xhr = new XMLHttpRequest();
 		xhr.open(type, url, true);
@@ -40,6 +37,7 @@
 	    		try {
 	 	   			callback(JSON.parse(xhr.responseText));
 	    		} catch (e) {
+	    			console.log(e);
 	    			callback(JSON.parse('{"error":true}'));
 	    		}
 	    	}

@@ -1,9 +1,10 @@
 package com.flotta.controller;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +17,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.flotta.entity.invoice.Invoice;
 import com.flotta.exception.invoice.FileUploadException;
 import com.flotta.service.MainService;
+import com.flotta.utility.ResponseTransfer;
 
 @Controller
 public class InvoiceController {
@@ -54,13 +57,17 @@ public class InvoiceController {
 //TODO show full header of invoice
   @GetMapping("invoice/{invoiceNumber}/details")
   public String invoiceDetails(Model model, @PathVariable("invoiceNumber") String invoiceNumber) {
-    model.addAttribute("invoice", service.findInvoiceByInvoiceNumber(invoiceNumber));
-    return "invoice_templates/invoiceDetails";
+    Optional<Invoice> invoice = service.findInvoiceByInvoiceNumber(invoiceNumber);
+    if(invoice.isPresent()) {
+      model.addAttribute("invoice", invoice.get());
+      return "invoice_templates/invoiceDetails";
+    }
+    return "redirect:/invoice/all";
   }
   
   @PostMapping("/invoice/{invoiceNumber}/restartProcessing")
-  public String restartProcessingOfInvoice(@PathVariable(value = "invoiceNumber") String invoiceNumber) {
-    service.restartPorcessingOfInvoice(invoiceNumber);
+  public String rehashInvoice(@PathVariable(value = "invoiceNumber") String invoiceNumber) {
+    service.restartProcessingInvoiceBy(invoiceNumber);
     return "redirect:/invoice/all";
   }
   
@@ -91,10 +98,13 @@ public class InvoiceController {
   /**
    * @param invoiceNumber
    */
-  @PostMapping("/rawInvoice/{invoiceNumber}/delete")
-  @ResponseStatus(value = HttpStatus.OK)
-  public void deleteRawInvoice(@PathVariable("invoiceNumber") String invoiceNumber) {
-    service.deleteRawInvoiceByInvoiceNumber(invoiceNumber);
+  @PostMapping(value = "/rawInvoice/delete", produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseBody
+  public ResponseTransfer deleteRawInvoice(@RequestParam("invoiceNumber") Optional<String> invoiceNumber) {
+    if(invoiceNumber.isPresent()) {
+      service.deleteRawInvoiceByInvoiceNumber(invoiceNumber.get());
+    }
+    return new ResponseTransfer(invoiceNumber.get());
   }
   
 }

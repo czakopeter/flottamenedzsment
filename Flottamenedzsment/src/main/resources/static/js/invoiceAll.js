@@ -16,6 +16,17 @@ function refreshInvoice(refreshLink) {
 
 }
 
+function sendRawRemove(btn) {
+	let tr = btn.parentElement.parentElement.parentElement;
+	let invoiceNumber = tr.querySelector("[name=invoiceNumber]").innerHTML;
+	sendData("POST", "/rawInvoice/delete", "invoiceNumber=" + invoiceNumber, processRawRemove)
+}
+
+function processRawRemove(data) {
+	let tr = document.querySelector("#invoiceNumber" + data.text);
+	tr.parentElement.parentElement.deleteRow(tr.rowIndex);
+}
+
 function browseFile() {
 	let input = document.querySelector("#file");
 	input.click();
