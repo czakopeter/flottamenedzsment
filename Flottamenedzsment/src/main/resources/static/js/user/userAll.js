@@ -1,18 +1,20 @@
 function filter() {
 	let trs = document.querySelector("#user-table").querySelector("#content-body").querySelectorAll("tr");
-	let counter = 0;
-	for(let tr of trs) {
-		if(filterCondicion(tr)) {
-			tr.classList.remove("collapse");
-			counter++;
-		} else {
-			tr.classList.add("collapse");
+	if(trs.length != 0) {
+		let counter = 0;
+		for(let tr of trs) {
+			if(filterCondicion(tr)) {
+				tr.classList.remove("collapse");
+				counter++;
+			} else {
+				tr.classList.add("collapse");
+			}
 		}
-	}
-	if(counter == 0) {
-		document.querySelector("#user-table").querySelector("#no-result-body").classList.remove("collapse");
-	} else {
-		document.querySelector("#user-table").querySelector("#no-result-body").classList.add("collapse");
+		if(counter == 0) {
+			document.querySelector("#user-table").querySelector("#no-result-body").classList.remove("collapse");
+		} else {
+			document.querySelector("#user-table").querySelector("#no-result-body").classList.add("collapse");
+		}
 	}
 }
 
@@ -33,8 +35,10 @@ function filterCondicion(tr) {
 
 function showAll() {
 	let trs = document.querySelector("#user-table").querySelector("#content-body").querySelectorAll("tr");
-	for(let tr of trs) {
-		tr.classList.remove("collapse");
+	if(trs.length != 0) {
+		for(let tr of trs) {
+			tr.classList.remove("collapse");
+		}
+		document.querySelector("#user-table").querySelector("#no-result-body").classList.add("collapse");
 	}
-	document.querySelector("#user-table").querySelector("#no-result-body").classList.add("collapse");
 }

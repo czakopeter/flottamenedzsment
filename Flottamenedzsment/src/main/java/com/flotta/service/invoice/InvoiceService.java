@@ -7,10 +7,12 @@ import java.io.StringReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -34,6 +36,7 @@ import com.flotta.entity.invoice.InvoiceByUserAndPhoneNumber;
 import com.flotta.entity.invoice.Participant;
 import com.flotta.entity.invoice.RawFeeItem;
 import com.flotta.entity.invoice.RawInvoice;
+import com.flotta.entity.record.Subscription;
 import com.flotta.entity.record.User;
 import com.flotta.exception.invoice.FileUploadException;
 import com.flotta.repository.invoice.InvoiceRepository;
@@ -156,9 +159,18 @@ public class InvoiceService {
     } else {
       rawInvoice.addProblem("Unknown company, name: " + rawInvoice.getCompanyName());
     }
+    Set<User> users = new HashSet<>();
     for (RawFeeItem rawFeeItem : rawInvoice.getFeeItems()) {
-      if (!subscriptionInfo.findByNumber(rawFeeItem.getSubscription()).isPresent()) {
+      Optional<Subscription> optionalSubscription = subscriptionInfo.findByNumber(rawFeeItem.getSubscription());
+      if (!optionalSubscription.isPresent()) {
         rawInvoice.addProblem("Unknown phone number: " + rawFeeItem.getSubscription());
+      } else {
+        users.addAll(optionalSubscription.get().getUsersBetween(rawFeeItem.getBeginDate(), rawFeeItem.getEndDate()));
+      }
+    }
+    for(User user : users) {
+      if(user.getChargeRatio() == null) {
+        rawInvoice.addProblem(user.getEmail() + " don't have charge ratio");
       }
     }
     return !rawInvoice.hasProblem();
@@ -413,8 +425,8 @@ public class InvoiceService {
     return categoryService.findAll();
   }
 
-  public boolean addCategory(String category) {
-    return categoryService.save(category);
+  public Category addOfMofifyCategory(long id, String name) {
+    return categoryService.addOfModifyCategory(id, name);
   }
 
   public List<DescriptionCategoryCoupler> findAllDescriptionCategoryCoupler() {
@@ -448,7 +460,7 @@ public class InvoiceService {
   private List<Category> idListToCategoryList(List<Long> catIds) {
     List<Category> result = new LinkedList<>();
     for (long id : catIds) {
-      result.add(categoryService.findById(id));
+      result.add(categoryService.findById(id).get());
     }
     return result;
   }

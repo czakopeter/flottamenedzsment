@@ -1,6 +1,8 @@
 package com.flotta.entity.record;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -407,5 +409,23 @@ public class Subscription extends BasicEntityWithCreateDate {
       }
     }
     return dates;
+  }
+
+  public Set<User> getUsersBetween(LocalDate beginDate, LocalDate endDate) {
+    Set<User> userSet = new HashSet<>();
+    for(UserSub userSub : subUsers.values()) {
+      if(userSub.getUser() != null) {
+        if(userSub.getEndDate() == null) {
+          if(!userSub.getBeginDate().isAfter(endDate)) {
+            userSet.add(userSub.getUser());
+          }
+        } else {
+          if(!userSub.getBeginDate().isAfter(endDate) || !userSub.getEndDate().isBefore(beginDate)) {
+            userSet.add(userSub.getUser());
+          }
+        }
+      }
+    }
+    return userSet;
   }
 }

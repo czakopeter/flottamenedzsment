@@ -1,21 +1,3 @@
-function refreshInvoice(refreshLink) {
-	let data = "invoiceNumber=" + refreshLink.parentElement.parentElement.querySelector("[name=invoiceNumber]").innerHTML;
-	let xhr = new XMLHttpRequest();
-	xhr.open("POST", "/invoice/continueProcessing", true);
-	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	xhr.onreadystatechange = function() { // Call a function when the state changes.
-	    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-	    	document.querySelector('#example').innerHTML = xhr.responseText;
-	    	let response = JSON.parse(xhr.responseText);
-	    	alert(response);
-	    	alert(response["hasProblem"]);
-	    	location.reload();
-	    }
-	}
-	xhr.send(data);
-
-}
-
 function sendRawRemove(btn) {
 	let tr = btn.parentElement.parentElement.parentElement;
 	let invoiceNumber = tr.querySelector("[name=invoiceNumber]").innerHTML;
@@ -25,6 +7,9 @@ function sendRawRemove(btn) {
 function processRawRemove(data) {
 	let tr = document.querySelector("#invoiceNumber" + data.text);
 	tr.parentElement.parentElement.deleteRow(tr.rowIndex);
+	if(document.querySelector("#raw-invoice-table").querySelector("[name=content-body]").querySelectorAll("tr").length == 0) {
+		document.querySelector("#raw-invoice-table").querySelector("[name=no-element-body]").classList.remove('collapse');
+	}
 }
 
 function browseFile() {
@@ -67,13 +52,22 @@ function resetFilter() {
 }
 
 function filter() {
-	let trs = document.querySelector("#invoice-table").querySelector("tbody").querySelectorAll("tr");
-	for(let tr of trs) {
-		console.log(tr);
-		if(filterCondicion(tr)) {
-			tr.classList.remove("collapse");
+	let trs = document.querySelector("#invoice-table").querySelector("[name=content-body]").querySelectorAll("tr");
+	if(trs.length != 0) {
+		let counter = 0;
+		for(let tr of trs) {
+			console.log(tr);
+			if(filterCondicion(tr)) {
+				tr.classList.remove("collapse");
+				counter++;
+			} else {
+				tr.classList.add("collapse");
+			}
+		}
+		if(counter == 0) {
+			document.querySelector("#invoice-table").querySelector("[name=no-result-body]").classList.remove("collapse");
 		} else {
-			tr.classList.add("collapse");
+			document.querySelector("#invoice-table").querySelector("[name=no-result-body]").classList.add("collapse");
 		}
 	}
 }
@@ -90,8 +84,11 @@ function filterCondicion(tr) {
 }
 
 function showAll() {
-	let trs = document.querySelector("#invoice-table").querySelector("tbody").querySelectorAll("tr");
-	for(let tr of trs) {
-		tr.classList.remove("collapse");
+	let trs = document.querySelector("#invoice-table").querySelector("[name=content-body]").querySelectorAll("tr");
+	if(trs.length != 0) {
+		for(let tr of trs) {
+			tr.classList.remove("collapse");
+		}
+		document.querySelector("#invoice-table").querySelector("[name=no-result-body]").classList.add("collapse");
 	}
 }

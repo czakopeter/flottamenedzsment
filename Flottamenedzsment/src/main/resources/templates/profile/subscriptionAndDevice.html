@@ -10,20 +10,17 @@
     <h3 th:text="#{profile.subscriptionsAndDevices}">Subscription and devices</h3>
     
       <h4 class="uppercase" th:text="#{main.subscriptions}">Subscriptions</h4>
-      <div th:if="${#lists.isEmpty(subscriptions)}" class="text-center my-border">
-        <b>You don't have any subscriptions</b>
-      </div>
       
-      <table th:unless="${#lists.isEmpty(subscriptions)}" id="subscriptions-table" class="table table-sm table-hover">
+      <table id="subscriptions-table" class="table table-sm table-hover">
         <thead>
           <tr>
-            <th th:text="#{subscription.phoneNumber}">Number</th>
-<!--             <th th:text="#{subscription.imei}">IMEI</th> -->
-<!--             <th th:text="#{subscription.device}">Device</th> -->
+            <th th:text="#{phoneNumber}">Number</th>
+<!--             <th th:text="#{imeiNumber}">IMEI</th> -->
+<!--             <th th:text="#{device}">Device</th> -->
             <th th:text="#{period}">Period</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="content-body">
           <tr th:each="subscription : ${subscriptions}">
             <td th:text="${subscription.number}"></td>
 <!--             <td th:text="${subscription.imei}"></td> -->
@@ -31,15 +28,17 @@
             <td th:text="${subscription.getPeriod()}"></td>
           </tr>
         </tbody>
+        <tbody id="no-element-body" th:classappend="${#lists.isEmpty(subscriptions)} ? '' : 'collapse'">
+          <tr>
+            <th colspan="2" th:text="#{noElement}">No element</th>
+          </tr>
+        </tbody>
       </table>
 
     <br />
 
     <h4 class="uppercase" th:text="#{main.devices}">Devices</h4>
-      <div th:if="${#lists.isEmpty(devices)}" class="text-center my-border">
-        <b>You don't have any devices</b>
-      </div>
-      <table th:unless="${#lists.isEmpty(devices)}" id="devices-table" class="table table-sm table-hover">
+      <table id="devices-table" class="table table-sm table-hover">
         <thead>
           <tr>
             <th th:text="#{device.serialNumber}">Serial number</th>
@@ -54,6 +53,11 @@
             <td th:text="${device.typeName}"></td>
 <!--             <td th:text="${device.number}"></td> -->
             <td th:text="${device.getPeriod()}"></td>
+          </tr>
+        </tbody>
+        <tbody id="no-element-body" th:classappend="${#lists.isEmpty(devices)} ? '' : 'collapse'">
+          <tr>
+            <th colspan="2" th:text="#{noElement}">No element</th>
           </tr>
         </tbody>
       </table>

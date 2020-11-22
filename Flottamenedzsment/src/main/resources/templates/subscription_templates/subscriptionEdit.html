@@ -14,7 +14,7 @@
         <input type="hidden" id="id" name="id" th:value="*{id}" /> 
         <div class="row my-2">
           <div class="col-2">
-            <label th:text="#{subscription.phoneNumber}">Number</label>
+            <label th:text="#{phoneNumber}">Number</label>
           </div>
           <div class="col-4">
             <input type="text" class="form-control" id="number" name="number" th:value="*{number}" readonly="readonly"/>
@@ -43,7 +43,7 @@
         </div>
         <div class="row my-2">
           <div class="col-2">
-            <label th:text="#{subscription.user}">User</label>
+            <label th:text="#{user}">User</label>
           </div>
           <div class="col-4">
             <select th:field="*{userId}" class="form-control" id="userId" onchange="selectUser(this)">
@@ -56,7 +56,7 @@
         </div>
         <div class="row my-2">
           <div class="col-2">
-            <label th:text="#{subscription.device}">Device</label>
+            <label th:text="#{device}">Device</label>
           </div>
           <div class="col-4">
             <select th:field="*{deviceId}" class="form-control" id="deviceSelect" onchange="selectDevice(this)" >

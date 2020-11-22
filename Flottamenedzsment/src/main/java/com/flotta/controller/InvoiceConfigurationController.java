@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.flotta.entity.invoice.Category;
 import com.flotta.entity.invoice.ChargeRatioByCategory;
 import com.flotta.entity.invoice.DescriptionCategoryCoupler;
 import com.flotta.entity.invoice.Participant;
+import com.flotta.entity.record.User;
 import com.flotta.service.MainService;
 
 @Controller
@@ -43,6 +46,7 @@ public class InvoiceConfigurationController {
     model.addAttribute("couplers", service.findAllDescriptionCategoryCoupler());
     model.addAttribute("chargeRatios", service.findAllChargeRatio());
     model.addAttribute("participants", service.findAllParticipant());
+    model.addAttribute("users", service.findAllUser());
     return TEMPLATE_PATH + "/invoiceConfiguration";
   }
   
@@ -54,11 +58,17 @@ public class InvoiceConfigurationController {
 //    return TEMPLATE_PATH + "/category";
 //  }
   
-  @PostMapping("/invoiceConfiguration/category/add")
-  public String addCategory(@ModelAttribute("add") String category) {
-    if(service.addCategory(category)) {
-    }
-    return "redirect:/invoiceConfiguration/main?active=category";
+//  @PostMapping("/invoiceConfiguration/category/add")
+//  public String addCategory(@ModelAttribute("add") String category) {
+//    if(service.addOrModifyCategory(category)) {
+//    }
+//    return "redirect:/invoiceConfiguration/main?active=category";
+//  }
+  
+  @PostMapping("/invoiceConfiguration/category/addOrModify")
+  @ResponseBody
+  public Category addOrModifyCategory(@RequestParam("id") long id, @RequestParam("name") String name) {
+    return service.addOfMofifyCategory(id, name);
   }
   
 //  @GetMapping("finance/invoiceDescriptionCategoryCoupler/all")
@@ -175,6 +185,18 @@ public class InvoiceConfigurationController {
       return TEMPLATE_PATH + "/chargeRatioByCategoryEdit";
     }
     return "redirect:/invoiceConfiguration/main?active=charge-ratio";
+  }
+  
+  @PostMapping("/invoiceConfiguration/getChargeRatioOfUser")
+  @ResponseBody
+  public ChargeRatioByCategory getChargeRatioOfUser(@RequestParam ("userId") long id) {
+    return service.findUserById(id).getChargeRatio();
+  }
+  
+  @PostMapping("/invoiceConfiguration/modifyChargeRatioOfUser")
+  @ResponseBody
+  public User modifyChargeRatioOfUser(@RequestParam ("userId") long userId, @RequestParam long chargeRatioId) {
+    return service.editChargeRatioOfUser(userId, chargeRatioId);
   }
   
 //  @GetMapping("/finance/participant/all")

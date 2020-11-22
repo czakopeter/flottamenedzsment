@@ -37,7 +37,6 @@
 	    		try {
 	 	   			callback(JSON.parse(xhr.responseText));
 	    		} catch (e) {
-	    			console.log(e);
 	    			callback(JSON.parse('{"error":true}'));
 	    		}
 	    	}

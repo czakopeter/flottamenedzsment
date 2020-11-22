@@ -14,10 +14,10 @@
     <table id="subscription-table" class="table table-sm">
       <thead>
         <tr>
-          <th th:text="#{subscription.phoneNumber}">Number</th>
-          <th th:text="#{imeiNumber}">IMEI</th>
-          <th th:text="#{subscription.user}">User</th>
-          <th th:text="#{subscription.device}">Device</th>
+          <th th:text="#{phoneNumber}">Phone number</th>
+          <th th:text="#{imeiNumber}">IMEI number</th>
+          <th th:text="#{user}">User</th>
+          <th th:text="#{device}">Device</th>
           <th></th>
         </tr>
       </thead>
@@ -40,12 +40,12 @@
           </td>
         </tr>
       </tbody>
-      <tbody id="no-result-body" th:classappend="${#lists.isEmpty(subscriptions)} ? '' : collapse">
+      <tbody id="no-result-body" th:unless="${#lists.isEmpty(subscriptions)}" class="collapse">
         <tr>
-          <th colspan="5" class="text-center" th:text="#{noResult}">No result</th>
+          <th colspan="5" th:text="#{noResult}">No result</th>
         </tr>
       </tbody>
-      <tbody id="no-element-body" th:classappend="${#lists.isEmpty(subscriptions)} ? '' : 'collapse'">
+      <tbody id="no-element-body" th:if="${#lists.isEmpty(subscriptions)}">
         <tr>
           <th colspan="5" th:text="#{noElement}">No element</th>
         </tr>

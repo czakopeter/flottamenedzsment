@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main}">
+<head>
+<title>Flotta</title>
+</head>
+<body>
+
+  <div layout:fragment="loginContent">
+
+      <div th:fragment="user-charge-ratio-all">
+      <div id="user-charge-ratio-all">
+        <h4 th:text="#{userChargeRatio.userChargeRatio}">Charge ratio of users</h4>
+      
+        <div class="row my-3">
+        <div class="col-3">
+          <select id="selectedUser" name="selectedUser" onchange="selectUser(this)" class="form-control">
+            <option value="0" th:text="#{users}" selected="selected">Users</option>
+            <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.fullName} + ' (' + ${user.email} + ')'"></option>
+          </select>
+        </div>
+        <div class="col-3">
+          <select id="selectedChargeRatio" name="selectedChargeRatio" class="form-control">
+            <option value="0" th:text="#{chargeRatio.chargeRatios}" selected="selected">Charge ratios</option>
+            <option th:each="chargeRatio : ${chargeRatios}" th:value="${chargeRatio.id}" th:text="${chargeRatio.name}"></option>
+          </select>
+        </div>
+        <button type="button" class="btn btn-primary" th:text="#{button.save}" onclick="modifyChargeRatioOfUser(this)">Save</button>
+        </div>
+      </div>
+      </div>
+      
+        
+
+  </div>
+
+
+
+</body>
+</html>

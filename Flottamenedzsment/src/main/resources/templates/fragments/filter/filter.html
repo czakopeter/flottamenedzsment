@@ -79,16 +79,16 @@
 
   <div th:fragment="user-filter-options" id="filter-options-content">
     <div>
-      <label for="email">Email</label> <input id="email" type="text" class="form-control" />
+      <label for="email" th:text="#{email}">Email</label> <input id="email" type="text" class="form-control" />
     </div>
     <div>
-      <label for="fullName" th:text="#{user.fullName}">Full name</label> <input id="fullName" type="text" class="form-control" />
+      <label for="fullName" th:text="#{fullName}">Full name</label> <input id="fullName" type="text" class="form-control" />
     </div>
   </div>
 
   <div th:fragment="subscription-filter-options" id="filter-options-content">
     <div>
-      <label for="number" th:text="#{subscription.phoneNumber}">Number</label> <input id="number"
+      <label for="number" th:text="#{phoneNumber}">Number</label> <input id="number"
         type="text" class="form-control"
       />
     </div>

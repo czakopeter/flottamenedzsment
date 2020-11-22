@@ -20,6 +20,9 @@
         <a href="#charge-ratio" class="small menu-item" data-toggle="collapse" role="button" th:aria-expanded="${active == 'charge-ratio'}" onclick="test(this)" th:text="#{chargeRatio.chargeRatios}">Charge ratios</a>
         <div id="charge-ratio" class="collapse" th:classappend="${active == 'charge-ratio'} ? 'show' : ''" th:insert="/invoice_config_templates/chargeRatioByCategoryAll :: charge-ratio-all"></div>
         
+        <a href="#user-charge-ratio" class="small menu-item" data-toggle="collapse" role="button" th:aria-expanded="${active == 'user-charge-ratio'}" onclick="test(this)" th:text="#{userChargeRatio.userChargeRatio}">Charge ratio of users</a>
+        <div id="user-charge-ratio" class="collapse" th:classappend="${active == 'charge-ratio'} ? 'show' : ''" th:insert="/invoice_config_templates/userChargeRatio :: user-charge-ratio-all"></div>
+        
         <a href="#participant" class="small menu-item" data-toggle="collapse" role="button" th:aria-expanded="${active == 'participant'}" onclick="test(this)" th:text="#{participant.participants}">Participants</a>
         <div id="participant" class="collapse" th:classappend="${active == 'participant'} ? 'show' : ''" th:insert="/invoice_config_templates/participantAll :: participant-all"></div>
       </div>
@@ -28,6 +31,7 @@
     </div>
 
   <script src="/js/invoiceConfiguration/invoiceConfigurationMain.js"></script>
+  <script src="/js/invoiceConfiguration/userChargeRatio.js"></script>
 
   </div>
 

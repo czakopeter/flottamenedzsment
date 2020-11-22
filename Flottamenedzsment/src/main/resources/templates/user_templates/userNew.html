@@ -16,24 +16,18 @@
       <div class="container">
         <div class="row my-2">
           <div class="col-2">
-            <label th:text="#{user.fullName}">Full name</label>
+            <label th:text="#{fullName}">Full name</label>
           </div>
           <div class="col-4">
-            <!--             <input type="text" class="form-control" id="fullName" name="fullName" th:value="*{fullName}" required="required"/> -->
-            <input type="text" class="form-control" id="fullName" name="fullName"
-              value="" required="required"
-            />
+            <input type="text" class="form-control" id="fullName" name="fullName" th:value="*{fullName}" required="required"/>
           </div>
         </div>
         <div class="row my-2">
           <div class="col-2">
-            <label th:text="#{user.email}">Email</label>
+            <label th:text="#{email}">Email address</label>
           </div>
           <div class="col-4">
-            <!--             <input type="email" class="form-control" id="email" name="email" th:value="*{email}" required="required" /> -->
-            <input type="email" class="form-control" id="email" name="email"
-              value="" required="required"
-            />
+            <input type="email" class="form-control" id="email" name="email" th:value="*{email}" required="required" />
           </div>
         </div>
         <div class="row">

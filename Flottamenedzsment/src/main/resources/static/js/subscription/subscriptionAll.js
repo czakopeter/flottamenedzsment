@@ -38,7 +38,7 @@ function filterCondition(tr) {
 
 function showAll() {
 	let trs = document.querySelector("#subscription-table").querySelector("#content-body").querySelectorAll("tr");
-	if(trs.length != null) {
+	if(trs.length != 0) {
 		for(let tr of trs) {
 			tr.classList.remove("collapse");
 		}

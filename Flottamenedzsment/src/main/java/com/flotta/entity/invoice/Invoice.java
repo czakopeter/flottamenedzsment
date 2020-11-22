@@ -4,14 +4,12 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -279,28 +277,28 @@ public class Invoice {
     }
   }
 
-  public void setAmountRatioOfFees() {
-    for(InvoiceByUserAndPhoneNumber part: this.invoicePart) {
-      if(part.getUser() != null) {
-        ChargeRatioByCategory crc = part.getUser().getPayDevs().get(0);
-        for(FeeItem feeItem : part.getFees()) {
-          int ratio = crc.getRatioByCategory(feeItem.getCategory());
-          double full = feeItem.getTotalGrossAmount();
-          if(ratio == 0) {
-            feeItem.setUserGrossAmount(0);
-            feeItem.setCompanyGrossAmount(full);
-          } else if(ratio == 100) {
-            feeItem.setUserGrossAmount(full);
-            feeItem.setCompanyGrossAmount(0);
-          } else {
-            feeItem.setUserGrossAmount(full * ratio / 100);
-            feeItem.setCompanyGrossAmount(full * (100 - ratio) / 100);
-          }
-        }
-        part.updateAmountsByFeeItems();
-      }
-    }
-  }
+//  public void setAmountRatioOfFees() {
+//    for(InvoiceByUserAndPhoneNumber part: this.invoicePart) {
+//      if(part.getUser() != null) {
+//        ChargeRatioByCategory crc = part.getUser().getChargeRatio();
+//        for(FeeItem feeItem : part.getFees()) {
+//          int ratio = crc.getRatioByCategory(feeItem.getCategory());
+//          double full = feeItem.getTotalGrossAmount();
+//          if(ratio == 0) {
+//            feeItem.setUserGrossAmount(0);
+//            feeItem.setCompanyGrossAmount(full);
+//          } else if(ratio == 100) {
+//            feeItem.setUserGrossAmount(full);
+//            feeItem.setCompanyGrossAmount(0);
+//          } else {
+//            feeItem.setUserGrossAmount(full * ratio / 100);
+//            feeItem.setCompanyGrossAmount(full * (100 - ratio) / 100);
+//          }
+//        }
+//        part.updateAmountsByFeeItems();
+//      }
+//    }
+//  }
   
   public String getPeriod() {
     return Utility.getPeriod(beginDate, endDate);

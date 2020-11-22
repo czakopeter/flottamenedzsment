@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 
@@ -19,6 +20,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.flotta.entity.invoice.ChargeRatioByCategory;
 import com.flotta.entity.record.Role;
 import com.flotta.entity.record.User;
 import com.flotta.enums.UserStatusEnum;
@@ -238,6 +240,14 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
       userRepository.save(user);
       
   }
-  
-  
+
+  public User editChargeRatioOfUser(long userId, ChargeRatioByCategory chargeRatio) {
+    Optional<User> optionalUser = userRepository.findById(userId);
+    if(optionalUser.isPresent() && chargeRatio != null) {
+      User user = optionalUser.get();
+      user.setChargeRatio(chargeRatio);
+      return userRepository.save(user);
+    }
+    return optionalUser.get();
+  }
 }

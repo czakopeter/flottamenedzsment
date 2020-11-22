@@ -65,9 +65,9 @@ public class MainService {
   public List<Category> findAllCategory() {
     return invoiceService.findAllCategory();
   }
-
-  public boolean addCategory(String category) {
-    return invoiceService.addCategory(category);
+  
+  public Category addOfMofifyCategory(long id, String name) {
+    return invoiceService.addOfMofifyCategory(id, name);
   }
 
   public List<String> getUnknownFeeDescToTemplate(long templateId) {
@@ -356,6 +356,14 @@ public class MainService {
   public boolean passwordReset(String email) {
     return recordService.passwordReset(email);
   }
+  
+  public User editChargeRatioOfUser(long userId, long chargeRatioId) {
+    Optional<ChargeRatioByCategory> optionalChargeRatio = invoiceService.findChargeRatioById(chargeRatioId);
+    if(optionalChargeRatio.isPresent()) {
+      return recordService.editChargeRatioOfUser(userId, optionalChargeRatio.get());
+    }
+    return null;
+  }
 
   // --- SWITCH TABLE SERVICE ---
   
@@ -370,4 +378,5 @@ public class MainService {
   public List<DeviceToView> findAllCurrentDeviceByUser(long userId) {
     return switchTableService.findAllCurrentDeviceByUser(recordService.findUserById(userId));
   }
+
 }

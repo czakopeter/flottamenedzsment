@@ -1,9 +1,6 @@
  package com.flotta.entity.record;
 
-import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -13,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -20,7 +18,6 @@ import com.flotta.entity.invoice.ChargeRatioByCategory;
 import com.flotta.entity.switchTable.UserDev;
 import com.flotta.entity.switchTable.UserSub;
 import com.flotta.enums.UserStatusEnum;
-import com.flotta.utility.Utility;
 
 import javax.persistence.JoinColumn;
 
@@ -55,9 +52,9 @@ public class User extends BasicEntity {
 	private Set<Role> roles = new HashSet<Role>();
 	
 	private UserStatusEnum status;
-
-	@ManyToMany
-	private List<ChargeRatioByCategory> payDevs = new LinkedList<>();
+	
+	@ManyToOne
+	private ChargeRatioByCategory chargeRatio;
 
   public User() {}
 
@@ -136,18 +133,6 @@ public class User extends BasicEntity {
 		return email.equals(other.getEmail());
 	}
 	
-	public List<ChargeRatioByCategory> getPayDevs() {
-    return payDevs;
-  }
-
-  public void setPayDevs(List<ChargeRatioByCategory> payDevs) {
-    this.payDevs = payDevs;
-  }
-  
-  public void addPayDevision(ChargeRatioByCategory payDevision) {
-    this.payDevs.add(payDevision);
-  }
-
   public boolean hasRole(String role) {
     for(Role r : roles) {
       if(r.getRole().equalsIgnoreCase(role)) {
@@ -168,4 +153,13 @@ public class User extends BasicEntity {
   public void setStatus(UserStatusEnum status) {
     this.status = status;
   }
+
+  public ChargeRatioByCategory getChargeRatio() {
+    return chargeRatio;
+  }
+
+  public void setChargeRatio(ChargeRatioByCategory chargeRatio) {
+    this.chargeRatio = chargeRatio;
+  }
+  
 }

@@ -2,6 +2,7 @@ package com.flotta.service.invoice;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,16 +26,31 @@ public class CategoryService {
     return result;
   }
 
-  public boolean save(String category) {
-    Category c = categoryRepository.findByName(category);
-    if(c == null) {
-      categoryRepository.save(new Category(category));
-      return true;
-    }
-    return false;
+  public Optional<Category> findById(long id) {
+    return categoryRepository.findById(id);
   }
 
-  public Category findById(long id) {
-    return categoryRepository.findById(id);
+  public Category addOfModifyCategory(long id, String name) {
+    Category result;
+    
+    Optional<Category> optionalByName = categoryRepository.findByName(name);
+    Optional<Category> optionalById = categoryRepository.findById(id);
+    
+    if(optionalById.isPresent()) {
+      if(!optionalByName.isPresent()) {
+        Category category = optionalById.get();
+        category.setName(name);
+        result = categoryRepository.save(category);
+      } else {
+        result = optionalByName.get();
+      }
+    } else {
+      if(optionalByName.isPresent()) {
+        result = optionalByName.get();
+      } else {
+        result = categoryRepository.save(new Category(name));
+      }
+    }
+    return result;
   }
 }
