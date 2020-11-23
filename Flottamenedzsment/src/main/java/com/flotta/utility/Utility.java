@@ -25,11 +25,10 @@ public class Utility {
     return dates.get(0);
   }
   
-  public static LocalDate floorDate(Map<LocalDate, ? extends BasicSwitchTable> map, LocalDate date) {
-    if (map == null || map.isEmpty() || date == null) {
+  public static LocalDate floorDate(List<LocalDate> dates, LocalDate date) {
+    if (dates == null || dates.isEmpty() || date == null) {
       return null;
     }
-    List<LocalDate> dates = new LinkedList<>(map.keySet());
     if (dates.contains(date)) {
       return date;
     }

@@ -95,7 +95,7 @@ public class SubscriptionController {
   
   @GetMapping("/subscription/{id}/view")
   public String viewSubscription(Model model, @PathVariable("id") long id) {
-    model.addAttribute("subscription", service.findSubscriptionById(id));
+    model.addAttribute("subscription", service.findSubscriptionById(id).get().toView());
     model.addAttribute("dates", service.findSubscriptionDatesById(id));
     return "subscription_templates/subscriptionView";
   }

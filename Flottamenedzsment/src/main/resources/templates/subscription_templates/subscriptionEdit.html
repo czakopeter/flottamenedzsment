@@ -30,9 +30,9 @@
           </div>
           <div>
             <input th:if="${not #lists.isEmpty(freeSims)}" id="simChangeBtn" type="button" class="btn btn-primary" data-toggle="modal"
-              data-target="#simChooserModal" value="Change"
+              data-target="#simChooserModal" th:value="#{button.change}"
             />
-            <button th:if="${not #lists.isEmpty(freeSims)}" type="button" id="simChangeResetBtn" class="btn btn-primary" onClick="resetSimChange()">Reset</button>
+            <button th:if="${not #lists.isEmpty(freeSims)}" type="button" id="simChangeResetBtn" class="btn btn-primary" onClick="resetSimChange()" th:text="#{button.reset}">Reset</button>
           </div>
         </div>
         <div class="row" id="reasonRow"  style="display: none;">

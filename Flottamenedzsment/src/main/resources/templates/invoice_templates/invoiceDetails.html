@@ -6,55 +6,14 @@
 <body>
 
   <div layout:fragment="loginContent">
-
-    <h3 class="uppercase">Invoice summary</h3>
-
-    <div class="row my-2">
-      <div class="col-2">
-        <label th:text="#{bill.invoiceNumber}">Invoice number</label>
-      </div>
-      <div class="col-8">
-        <label th:text="${invoice.invoiceNumber}">Invoice number</label>
-      </div>
-    </div>
-    <div class="row my-2">
-      <div class="col-2">
-        <label th:text="#{bill.fromDate}">From</label>
-      </div>
-      <div class="col-8">
-        <label th:text="${invoice.beginDate}">From date</label>
-      </div>
-    </div>
-    <div class="row my-2">
-      <div class="col-2">
-        <label th:text="#{bill.emdDate}">To</label>
-      </div>
-      <div class="col-8">
-        <label th:text="${invoice.endDate}">End date</label>
-      </div>
-    </div>
-    <div class="row my-2">
-      <div class="col-2">
-        <label th:text="#{bill.invoiceNetAmount}">Net amount</label>
-      </div>
-      <div class="col-8">
-        <label th:text="${invoice.invoiceNetAmount} + ' Ft'">Net amount</label>
-      </div>
-    </div>
-    <div class="row my-2">
-      <div class="col-2">
-        <label th:text="#{bill.invoiceTaxAmount}">Tax amount</label>
-      </div>
-      <div class="col-8">
-        <label th:text="${invoice.invoiceTaxAmount} + ' Ft'">Tax amount</label>
-      </div>
-    </div>
-
-    <h3 class="uppercase">Sender</h3>
+  
+    <h3 class="uppercase" th:text="#{invoiceDetails}">Invoice details</h3>
+  
+    <h4 class="uppercase" th:text="#{invoice.sender}">Sender</h4>
 
     <div class="row my-2">
       <div class="col-2">
-        <label>Company name</label>
+        <label th:text="#{name}">Company name</label>
       </div>
       <div class="col-8">
         <label th:text="${invoice.company.name}"></label>
@@ -62,15 +21,57 @@
     </div>
     <div class="row my-2">
       <div class="col-2">
-        <label>Address</label>
+        <label th:text="#{participant.address}">Address</label>
       </div>
       <div class="col-8">
         <label th:text="${invoice.company.address}"></label>
       </div>
     </div>
 
+    <h4 class="uppercase" th:text="#{invoiceSummary}">Invoice summary</h4>
 
-    <h3 class="uppercase">Invoice details</h3>
+    <div class="row my-2">
+      <div class="col-2">
+        <label th:text="#{invoice.invoiceNumber}">Invoice number</label>
+      </div>
+      <div class="col-8">
+        <label th:text="${invoice.invoiceNumber}">Invoice number</label>
+      </div>
+    </div>
+    <div class="row my-2">
+      <div class="col-2">
+        <label th:text="#{invoice.from}">From</label>
+      </div>
+      <div class="col-8">
+        <label th:text="${invoice.beginDate}">Begin date</label>
+      </div>
+    </div>
+    <div class="row my-2">
+      <div class="col-2">
+        <label th:text="#{invoice.to}">To</label>
+      </div>
+      <div class="col-8">
+        <label th:text="${invoice.endDate}">End date</label>
+      </div>
+    </div>
+    <div class="row my-2">
+      <div class="col-2">
+        <label th:text="#{invoice.netAmount}">Net amount</label>
+      </div>
+      <div class="col-8">
+        <label th:text="${invoice.invoiceNetAmount} + ' Ft'">Net amount</label>
+      </div>
+    </div>
+    <div class="row my-2">
+      <div class="col-2">
+        <label th:text="#{invoice.taxAmount}">Tax amount</label>
+      </div>
+      <div class="col-8">
+        <label th:text="${invoice.invoiceTaxAmount} + ' Ft'">Tax amount</label>
+      </div>
+    </div>
+
+    <h4 class="uppercase" th:text="#{invoiceDetails}">Invoice details</h4>
 
     <div th:each="partOfInvoice : ${invoice.invoicePart}">
       <a class="noneunderline"
@@ -125,93 +126,9 @@
     </div>
 
 
-    <!--     <table class="table table-sm table-hover"> -->
-    <!--       <thead> -->
-    <!--         <tr> -->
-    <!--           <th>User</th> -->
-    <!--           <th>Subscription</th> -->
-    <!--           <th>Period</th> -->
-    <!--           <th>Total gross</th> -->
-    <!--           <th>User gross</th> -->
-    <!--           <th>Comp. gross</th> -->
-    <!--           <th></th> -->
-    <!--         </tr> -->
-    <!--       </thead> -->
-    <!--       <tbody> -->
-    <!--         <th:block th:each="partOfInvoice : ${invoice.invoicePart}"> -->
-    <!--           <tr th:id="'part' + ${partOfInvoice.id}" -->
-    <!--             th:classappend="${partOfInvoice.hasAnyRevisionNote() ? 'table-danger' : ''}" -->
-    <!--             style="border-top: solid 2px;" -->
-    <!--           > -->
-    <!--             <th th:text="${partOfInvoice.user != null ? partOfInvoice.user.fullName : 'Company'}"></th> -->
-    <!--             <th th:text="${partOfInvoice?.subscription?.number}"></th> -->
-    <!--             <th th:text="${partOfInvoice.getPeriod()}"></th> -->
-    <!--             <th th:text="${#numbers.formatDecimal(partOfInvoice.totalGrossAmount, 1, 2)}"></th> -->
-    <!--             <th name="userGrossAmount" -->
-    <!--               th:text="${#numbers.formatDecimal(partOfInvoice.userGrossAmount, 1, 2)}" -->
-    <!--             ></th> -->
-    <!--             <th name="compGrossAmount" -->
-    <!--               th:text="${#numbers.formatDecimal(partOfInvoice.companyGrossAmount, 1, 2)}" -->
-    <!--             ></th> -->
-    <!--             <td> -->
-    <!--               <button class="btn btn-sm btn-info" onclick="show_details(this)"> -->
-    <!--                 <img src="/img/down-arrow.png" alt="down-arrow" /> -->
-    <!--               </button> -->
-    <!--             </td> -->
-    <!--           </tr> -->
-    <!--           <tr th:if="${partOfInvoice.revisionNote != null}" style="border-top-style: hidden;"> -->
-    <!--             <td th:id="'revisionNote' + ${partOfInvoice.id}" colspan="8" class="table-danger" -->
-    <!--               th:text="${partOfInvoice.revisionNote}" -->
-    <!--             ></td> -->
-    <!--           </tr> -->
-    <!--           <th:block th:each="feeItem : ${partOfInvoice.fees}"> -->
-    <!--             <tr th:name="'feeItem' + ${partOfInvoice.id}" style="visibility: collapse" -->
-    <!--               th:classappend="${feeItem.hasRevisionNote() ? 'table-danger' : ''}" -->
-    <!--             > -->
-    <!--               <td><input name="id" type="hidden" th:value="${feeItem.id}" /></td> -->
-    <!--                           <td name="subscription" th:text="${feeItem?.subscription}"></td> -->
-    <!--               <td name="description" th:text="${feeItem.description}"></td> -->
-    <!--               <td name="period" th:text="${feeItem.getPeriod()}"></td> -->
-    <!--               <td name="totalGrossAmount" th:text="${feeItem.totalGrossAmount}"></td> -->
-    <!--               <td name="userGrossAmount" th:text="${feeItem.userGrossAmount}"></td> -->
-    <!--               <td name="compGrossAmount" th:text="${feeItem.companyGrossAmount}"></td> -->
-    <!--               <td name="buttons" width="85px" -->
-    <!--                 th:style="${partOfInvoice.acceptedByCompany or partOfInvoice.user == null} ? 'visibility:hidden'" -->
-    <!--               > -->
-    <!--                 <div id="prepareEditingButton"> -->
-    <!--                   <button type="button" class="btn btn-sm btn-primary" -->
-    <!--                     onclick="prepare_editing(this)" -->
-    <!--                   > -->
-    <!--                     <img alt="Edit" src="/img/edit.png"> -->
-    <!--                   </button> -->
-    <!--                 </div> -->
-    <!--                 <div id="acceptOrCancelEditingButton" style="display: none" class="btn-group"> -->
-    <!--                   <button type="button" class="btn btn-sm btn-success" -->
-    <!--                     onclick="accept_editing(this)" -->
-    <!--                   > -->
-    <!--                     <img alt="Accept" src="/img/checkmark.png"> -->
-    <!--                   </button> -->
-    <!--                   <button type="button" class="btn btn-sm btn-danger" onclick="cancel_editing(this)"> -->
-    <!--                     <img alt="Cancel" src="/img/cross.png"> -->
-    <!--                   </button> -->
-    <!--                 </div> -->
-    <!--               </td> -->
-    <!--             </tr> -->
-    <!--             <tr th:if="${feeItem.revisionNote != null}" th:name="'feeItem' + ${partOfInvoice.id}" -->
-    <!--               style="visibility: collapse; border-top-style: hidden;" -->
-    <!--             > -->
-    <!--               <td colspan="8" th:id="'feeRevisionNote' + ${feeItem.id}" class="table-danger" -->
-    <!--                 th:text="${feeItem.revisionNote}" -->
-    <!--               ></td> -->
-    <!--             </tr> -->
-    <!--           </th:block> -->
-    <!--         </th:block> -->
-    <!--       </tbody> -->
-    <!--     </table> -->
-
     <a href="/invoice/all" class="btn btn-primary" th:text="#{button.back}">Back</a>
 
-    <script src="/js/invoiceDetails.js"></script>
+    <script src="/js/invoice/invoiceDetails.js"></script>
 
 
   </div>

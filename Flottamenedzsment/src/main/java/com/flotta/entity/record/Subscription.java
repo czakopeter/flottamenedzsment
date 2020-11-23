@@ -1,8 +1,6 @@
 package com.flotta.entity.record;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -355,7 +353,7 @@ public class Subscription extends BasicEntityWithCreateDate {
 
   public List<LocalDate> getUserModificationDatesBetween(LocalDate beginDate, LocalDate endDate) {
     List<LocalDate> result = new LinkedList<>();
-    List<LocalDate> dates = new LinkedList<>(subUsers.keySet());
+    List<LocalDate> dates = new LinkedList<>(getModificationDates(subUsers));
     Collections.sort(dates);
     for (LocalDate date : dates) {
       if (date.isAfter(beginDate) && !date.isAfter(endDate)) {
@@ -366,11 +364,11 @@ public class Subscription extends BasicEntityWithCreateDate {
   }
 
   public User getUserByDate(LocalDate date) {
-    LocalDate floor = Utility.floorDate(subUsers, date);
+    LocalDate floor = Utility.floorDate(new LinkedList<>(getModificationDates(subUsers)), date);
     if (floor == null) {
       return null;
     } else {
-      return subUsers.get(floor).getUser();
+      return subUsers.get(floor) != null ? subUsers.get(floor).getUser() : null;
     }
   }
 
@@ -428,4 +426,30 @@ public class Subscription extends BasicEntityWithCreateDate {
     }
     return userSet;
   }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((number == null) ? 0 : number.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (!super.equals(obj))
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    Subscription other = (Subscription) obj;
+    if (number == null) {
+      if (other.number != null)
+        return false;
+    } else if (!number.equals(other.number))
+      return false;
+    return true;
+  }
+  
 }

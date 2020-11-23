@@ -21,6 +21,7 @@ import com.flotta.entity.record.Subscription;
 import com.flotta.entity.record.User;
 import com.flotta.entity.viewEntity.DeviceToView;
 import com.flotta.entity.viewEntity.SubscriptionToView;
+import com.flotta.enums.SimStatusEnum;
 import com.flotta.utility.MessageToView;
 
 @Service
@@ -208,6 +209,7 @@ public class RecordService {
     Sim sim = simService.findByImei(stv.getImei());
     if (sim != null && subscriptionService.add(stv)) {
       Subscription saved = subscriptionService.findByNumber(stv.getNumber()).get();
+      sim.setStatus(SimStatusEnum.ACTIVE);
       saved.addSim(sim, null, stv.getBeginDate());
       subscriptionService.save(saved);
       return true;

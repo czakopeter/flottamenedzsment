@@ -34,7 +34,7 @@ public class SimService extends ServiceWithMsg {
   }
 	
 	public List<Sim> findAllFree() {
-	  List<Sim> result = simRepository.findAllBySimSubIsNullAndReasonIsNull();
+	  List<Sim> result = simRepository.findAllByStatus(SimStatusEnum.FREE);
     return result;
 	}
 

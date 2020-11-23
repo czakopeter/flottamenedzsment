@@ -25,31 +25,32 @@ public class Invoice {
   @Id
   @GeneratedValue
   private long id;
-  
-  @ManyToOne(cascade = CascadeType.ALL)
+
+  @ManyToOne
   private Participant company;
-  
+
   private LocalDate beginDate;
-  
+
   private LocalDate endDate;
-  
+
   private String invoiceNumber;
-  
+
   private double invoiceNetAmount;
-  
+
   private double invoiceTaxAmount;
-  
+
   private double invoiceGrossAmount;
-  
+
   private boolean acceptedByUsers;
-  
+
   private boolean acceptedByCompany;
-  
+
   @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
   private List<InvoiceByUserAndPhoneNumber> invoicePart = new LinkedList<>();
-  
-  public Invoice() {}
-  
+
+  public Invoice() {
+  }
+
   public Invoice(LocalDate fromDate, LocalDate endDate, String invoiceNumber, Double invoiceNetAmount, Double invoiceTaxAmount, double invoiceGrossAmount) {
     this.beginDate = fromDate;
     this.endDate = endDate;
@@ -67,7 +68,6 @@ public class Invoice {
     this.id = id;
   }
 
-  
   public Participant getCompany() {
     return company;
   }
@@ -148,170 +148,137 @@ public class Invoice {
     this.invoicePart = invoicePart;
   }
 
-  //TODO átalakít
-  public void addFeeItem(Subscription subscription, FeeItem feeItem) {
-    if(subscription == null) {
-      for(InvoiceByUserAndPhoneNumber part : invoicePart) {
-        if(part.getSubscription() == null) {
+  // TODO átalakít
+  public void processAndAddFeeItem(Subscription subscription, FeeItem fee) {
+    fee.setCategory(company.getDescriptionCategoryCoupler().getCategoryByDescription(fee.getDescription()));
+    List<FeeItem> feeItems = splitByUser(fee, subscription);
+    processFeeItems(feeItems, subscription);
+    for (FeeItem feeItem : feeItems) {
+      boolean hasPart = false;
+      for (InvoiceByUserAndPhoneNumber part : invoicePart) {
+        if(part.getSubscription().equals(subscription) &&
+            (feeItem.getUserId() == 0 && part.getUser() == null) || 
+            (part.getUser() != null && feeItem.getUserId() == part.getUser().getId())) {
           part.addFeeItem(feeItem);
-          return;
+          hasPart = true;
+          break;
         }
       }
-      InvoiceByUserAndPhoneNumber part = new InvoiceByUserAndPhoneNumber(this, null, null);
-      part.addFeeItem(feeItem);
-      invoicePart.add(part);
-      return;
-    } else {
-      List<FeeItem> fees = splitByUser(feeItem, subscription);
-      for(FeeItem fee : fees) {
-        boolean hasPart = false;
-        for(InvoiceByUserAndPhoneNumber part : invoicePart) {
-          if((fee.getUserId() == 0 && part.getUser() == null) || 
-             (part.getUser() != null && fee.getUserId() == part.getUser().getId() && part.getSubscription().equals(subscription))) {
-            part.addFeeItem(fee);
-            hasPart = true;
-            break;
-          }
-        }
-        if(!hasPart) {
-          InvoiceByUserAndPhoneNumber part = new InvoiceByUserAndPhoneNumber(this, subscription, subscription.getUserByDate(fee.getBeginDate()));
-          part.addFeeItem(fee);
-          invoicePart.add(part);
-        }
+      if (!hasPart) {
+        InvoiceByUserAndPhoneNumber part = new InvoiceByUserAndPhoneNumber(this, subscription, subscription.getUserByDate(feeItem.getBeginDate()));
+        part.addFeeItem(feeItem);
+        invoicePart.add(part);
       }
     }
   }
-  
+
   private List<FeeItem> splitByUser(FeeItem feeItem, Subscription subscription) {
     List<LocalDate> dates = subscription.getUserModificationDatesBetween(feeItem.getBeginDate(), feeItem.getEndDate());
-    List<FeeItem> fees = feeItem.splitBeforeDate(dates);
-    for(FeeItem fee : fees) {
-      User user = subscription.getUserByDate(fee.getBeginDate());
-      fee.setUserId(user != null ? user.getId() : 0);
-    }
-    return fees;
+    List<FeeItem> splittedFeeItems = feeItem.splitBeforeDate(dates);
+    return splittedFeeItems;
   }
   
+  private void processFeeItems(List<FeeItem> feeItems, Subscription subscription) {
+    for(FeeItem feeItem : feeItems ) {
+      User user = subscription.getUserByDate(feeItem.getBeginDate());
+      if(user == null) {
+        feeItem.setChargeRatioByUserPercentage(0);
+        feeItem.setUserId(0);
+      } else {
+        int userRatio = user != null ? user.getChargeRatio().getRatioByCategory(feeItem.getCategory()) : 0;
+        feeItem.setChargeRatioByUserPercentage(userRatio);
+        feeItem.setUserId(user.getId());
+      }
+    }
+  }
+
   public List<FeeItem> getFeeItems() {
     List<FeeItem> result = new LinkedList<>();
-    for(InvoiceByUserAndPhoneNumber part : invoicePart) {
+    for (InvoiceByUserAndPhoneNumber part : invoicePart) {
       result.addAll(part.getFees());
     }
     return result;
-  }
-  
-  public boolean hasProblem() {
-    for(InvoiceByUserAndPhoneNumber part : invoicePart) {
-      if(part.getSubscription() == null) {
-        return true;
-      }
-    }
-    return false;
-  }
-  
-  public String getProblem() {
-    StringBuilder sb = new StringBuilder();
-    Set<String> phoneNumbers = new HashSet<>();
-    for(InvoiceByUserAndPhoneNumber part : invoicePart) {
-      if(part.getSubscription() == null) {
-        for(FeeItem fee : part.getFees()) {
-           phoneNumbers.add(fee.getSubscription());
-        }
-      }
-    }
-    if(phoneNumbers.size() != 0) {
-      sb.append("Unknown phone numbers:");
-      for(String number : phoneNumbers) {
-        sb.append("\n - " + number);
-      }
-    }
-    
-    return sb.toString();
   }
 
   public boolean canDelete() {
     return !acceptedByUsers && !acceptedByCompany;
   }
 
-  //TODO konzisztenciát ellenőrző függvényt elkészíteni
+  // TODO konzisztenciát ellenőrző függvényt elkészíteni
   public boolean isConsistent() {
     return true;
   }
 
   public void setAcceptedByCompany() {
-    this.acceptedByCompany = true;
-    if(hasAnyRevisionNote()) {
-      for(InvoiceByUserAndPhoneNumber part : invoicePart) {
-        if(part.hasRevisionNote()) {
-          part.setRevisionNote(null);
-          part.setAcceptedByCompany(true);
-        }
-        for(FeeItem feeItem : part.getFees()) {
-          if(feeItem.hasRevisionNote()) {
-            feeItem.setRevisionNote(null);
-          }
-        }
-      }
-    } else {
-      for(InvoiceByUserAndPhoneNumber part : invoicePart) {
-        part.setAcceptedByCompany(true);
-        if(part.getUser() == null) {
-          part.setAcceptedByUser(true);
-        }
+    acceptedByCompany = true;
+    int partOfCompany = 0;
+    for (InvoiceByUserAndPhoneNumber part : invoicePart) {
+      part.removeRevisionNote();
+      part.setAcceptedByCompany(true);
+      if (part.getUser() == null) {
+        part.setAcceptedByUser(true);
+        partOfCompany++;
       }
     }
+    if (partOfCompany == invoicePart.size()) {
+      acceptedByUsers = true;
+    }
   }
-  
+
   public boolean hasAnyRevisionNote() {
-    for(InvoiceByUserAndPhoneNumber part : invoicePart) {
-      if(part.hasRevisionNote() || part.hasAnyRevisionNoteOfFees()) {
+    for (InvoiceByUserAndPhoneNumber part : invoicePart) {
+      if (part.hasRevisionNote() || part.hasAnyRevisionNoteOfFees()) {
         return true;
       }
     }
     return false;
   }
 
-  public void setCategoryOfFees(DescriptionCategoryCoupler dcc) {
-    for(FeeItem feeItem : getFeeItems()) {
-      feeItem.setCategory(dcc.getCategoryByDescription(feeItem.getDescription()));
-    }
-  }
-
-//  public void setAmountRatioOfFees() {
-//    for(InvoiceByUserAndPhoneNumber part: this.invoicePart) {
-//      if(part.getUser() != null) {
-//        ChargeRatioByCategory crc = part.getUser().getChargeRatio();
-//        for(FeeItem feeItem : part.getFees()) {
-//          int ratio = crc.getRatioByCategory(feeItem.getCategory());
-//          double full = feeItem.getTotalGrossAmount();
-//          if(ratio == 0) {
-//            feeItem.setUserGrossAmount(0);
-//            feeItem.setCompanyGrossAmount(full);
-//          } else if(ratio == 100) {
-//            feeItem.setUserGrossAmount(full);
-//            feeItem.setCompanyGrossAmount(0);
-//          } else {
-//            feeItem.setUserGrossAmount(full * ratio / 100);
-//            feeItem.setCompanyGrossAmount(full * (100 - ratio) / 100);
-//          }
-//        }
-//        part.updateAmountsByFeeItems();
-//      }
+//  public void setCategoryOfFees(DescriptionCategoryCoupler dcc) {
+//    for (FeeItem feeItem : getFeeItems()) {
+//      feeItem.setCategory(dcc.getCategoryByDescription(feeItem.getDescription()));
 //    }
 //  }
-  
+
   public String getPeriod() {
     return Utility.getPeriod(beginDate, endDate);
   }
 
   /**
-   * @return List<String> that contains all different descriptions from FeeItems 
+   * @return List<String> that contains all different descriptions from FeeItems
    */
   public List<String> getAllDescription() {
     Set<String> descriptions = new HashSet<>();
-    for(InvoiceByUserAndPhoneNumber part : invoicePart) {
+    for (InvoiceByUserAndPhoneNumber part : invoicePart) {
       descriptions.addAll(part.getAllDescription());
     }
     return new LinkedList<>(descriptions);
   }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((invoiceNumber == null) ? 0 : invoiceNumber.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    Invoice other = (Invoice) obj;
+    if (invoiceNumber == null) {
+      if (other.invoiceNumber != null)
+        return false;
+    } else if (!invoiceNumber.equals(other.invoiceNumber))
+      return false;
+    return true;
+  }
+  
+
 }

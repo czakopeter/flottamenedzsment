@@ -1,21 +1,17 @@
 package com.flotta.entity.invoice;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.flotta.entity.record.BasicEntity;
 import com.flotta.entity.record.Subscription;
 import com.flotta.entity.record.User;
@@ -26,7 +22,6 @@ import com.flotta.utility.Utility;
 public class InvoiceByUserAndPhoneNumber extends BasicEntity {
 
   @ManyToOne
-  @JsonIgnore
   private Invoice invoice;
 
   @ManyToOne
@@ -264,5 +259,48 @@ public class InvoiceByUserAndPhoneNumber extends BasicEntity {
     return descriptions;
   }
 
-  
+  public void removeRevisionNote() {
+    revisionNote = null;
+    for(FeeItem feeItem : fees) {
+      feeItem.setRevisionNote(null);
+    }
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((invoice == null) ? 0 : invoice.hashCode());
+    result = prime * result + ((subscription == null) ? 0 : subscription.hashCode());
+    result = prime * result + ((user == null) ? 0 : user.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (!super.equals(obj))
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    InvoiceByUserAndPhoneNumber other = (InvoiceByUserAndPhoneNumber) obj;
+    if (invoice == null) {
+      if (other.invoice != null)
+        return false;
+    } else if (!invoice.equals(other.invoice))
+      return false;
+    if (subscription == null) {
+      if (other.subscription != null)
+        return false;
+    } else if (!subscription.equals(other.subscription))
+      return false;
+    if (user == null) {
+      if (other.user != null)
+        return false;
+    } else if (!user.equals(other.user))
+      return false;
+    return true;
+  }
+
 }

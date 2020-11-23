@@ -70,16 +70,12 @@ public class MainService {
     return invoiceService.addOfMofifyCategory(id, name);
   }
 
-  public List<String> getUnknownFeeDescToTemplate(long templateId) {
-    return invoiceService.getUnknownFeeDescToTemplate(templateId);
-  }
-
-  public void upgradeDescriptionCategoryCoupler(long id, List<String> descriptions, List<Long> categories, boolean available) {
-    invoiceService.upgradeDescriptionCategoryCoupler(id, descriptions, categories, available);
+  public void updateDescriptionCategoryCoupler(long id, List<String> descriptions, List<Long> categories, boolean available) {
+    invoiceService.updateDescriptionCategoryCoupler(id, descriptions, categories, available);
   }
 
   public DescriptionCategoryCoupler findDescriptionCategoryCouplerById(long id) {
-    return invoiceService.findBillPartitionTemplateById(id);
+    return invoiceService.findDescriptionCategoryCoupler(id);
   }
 
   public List<String> findAllFeeDescription() {
@@ -266,7 +262,7 @@ public class MainService {
   }
 
   public boolean canCreateSubscription() {
-    return !recordService.canCreateSubscription();
+    return recordService.canCreateSubscription();
   }
 
 //------- SUBSCRIPTION SERVICE --------

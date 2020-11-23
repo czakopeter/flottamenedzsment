@@ -71,16 +71,30 @@ public class InvoiceController {
     return "redirect:/invoice/all";
   }
   
-  @PostMapping("/invoice/{invoiceNumber}/delete")
-  public String deleteInvoice(@PathVariable(value = "invoiceNumber") String invoiceNumber) {
-    service.deleteInvoiceByInvoiceNumber(invoiceNumber);
-    return "redirect:/invoice/all";
+//  @PostMapping("/invoice/{invoiceNumber}/delete")
+//  public String deleteInvoice(@PathVariable(value = "invoiceNumber") String invoiceNumber) {
+//    service.deleteInvoiceByInvoiceNumber(invoiceNumber);
+//    return "redirect:/invoice/all";
+//  }
+  
+//  @PostMapping("invoice/{invoiceNumber}/accept")
+//  public String acceptInoiveByCompany(@PathVariable(value = "invoiceNumber") String invoiceNumber) {
+//    service.acceptInvoiceByInvoiceNumber(invoiceNumber);
+//    return "redirect:/invoice/all";
+//  }
+  
+  @PostMapping("invoice/acceptByCompany")
+  @ResponseBody
+  public ResponseTransfer acceptInoiveByCompany(@RequestParam("invoiceNumber") String invoiceNumber) {
+    service.acceptInvoiceByInvoiceNumber(invoiceNumber);
+    return new ResponseTransfer(invoiceNumber);
   }
   
-  @PostMapping("invoice/{invoiceNumber}/accept")
-  public String acceptInoiveByCompany(@PathVariable(value = "invoiceNumber") String invoiceNumber) {
-    service.acceptInvoiceByInvoiceNumber(invoiceNumber);
-    return "redirect:/invoice/all";
+  @PostMapping("/invoice/delete")
+  @ResponseBody
+  public ResponseTransfer deleteInvoice(@RequestParam("invoiceNumber") String invoiceNumber) {
+    service.deleteInvoiceByInvoiceNumber(invoiceNumber);
+    return new ResponseTransfer(invoiceNumber);
   }
   
   @PostMapping("/invoice/modifyFeeItemGrossAmountRatio")

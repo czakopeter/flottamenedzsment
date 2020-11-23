@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.flotta.entity.record.User;
 import com.flotta.utility.Utility;
 
 @Entity
@@ -89,6 +90,7 @@ public class FeeItem {
     this.companyGrossAmount = feeItem.companyGrossAmount;
     this.totalGrossAmount = feeItem.totalGrossAmount;
     this.revisionNote = feeItem.revisionNote;
+    this.category = feeItem.category;
   }
 
   public long getId() {
@@ -203,6 +205,17 @@ public class FeeItem {
     this.userId = userId;
   }
   
+  public void setUser(User user) {
+    if(user == null) {
+      userId = 0;
+      userGrossAmount = 0;
+      companyGrossAmount = totalGrossAmount;
+    } else {
+      userId = user.getId();
+      user.getChargeRatio();
+    }
+  }
+  
   public String getRevisionNote() {
     return revisionNote;
   }
@@ -218,18 +231,18 @@ public class FeeItem {
   public List<FeeItem> splitBeforeDate(List<LocalDate> dates) {
     List<FeeItem> result = new LinkedList<>();
     Collections.sort(dates);
-    LocalDate b = beginDate;
+    LocalDate begin = beginDate;
     for (LocalDate date : dates) {
       if (date.isEqual(beginDate) || date.isBefore(beginDate) || date.isAfter(endDate)) {
         // nothing
       } else {
-        FeeItem fee = getPartOfFeeItem(b, date);
+        FeeItem fee = getPartOfFeeItem(begin, date);
         
         result.add(fee);
-        b = date;
+        begin = date;
       }
     }
-    FeeItem last = getPartOfFeeItem(b, endDate.plusDays(1));
+    FeeItem last = getPartOfFeeItem(begin, endDate.plusDays(1));
     last.setId(this.id);
     result.add(last);
     return result;
@@ -244,12 +257,18 @@ public class FeeItem {
     result.setId(0);
     result.setBeginDate(b);
     result.setEndDate(e.minusDays(1));
+    result.setCategory(category);
     result.setNetAmount(Utility.round(netAmount * part / all, 2));
     result.setTaxAmount(Utility.round(taxAmount * part / all, 2));
     result.setUserGrossAmount(Utility.round(userGrossAmount * part / all, 2));
     result.setCompanyGrossAmount(Utility.round(companyGrossAmount * part / all, 2));
     result.setTotalGrossAmount(Utility.round(totalGrossAmount * part / all, 2));
     return result;
+  }
+  
+  public void setChargeRatioByUserPercentage(int userRatio) {
+    userGrossAmount = Utility.round(totalGrossAmount * userRatio / 100, 2);
+    companyGrossAmount = Utility.round(totalGrossAmount * (100 - userRatio) / 100, 2);
   }
   
   public String getPeriod() {
@@ -263,5 +282,5 @@ public class FeeItem {
   public boolean hasRevisionNote() {
     return revisionNote != null;
   }
-  
+
 }

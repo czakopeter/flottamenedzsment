@@ -114,7 +114,7 @@ public class InvoiceConfigurationController {
   
   @PostMapping("/invoiceConfiguration/descriptionCategoryCoupler/{id}")
   public String editInvoiceDescriptionCategoryCoupler(Model model, @PathVariable("id") long id, @RequestParam("description") List<String> descriptions, @RequestParam("category") List<Long> categories, @RequestParam(name = "available", defaultValue = "false") boolean available) {
-    service.upgradeDescriptionCategoryCoupler(id, descriptions, categories, available);
+    service.updateDescriptionCategoryCoupler(id, descriptions, categories, available);
     model.addAttribute("coupler", service.findDescriptionCategoryCouplerById(id));
     model.addAttribute("categories", service.findAllCategory());
     return TEMPLATE_PATH + "/descriptionCategoryCouplerEdit";

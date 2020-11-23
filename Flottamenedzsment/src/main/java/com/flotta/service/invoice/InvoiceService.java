@@ -189,7 +189,8 @@ public class InvoiceService {
 
     for (RawFeeItem rawFeeItem : rawInvoice.getFeeItems()) {
       FeeItem feeItem = parseRawFeeItemToFeeItem(rawFeeItem);
-      invoice.addFeeItem(subscriptionInfo.findByNumber(rawFeeItem.getSubscription()).get(), feeItem);
+      Subscription subscription = subscriptionInfo.findByNumber(feeItem.getSubscription()).get();
+      invoice.processAndAddFeeItem(subscription, feeItem);
     }
     return invoice;
   }
@@ -206,46 +207,7 @@ public class InvoiceService {
     feeItem.setTotalGrossAmount(rawFeeItem.getGrossAmount());
     return feeItem;
   }
-//  private Invoice processInvoiceXmlString(String xml) throws FileUploadException {
-//    Element root = getTreeFromXMLString(xml);
-//
-//    if (billTemplateService.invoiceTreeFormalCheck(root)) {
-//      Invoice invoice = parseToInvoice(root);
-//      invoice.setCategoryOfFees(descriptionCategoryCouplerServiceOnlyGet.findById(1));
-//      invoice.setAmountRatioOfFees();
-//      invoice.setXmlString(xml);
-//      return invoice;
-//
-//    } else {
-//      throw new FileUploadException("Invalid structure");
-//    }
-//  }
-
-//  private Invoice parseToInvoice(Element root) throws FileUploadException {
-//    try {
-//      Invoice invoice = new Invoice();
-//      invoice.setBeginDate(LocalDate.parse(getFirstTagValue(root, "Begin"), DateTimeFormatter.ofPattern("uuuu.MM.dd.")));
-//      invoice.setEndDate(LocalDate.parse(getFirstTagValue(root, "End"), DateTimeFormatter.ofPattern("uuuu.MM.dd.")));
-//      invoice.setInvoiceNumber(getFirstTagValue(root, "InvNb"));
-//      invoice.setInvoiceNetAmount(Double.valueOf(getFirstTagValue(root, "InvTotalNetA").replace(',', '.')));
-//      invoice.setInvoiceTaxAmount(Double.valueOf(getFirstTagValue(root, "InvTotalTaxA").replace(',', '.')));
-//      invoice.setInvoiceGrossAmount(Double.valueOf(getFirstTagValue(root, "InvTotalGrossA").replace(',', '.')));
-//      
-//      invoice.setCompanyData(parseToParticipant((Element)root.getElementsByTagName("CompanyData").item(0)));
-//      
-//      NodeList nodes = root.getElementsByTagName("FeeItem");
-//        for (int i = 0; i < nodes.getLength(); i++) {
-//          Element feeItem = (Element) nodes.item(i);
-//          invoice.addFeeItem(
-//            subscriptionInfo.findByNumber(getFirstTagValue(feeItem, "ItemNr")),
-//            parseToFeeItem(feeItem));
-//        }
-//      return invoice;
-//    } catch (DateTimeParseException | NumberFormatException e) {
-//      throw new FileUploadException(e.toString());
-//    }
-//  }
-
+  
   private RawFeeItem parseToFeeItem(Element feeItemElement) {
     return new RawFeeItem(getFirstTagValue(feeItemElement, "ItemNr"), getFirstTagValue(feeItemElement, "Desc"), LocalDate.parse(getFirstTagValue(feeItemElement, "Begin"), DateTimeFormatter.ofPattern("uuuu.MM.dd.")), LocalDate.parse(getFirstTagValue(feeItemElement, "End"), DateTimeFormatter.ofPattern("uuuu.MM.dd.")), Double.valueOf(getFirstTagValue(feeItemElement, "NetA").replace(',', '.')), Double.valueOf(getFirstTagValue(feeItemElement, "TaxA").replace(',', '.')), Double.valueOf(getFirstTagValue(feeItemElement, "TaxP").replace(',', '.').replace("%", "")), Double.valueOf(getFirstTagValue(feeItemElement, "GrossA").replace(',', '.')));
   }
@@ -303,14 +265,6 @@ public class InvoiceService {
     return invoiceRepository.findById(id).orElse(null);
   }
 
-//  public void save(Invoice invoice) {
-//    invoiceRepository.save(invoice);
-//  }
-
-//  public List<OneCategoryOfUserFinance> getFinanceByUserId(long id) {
-//    return feeItemService.getFinanceByUserId(id);
-//  }
-
   public void save(List<FeeItem> fees) {
     feeItemService.save(fees);
   }
@@ -323,10 +277,6 @@ public class InvoiceService {
   public InvoiceByUserAndPhoneNumber getPendingInvoiceOfUserById(User user, Long id) {
     return invoiceByUserAndPhoneNumberService.getPendingInvoiceOfUserById(user, id);
   }
-
-//  public boolean acceptInvoiceOfCurrentUserByNumber(User user, String number) {
-//    return feeItemService.acceptInvoiceOfCurrentUserByNumber(user, number);
-//  }
 
   public boolean acceptInvoicesOfUserByInvoiceNumbersAndSubscription(User user, List<Long> ids) {
     return invoiceByUserAndPhoneNumberService.acceptInvoicesOfUserByInvoiceNumbersAndSubscription(user, ids);
@@ -350,7 +300,7 @@ public class InvoiceService {
 
   public void deleteInvoiceByInvoiceNumber(String invoiceNumber) {
     Optional<Invoice> invoice = invoiceRepository.findByInvoiceNumber(invoiceNumber);
-    if (invoice.isPresent() && invoice.get().canDelete()) {
+    if (invoice.isPresent()) {
       invoiceRepository.delete(invoice.get());
     }
   }
@@ -413,14 +363,6 @@ public class InvoiceService {
     return new LinkedList<>();
   }
 
-  List<FeeItem> getFeeItemsOfUser(User user) {
-    return null;
-  }
-
-  List<FeeItem> getFeeItemsOfUser(User user, LocalDate begin, LocalDate end) {
-    return null;
-  }
-
   public List<Category> findAllCategory() {
     return categoryService.findAll();
   }
@@ -433,28 +375,8 @@ public class InvoiceService {
     return descriptionCategoryCouplerService.findAll();
   }
 
-// 
-// public Invoice findBillById(long id) {
-//   return invoiceService.findById(id);
-// }
-
-// public boolean billPartitionByTemplateId(long billId, long templateId) {
-//   //TODO missing bill or template problem throw exception
-//   Invoice invoice = invoiceService.findById(billId);
-//   if(invoice != null) {
-//     Map<Category, List<FeeItem> >  result =  descriptionCategoryCouplerService.partition(invoice, templateId);
-//     invoiceService.save(invoice);
-//     return result == null ?  false : true;
-//   }
-//   return false;
-// }
-
-  public List<String> getUnknownFeeDescToTemplate(long templateId) {
-    return descriptionCategoryCouplerService.getMissingFeeItemDescription(templateId);
-  }
-
-  public void upgradeDescriptionCategoryCoupler(long id, List<String> descriptions, List<Long> categories, boolean available) {
-    descriptionCategoryCouplerService.upgradeDescriptionCategoryCoupler(id, descriptions, idListToCategoryList(categories), available);
+  public void updateDescriptionCategoryCoupler(long id, List<String> descriptions, List<Long> categories, boolean available) {
+    descriptionCategoryCouplerService.updateDescriptionCategoryCoupler(id, descriptions, idListToCategoryList(categories), available);
   }
 
   private List<Category> idListToCategoryList(List<Long> catIds) {
@@ -465,15 +387,7 @@ public class InvoiceService {
     return result;
   }
 
-// public void save(Invoice invoice) {
-//   invoiceService.save(invoice);
-// }
-
-// public List<OneCategoryOfUserFinance> getFinanceByUserId(long id) {
-//   return invoiceService.getFinanceByUserId(id);
-// }
-
-  public DescriptionCategoryCoupler findBillPartitionTemplateById(long id) {
+  public DescriptionCategoryCoupler findDescriptionCategoryCoupler(long id) {
     return descriptionCategoryCouplerService.findById(id);
   }
 

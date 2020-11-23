@@ -92,3 +92,32 @@ function showAll() {
 		document.querySelector("#invoice-table").querySelector("[name=no-result-body]").classList.add("collapse");
 	}
 }
+
+function acceptInvoiceByCompany(btn) {
+	let invoiceNumber = btn.parentElement.parentElement.querySelector("[name=invoiceNumber]").innerHTML;
+	sendData("POST", "/invoice/acceptByCompany", "invoiceNumber=" + invoiceNumber, callbackOfAcceptInvoiceByCompany);
+}
+
+function callbackOfAcceptInvoiceByCompany(data) {
+	if(!data.error) {
+		document.querySelector("#invoiceNumber" + data.text).querySelector("[name=acceptBtn]").classList.add('collapse');
+		document.querySelector("#invoiceNumber" + data.text).querySelector("[name=deleteBtn]").classList.add('collapse');
+	}
+}
+
+function deleteInvoice(btn) {
+	let invoiceNumber = btn.parentElement.parentElement.querySelector("[name=invoiceNumber]").innerHTML;
+	sendData("POST", "/invoice/delete", "invoiceNumber=" + invoiceNumber, callbackOfDeleteInvoice);
+}
+
+function callbackOfDeleteInvoice(data) {
+	console.log(data);
+	if(!data.error) {
+		let table = document.querySelector("#invoice-table");
+		let tr = table.querySelector("#invoiceNumber" + data.text);
+		table.deleteRow(tr.rowIndex);
+		if(table.querySelector("[name=content-body]").querySelectorAll("tr").length == 0) {
+			table.querySelector("[name=no-element-body]").classList.remove("collapse");
+		}
+	}
+}
