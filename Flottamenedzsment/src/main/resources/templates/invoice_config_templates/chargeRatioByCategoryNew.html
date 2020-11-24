@@ -11,7 +11,7 @@
 
     <form action="/invoiceConfiguration/chargeRatio/new" method="post" th:object="${chargeRatio}">
       <div class="row my-2">
-        <div class="col-2">
+        <div class="col-1">
           <label th:text="#{name}">Name</label>
         </div>
         <div class="col-4">
@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-6 text-right">
+        <div class="col-5 text-right">
           <button type="submit" id="saveButton" class="btn btn-primary" th:text="#{button.save}">Save</button>
           <a href="/invoiceConfiguration/main?active=charge-ratio" class="btn btn-primary" th:text="#{button.back}">Back</a>
         </div>

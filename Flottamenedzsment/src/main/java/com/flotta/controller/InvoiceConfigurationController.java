@@ -120,7 +120,6 @@ public class InvoiceConfigurationController {
   
   @GetMapping("/invoiceConfiguration/chargeRatio/new")
   public String prepareAddingChargeRatio(Model model) {
-    model.addAttribute("unusedCategories", service.findAllCategory());
     model.addAttribute("chargeRatio", new ChargeRatioByCategory());
     return TEMPLATE_PATH + "/chargeRatioByCategoryNew";
   }
@@ -130,7 +129,7 @@ public class InvoiceConfigurationController {
     if(service.addChargeRatio(chargeRatio)) {
       return "redirect:/invoiceConfiguration/main?active=charge-ratio";
     }
-    model.addAttribute("unusedCategories", service.findAllCategory());
+    model.addAttribute("chargeRatio", chargeRatio);
     return TEMPLATE_PATH + "/chargeRatioByCategoryNew";
   }
   
@@ -139,7 +138,6 @@ public class InvoiceConfigurationController {
     Optional<ChargeRatioByCategory> optional = service.findChargeRatioById(id);
     if(optional.isPresent()) {
       model.addAttribute("chargeRatio", optional.get());
-      model.addAttribute("categories", service.findAllCategory());
       model.addAttribute("unusedCategories", service.getUnusedCategoryOfChargeRatio(id));
       return TEMPLATE_PATH + "/chargeRatioByCategoryEdit";
     }
@@ -148,15 +146,8 @@ public class InvoiceConfigurationController {
   
   @PostMapping("/invoiceConfiguration/chargeRatio/{id}")
   public String editChargeRatio(Model model, @PathVariable("id") long id, @RequestParam("category") List<Long> categories, @RequestParam("ratio") List<Integer> ratios) {
-    if(service.editChargeRatio(id, categories, ratios)) {
-    }
-    Optional<ChargeRatioByCategory> optional = service.findChargeRatioById(id);
-    if(optional.isPresent()) {
-      model.addAttribute("chargeRatio", optional.get());
-      model.addAttribute("categories", service.findAllCategory());
-      return TEMPLATE_PATH + "/chargeRatioByCategoryEdit";
-    }
-    return "redirect:/invoiceConfiguration/main?active=charge-ratio";
+    service.editChargeRatio(id, categories, ratios);
+    return "redirect:/invoiceConfiguration/chargeRatio/" + id;
   }
   
   //service-be getChargeRatioIdOfUser function, logikát átvinni service-be
