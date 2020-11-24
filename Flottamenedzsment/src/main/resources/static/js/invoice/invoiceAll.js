@@ -41,7 +41,7 @@ function filterDateSet(input) {
 	}
 }
 
-function resetFilter() {
+function clearFilter() {
 	let filterOptionsWrapper = document.querySelector("#filter-options-wrapper");
 	filterOptionsWrapper.querySelector("#invoice-number").value = "";
 	filterOptionsWrapper.querySelector("#begin-date").value = "";

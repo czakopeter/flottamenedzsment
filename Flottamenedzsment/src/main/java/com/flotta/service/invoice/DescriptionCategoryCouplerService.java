@@ -52,6 +52,9 @@ public class DescriptionCategoryCouplerService {
   }
 
   public void updateDescriptionCategoryCoupler(long id, List<String> descriptions, List<Category> categories, boolean available) {
+    if(descriptions == null || categories == null) {
+      return;
+    }
     Optional<DescriptionCategoryCoupler> optional = descriptionCategoryCouplerRepository.findById(id);
     if(optional.isPresent()) {
       DescriptionCategoryCoupler dcc = optional.get();

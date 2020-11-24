@@ -28,8 +28,8 @@ INSERT INTO description_category_map (description_category_coupler_id, descripti
 
 INSERT INTO Charge_ratio_by_category (name, available) VALUES ('Test category ratio', true)
 
-INSERT INTO Category_ratio_map (CHARGE_RATIO_BY_CATEGORY_ID, CATEGORY_RATIO_MAP, CATEGORY_RATIO_MAP_KEY) VALUES (1, 30, 1)
-INSERT INTO Category_ratio_map (CHARGE_RATIO_BY_CATEGORY_ID, CATEGORY_RATIO_MAP, CATEGORY_RATIO_MAP_KEY) VALUES (1, 60, 2)
+INSERT INTO Category_ratio_map (CHARGE_RATIO_BY_CATEGORY_ID, CATEGORY_RATIO_MAP, CATEGORY_RATIO_MAP_KEY) VALUES (1, 0, 1)
+INSERT INTO Category_ratio_map (CHARGE_RATIO_BY_CATEGORY_ID, CATEGORY_RATIO_MAP, CATEGORY_RATIO_MAP_KEY) VALUES (1, 50, 2)
 INSERT INTO Category_ratio_map (CHARGE_RATIO_BY_CATEGORY_ID, CATEGORY_RATIO_MAP, CATEGORY_RATIO_MAP_KEY) VALUES (1, 100, 3)
 
 INSERT INTO Participants (address, name, description_category_coupler_id) VALUES ('Budapest', 'Test participant', 1)

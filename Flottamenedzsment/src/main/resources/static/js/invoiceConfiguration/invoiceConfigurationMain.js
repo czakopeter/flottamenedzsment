@@ -19,8 +19,10 @@ function addOrModifyCategory(btn) {
 	let container = btn.parentElement;
 	let categorySelect = container.querySelector("#selectedCategory");
 	let id = categorySelect[categorySelect.selectedIndex].value;
-	let name = container.querySelector("#categoryName").value;
-	sendData("POST", "/invoiceConfiguration/category/addOrModify", "id=" + id + "&name=" + name, callbackOfAddOrModifyCategory);
+	let name = container.querySelector("#categoryName").value.trim();
+	if(name !== "") {
+		sendData("POST", "/invoiceConfiguration/category/addOrModify", "id=" + id + "&name=" + name, callbackOfAddOrModifyCategory);
+	}
 }
 
 

@@ -11,20 +11,37 @@
 
       <form method="post">
       <div class="container">
-        <label th:text="#{descCatCoupler.name}">Name</label>
-        <input type="text" class="form-control" id="name" name="name" th:value="${coupler.name}"/>
-        <label for="available">Available</label>
-        <input type="checkbox" id="available" name="available" th:checked="*{coupler.available}" />
+        <div class="row my-2">
+          <div class="col-1 ">
+            <label for="name" th:text="#{name}">Name</label>
+          </div>
+          <div class="col-4">
+            <input type="text" class="form-control" id="name" name="name" th:value="${coupler.name}" readonly="readonly"/>
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-1 ">
+            <label for="available" th:text="#{available}">Available</label>
+          </div>
+          <div class="col-4">
+            <input type="checkbox" id="available" name="available" th:checked="*{coupler.available}" />
+          </div>
+        </div>
+        
         <hr />
         
-        <div th:if="${not #lists.isEmpty(invoices)}">
+        <div th:if="${not #lists.isEmpty(invoices)} or ${not #lists.isEmpty(rawInvoices)}">
           <div>
-            <label for="invoices">Invoice description add</label>
+            <div>
+              <label for="invoices" th:text="#{descCatCoupler.addDescOfInvoice}">Add descriptions of invoice</label>
+              </div>
+            
             <form method="post">
             <select id="selectedInvoice" name="selectedInvoice">
-              <option th:each="invoice : ${invoices}" th:value="${invoice.id}" th:text="${invoice.invoiceNumber} + ' (' + ${invoice.getPeriod()} +')'"></option>
+              <option th:each="invoice : ${invoices}" th:value="${invoice.invoiceNumber}" th:text="${invoice.invoiceNumber} + ' (' + ${invoice.getPeriod()} +')'"></option>
+              <option th:each="rawInvoice : ${rawInvoices}" th:value="${rawInvoice.invoiceNumber}" th:text="${rawInvoice.invoiceNumber} + ' (' + ${rawInvoice.getPeriod()} +')'"></option>
             </select>
-            <button type="submit" th:formaction="'/invoiceConfiguration/descriptionCategoryCoupler/' + ${coupler.id} + '/addDescriptionsOfInvoice'" th:text="#{button.add}" onclick="getDescriptionsOfInvoice()">Add</button>
+            <button type="submit" class="btn btn-sm btn-primary" th:formaction="'/invoiceConfiguration/descriptionCategoryCoupler/' + ${coupler.id} + '/addDescriptionsOfInvoice'" th:text="#{button.add}">Add</button>
             </form>
           </div>
           <div class="row my-2" th:each="description : ${descriptions}">
@@ -50,8 +67,12 @@
             </select>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary" th:formaction="${'/invoiceConfiguration/descriptionCategoryCoupler/' + coupler.id}" th:text="#{button.save}">Save</button>
-        <a href="/invoiceConfiguration/main?active=description-category-coupler" class="btn btn-primary" th:text="#{button.back}"></a>
+        <div class="row my-2">
+          <div class="col-6 text-right">
+            <button type="submit" class="btn btn-primary" th:formaction="${'/invoiceConfiguration/descriptionCategoryCoupler/' + coupler.id}" th:text="#{button.save}">Save</button>
+            <a href="/invoiceConfiguration/main?active=description-category-coupler" class="btn btn-primary" th:text="#{button.back}"></a>
+          </div>
+        </div>
       </div>
       </form>
       

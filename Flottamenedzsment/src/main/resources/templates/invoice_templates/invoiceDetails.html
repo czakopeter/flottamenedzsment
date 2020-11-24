@@ -78,10 +78,11 @@
         th:href="'#' + ${partOfInvoice?.subscription?.number} + ${partOfInvoice.user != null ? partOfInvoice.user.fullName : 'Company'}"
         data-toggle="collapse" aria-expanded="false" role="button" onclick="change(this)"
       >
+      
         <table class="table table-sm">
           <thead>
             <tr>
-              <td th:text="${partOfInvoice?.subscription?.number} + ' - ' + ${partOfInvoice.user != null ? partOfInvoice.user.fullName : 'Company'}"></td>
+              <td th:text="${partOfInvoice?.subscription?.number} + ' - ' + ${partOfInvoice.user != null ? partOfInvoice.user.fullName : 'Company'}" style="width: 80%"></td>
               <td th:text="${#numbers.formatDecimal(partOfInvoice.totalGrossAmount, 1, 2)} + ' Ft'"></td>
               <td class="text-right">
                 <button class="btn btn-sm" style="background-color: transparent;">
@@ -99,15 +100,16 @@
         <table class="table table-sm">
           <thead>
             <tr>
-              <th>Description</th>
-              <th>Period</th>
-              <th class="text-right">Total gross</th>
-              <th class="text-right">User gross</th>
-              <th class="text-right">Comp. gross</th>
+              <th th:text="#{description}">Description</th>
+              <th th:text="#{period}">Period</th>
+              <th class="text-right" th:text="#{invoice.grossAmount}">Gross amount</th>
+              <th class="text-right" th:text="#{user}">User</th>
+              <th class="text-right" th:text="#{company}">Company</th>
+              <th th:unless="${partOfInvoice.acceptedByCompany or partOfInvoice.user == null}"></th>
             </tr>
           </thead>
           <tbody>
-            <tr th:each="feeItem : ${partOfInvoice.fees}">
+            <tr th:id="'feeItem' + ${feeItem.id}" th:each="feeItem : ${partOfInvoice.fees}">
               <td name="description" th:text="${feeItem.description}"></td>
               <td name="period" th:text="${feeItem.getPeriod()}"></td>
               <td class="text-right" name="totalGrossAmount"
@@ -119,6 +121,21 @@
               <td class="text-right" name="compGrossAmount"
                 th:text="${#numbers.formatDecimal(feeItem.companyGrossAmount, 1, 2)} + ' Ft'"
               ></td>
+              <td name="buttons" width="85px" th:unless="${partOfInvoice.acceptedByCompany or partOfInvoice.user == null}">
+                <div id="prepareEditingButton" class="text-center">
+                  <button type="button" class="btn btn-sm btn-primary" onclick="prepare_editing(this)">
+                    <img th:alt="#{button.edit}" src="/img/edit.png">
+                  </button>
+                </div>
+                <div id="acceptOrCancelEditingButton" style="display: none" class="btn-group">
+                  <button type="button" class="btn btn-sm btn-success" onclick="accept_editing(this)">
+                    <img th:alt="#{button.accept}" src="/img/checkmark.png">
+                  </button>
+                  <button type="button" class="btn btn-sm btn-danger" onclick="cancel_editing(this)">
+                    <img th:alt="#{button.cancel}" src="/img/cross.png">
+                  </button>
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>

@@ -11,16 +11,20 @@
 
       <form action="/invoiceConfiguration/descriptionCategoryCoupler/new" method="post">
       <div class="container">
-      <div>
-          <label for="name" th:text="#{descCatCoupler.name}">Name</label>
-          <input type="text" class="form-control" id="name" name="name" th:value="${coupler.name}"/>
+        <div class="row my-2">
+          <div class="col-1 ">
+            <label for="name" th:text="#{name}">Name</label>
+          </div>
+          <div class="col-4">
+            <input type="text" class="form-control" id="name" name="name" th:value="${coupler.name}"/>
+          </div>
         </div>
-        <div>
-          <label for="available">Available</label>
-          <input type="checkbox" id="available" name="available" checked="checked" />
+        <div class="row">
+          <div class="col-5 text-right">
+            <button type="submit" class="btn btn-primary" th:text="#{button.save}">Save</button>
+            <a href="/invoiceConfiguration/main?active=description-category-coupler" class="btn btn-primary" th:text="#{button.back}"></a>
+          </div>
         </div>
-        <button type="submit" class="btn btn-primary" th:text="#{button.save}">Save</button>
-        <a href="/invoiceConfiguration/main?active=description-category-coupler" class="btn btn-primary" th:text="#{button.back}"></a>
       </div>
       </form>
       

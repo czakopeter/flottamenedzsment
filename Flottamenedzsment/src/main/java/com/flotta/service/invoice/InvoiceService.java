@@ -355,10 +355,14 @@ public class InvoiceService {
     return !result.isPresent();
   }
 
-  public List<String> findDescriptionsOfInvoiceById(long id) {
-    Optional<Invoice> optional = invoiceRepository.findById(id);
-    if (optional.isPresent()) {
-      return optional.get().getAllDescription();
+  public List<String> findDescriptionsOfInvoiceByInvoiceNumber(String invoiceNumber) {
+    Optional<Invoice> optionalInvoice = invoiceRepository.findByInvoiceNumber(invoiceNumber);
+    Optional<RawInvoice> optionalRawInvoice = rawInvoiceRepository.findByInvoiceNumber(invoiceNumber);
+    if (optionalInvoice.isPresent()) {
+      return optionalInvoice.get().getAllDescription();
+    }
+    if(optionalRawInvoice.isPresent()) {
+      return optionalRawInvoice.get().getAllDescription();
     }
     return new LinkedList<>();
   }

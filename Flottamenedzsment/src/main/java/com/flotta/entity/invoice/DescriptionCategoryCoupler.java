@@ -27,7 +27,7 @@ public class DescriptionCategoryCoupler {
 
   private String name;
 
-  private boolean available;
+  private boolean available = true;
 
   @JoinTable(name = "description_category_map")
   @ManyToMany(cascade = CascadeType.ALL)

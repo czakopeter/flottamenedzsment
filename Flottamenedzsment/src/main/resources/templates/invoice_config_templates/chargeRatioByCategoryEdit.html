@@ -12,7 +12,7 @@
     <form th:action="'/invoiceConfiguration/chargeRatio/' + ${chargeRatio.id}" method="post" th:object="${chargeRatio}" >
       <div class="row mb-3">
         <div class="col-2">
-          <label th:text="#{chargeRatio.name}">Name</label>
+          <label th:text="#{name}">Name</label>
         </div>
         <div class="col-4">
           <input type="text" class="form-control" id="name" name="name" th:value="*{name}"
@@ -23,13 +23,13 @@
       
       <br />
 
-      <table id="table" class="table table-sm table-hover" style="width: 500px">
+      <table id="table" class="table table-sm table-hover" style="width: 50%">
         <thead>
           <tr>
-            <th th:text="#{chargeRatio.category}">Category</th>
-            <th class="text-center" colspan="2" th:text="#{chargeRatio.company}">Company</th>
+            <th th:text="#{category}">Category</th>
+            <th class="text-left" colspan="2" th:text="#{company}">Company</th>
             <th></th>
-            <th class="text-center" colspan="2" th:text="#{chargeRatio.user}">User</th>
+            <th class="text-right" colspan="2" th:text="#{user}">User</th>
           </tr>
         </thead>
         <tbody>
@@ -38,7 +38,7 @@
               <label th:text="${category.name}"></label>
               <input type="hidden" name="category" th:value="${category.id}" />
             </td>
-            <td style="width: 4em;">
+            <td class="text-left" style="width: 4em;">
               <label th:id="companyPercent + ${i.count}" class="form-check-label">0</label>
               <label>%</label>
             </td>
@@ -54,7 +54,7 @@
             <td class="align-middle text-center">
               <input type="radio" th:id="user + ${i.count}" th:name="radio + ${i.count}" th:onclick="|clickOnRadioButton('user', ${i.count})|"
             /></td>
-            <td style="width: 4em;">
+            <td class="text-right" style="width: 4em;">
               <label th:id="userPercent + ${i.count}" class="form-check-label">0</label>
               <label>%</label>
             </td>
@@ -87,7 +87,6 @@
     </form>
 
     <script src="/js/invoiceConfiguration/chargeRatioByCategory.js"></script>
-
 
   </div>
 

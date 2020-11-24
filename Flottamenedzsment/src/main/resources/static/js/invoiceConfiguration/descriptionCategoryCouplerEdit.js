@@ -1,8 +1,8 @@
 let descriptions;
 
 function getDescriptionsOfInvoice() {
-	let id = document.querySelector("#selectedInvoice").value;
-	sendData("POST", "/invoice/getDescriptionsOfInvoice", "id=" + id, test);
+	let invoiceNumber = document.querySelector("#selectedInvoice").value;
+	sendData("POST", "/invoice/getDescriptionsOfInvoice", "invoiceNumber=" + invoiceNumber, test);
 	
 	let formData = new FormData();
 	formData.append('id', id);

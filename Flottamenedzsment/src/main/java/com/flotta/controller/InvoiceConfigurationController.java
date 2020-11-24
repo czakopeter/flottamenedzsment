@@ -20,6 +20,7 @@ import com.flotta.entity.invoice.DescriptionCategoryCoupler;
 import com.flotta.entity.invoice.Participant;
 import com.flotta.entity.record.User;
 import com.flotta.service.MainService;
+import com.flotta.utility.ResponseTransfer;
 
 @Controller
 public class InvoiceConfigurationController {
@@ -49,21 +50,6 @@ public class InvoiceConfigurationController {
     model.addAttribute("users", service.findAllUser());
     return TEMPLATE_PATH + "/invoiceConfiguration";
   }
-  
-  //TODO mapping-nél finance lecserélni invoiceConfiguration-re mindenhol
-//  @GetMapping("/finance/category/all")
-//  public String listCategories(Model model) {
-//    model.addAttribute("categories", service.findAllCategory());
-//    model.addAttribute("add", new String());
-//    return TEMPLATE_PATH + "/category";
-//  }
-  
-//  @PostMapping("/invoiceConfiguration/category/add")
-//  public String addCategory(@ModelAttribute("add") String category) {
-//    if(service.addOrModifyCategory(category)) {
-//    }
-//    return "redirect:/invoiceConfiguration/main?active=category";
-//  }
   
   @PostMapping("/invoiceConfiguration/category/addOrModify")
   @ResponseBody
@@ -103,21 +89,27 @@ public class InvoiceConfigurationController {
     model.addAttribute("coupler", service.findDescriptionCategoryCouplerById(id));
     model.addAttribute("categories", service.findAllCategory());
     model.addAttribute("invoices", service.findAllInvoice());
+    model.addAttribute("rawInvoices", service.findAllRawInvoice());
     return TEMPLATE_PATH + "/descriptionCategoryCouplerEdit";
   }
   
   @PostMapping("/invoiceConfiguration/descriptionCategoryCoupler/{id}/addDescriptionsOfInvoice")
-  public String addDescriptionsOfInvoice(RedirectAttributes ra, @PathVariable("id") long id, @RequestParam("selectedInvoice") long invoiceId) {
-    ra.addFlashAttribute("descriptions", service.findDescriptionsOfInvoiceById(invoiceId));
+  public String addDescriptionsOfInvoice(RedirectAttributes ra, @PathVariable("id") long id, @RequestParam("selectedInvoice") String invoiceNumber) {
+    ra.addFlashAttribute("descriptions", service.findDescriptionsOfInvoiceByInvoiceNumber(invoiceNumber));
     return "redirect:/invoiceConfiguration/descriptionCategoryCoupler/" + id;
   }
   
   @PostMapping("/invoiceConfiguration/descriptionCategoryCoupler/{id}")
-  public String editInvoiceDescriptionCategoryCoupler(Model model, @PathVariable("id") long id, @RequestParam("description") List<String> descriptions, @RequestParam("category") List<Long> categories, @RequestParam(name = "available", defaultValue = "false") boolean available) {
-    service.updateDescriptionCategoryCoupler(id, descriptions, categories, available);
-    model.addAttribute("coupler", service.findDescriptionCategoryCouplerById(id));
-    model.addAttribute("categories", service.findAllCategory());
-    return TEMPLATE_PATH + "/descriptionCategoryCouplerEdit";
+  public String editInvoiceDescriptionCategoryCoupler(
+      Model model, 
+      @PathVariable("id") long id, 
+      @RequestParam(name = "description") Optional<List<String>> descriptions,
+      @RequestParam(name = "category") Optional<List<Long>> categories, 
+      @RequestParam(name = "available", defaultValue = "false") boolean available) {
+    if(descriptions.isPresent() && categories.isPresent()) {
+      service.updateDescriptionCategoryCoupler(id, descriptions.get(), categories.get(), available);
+    }
+    return "redirect:/invoiceConfiguration/descriptionCategoryCoupler/" + id;
   }
   
   @GetMapping("/invoiceConfiguration/descriptionCategoryCoupler/{id}/view")
@@ -125,26 +117,6 @@ public class InvoiceConfigurationController {
     model.addAttribute("coupler", service.findDescriptionCategoryCouplerById(id));
     return TEMPLATE_PATH + "/descriptionCategoryCouplerView";
   }
-  
-//  @GetMapping("finance/invoiceDescriptionCategoryCoupler/{id}/update")
-//  public String prepareUpdatingInvoiceDescriptionCategoryCoupler(Model model, @PathVariable("id") long id) {
-//    model.addAttribute("id", id);
-//    model.addAttribute("descriptions", service.getUnknownFeeDescToTemplate(id));
-//    model.addAttribute("categories", service.findAllCategory());
-//    return TEMPLATE_PATH + "/invoiceDescriptionCategoryCouplerUpgrade";
-//  }
-//  
-//  @PostMapping("finance/invoiceDescriptionCategoryCoupler/{id}/update")
-//  public String updateInvoiceDescriptionCategoryCoupler(Model model, @PathVariable("id") long id, @RequestParam("description") List<String> descriptions, @RequestParam("category") List<Long> categories, @RequestParam(name = "available", defaultValue = "false") boolean available) {
-//    service.upgradeDescriptionCategoryCoupler(id, descriptions, categories, available);
-//    return "redirect:" + TEMPLATE_PATH + "invoice/all";
-//  }
-  
-//  @GetMapping("finance/chargeRatio/all")
-//  public String listChargeRatio(Model model) {
-//    model.addAttribute("chargeRatios", service.findAllChargeRatio());
-//    return TEMPLATE_PATH + "/chargeRatioByCategoryAll";
-//  }
   
   @GetMapping("/invoiceConfiguration/chargeRatio/new")
   public String prepareAddingChargeRatio(Model model) {
@@ -187,16 +159,21 @@ public class InvoiceConfigurationController {
     return "redirect:/invoiceConfiguration/main?active=charge-ratio";
   }
   
+  //service-be getChargeRatioIdOfUser function, logikát átvinni service-be
   @PostMapping("/invoiceConfiguration/getChargeRatioOfUser")
   @ResponseBody
-  public ChargeRatioByCategory getChargeRatioOfUser(@RequestParam ("userId") long id) {
-    return service.findUserById(id).getChargeRatio();
+  public ResponseTransfer getChargeRatioIdOfUser(@RequestParam ("userId") long id) {
+    User user = service.findUserById(id);
+    long chargeRatioId = user.getChargeRatio() != null ? user.getChargeRatio().getId() : 0;
+    return new ResponseTransfer(String.valueOf(chargeRatioId));
   }
   
   @PostMapping("/invoiceConfiguration/modifyChargeRatioOfUser")
   @ResponseBody
-  public User modifyChargeRatioOfUser(@RequestParam ("userId") long userId, @RequestParam long chargeRatioId) {
-    return service.editChargeRatioOfUser(userId, chargeRatioId);
+  public ResponseTransfer modifyChargeRatioOfUser(@RequestParam ("userId") long userId, @RequestParam long chargeRatioId) {
+    User user = service.editChargeRatioOfUser(userId, chargeRatioId);
+    chargeRatioId = user.getChargeRatio() != null ? user.getChargeRatio().getId() : 0;
+    return new ResponseTransfer(String.valueOf(chargeRatioId));
   }
   
 //  @GetMapping("/finance/participant/all")

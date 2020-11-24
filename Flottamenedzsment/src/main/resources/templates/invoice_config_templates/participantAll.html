@@ -10,7 +10,7 @@
     <div th:fragment="participant-all">
       <h4 th:text="#{participant.participants}">Participants</h4>
 
-      <a href="/invoiceConfiguration/participant/new" class="btn btn-sm btn-primary mb-2" th:text="#{button.add}">Add</a>
+      <a href="/invoiceConfiguration/participant/new" class="btn btn-primary mb-2" th:text="#{button.new}">New</a>
 
       <table class="table table-sm">
         <thead>
@@ -24,7 +24,7 @@
           <tr th:each="participant : ${participants}">
             <td th:text="${participant.name}"></td>
             <td th:text="${participant.address}"></td>
-            <td><a class="btn btn-sm btn-primary"
+            <td class="text-right"><a class="btn btn-primary"
               th:href="'/invoiceConfiguration/participant/' + ${participant.id}" th:text="#{button.edit}"
             >Edit</a></td>
           </tr>

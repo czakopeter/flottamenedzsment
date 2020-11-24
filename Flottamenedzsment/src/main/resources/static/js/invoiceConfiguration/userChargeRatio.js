@@ -5,9 +5,10 @@ function selectUser(selectedUser) {
 	}
 }
 
-function callbackOfSelectUser(chargeRatio) {
-	if(!chargeRatio.error) {
-		document.querySelector("#selectedChargeRatio").value = chargeRatio.id;
+function callbackOfSelectUser(data) {
+	if(!data.error) {
+		console.log(data);
+		document.querySelector("#selectedChargeRatio").value = data.text;
 	}
 }
 
@@ -20,8 +21,8 @@ function modifyChargeRatioOfUser(btn) {
 	}
 }
 
-function callbackOfModifyChargeRatioOfUser(user) {
-	if(!user.error) {
-		document.querySelector("#selectedChargeRatio").value = user.chargeRatio.id;
+function callbackOfModifyChargeRatioOfUser(data) {
+	if(!data.error) {
+		document.querySelector("#selectedChargeRatio").value = date.text;
 	}
 }

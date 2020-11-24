@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.flotta.utility.Utility;
+
 @Entity
 @Table(name = "raw_invoices")
 public class RawInvoice {
@@ -170,5 +172,16 @@ public class RawInvoice {
   public boolean hasProblem() {
     return !problems.isEmpty();
   }
+
+  public List<String> getAllDescription() {
+    Set<String> descriptions = new HashSet<>();
+    for (RawFeeItem feeItem : feeItems) {
+      descriptions.add(feeItem.getDescription());
+    }
+    return new LinkedList<>(descriptions);
+  }
   
+  public String getPeriod() {
+    return Utility.getPeriod(beginDate, endDate);
+  }
 }

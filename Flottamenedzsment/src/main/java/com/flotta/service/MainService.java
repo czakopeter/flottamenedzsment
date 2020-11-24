@@ -170,8 +170,8 @@ public class MainService {
     return invoiceService.addDescriptionCategoryCoupler(dcc);
   }
 
-  public List<String> findDescriptionsOfInvoiceById(long id) {
-    return invoiceService.findDescriptionsOfInvoiceById(id);
+  public List<String> findDescriptionsOfInvoiceByInvoiceNumber(String invoiceNumber) {
+    return invoiceService.findDescriptionsOfInvoiceByInvoiceNumber(invoiceNumber);
   }
 
   public void deleteRawInvoiceByInvoiceNumber(String invoiceNumber) {

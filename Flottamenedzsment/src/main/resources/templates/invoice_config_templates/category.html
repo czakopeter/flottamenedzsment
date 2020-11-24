@@ -11,16 +11,16 @@
         <h4 th:text="#{category.categories}">Category</h4>
       
         <div class="row my-3">
-        <div class="col-3">
+        <div class="col-5">
           <select id="selectedCategory" name="selectedCategory" onchange="selectCategory(this)" class="form-control">
             <option value="0" th:text="'---- ' + #{button.new} + ' ----'"></option>
             <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
           </select>
         </div>
-        <div class="col-3">
+        <div class="col-5">
           <input type="text" id="categoryName" name="categoryName" class="form-control"/>
         </div>
-        <button type="button" class="btn btn-primary" th:text="#{button.save}" onclick="addOrModifyCategory(this)">Save</button>
+          <button type="button" class="btn btn-primary" th:text="#{button.save}" onclick="addOrModifyCategory(this)">Save</button>
         </div>
       </div>
       
