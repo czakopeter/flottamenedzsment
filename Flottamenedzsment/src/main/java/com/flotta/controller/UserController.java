@@ -109,12 +109,12 @@ public class UserController {
   
   @GetMapping("/requestNewPassword")
   public String prepareRequestingNewPassword() {
-    return "/passwordReset";
+    return "newPasswordRequest";
   }
   
   @PostMapping("/requestNewPassword")
-  public String passwordReset(RedirectAttributes redirectAttributes, @RequestParam("email") String email) {
-    if(service.passwordReset(email)) {
+  public String requestNewPassword(RedirectAttributes redirectAttributes, @RequestParam("email") String email) {
+    if(service.requestNewPassword(email)) {
       redirectAttributes.addFlashAttribute("waring", "The email has been sent to " + email + " address!");
     }
     return "redirect:/login";

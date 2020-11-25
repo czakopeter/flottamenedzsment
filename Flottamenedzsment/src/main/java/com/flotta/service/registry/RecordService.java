@@ -290,8 +290,8 @@ public class RecordService {
     return userService.updateUser(id, roles);
   }
 
-  public boolean passwordReset(String email) {
-    return userService.passwordReset(email);
+  public boolean requestNewPassword(String email) {
+    return userService.requestNewPassword(email);
   }
 
   public User editChargeRatioOfUser(long userId, ChargeRatioByCategory chargeRatio) {

@@ -402,10 +402,6 @@ public class InvoiceService {
     return descriptionCategoryCouplerService.findById(id);
   }
 
-  public List<String> findAllBillDescription() {
-    return descriptionCategoryCouplerService.findAllInvoiceDescription();
-  }
-
   public boolean addChargeRatio(ChargeRatioByCategory chargeRatio) {
     return chargeRatioService.addChargeRatio(chargeRatio);
   }
@@ -432,7 +428,7 @@ public class InvoiceService {
   }
 
   public boolean addDescriptionCategoryCoupler(DescriptionCategoryCoupler dcc) {
-    return descriptionCategoryCouplerService.descriptionCategoryCoupler(dcc);
+    return descriptionCategoryCouplerService.addDescriptionCategoryCoupler(dcc);
   }
 
   

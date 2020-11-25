@@ -78,10 +78,6 @@ public class MainService {
     return invoiceService.findDescriptionCategoryCoupler(id);
   }
 
-  public List<String> findAllFeeDescription() {
-    return invoiceService.findAllBillDescription();
-  }
-
   public boolean addChargeRatio(ChargeRatioByCategory chargeRatio) {
     return invoiceService.addChargeRatio(chargeRatio);
   }
@@ -352,8 +348,8 @@ public class MainService {
     return recordService.updateUser(id, roles);
   }
 
-  public boolean passwordReset(String email) {
-    return recordService.passwordReset(email);
+  public boolean requestNewPassword(String email) {
+    return recordService.requestNewPassword(email);
   }
   
   public User editChargeRatioOfUser(long userId, long chargeRatioId) {

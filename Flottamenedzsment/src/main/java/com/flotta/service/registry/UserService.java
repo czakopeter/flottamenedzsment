@@ -11,7 +11,6 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -65,14 +64,14 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
 		return new UserDetailsImpl(user);
 	}
 
+  public List<User> findAll() {
+    return userRepository.findAll();
+  }
+  
 	public User findByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
 	
-	public List<User> findAll() {
-		return userRepository.findAll();
-	}
-
 	public boolean registerUser(User user) {
 		User userCheck = userRepository.findByEmail(user.getEmail());
 
@@ -83,7 +82,6 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
 		String password = generateKey(16);
 		user.setEnabled(false);
 		user.setStatus(UserStatusEnum.WAITING_FOR_ACTIVATION);
-		user.addRoles(roleRepository.findByRole("BASIC"));
 		user.setPassword(passwordEncoder.encode(password));
 		user.setActivationKey(generateKey(16));
 		if(emailService.sendMessage(user.getEmail(),
@@ -141,7 +139,6 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
     String password = generateKey(16);
     user.setEnabled(false);
     user.addRoles(roleRepository.findByRole("ADMIN"));
-    user.addRoles(roleRepository.findByRole("BASIC"));
     user.setStatus(UserStatusEnum.WAITING_FOR_ACTIVATION);
     user.setPassword(passwordEncoder.encode(password));
     user.setActivationKey(generateKey(16));
@@ -196,12 +193,10 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
         result.add(r);
       }
     }
-    result.add(roleRepository.findByRole("BASIC"));
-    
     return result;
   }
 
-  public boolean passwordReset(String email) {
+  public boolean requestNewPassword(String email) {
     User user = userRepository.findByEmail(email);
     if(user != null) {
       String password = generateKey(16);
