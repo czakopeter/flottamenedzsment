@@ -17,13 +17,10 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 import com.flotta.exception.invoice.UnknonwFeeItemDescriptionException;
+import com.flotta.model.BasicEntity;
 
 @Entity
-public class DescriptionCategoryCoupler {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+public class DescriptionCategoryCoupler extends BasicEntity {
 
   private String name;
 
@@ -34,14 +31,6 @@ public class DescriptionCategoryCoupler {
   private Map<String, Category> descriptionCategoryMap = new HashMap<String, Category>();
 
   public DescriptionCategoryCoupler() {
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
   }
 
   public String getName() {

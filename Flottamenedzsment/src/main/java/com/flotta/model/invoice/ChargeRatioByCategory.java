@@ -13,12 +13,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 
+import com.flotta.model.BasicEntity;
+
 @Entity
-public class ChargeRatioByCategory {
-  
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+public class ChargeRatioByCategory extends BasicEntity {
   
   private String name;
   
@@ -29,14 +27,6 @@ public class ChargeRatioByCategory {
   private Map<Category, Integer> categoryRatioMap = new HashMap<>();
   
   public ChargeRatioByCategory() {
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
   }
 
   public String getName() {

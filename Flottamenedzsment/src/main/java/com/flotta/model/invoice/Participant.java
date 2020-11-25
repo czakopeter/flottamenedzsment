@@ -15,15 +15,12 @@ import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.flotta.model.BasicEntity;
 import com.flotta.utility.Utility;
 
 @Entity
 @Table(name = "participants")
-public class Participant {
-  
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+public class Participant extends BasicEntity {
   
   @Column(unique = true)
   private String name;
@@ -42,14 +39,6 @@ public class Participant {
   public Participant(String name, String address) {
     this.name = name;
     this.address = address;
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
   }
 
   public String getName() {

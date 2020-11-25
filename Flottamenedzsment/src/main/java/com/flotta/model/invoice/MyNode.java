@@ -11,14 +11,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.flotta.model.BasicEntity;
+
 @Entity
 @Table(name = "nodes")
-public class MyNode {
+public class MyNode extends BasicEntity {
 
-  @Id
-  @GeneratedValue
-  private long id;
-  
   private long templateId;
   
   private String name;
@@ -37,13 +35,6 @@ public class MyNode {
 
   public MyNode() {}
 
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
-  }
 
   public long getTemplateId() {
     return templateId;

@@ -6,13 +6,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.flotta.model.BasicEntity;
+
 @Entity
 @Table(name = "categories")
-public class Category implements Comparable<Category> {
-  
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+public class Category extends BasicEntity implements Comparable<Category> {
   
   private String name;
   
@@ -20,14 +18,6 @@ public class Category implements Comparable<Category> {
   
   public Category(String name) {
     this.name = name;
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
   }
 
   public String getName() {
