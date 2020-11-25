@@ -1,5 +1,3 @@
-let descriptions;
-
 function getDescriptionsOfInvoice() {
 	let invoiceNumber = document.querySelector("#selectedInvoice").value;
 	sendData("POST", "/invoice/getDescriptionsOfInvoice", "invoiceNumber=" + invoiceNumber, test);

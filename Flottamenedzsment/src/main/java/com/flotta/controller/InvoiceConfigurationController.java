@@ -22,10 +22,12 @@ import com.flotta.entity.record.User;
 import com.flotta.service.MainService;
 import com.flotta.utility.ResponseTransfer;
 
+
+
 @Controller
 public class InvoiceConfigurationController {
 
-  private static final String TEMPLATE_PATH = "/invoice_config_templates";
+  private static final String TEMPLATE_PATH = "invoice_config_templates";
   
   private MainService service;
   
@@ -34,9 +36,6 @@ public class InvoiceConfigurationController {
     this.service = service;
   }
   
-//  @ModelAttribute
-//  private void title(Model model) {
-//  }
   
   @GetMapping("/invoiceConfiguration/main")
   public String invoiceConfigureMain(Model model, @RequestParam Optional<String> active) {
@@ -48,7 +47,7 @@ public class InvoiceConfigurationController {
     model.addAttribute("chargeRatios", service.findAllChargeRatio());
     model.addAttribute("participants", service.findAllParticipant());
     model.addAttribute("users", service.findAllUser());
-    return "/invoice_config_templates/invoiceConfiguration";
+    return "invoice_config_templates/invoiceConfiguration";
   }
   
   @PostMapping("/invoiceConfiguration/category/addOrModify")
@@ -56,12 +55,6 @@ public class InvoiceConfigurationController {
   public Category addOrModifyCategory(@RequestParam("id") long id, @RequestParam("name") String name) {
     return service.addOrModifyCategory(id, name);
   }
-  
-//  @GetMapping("finance/invoiceDescriptionCategoryCoupler/all")
-//  public String listInvoiceDescriptionCategoryCoupler(Model model) {
-//    model.addAttribute("couplers", service.findAllDescriptionCategoryCoupler());
-//    return TEMPLATE_PATH + "/invoiceDescriptionCategoryCouplerAll";
-//  }
   
   @GetMapping("/invoiceConfiguration/descriptionCategoryCoupler/new")
   public String prepareAddingInvoiceDescriptionCategoryCoupler(Model model) {
@@ -199,15 +192,8 @@ public class InvoiceConfigurationController {
   @PostMapping("/invoiceConfiguration/participant/{id}")
   public String editParticipant(Model model, @PathVariable("id") long id, @ModelAttribute("participant") Participant participant) {
     service.updateParticipant(participant);
-//    service.editParticipant(id, participant);
-//    Optional<Participant> participant = service.findParticipantById(id);
-//    if(participant.isPresent()) {
-//      model.addAttribute("participant", participant.get());
-//      model.addAttribute("descriptionCategoryCouplers", service.findAllDescriptionCategoryCoupler());
-//      return TEMPLATE_PATH + "/participantEdit";
-//    } else {
+    service.updateParticipant(participant);
       return "redirect:/invoiceConfiguration/main?active=participant";
-//    }
   }
   
 }

@@ -9,26 +9,26 @@
 
     <h3 th:text="#{main.configurations}">Configuration</h3>
     
-<!--     <div> -->
-<!--       <div class="vertical-menu my-2" > -->
-<!--         <a href="#category" class="small menu-item" data-toggle="collapse" role="button" th:aria-expanded="${active == 'category'}" onclick="test(this)" th:text="#{category.categories}">Categories</a> -->
-<!--         <div id="category" class="collapse" th:classappend="${active == 'category'} ? 'show' : ''" th:insert="/invoice_config_templates/category :: category-all"></div> -->
+    <div>
+      <div class="vertical-menu my-2" >
+        <a href="#category" class="small menu-item" data-toggle="collapse" role="button" th:aria-expanded="${active == 'category'}" onclick="test(this)" th:text="#{category.categories}">Categories</a>
+        <div id="category" class="collapse" th:classappend="${active == 'category'} ? 'show' : ''" th:insert="invoice_config_templates/category :: category-all"></div>
         
-<!--         <a href="#description-category-coupler" class="small menu-item" data-toggle="collapse" role="button" th:aria-expanded="${active == 'description-category-coupler'}" onclick="test(this)" th:text="#{descCatCoupler.invoiceDescriptionAndCategoryCouplers}">Description category couplers</a> -->
-<!--         <div id="description-category-coupler" class="collapse" th:classappend="${active == 'description-category-coupler'} ? 'show' : ''" th:insert="/invoice_config_templates/descriptionCategoryCouplerAll :: description-category-coupler-all"></div> -->
+        <a href="#description-category-coupler" class="small menu-item" data-toggle="collapse" role="button" th:aria-expanded="${active == 'description-category-coupler'}" onclick="test(this)" th:text="#{descCatCoupler.invoiceDescriptionAndCategoryCouplers}">Description category couplers</a>
+        <div id="description-category-coupler" class="collapse" th:classappend="${active == 'description-category-coupler'} ? 'show' : ''" th:insert="invoice_config_templates/descriptionCategoryCouplerAll :: description-category-coupler-all"></div>
         
-<!--         <a href="#charge-ratio" class="small menu-item" data-toggle="collapse" role="button" th:aria-expanded="${active == 'charge-ratio'}" onclick="test(this)" th:text="#{chargeRatio.chargeRatios}">Charge ratios</a> -->
-<!--         <div id="charge-ratio" class="collapse" th:classappend="${active == 'charge-ratio'} ? 'show' : ''" th:insert="/invoice_config_templates/chargeRatioByCategoryAll :: charge-ratio-all"></div> -->
+        <a href="#charge-ratio" class="small menu-item" data-toggle="collapse" role="button" th:aria-expanded="${active == 'charge-ratio'}" onclick="test(this)" th:text="#{chargeRatio.chargeRatios}">Charge ratios</a>
+        <div id="charge-ratio" class="collapse" th:classappend="${active == 'charge-ratio'} ? 'show' : ''" th:insert="invoice_config_templates/chargeRatioByCategoryAll :: charge-ratio-all"></div>
         
-<!--         <a href="#user-charge-ratio" class="small menu-item" data-toggle="collapse" role="button" th:aria-expanded="false" onclick="test(this)" th:text="#{userChargeRatio.userChargeRatio}">Charge ratio of users</a> -->
-<!--         <div id="user-charge-ratio" class="collapse" th:insert="/invoice_config_templates/userChargeRatio :: user-charge-ratio-all"></div> -->
+        <a href="#user-charge-ratio" class="small menu-item" data-toggle="collapse" role="button" th:aria-expanded="false" onclick="test(this)" th:text="#{userChargeRatio.userChargeRatio}">Charge ratio of users</a>
+        <div id="user-charge-ratio" class="collapse" th:insert="invoice_config_templates/userChargeRatio :: user-charge-ratio-all"></div>
         
-<!--         <a href="#participant" class="small menu-item" data-toggle="collapse" role="button" th:aria-expanded="${active == 'participant'}" onclick="test(this)" th:text="#{participant.participants}">Participants</a> -->
-<!--         <div id="participant" class="collapse" th:classappend="${active == 'participant'} ? 'show' : ''" th:insert="/invoice_config_templates/participantAll :: participant-all"></div> -->
-<!--       </div> -->
+        <a href="#participant" class="small menu-item" data-toggle="collapse" role="button" th:aria-expanded="${active == 'participant'}" onclick="test(this)" th:text="#{participant.participants}">Participants</a>
+        <div id="participant" class="collapse" th:classappend="${active == 'participant'} ? 'show' : ''" th:insert="invoice_config_templates/participantAll :: participant-all"></div>
+      </div>
       
       
-<!--     </div> -->
+    </div>
 
   <script src="/js/invoiceConfiguration/invoiceConfigurationMain.js"></script>
   <script src="/js/invoiceConfiguration/userChargeRatio.js"></script>
