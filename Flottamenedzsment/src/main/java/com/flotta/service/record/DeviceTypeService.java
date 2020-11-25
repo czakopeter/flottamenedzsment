@@ -40,7 +40,7 @@ public class DeviceTypeService {
   private boolean deviceIsSaveable(DeviceType deviceType) {
     DeviceType name = deviceTypeRepository.findByNameIgnoreCase(deviceType.getName());
     DeviceType brandAndModel = deviceTypeRepository.findByBrandAndModelIgnoreCase(deviceType.getBrand(), deviceType.getModel());
-    if(deviceType.getId() == null) {
+    if(deviceType.getId() == 0) {
       return name == null && brandAndModel == null;
     } else {
       DeviceType saved = deviceTypeRepository.findById(deviceType.getId()).orElse(null);

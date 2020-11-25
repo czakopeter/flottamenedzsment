@@ -59,7 +59,7 @@
         <label th:text="#{invoice.netAmount}">Net amount</label>
       </div>
       <div class="col-8">
-        <label th:text="${invoice.invoiceNetAmount} + ' Ft'">Net amount</label>
+        <label th:text="${invoice.netAmount} + ' Ft'">Net amount</label>
       </div>
     </div>
     <div class="row my-2">
@@ -67,7 +67,7 @@
         <label th:text="#{invoice.taxAmount}">Tax amount</label>
       </div>
       <div class="col-8">
-        <label th:text="${invoice.invoiceTaxAmount} + ' Ft'">Tax amount</label>
+        <label th:text="${invoice.taxAmount} + ' Ft'">Tax amount</label>
       </div>
     </div>
 
@@ -75,15 +75,15 @@
 
     <div th:each="partOfInvoice : ${invoice.invoicePart}">
       <a class="noneunderline"
-        th:href="'#' + ${partOfInvoice?.subscription?.number} + ${partOfInvoice.user != null ? partOfInvoice.user.fullName : 'Company'}"
+        th:href="'#' + ${partOfInvoice.subscription?.number} + ${partOfInvoice.user != null ? partOfInvoice.user.fullName : 'Company'}"
         data-toggle="collapse" aria-expanded="false" role="button" onclick="change(this)"
       >
       
         <table class="table table-sm">
           <thead>
             <tr>
-              <td th:text="${partOfInvoice?.subscription?.number} + ' - ' + ${partOfInvoice.user != null ? partOfInvoice.user.fullName : 'Company'}" style="width: 80%"></td>
-              <td th:text="${#numbers.formatDecimal(partOfInvoice.totalGrossAmount, 1, 2)} + ' Ft'"></td>
+              <td th:text="${partOfInvoice.subscription?.number} + ' - ' + ${partOfInvoice.user != null ? partOfInvoice.user.fullName : 'Company'}" style="width: 80%"></td>
+              <td th:text="${#numbers.formatDecimal(partOfInvoice.grossAmount, 1, 2)} + ' Ft'"></td>
               <td class="text-right">
                 <button class="btn btn-sm" style="background-color: transparent;">
                   <img src="/img/down-arrow.png" alt="down-arrow" />
@@ -91,10 +91,15 @@
               </td>
             </tr>
           </thead>
+          <tbody th:if="${partOfInvoice.hasRevisionNote()}" class="hasRevisionNote">
+            <tr class="hasRevisionNote">
+              <td th:colspan="${partOfInvoice.acceptedByCompany or partOfInvoice.user == null} ? 5 : 6" th:text="${partOfInvoice.revisionNote}"></td>
+            </tr>
+          </tbody>
         </table>
       </a>
       <div
-        th:id="${partOfInvoice?.subscription?.number} + ${partOfInvoice.user != null ? partOfInvoice.user.fullName : 'Company'}"
+        th:id="${partOfInvoice.subscription?.number} + ${partOfInvoice.user != null ? partOfInvoice.user.fullName : 'Company'}"
         class="collapse" style="margin-left: 15px; margin-right: 15px;"
       >
         <table class="table table-sm">
@@ -108,35 +113,38 @@
               <th th:unless="${partOfInvoice.acceptedByCompany or partOfInvoice.user == null}"></th>
             </tr>
           </thead>
-          <tbody>
-            <tr th:id="'feeItem' + ${feeItem.id}" th:each="feeItem : ${partOfInvoice.fees}">
-              <td name="description" th:text="${feeItem.description}"></td>
-              <td name="period" th:text="${feeItem.getPeriod()}"></td>
-              <td class="text-right" name="totalGrossAmount"
-                th:text="${#numbers.formatDecimal(feeItem.totalGrossAmount, 1, 2)} + ' Ft'"
-              ></td>
-              <td class="text-right" name="userGrossAmount"
-                th:text="${#numbers.formatDecimal(feeItem.userGrossAmount, 1, 2)} + ' Ft'"
-              ></td>
-              <td class="text-right" name="compGrossAmount"
-                th:text="${#numbers.formatDecimal(feeItem.companyGrossAmount, 1, 2)} + ' Ft'"
-              ></td>
-              <td name="buttons" width="85px" th:unless="${partOfInvoice.acceptedByCompany or partOfInvoice.user == null}">
-                <div id="prepareEditingButton" class="text-center">
-                  <button type="button" class="btn btn-sm btn-primary" onclick="prepare_editing(this)">
-                    <img th:alt="#{button.edit}" src="/img/edit.png">
-                  </button>
-                </div>
-                <div id="acceptOrCancelEditingButton" style="display: none" class="btn-group">
-                  <button type="button" class="btn btn-sm btn-success" onclick="accept_editing(this)">
-                    <img th:alt="#{button.accept}" src="/img/checkmark.png">
-                  </button>
-                  <button type="button" class="btn btn-sm btn-danger" onclick="cancel_editing(this)">
-                    <img th:alt="#{button.cancel}" src="/img/cross.png">
-                  </button>
-                </div>
-              </td>
-            </tr>
+          <tbody th:each="feeItem : ${partOfInvoice.fees}" >
+              <tr th:id="'feeItem' + ${feeItem.id}" th:classappend=" ${feeItem.hasRevisionNote()} ? 'hasRevisionNote' :''">
+                <td name="description" th:text="${feeItem.description}"></td>
+                <td name="period" th:text="${feeItem.getPeriod()}"></td>
+                <td class="text-right" name="totalGrossAmount"
+                  th:text="${#numbers.formatDecimal(feeItem.grossAmount, 1, 2)} + ' Ft'"
+                ></td>
+                <td class="text-right" name="userGrossAmount"
+                  th:text="${#numbers.formatDecimal(feeItem.userGrossAmount, 1, 2)} + ' Ft'"
+                ></td>
+                <td class="text-right" name="compGrossAmount"
+                  th:text="${#numbers.formatDecimal(feeItem.companyGrossAmount, 1, 2)} + ' Ft'"
+                ></td>
+                <td name="buttons" width="85px" th:unless="${partOfInvoice.acceptedByCompany or partOfInvoice.user == null}">
+                  <div id="prepareEditingButton" class="text-center">
+                    <button type="button" class="btn btn-sm btn-primary" onclick="prepare_editing(this)">
+                      <img th:alt="#{button.edit}" src="/img/edit.png">
+                    </button>
+                  </div>
+                  <div id="acceptOrCancelEditingButton" style="display: none" class="btn-group">
+                    <button type="button" class="btn btn-sm btn-success" onclick="accept_editing(this)">
+                      <img th:alt="#{button.accept}" src="/img/checkmark.png">
+                    </button>
+                    <button type="button" class="btn btn-sm btn-danger" onclick="cancel_editing(this)">
+                      <img th:alt="#{button.cancel}" src="/img/cross.png">
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr th:if="${feeItem.hasRevisionNote()}" class="hasRevisionNote">
+                <td th:text="${feeItem.revisionNote}" th:colspan="${partOfInvoice.acceptedByCompany or partOfInvoice.user == null} ? 5 : 6"></td>
+              </tr>
           </tbody>
         </table>
       </div>

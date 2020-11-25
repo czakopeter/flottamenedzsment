@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.flotta.entity.invoice.MyNode;
 
-public interface BillTemplateRepository extends CrudRepository<MyNode, Long> {
+public interface InvoiceTemplateRepository extends CrudRepository<MyNode, Long> {
 
   List<MyNode> findAllByParentIsNull();
   

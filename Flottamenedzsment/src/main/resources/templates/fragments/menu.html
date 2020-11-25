@@ -30,9 +30,8 @@
         <li sec:authorize="hasAnyAuthority('FINANCE_MNGR','ADMIN')" class="nav-item dropdown" th:classappend="${title} == 'Invoice' ? 'active' :''"><a class="nav-link dropdown-toggle"
           data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" th:text="#{main.invoices}">Invoices</a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="/invoiceConfiguration/main" th:text="#{main.configurations}">Configurations</a>
-            <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/invoice/all" th:text="#{main.invoices}">Invoices</a>
+             <a class="dropdown-item" href="/invoiceConfiguration/main" th:text="#{main.configurations}">Configurations</a>
           </div>
          </li>
       </ul>

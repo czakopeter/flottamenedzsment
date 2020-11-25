@@ -30,7 +30,7 @@ public class CategoryService {
     return categoryRepository.findById(id);
   }
 
-  public Category addOfModifyCategory(long id, String name) {
+  public Category addOrModifyCategory(long id, String name) {
     Category result;
     
     Optional<Category> optionalByName = categoryRepository.findByName(name);

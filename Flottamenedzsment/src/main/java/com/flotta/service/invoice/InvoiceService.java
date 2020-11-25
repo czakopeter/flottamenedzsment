@@ -117,9 +117,9 @@ public class InvoiceService {
         rawInvoice.setBeginDate(LocalDate.parse(getFirstTagValue(root, "Begin"), DateTimeFormatter.ofPattern("uuuu.MM.dd.")));
         rawInvoice.setEndDate(LocalDate.parse(getFirstTagValue(root, "End"), DateTimeFormatter.ofPattern("uuuu.MM.dd.")));
         rawInvoice.setInvoiceNumber(getFirstTagValue(root, "InvNb"));
-        rawInvoice.setInvoiceNetAmount(Double.valueOf(getFirstTagValue(root, "InvTotalNetA").replace(',', '.')));
-        rawInvoice.setInvoiceTaxAmount(Double.valueOf(getFirstTagValue(root, "InvTotalTaxA").replace(',', '.')));
-        rawInvoice.setInvoiceGrossAmount(Double.valueOf(getFirstTagValue(root, "InvTotalGrossA").replace(',', '.')));
+        rawInvoice.setNetAmount(Double.valueOf(getFirstTagValue(root, "InvTotalNetA").replace(',', '.')));
+        rawInvoice.setTaxAmount(Double.valueOf(getFirstTagValue(root, "InvTotalTaxA").replace(',', '.')));
+        rawInvoice.setGrossAmount(Double.valueOf(getFirstTagValue(root, "InvTotalGrossA").replace(',', '.')));
 
         Element customerData = (Element) root.getElementsByTagName("CustomerData").item(0);
         rawInvoice.setCustomerName(getFirstTagValue(customerData, "Name"));
@@ -182,9 +182,9 @@ public class InvoiceService {
     invoice.setInvoiceNumber(rawInvoice.getInvoiceNumber());
     invoice.setBeginDate(rawInvoice.getBeginDate());
     invoice.setEndDate(rawInvoice.getEndDate());
-    invoice.setInvoiceNetAmount(rawInvoice.getInvoiceNetAmount());
-    invoice.setInvoiceTaxAmount(rawInvoice.getInvoiceTaxAmount());
-    invoice.setInvoiceGrossAmount(rawInvoice.getInvoiceGrossAmount());
+    invoice.setNetAmount(rawInvoice.getNetAmount());
+    invoice.setTaxAmount(rawInvoice.getTaxAmount());
+    invoice.setGrossAmount(rawInvoice.getGrossAmount());
     invoice.setCompany(participantRepository.findByName(rawInvoice.getCompanyName()).get());
 
     for (RawFeeItem rawFeeItem : rawInvoice.getFeeItems()) {
@@ -203,13 +203,20 @@ public class InvoiceService {
     feeItem.setDescription(rawFeeItem.getDescription());
     feeItem.setSubscription(rawFeeItem.getSubscription());
     feeItem.setTaxAmount(rawFeeItem.getTaxAmount());
-    feeItem.setTaxPercentage(rawFeeItem.getTaxPercentage());
-    feeItem.setTotalGrossAmount(rawFeeItem.getGrossAmount());
+    feeItem.setGrossAmount(rawFeeItem.getGrossAmount());
     return feeItem;
   }
   
   private RawFeeItem parseToFeeItem(Element feeItemElement) {
-    return new RawFeeItem(getFirstTagValue(feeItemElement, "ItemNr"), getFirstTagValue(feeItemElement, "Desc"), LocalDate.parse(getFirstTagValue(feeItemElement, "Begin"), DateTimeFormatter.ofPattern("uuuu.MM.dd.")), LocalDate.parse(getFirstTagValue(feeItemElement, "End"), DateTimeFormatter.ofPattern("uuuu.MM.dd.")), Double.valueOf(getFirstTagValue(feeItemElement, "NetA").replace(',', '.')), Double.valueOf(getFirstTagValue(feeItemElement, "TaxA").replace(',', '.')), Double.valueOf(getFirstTagValue(feeItemElement, "TaxP").replace(',', '.').replace("%", "")), Double.valueOf(getFirstTagValue(feeItemElement, "GrossA").replace(',', '.')));
+    RawFeeItem rawFeeItem = new RawFeeItem();
+    rawFeeItem.setSubscription(getFirstTagValue(feeItemElement, "ItemNr"));
+    rawFeeItem.setDescription(getFirstTagValue(feeItemElement, "Desc"));
+    rawFeeItem.setBeginDate(LocalDate.parse(getFirstTagValue(feeItemElement, "Begin"),DateTimeFormatter.ofPattern("uuuu.MM.dd.")));
+    rawFeeItem.setEndDate(LocalDate.parse(getFirstTagValue(feeItemElement, "End"), DateTimeFormatter.ofPattern("uuuu.MM.dd.")));
+    rawFeeItem.setNetAmount(Double.valueOf(getFirstTagValue(feeItemElement, "NetA").replace(',', '.')));
+    rawFeeItem.setTaxAmount(Double.valueOf(getFirstTagValue(feeItemElement, "TaxA").replace(',', '.')));
+    rawFeeItem.setGrossAmount(Double.valueOf(getFirstTagValue(feeItemElement, "GrossA").replace(',', '.')));
+    return rawFeeItem;
   }
 
   private String getFirstTagValue(Element root, String tagname) {
@@ -371,8 +378,8 @@ public class InvoiceService {
     return categoryService.findAll();
   }
 
-  public Category addOfMofifyCategory(long id, String name) {
-    return categoryService.addOfModifyCategory(id, name);
+  public Category addOrModifyCategory(long id, String name) {
+    return categoryService.addOrModifyCategory(id, name);
   }
 
   public List<DescriptionCategoryCoupler> findAllDescriptionCategoryCoupler() {
@@ -434,5 +441,9 @@ public class InvoiceService {
     if(optional.isPresent()) {
       rawInvoiceRepository.delete(optional.get());
     }
+  }
+
+  public void updateParticipant(Participant participant) {
+    participantRepository.save(participant);
   }
 }

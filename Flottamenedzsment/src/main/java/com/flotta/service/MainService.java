@@ -66,8 +66,8 @@ public class MainService {
     return invoiceService.findAllCategory();
   }
   
-  public Category addOfMofifyCategory(long id, String name) {
-    return invoiceService.addOfMofifyCategory(id, name);
+  public Category addOrModifyCategory(long id, String name) {
+    return invoiceService.addOrModifyCategory(id, name);
   }
 
   public void updateDescriptionCategoryCoupler(long id, List<String> descriptions, List<Long> categories, boolean available) {
@@ -176,7 +176,10 @@ public class MainService {
 
   public void deleteRawInvoiceByInvoiceNumber(String invoiceNumber) {
     invoiceService.deleteRawInvoiceByInvoiceNumber(invoiceNumber);
-
+  }
+  
+  public void updateParticipant(Participant participant) {
+    invoiceService.updateParticipant(participant);
   }
   
   // --- RECORD SERVIVE ---

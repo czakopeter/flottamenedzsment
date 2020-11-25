@@ -1,6 +1,6 @@
 package com.flotta.entity.switchTable;
 
-import com.flotta.entity.record.BasicEntity;
+import com.flotta.entity.BasicEntity;
 
 public class GenSW <V1 extends BasicEntity, V2 extends BasicEntity> {
   

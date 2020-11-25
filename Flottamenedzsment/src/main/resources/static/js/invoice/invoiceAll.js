@@ -100,6 +100,7 @@ function acceptInvoiceByCompany(btn) {
 
 function callbackOfAcceptInvoiceByCompany(data) {
 	if(!data.error) {
+		document.querySelector("#invoiceNumber" + data.text).classList.remove("hasRevisionNote");
 		document.querySelector("#invoiceNumber" + data.text).querySelector("[name=acceptBtn]").classList.add('collapse');
 		document.querySelector("#invoiceNumber" + data.text).querySelector("[name=deleteBtn]").classList.add('collapse');
 	}

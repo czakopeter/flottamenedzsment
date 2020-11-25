@@ -8,38 +8,19 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.flotta.entity.record.Subscription;
 import com.flotta.entity.record.User;
-import com.flotta.utility.Utility;
 
 @Entity
 @Table(name = "invoices")
-public class Invoice {
-
-  @Id
-  @GeneratedValue
-  private long id;
+public class Invoice extends BasicInvoice {
 
   @ManyToOne
   private Participant company;
-
-  private LocalDate beginDate;
-
-  private LocalDate endDate;
-
-  private String invoiceNumber;
-
-  private double invoiceNetAmount;
-
-  private double invoiceTaxAmount;
-
-  private double invoiceGrossAmount;
 
   private boolean acceptedByUsers;
 
@@ -48,25 +29,7 @@ public class Invoice {
   @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
   private List<InvoiceByUserAndPhoneNumber> invoicePart = new LinkedList<>();
 
-  public Invoice() {
-  }
-
-  public Invoice(LocalDate fromDate, LocalDate endDate, String invoiceNumber, Double invoiceNetAmount, Double invoiceTaxAmount, double invoiceGrossAmount) {
-    this.beginDate = fromDate;
-    this.endDate = endDate;
-    this.invoiceNumber = invoiceNumber;
-    this.invoiceNetAmount = invoiceNetAmount;
-    this.invoiceTaxAmount = invoiceTaxAmount;
-    this.invoiceGrossAmount = invoiceGrossAmount;
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
-  }
+  public Invoice() {}
 
   public Participant getCompany() {
     return company;
@@ -74,54 +37,6 @@ public class Invoice {
 
   public void setCompany(Participant company) {
     this.company = company;
-  }
-
-  public LocalDate getBeginDate() {
-    return beginDate;
-  }
-
-  public void setBeginDate(LocalDate beginDate) {
-    this.beginDate = beginDate;
-  }
-
-  public LocalDate getEndDate() {
-    return endDate;
-  }
-
-  public void setEndDate(LocalDate endDate) {
-    this.endDate = endDate;
-  }
-
-  public String getInvoiceNumber() {
-    return invoiceNumber;
-  }
-
-  public void setInvoiceNumber(String invoiceNumber) {
-    this.invoiceNumber = invoiceNumber;
-  }
-
-  public double getInvoiceNetAmount() {
-    return invoiceNetAmount;
-  }
-
-  public void setInvoiceNetAmount(double invoiceNetAmount) {
-    this.invoiceNetAmount = invoiceNetAmount;
-  }
-
-  public double getInvoiceTaxAmount() {
-    return invoiceTaxAmount;
-  }
-
-  public void setInvoiceTaxAmount(double invoiceTaxAmount) {
-    this.invoiceTaxAmount = invoiceTaxAmount;
-  }
-
-  public double getInvoiceGrossAmount() {
-    return invoiceGrossAmount;
-  }
-
-  public void setInvoiceGrossAmount(double invoiceGrossAmount) {
-    this.invoiceGrossAmount = invoiceGrossAmount;
   }
 
   public boolean isAcceptedByUsers() {
@@ -234,16 +149,6 @@ public class Invoice {
     return false;
   }
 
-//  public void setCategoryOfFees(DescriptionCategoryCoupler dcc) {
-//    for (FeeItem feeItem : getFeeItems()) {
-//      feeItem.setCategory(dcc.getCategoryByDescription(feeItem.getDescription()));
-//    }
-//  }
-
-  public String getPeriod() {
-    return Utility.getPeriod(beginDate, endDate);
-  }
-
   /**
    * @return List<String> that contains all different descriptions from FeeItems
    */
@@ -254,31 +159,5 @@ public class Invoice {
     }
     return new LinkedList<>(descriptions);
   }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((invoiceNumber == null) ? 0 : invoiceNumber.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    Invoice other = (Invoice) obj;
-    if (invoiceNumber == null) {
-      if (other.invoiceNumber != null)
-        return false;
-    } else if (!invoiceNumber.equals(other.invoiceNumber))
-      return false;
-    return true;
-  }
-  
 
 }

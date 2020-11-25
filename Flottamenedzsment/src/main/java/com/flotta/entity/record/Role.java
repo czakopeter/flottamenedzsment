@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.flotta.entity.BasicEntity;
+
 @Entity
 @Table(name = "roles")
 public class Role extends BasicEntity {

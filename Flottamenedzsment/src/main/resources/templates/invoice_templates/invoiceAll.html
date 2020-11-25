@@ -37,8 +37,8 @@
               <td name="invoiceNumber" th:text="${rawInvoice.invoiceNumber}"></td>
               <td name="beginDate" th:text="${rawInvoice.beginDate}"></td>
               <td name="endDate" th:text="${rawInvoice.endDate}"></td>
-              <td th:text="${rawInvoice.invoiceNetAmount}"></td>
-              <td th:text="${rawInvoice.invoiceGrossAmount}"></td>
+              <td th:text="${rawInvoice.netAmount} + ' Ft'"></td>
+              <td th:text="${rawInvoice.grossAmount} + ' Ft'"></td>
               <td class="text-right"><a th:if="${rawInvoice.hasProblem()}" href="#"
                 class="dropdown" data-toggle="dropdown" role="button" aria-haspopup="true"
                 aria-expanded="false"
@@ -92,8 +92,8 @@
             <td name="invoiceNumber" th:text="${invoice.invoiceNumber}"></td>
             <td name="beginDate" th:text="${invoice.beginDate}"></td>
             <td name="endDate" th:text="${invoice.endDate}"></td>
-            <td th:text="${invoice.invoiceNetAmount}"></td>
-            <td th:text="${invoice.invoiceGrossAmount}"></td>
+            <td th:text="${invoice.netAmount}  + ' Ft'"></td>
+            <td th:text="${invoice.grossAmount}  + ' Ft'"></td>
             <td class="text-right">
               <button name="acceptBtn" th:unless="${invoice.acceptedByCompany}" type="button" class="btn btn-sm btn-success"
                 onclick="acceptInvoiceByCompany(this)"

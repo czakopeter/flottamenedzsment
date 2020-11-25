@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.flotta.entity.record.BasicEntity;
+import com.flotta.entity.BasicEntity;
 import com.flotta.entity.record.User;
 import com.flotta.entity.switchTable.BasicSwitchTable;
 import com.flotta.entity.switchTable.UserDev;

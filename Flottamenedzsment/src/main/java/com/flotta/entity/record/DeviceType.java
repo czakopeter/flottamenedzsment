@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.flotta.entity.BasicEntity;
+
 @Entity
 @Table(name = "deviceTypes")
 public class DeviceType extends BasicEntity {

@@ -15,11 +15,11 @@ function modifyNotes() {
 }
 
 function showRevisionBtn() {
-	document.querySelector("#revisionBtn").style.visibility = 'visible';
+	document.querySelector("#revisionBtn").disabled = false;
 }
 
 function hideRevisionBtn() {
-	document.querySelector("#revisionBtn").style.visibility = 'hidden';
+	document.querySelector("#revisionBtn").disabled = true;
 }
 
 

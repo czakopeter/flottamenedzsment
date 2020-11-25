@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import javax.persistence.MappedSuperclass;
 
+import com.flotta.entity.BasicEntity;
+
 @MappedSuperclass
 public class BasicEntityWithCreateDate extends BasicEntity {
   

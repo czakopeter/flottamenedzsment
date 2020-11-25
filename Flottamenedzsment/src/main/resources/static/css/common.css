@@ -130,6 +130,14 @@ a img, button img {
 	background-color: #ffdddd;
 }
 
+.table tbody tr.hasRevisionNote:hover {
+	background-color: #ffdddd;
+}
+
+.table tbody.hasRevisionNote:hover {
+	background-color: #ffdddd;
+}
+
 .uppercase {
 	text-transform: uppercase;
 }

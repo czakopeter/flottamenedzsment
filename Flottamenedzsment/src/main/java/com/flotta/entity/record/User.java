@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.flotta.entity.BasicEntity;
 import com.flotta.entity.invoice.ChargeRatioByCategory;
 import com.flotta.entity.switchTable.UserDev;
 import com.flotta.entity.switchTable.UserSub;

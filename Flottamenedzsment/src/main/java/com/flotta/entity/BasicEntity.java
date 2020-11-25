@@ -1,4 +1,4 @@
-package com.flotta.entity.record;
+package com.flotta.entity;
 
 
 import javax.persistence.GeneratedValue;
@@ -7,17 +7,17 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public class BasicEntity {
+public abstract class BasicEntity {
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  protected Long id;
+  protected long id;
   
-  public Long getId() {
+  public long getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(long id) {
     this.id = id;
   }
   
@@ -34,5 +34,4 @@ public class BasicEntity {
       return false;
     return true;
   }
-  
 }

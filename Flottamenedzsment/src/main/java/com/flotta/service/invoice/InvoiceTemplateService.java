@@ -11,18 +11,18 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.flotta.entity.invoice.MyNode;
-import com.flotta.repository.invoice.BillTemplateRepository;
+import com.flotta.repository.invoice.InvoiceTemplateRepository;
 
 @Service
 public class InvoiceTemplateService {
 
   //TODO function to add new template or modify
   
-  private BillTemplateRepository billTemplateRepository;
+  private InvoiceTemplateRepository invoiceTemplateRepository;
 
   @Autowired
-  public void setBillTemplateRepository(BillTemplateRepository billTemplateRepository) {
-    this.billTemplateRepository = billTemplateRepository;
+  public void setBillTemplateRepository(InvoiceTemplateRepository invoiceTemplateRepository) {
+    this.invoiceTemplateRepository = invoiceTemplateRepository;
     createBasicTemplate();
   }
 
@@ -58,17 +58,15 @@ public class InvoiceTemplateService {
     invoiceData.appendChild("InvTotalTaxA");
     invoiceData.appendChild("InvTotalGrossA");
 
-    billTemplateRepository.save(root);
-
-//    root.show();
+    invoiceTemplateRepository.save(root);
   }
-
+  
   public List<MyNode> findAllRoot() {
-    return billTemplateRepository.findAllByParentIsNull();
+    return invoiceTemplateRepository.findAllByParentIsNull();
   }
 
   public List<MyNode> findAllRootByName(String name) {
-    return billTemplateRepository.findAllByParentIsNullAndName(name);
+    return invoiceTemplateRepository.findAllByParentIsNullAndName(name);
   }
 
   public boolean invoiceTreeFormalCheck(Element root) {
@@ -78,7 +76,6 @@ public class InvoiceTemplateService {
     }
     
     for(MyNode template : templates) {
-//      template.show();
       if (equals(root.getChildNodes(), template.getChild())) {
         return true;
       }

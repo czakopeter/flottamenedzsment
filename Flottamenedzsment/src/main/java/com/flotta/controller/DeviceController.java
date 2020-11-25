@@ -1,7 +1,5 @@
 package com.flotta.controller;
 
-
-
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;

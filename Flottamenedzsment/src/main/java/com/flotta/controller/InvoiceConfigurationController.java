@@ -48,13 +48,13 @@ public class InvoiceConfigurationController {
     model.addAttribute("chargeRatios", service.findAllChargeRatio());
     model.addAttribute("participants", service.findAllParticipant());
     model.addAttribute("users", service.findAllUser());
-    return TEMPLATE_PATH + "/invoiceConfiguration";
+    return "/invoice_config_templates/invoiceConfiguration";
   }
   
   @PostMapping("/invoiceConfiguration/category/addOrModify")
   @ResponseBody
   public Category addOrModifyCategory(@RequestParam("id") long id, @RequestParam("name") String name) {
-    return service.addOfMofifyCategory(id, name);
+    return service.addOrModifyCategory(id, name);
   }
   
 //  @GetMapping("finance/invoiceDescriptionCategoryCoupler/all")
@@ -167,12 +167,6 @@ public class InvoiceConfigurationController {
     return new ResponseTransfer(String.valueOf(chargeRatioId));
   }
   
-//  @GetMapping("/finance/participant/all")
-//  public String listParticipant(Model model) {
-//    model.addAttribute("participants", service.findAllParticipant());
-//    return TEMPLATE_PATH + "/participantAll";
-//  }
-  
   @GetMapping("/invoiceConfiguration/participant/new")
   public String prepareAddingParticipant(Model model) {
     model.addAttribute("participant", new Participant());
@@ -203,7 +197,9 @@ public class InvoiceConfigurationController {
   }
   
   @PostMapping("/invoiceConfiguration/participant/{id}")
-  public String editParticipant(Model model, @ModelAttribute("participant") Participant participant, @PathVariable("id") long id) {
+  public String editParticipant(Model model, @PathVariable("id") long id, @ModelAttribute("participant") Participant participant) {
+    service.updateParticipant(participant);
+//    service.editParticipant(id, participant);
 //    Optional<Participant> participant = service.findParticipantById(id);
 //    if(participant.isPresent()) {
 //      model.addAttribute("participant", participant.get());
