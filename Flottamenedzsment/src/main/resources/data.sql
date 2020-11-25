@@ -12,8 +12,8 @@ INSERT INTO Sims (imei, pin, puk, status) VALUES ('8936304419070454111', '1234',
 INSERT INTO Subscriptions (number, create_date, first_available_date) VALUES ('202563364', to_date('20-01-01', 'RR-MM-DD'), to_date('20-01-10', 'RR-MM-DD'))
 INSERT INTO sub_sim_st (sub_id, sim_id, begin_date) VALUES (1, 1, to_date('20-01-01', 'RR-MM-DD'))
 
-INSERT INTO Device_types (brand, model, name, sim_number, microsd, visible) VALUES ('Samsung', 'J330', 'Samsung J3', 1, true, true)
-INSERT INTO Device_types (brand, model, name, sim_number, microsd, visible) VALUES ('Motorola', 'C380', 'Motorola C380', 1, false, false)
+INSERT INTO Device_types (brand, model, name, visible) VALUES ('Samsung', 'J330', 'Samsung J3', true)
+INSERT INTO Device_types (brand, model, name, visible) VALUES ('Motorola', 'C380', 'Motorola C380', false)
 
 INSERT INTO Devices (serial_number, type_id, create_date, first_available_date) VALUES ('R58J900J1W', 1, to_date('20-01-01', 'RR-MM-DD'), to_date('20-01-10', 'RR-MM-DD'))
 

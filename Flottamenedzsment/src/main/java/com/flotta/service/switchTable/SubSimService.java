@@ -61,7 +61,7 @@ public class SubSimService {
         subSimRepository.save(last);
       }
     } else if(!equals(last, sub, sim) && date.isAfter(last.getBeginDate())) {
-      last.getSim().setReason(simChangeReason);
+      last.getSim().setChangeReason(simChangeReason);
       subSimRepository.save(last);
       subSimRepository.save(new SubSim(sub, sim, date));
     }

@@ -114,8 +114,24 @@ public class User extends BasicEntity {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+	
+	public UserStatusEnum getStatus() {
+    return status;
+  }
 
-	public void addRoles(Role role) {
+  public void setStatus(UserStatusEnum status) {
+    this.status = status;
+  }
+
+  public ChargeRatioByCategory getChargeRatio() {
+    return chargeRatio;
+  }
+
+  public void setChargeRatio(ChargeRatioByCategory chargeRatio) {
+    this.chargeRatio = chargeRatio;
+  }
+
+	public void addRole(Role role) {
 		if (this.roles == null) 
 			this.roles = new HashSet<>();
 		this.roles.add(role);
@@ -147,22 +163,6 @@ public class User extends BasicEntity {
     return status.toString();
   }
   
-  public UserStatusEnum getStatus() {
-    return status;
-  }
-
-  public void setStatus(UserStatusEnum status) {
-    this.status = status;
-  }
-
-  public ChargeRatioByCategory getChargeRatio() {
-    return chargeRatio;
-  }
-
-  public void setChargeRatio(ChargeRatioByCategory chargeRatio) {
-    this.chargeRatio = chargeRatio;
-  }
-
   @Override
   public int hashCode() {
     final int prime = 31;

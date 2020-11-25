@@ -18,12 +18,8 @@ public class DeviceType extends BasicEntity {
   
   private String name;
 
-  private int simNumber;
-
   private boolean visible;
   
-  private boolean microsd;
-
   @OneToMany(mappedBy = "deviceType")
   private List<Device> devices;
 
@@ -62,22 +58,6 @@ public class DeviceType extends BasicEntity {
 
   public void setName(String name) {
     this.name = name.trim().replaceAll("\\s+", " ");
-  }
-
-  public int getSimNumber() {
-    return simNumber;
-  }
-
-  public void setSimNumber(int simNumber) {
-    this.simNumber = simNumber;
-  }
-
-  public boolean isMicrosd() {
-    return microsd;
-  }
-
-  public void setMicrosd(boolean microsd) {
-    this.microsd = microsd;
   }
 
   public List<Device> getDevices() {

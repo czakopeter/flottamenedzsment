@@ -192,7 +192,7 @@ public class Subscription extends BasicEntityWithCreateDate {
         } else {
           if (date.isAfter(lastModDate)) {
             last.setEndDate(date.minusDays(1));
-            last.getSim().setReason(reason);
+            last.getSim().setChangeReason(reason);
             last.getSim().setStatus(SimStatusEnum.CHANGED);
             sim.setStatus(SimStatusEnum.ACTIVE);
             subSim.put(date, new SubSim(this, sim, date));

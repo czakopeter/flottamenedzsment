@@ -138,7 +138,7 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
   public boolean firstAdminRegistration(User user) {
     String password = generateKey(16);
     user.setEnabled(false);
-    user.addRoles(roleRepository.findByRole("ADMIN"));
+    user.addRole(roleRepository.findByRole("ADMIN"));
     user.setStatus(UserStatusEnum.WAITING_FOR_ACTIVATION);
     user.setPassword(passwordEncoder.encode(password));
     user.setActivationKey(generateKey(16));
