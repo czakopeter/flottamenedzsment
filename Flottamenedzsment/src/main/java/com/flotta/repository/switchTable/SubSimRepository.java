@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.flotta.entity.record.Subscription;
-import com.flotta.entity.switchTable.SubSim;
+import com.flotta.model.registry.Subscription;
+import com.flotta.model.switchTable.SubSim;
 
 public interface SubSimRepository extends CrudRepository<SubSim, Long> {
 

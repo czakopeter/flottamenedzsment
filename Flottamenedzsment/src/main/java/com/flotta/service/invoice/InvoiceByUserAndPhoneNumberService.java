@@ -7,13 +7,14 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.flotta.entity.invoice.Invoice;
-import com.flotta.entity.invoice.InvoiceByUserAndPhoneNumber;
-import com.flotta.entity.record.Subscription;
-import com.flotta.entity.record.User;
+import com.flotta.model.invoice.InvoiceByUserAndPhoneNumber;
+import com.flotta.model.registry.User;
 import com.flotta.repository.invoice.InvoiceByUserAndPhoneNumberRepository;
-import com.flotta.utility.Utility;
 
+/**
+ * @author CzP
+ *
+ */
 @Service
 public class InvoiceByUserAndPhoneNumberService {
   
@@ -70,9 +71,15 @@ public class InvoiceByUserAndPhoneNumberService {
   public InvoiceByUserAndPhoneNumber getAcceptedInvoiceOfUserById(User user, long id) {
     return invoiceByUserAndPhoneNumberRepository.findByIdAndUserAndAcceptedByCompanyTrueAndAcceptedByUserTrue(id, user);
   }
-
+  
+  
+  /**
+   * Visszaadja a felhasználóhoz tartózó számlatételeket, melyek a cég oldaláról már elfogadásra kerültek
+   * A lista rendeztett, előre kerülnek a felhasználó által még nem elfogadottak, azon belül meg dátum szerint növekvő a sorrend
+   * @param user
+   * @return Felhasználóhoz tartózó számlatételeket listája
+   */
   public List<InvoiceByUserAndPhoneNumber> getAcceptedByCompanyInvoicesOfUser(User user) {
-//    return invoiceByUserAndPhoneNumberRepository.findAllByUser(user);
     return invoiceByUserAndPhoneNumberRepository.findAllByUserAndAcceptedByCompanyTrueOrderByAcceptedByUserAscBeginDateAsc(user);
   }
 }

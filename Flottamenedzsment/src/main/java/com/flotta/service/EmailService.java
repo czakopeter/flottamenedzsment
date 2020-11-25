@@ -13,7 +13,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import com.flotta.service.record.ServiceWithMsg;
+import com.flotta.service.registry.ServiceWithMsg;
 
 @Service
 public class EmailService extends ServiceWithMsg {

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.flotta.entity.record.Sim;
+import com.flotta.model.registry.Sim;
 import com.flotta.status.SimStatus;
 
 public interface SimStatusRepository extends CrudRepository<SimStatus, Long> {

@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.flotta.entity.invoice.DescriptionCategoryCoupler;
+import com.flotta.model.invoice.DescriptionCategoryCoupler;
 
 
 public interface DescriptionCategoryCouplerRepository extends CrudRepository<DescriptionCategoryCoupler, Long>{

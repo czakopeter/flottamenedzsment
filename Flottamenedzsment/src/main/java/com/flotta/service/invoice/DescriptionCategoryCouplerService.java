@@ -12,11 +12,11 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.flotta.entity.invoice.Category;
-import com.flotta.entity.invoice.DescriptionCategoryCoupler;
-import com.flotta.entity.invoice.FeeItem;
-import com.flotta.entity.invoice.Invoice;
 import com.flotta.exception.invoice.UnknonwFeeItemDescriptionException;
+import com.flotta.model.invoice.Category;
+import com.flotta.model.invoice.DescriptionCategoryCoupler;
+import com.flotta.model.invoice.FeeItem;
+import com.flotta.model.invoice.Invoice;
 import com.flotta.repository.invoice.DescriptionCategoryCouplerRepository;
 
 @Service

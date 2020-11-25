@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.flotta.entity.viewEntity.DeviceToView;
+import com.flotta.model.viewEntity.DeviceToView;
 import com.flotta.service.MainService;
 
 @Controller

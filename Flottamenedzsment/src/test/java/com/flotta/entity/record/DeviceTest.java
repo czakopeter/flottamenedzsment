@@ -6,6 +6,9 @@ import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
 
+import com.flotta.model.registry.Device;
+import com.flotta.model.registry.User;
+
 
 class DeviceTest {
 

@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.flotta.entity.record.Subscription;
-import com.flotta.entity.viewEntity.DeviceToView;
-import com.flotta.entity.viewEntity.SubscriptionToView;
+import com.flotta.model.registry.Subscription;
+import com.flotta.model.viewEntity.DeviceToView;
+import com.flotta.model.viewEntity.SubscriptionToView;
 import com.flotta.service.MainService;
 
 @Controller

@@ -6,12 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.flotta.entity.record.Sim;
-import com.flotta.entity.record.Subscription;
-import com.flotta.entity.switchTable.SubSim;
+import com.flotta.model.registry.Sim;
+import com.flotta.model.registry.Subscription;
+import com.flotta.model.switchTable.SubSim;
 import com.flotta.repository.switchTable.SubSimRepository;
-import com.flotta.service.record.SimService;
-import com.flotta.service.record.SubscriptionService;
+import com.flotta.service.registry.SimService;
+import com.flotta.service.registry.SubscriptionService;
 
 @Service
 public class SubSimService {

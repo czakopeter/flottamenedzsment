@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.flotta.entity.invoice.MyNode;
+import com.flotta.model.invoice.MyNode;
 
 public interface InvoiceTemplateRepository extends CrudRepository<MyNode, Long> {
 

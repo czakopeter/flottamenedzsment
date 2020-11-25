@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.flotta.entity.note.SubNote;
-import com.flotta.entity.record.Subscription;
+import com.flotta.model.note.SubNote;
+import com.flotta.model.registry.Subscription;
 
 public interface SubNoteRepository extends CrudRepository<SubNote, Long>{
 

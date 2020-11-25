@@ -8,10 +8,10 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.flotta.entity.record.Device;
-import com.flotta.entity.record.User;
-import com.flotta.entity.switchTable.UserDev;
-import com.flotta.entity.viewEntity.DeviceToView;
+import com.flotta.model.registry.Device;
+import com.flotta.model.registry.User;
+import com.flotta.model.switchTable.UserDev;
+import com.flotta.model.viewEntity.DeviceToView;
 import com.flotta.repository.switchTable.UserDevRepository;
 
 /**

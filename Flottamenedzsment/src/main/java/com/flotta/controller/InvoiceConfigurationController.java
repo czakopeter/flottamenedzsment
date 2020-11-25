@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.flotta.entity.invoice.Category;
-import com.flotta.entity.invoice.ChargeRatioByCategory;
-import com.flotta.entity.invoice.DescriptionCategoryCoupler;
-import com.flotta.entity.invoice.Participant;
-import com.flotta.entity.record.User;
+import com.flotta.model.invoice.Category;
+import com.flotta.model.invoice.ChargeRatioByCategory;
+import com.flotta.model.invoice.DescriptionCategoryCoupler;
+import com.flotta.model.invoice.Participant;
+import com.flotta.model.registry.User;
 import com.flotta.service.MainService;
 import com.flotta.utility.ResponseTransfer;
 

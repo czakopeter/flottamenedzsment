@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.flotta.entity.record.Subscription;
-import com.flotta.entity.record.User;
-import com.flotta.entity.switchTable.UserSub;
+import com.flotta.model.registry.Subscription;
+import com.flotta.model.registry.User;
+import com.flotta.model.switchTable.UserSub;
 
 public interface UserSubRepository extends CrudRepository<UserSub, Long> {
 

@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.flotta.entity.invoice.Category;
+import com.flotta.model.invoice.Category;
 
 public interface CategoryRepository extends CrudRepository<Category, Long> {
 

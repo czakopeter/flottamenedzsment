@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.flotta.entity.invoice.RawInvoice;
+import com.flotta.model.invoice.RawInvoice;
 
 public interface RawInvoiceRepository extends CrudRepository<RawInvoice, Long> {
   

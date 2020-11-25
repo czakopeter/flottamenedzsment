@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.flotta.entity.note.DevNote;
-import com.flotta.entity.record.Device;
+import com.flotta.model.note.DevNote;
+import com.flotta.model.registry.Device;
 import com.flotta.repository.note.DevNoteRepository;
 
 @Service

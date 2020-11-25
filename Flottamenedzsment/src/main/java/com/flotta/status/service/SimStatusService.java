@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.flotta.entity.record.Sim;
 import com.flotta.enums.SimStatusEnum;
+import com.flotta.model.registry.Sim;
 import com.flotta.status.SimStatus;
 import com.flotta.status.repository.SimStatusRepository;
 

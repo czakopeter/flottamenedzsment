@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.flotta.entity.invoice.Participant;
+import com.flotta.model.invoice.Participant;
 
 public interface ParticipantRepository extends CrudRepository<Participant, Long> {
   

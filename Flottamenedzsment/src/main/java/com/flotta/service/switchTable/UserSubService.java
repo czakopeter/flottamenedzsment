@@ -7,12 +7,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.flotta.entity.record.Subscription;
-import com.flotta.entity.record.User;
-import com.flotta.entity.switchTable.UserSub;
-import com.flotta.entity.viewEntity.SubscriptionToView;
+import com.flotta.model.registry.Subscription;
+import com.flotta.model.registry.User;
+import com.flotta.model.switchTable.UserSub;
+import com.flotta.model.viewEntity.SubscriptionToView;
 import com.flotta.repository.switchTable.UserSubRepository;
-import com.flotta.service.record.SubscriptionService;
+import com.flotta.service.registry.SubscriptionService;
 
 @Service
 public class UserSubService {

@@ -27,22 +27,22 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.flotta.entity.invoice.Category;
-import com.flotta.entity.invoice.ChargeRatioByCategory;
-import com.flotta.entity.invoice.DescriptionCategoryCoupler;
-import com.flotta.entity.invoice.FeeItem;
-import com.flotta.entity.invoice.Invoice;
-import com.flotta.entity.invoice.InvoiceByUserAndPhoneNumber;
-import com.flotta.entity.invoice.Participant;
-import com.flotta.entity.invoice.RawFeeItem;
-import com.flotta.entity.invoice.RawInvoice;
-import com.flotta.entity.record.Subscription;
-import com.flotta.entity.record.User;
 import com.flotta.exception.invoice.FileUploadException;
+import com.flotta.model.invoice.Category;
+import com.flotta.model.invoice.ChargeRatioByCategory;
+import com.flotta.model.invoice.DescriptionCategoryCoupler;
+import com.flotta.model.invoice.FeeItem;
+import com.flotta.model.invoice.Invoice;
+import com.flotta.model.invoice.InvoiceByUserAndPhoneNumber;
+import com.flotta.model.invoice.Participant;
+import com.flotta.model.invoice.RawFeeItem;
+import com.flotta.model.invoice.RawInvoice;
+import com.flotta.model.registry.Subscription;
+import com.flotta.model.registry.User;
 import com.flotta.repository.invoice.InvoiceRepository;
 import com.flotta.repository.invoice.ParticipantRepository;
 import com.flotta.repository.invoice.RawInvoiceRepository;
-import com.flotta.service.record.SubscriptionServiceOnlyInfo;
+import com.flotta.service.registry.SubscriptionServiceOnlyInfo;
 
 /**
  * @author CzP

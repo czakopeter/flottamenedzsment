@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.flotta.entity.record.Subscription;
 import com.flotta.enums.SubscriptionStatusEnum;
+import com.flotta.model.registry.Subscription;
 import com.flotta.status.SubscriptionStatus;
 import com.flotta.status.repository.SubscriptionStatusRepository;
 

@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.flotta.entity.note.DevNote;
-import com.flotta.entity.record.Device;
+import com.flotta.model.note.DevNote;
+import com.flotta.model.registry.Device;
 
 public interface DevNoteRepository extends CrudRepository<DevNote, Long>{
 

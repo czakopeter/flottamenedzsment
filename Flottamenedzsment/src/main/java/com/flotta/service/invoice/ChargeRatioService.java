@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.flotta.entity.invoice.Category;
-import com.flotta.entity.invoice.ChargeRatioByCategory;
+import com.flotta.model.invoice.Category;
+import com.flotta.model.invoice.ChargeRatioByCategory;
 import com.flotta.repository.invoice.ChargeRatioRepository;
 
 @Service

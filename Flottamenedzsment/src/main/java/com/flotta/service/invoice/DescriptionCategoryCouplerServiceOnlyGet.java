@@ -4,7 +4,7 @@ package com.flotta.service.invoice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.flotta.entity.invoice.DescriptionCategoryCoupler;
+import com.flotta.model.invoice.DescriptionCategoryCoupler;
 import com.flotta.repository.invoice.DescriptionCategoryCouplerRepository;
 
 @Service

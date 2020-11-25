@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.flotta.entity.invoice.Invoice;
 import com.flotta.exception.invoice.FileUploadException;
+import com.flotta.model.invoice.Invoice;
 import com.flotta.service.MainService;
 import com.flotta.utility.ResponseTransfer;
 

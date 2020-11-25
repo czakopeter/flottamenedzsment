@@ -10,7 +10,7 @@ import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.flotta.entity.switchTable.BasicSwitchTable;
+import com.flotta.model.switchTable.BasicSwitchTable;
 
 class UtilityTest {
   

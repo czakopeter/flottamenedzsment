@@ -1,7 +1,12 @@
+INSERT INTO Roles (role) VALUES ('ADMIN')
+INSERT INTO Roles (role) VALUES ('BASIC')
 INSERT INTO Roles (role) VALUES ('USER_MNGR')
 INSERT INTO Roles (role) VALUES ('SUBSCRIPTION_MNGR')
 INSERT INTO Roles (role) VALUES ('DEVICE_MNGR')
 INSERT INTO Roles (role) VALUES ('FINANCE_MNGR')
+
+INSERT INTO Users_roles (user_id, role_id) VALUES (1, 1)
+INSERT INTO Users_roles (user_id, role_id) VALUES (1, 2)
 
 INSERT INTO Sims (imei, pin, puk, status) VALUES ('8936304419070454006', '0123', '0123456789', 1)
 INSERT INTO Sims (imei, pin, puk, status) VALUES ('8936304419070454111', '1234', '1234567890', 0)

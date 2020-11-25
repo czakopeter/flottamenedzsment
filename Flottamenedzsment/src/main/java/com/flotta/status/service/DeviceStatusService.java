@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.flotta.entity.record.Device;
 import com.flotta.enums.DeviceStatusEnum;
+import com.flotta.model.registry.Device;
 import com.flotta.status.DeviceStatus;
 import com.flotta.status.repository.DeviceStatusRepository;
 
