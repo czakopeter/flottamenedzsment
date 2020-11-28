@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.client.TestRestTemplate;
+//import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 
 import com.flotta.controller.SubscriptionController;
@@ -17,8 +17,8 @@ class SubscriptionControllerTest {
   @Autowired
   private SubscriptionController subscriptionController;
 
-  @Autowired
-  private TestRestTemplate restTemplate;
+//  @Autowired
+//  private TestRestTemplate restTemplate;
   
   @LocalServerPort
   private int PORT;

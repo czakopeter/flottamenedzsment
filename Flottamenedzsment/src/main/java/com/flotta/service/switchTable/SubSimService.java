@@ -10,23 +10,16 @@ import com.flotta.model.registry.Sim;
 import com.flotta.model.registry.Subscription;
 import com.flotta.model.switchTable.SubSim;
 import com.flotta.repository.switchTable.SubSimRepository;
-import com.flotta.service.registry.SimService;
-import com.flotta.service.registry.SubscriptionService;
 
 @Service
 public class SubSimService {
 
   private SubSimRepository subSimRepository;
   
-  private SubscriptionService subscriptionService;
-  
-  private SimService simService;
 
   @Autowired
-  SubSimService(SubSimRepository subSimRepository, SubscriptionService subscriptionService, SimService simService) {
+  SubSimService(SubSimRepository subSimRepository) {
     this.subSimRepository = subSimRepository;
-    this.subscriptionService = subscriptionService;
-    this.simService = simService;
   }
   
   public List<SubSim> findAllBySub(Subscription s) {
@@ -76,34 +69,5 @@ public class SubSimService {
     }
     return ss.getSim().getImei().equalsIgnoreCase(sim.getImei());
   }
-  
 
-//  public void update(long subId, Long simId, LocalDate date, String imeiChangeReason) {
-//    SubSim last = subSimRepository.findFirstBySubOrderByConnectDesc(subscriptionService.findById(subId));
-//    switch (imeiChangeReason) {
-//    case "CHANGED":
-//    case "STOLE":
-//    case "LOST":
-//      if(date.isEqual(last.getConnect())) {
-//        //utolsó visszaállítása FREE állapotba + hozzá tartozó SubSim törlése
-//        simService.removeLastStatusModification(last.getSim().getId());
-//        last.setSim(null);
-//        last.setSub(null);
-//        subSimRepository.delete(last);
-//        //az új utolsó cseréje okának módosítása
-//        last = subSimRepository.findFirstBySubOrderByConnectDesc(subscriptionService.findById(subId));
-//        simService.modifySimLastStatus(last.getSim().getId(), imeiChangeReason);
-//        //új SubSim létrehozása a paraméterek szerint + sim aktiválása
-//        subSimRepository.save(new SubSim(subscriptionService.findById(subId), simService.findById(simId), date));
-//        simService.findById(simId).addStatus(SimStatusEnum.ACTIVE, date);
-//      } else {
-//        last.getSim().addStatus(SimStatusEnum.valueOf(imeiChangeReason), date);
-//        subSimRepository.save(new SubSim(subscriptionService.findById(subId), simService.findById(simId), date));
-//        simService.findById(simId).addStatus(SimStatusEnum.ACTIVE, date);
-//      }
-//      break;
-//    default:
-//      break;
-//    }
-//  }
 }

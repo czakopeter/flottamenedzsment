@@ -278,10 +278,6 @@ public class InvoiceService {
     return invoiceRepository.findById(id).orElse(null);
   }
 
-  public void save(List<FeeItem> fees) {
-    feeItemService.save(fees);
-  }
-
   public List<InvoiceByUserAndPhoneNumber> getPendingInvoicesOfUser(User user) {
     return invoiceByUserAndPhoneNumberService.getPendingInvoicesOfUser(user);
 //    return feeItemService.getPendingInvoicesOfCurrentUser(user);

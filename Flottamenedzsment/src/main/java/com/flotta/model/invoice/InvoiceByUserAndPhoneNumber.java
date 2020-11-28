@@ -13,7 +13,6 @@ import javax.persistence.Table;
 
 import com.flotta.model.registry.Subscription;
 import com.flotta.model.registry.User;
-import com.flotta.utility.Utility;
 
 @Entity
 @Table(name = "invoice_parts")

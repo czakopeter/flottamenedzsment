@@ -1,7 +1,5 @@
 package com.flotta.service.invoice;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +14,6 @@ public class FeeItemService {
   @Autowired
   public void setFeeItemRepository(FeeItemRepository feeItemRepository) {
     this.feeItemRepository = feeItemRepository;
-  }
-  
-  public List<FeeItem> findAllByUserId(long userId) {
-    return feeItemRepository.findAllByUserId(userId);
-  }
-
-  public void save(List<FeeItem> fees) {
-    feeItemRepository.saveAll(fees);
-    
   }
 
   public FeeItem getById(long id) {

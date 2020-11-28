@@ -65,7 +65,7 @@ public class MainService {
   public List<Category> findAllCategory() {
     return invoiceService.findAllCategory();
   }
-  
+
   public Category addOrModifyCategory(long id, String name) {
     return invoiceService.addOrModifyCategory(id, name);
   }
@@ -173,11 +173,11 @@ public class MainService {
   public void deleteRawInvoiceByInvoiceNumber(String invoiceNumber) {
     invoiceService.deleteRawInvoiceByInvoiceNumber(invoiceNumber);
   }
-  
+
   public void updateParticipant(Participant participant) {
     invoiceService.updateParticipant(participant);
   }
-  
+
   // --- RECORD SERVIVE ---
 
   private User getCurrentUser() {
@@ -211,7 +211,7 @@ public class MainService {
   public String getDeviceServiceError() {
     return recordService.getDeviceServiceError();
   }
-  
+
 //-------- DEVICE TYPE SERVICE --------
 
   public List<DeviceType> findAllDeviceTypes() {
@@ -351,25 +351,25 @@ public class MainService {
   public boolean requestNewPassword(String email) {
     return recordService.requestNewPassword(email);
   }
-  
+
   public User editChargeRatioOfUser(long userId, long chargeRatioId) {
     Optional<ChargeRatioByCategory> optionalChargeRatio = invoiceService.findChargeRatioById(chargeRatioId);
-    if(optionalChargeRatio.isPresent()) {
+    if (optionalChargeRatio.isPresent()) {
       return recordService.editChargeRatioOfUser(userId, optionalChargeRatio.get());
     }
     return null;
   }
 
   // --- SWITCH TABLE SERVICE ---
-  
+
   public List<SubscriptionToView> findAllSubscriptionOfCurrentUser() {
     return switchTableService.findAllCurrentSubscriptionByUser(getCurrentUser());
   }
-  
+
   public List<DeviceToView> findAllDeviceOfCurrentUser() {
     return switchTableService.findAllDeviceByUser(getCurrentUser());
   }
-  
+
   public List<DeviceToView> findAllCurrentDeviceByUser(long userId) {
     return switchTableService.findAllCurrentDeviceByUser(recordService.findUserById(userId));
   }

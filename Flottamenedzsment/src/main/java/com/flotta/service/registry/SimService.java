@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.flotta.enums.SimStatusEnum;
 import com.flotta.model.registry.Sim;
 import com.flotta.repository.registry.SimRepository;
-import com.flotta.status.service.SimStatusService;
 
 @Service
 public class SimService extends ServiceWithMsg {
@@ -17,18 +16,11 @@ public class SimService extends ServiceWithMsg {
 	
 	private SimRepository simRepository;
 	
-	private SimStatusService simStatusService;
-	
 	@Autowired
 	public void setSimRepository(SimRepository simRepository) {
     this.simRepository = simRepository;
   }
 	
-	@Autowired
-  public void setSimStatusService(SimStatusService simStatusService) {
-    this.simStatusService = simStatusService;
-  }
-
   public List<Sim> findAll() {
     return simRepository.findAll(); 
   }
