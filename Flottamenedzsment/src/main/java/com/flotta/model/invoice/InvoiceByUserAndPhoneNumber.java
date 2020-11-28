@@ -160,7 +160,7 @@ public class InvoiceByUserAndPhoneNumber extends BasicAccountElement {
     return acceptedByCompany && acceptedByUser;
   }
 
-  public void updateAmountsByFeeItems() {
+  public void setAmountsByFeeItems() {
     this.netAmount = 0;
     this.taxAmount = 0;
     this.userGrossAmount = 0;
@@ -171,10 +171,6 @@ public class InvoiceByUserAndPhoneNumber extends BasicAccountElement {
     }
   }
   
-  public String getPeriod() {
-    return Utility.getPeriod(beginDate, endDate);
-  }
-
   public void setReviewNoteOfFeeItem(long id, String note) {
     for(FeeItem feeItem : feeItems) {
       if(feeItem.getId() == id) {
@@ -183,15 +179,15 @@ public class InvoiceByUserAndPhoneNumber extends BasicAccountElement {
     }
   }
 
-  public boolean hasRevisionNote() {
+  public boolean hasReviewNote() {
     return reviewNote != null;
   }
   
-  public boolean hasAnyRevisionNote() {
-    return this.hasRevisionNote() || this.hasAnyRevisionNoteOfFees();
+  public boolean hasAnyReviewNote() {
+    return this.hasReviewNote() || this.hasAnyReviewNoteOfFeeItems();
   }
   
-  public boolean hasAnyRevisionNoteOfFees() {
+  public boolean hasAnyReviewNoteOfFeeItems() {
     for(FeeItem feeItem : feeItems) {
       if(feeItem.hasReviewNote()) {
         return true;
@@ -200,7 +196,7 @@ public class InvoiceByUserAndPhoneNumber extends BasicAccountElement {
     return false;
   }
 
-  public void removeRevisionNote() {
+  public void removeAllReviewNote() {
     reviewNote = null;
     for(FeeItem feeItem : feeItems) {
       feeItem.setReviewNote(null);

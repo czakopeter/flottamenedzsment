@@ -320,7 +320,7 @@ public class InvoiceService {
     FeeItem feeItem = feeItemService.getById(id);
     feeItem.setUserGrossAmount(userAmount);
     feeItem.setCompanyGrossAmount(compAmount);
-    feeItem.getInvoiceByUserAndPhoneNumber().updateAmountsByFeeItems();
+    feeItem.getInvoiceByUserAndPhoneNumber().setAmountsByFeeItems();
     feeItemService.save(feeItem);
   }
 

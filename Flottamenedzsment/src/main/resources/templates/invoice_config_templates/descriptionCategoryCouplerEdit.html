@@ -57,7 +57,7 @@
         <hr />
         </div>
         
-        <div class="row my-2" th:each="description : ${coupler.getSortedDescriptions()}">
+        <div class="row my-2" th:each="description : ${coupler.getDescriptions()}">
           <div class="col-4">
             <input type="text" class="form-control" id="description" name="description" th:value="${description}" readonly="readonly" />
           </div>

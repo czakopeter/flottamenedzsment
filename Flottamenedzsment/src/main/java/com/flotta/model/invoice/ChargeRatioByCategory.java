@@ -60,7 +60,7 @@ public class ChargeRatioByCategory extends BasicEntity {
     return ratio >= 0 && ratio <= 100 && ratio % 5 == 0;
   }
   
-  public List<Category> getOrderedCategories() {
+  public List<Category> getCategories() {
     List<Category> result = new LinkedList<Category>(categoryRatioMap.keySet());
     Collections.sort(result);
     return result;

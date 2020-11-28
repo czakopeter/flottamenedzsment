@@ -77,7 +77,7 @@ public class InvoiceConfigurationController {
     if(model.containsAttribute("descriptions")) {
       @SuppressWarnings("unchecked")
       List<String> descriptions = (List<String>)model.getAttribute("descriptions");
-      descriptions.removeAll(dcc.getSortedDescriptions());
+      descriptions.removeAll(dcc.getDescriptions());
     }
     model.addAttribute("coupler", service.findDescriptionCategoryCouplerById(id));
     model.addAttribute("categories", service.findAllCategory());

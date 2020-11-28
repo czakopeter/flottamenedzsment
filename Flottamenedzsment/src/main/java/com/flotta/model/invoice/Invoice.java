@@ -119,7 +119,7 @@ public class Invoice extends BasicInvoice {
     acceptedByCompany = true;
     int partOfCompany = 0;
     for (InvoiceByUserAndPhoneNumber part : invoicePart) {
-      part.removeRevisionNote();
+      part.removeAllReviewNote();
       part.setAcceptedByCompany(true);
       if (part.getUser() == null) {
         part.setAcceptedByUser(true);
@@ -133,7 +133,7 @@ public class Invoice extends BasicInvoice {
 
   public boolean hasAnyReviewNote() {
     for (InvoiceByUserAndPhoneNumber part : invoicePart) {
-      if (part.hasRevisionNote() || part.hasAnyRevisionNoteOfFees()) {
+      if (part.hasReviewNote() || part.hasAnyReviewNoteOfFeeItems()) {
         return true;
       }
     }

@@ -11,8 +11,6 @@ public class Category extends BasicEntity implements Comparable<Category> {
   
   private String name;
   
-  BasicFeeItem fee = new FeeItem();
-  
   public Category() {}
   
   public Category(String name) {

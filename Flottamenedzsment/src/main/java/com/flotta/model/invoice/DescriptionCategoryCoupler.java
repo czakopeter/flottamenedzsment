@@ -55,7 +55,7 @@ public class DescriptionCategoryCoupler extends BasicEntity {
       descriptionCategoryMap.put(description, category);
   }
 
-  public List<String> getSortedDescriptions() {
+  public List<String> getDescriptions() {
     List<String> descriptions = new LinkedList<>(descriptionCategoryMap.keySet());
     Collections.sort(descriptions);
     return descriptions;

@@ -33,7 +33,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr th:each="category, i : ${chargeRatio.getOrderedCategories()}">
+          <tr th:each="category, i : ${chargeRatio.getCategories()}">
             <td class="align-middle">
               <label th:text="${category.name}"></label>
               <input type="hidden" name="category" th:value="${category.id}" />
