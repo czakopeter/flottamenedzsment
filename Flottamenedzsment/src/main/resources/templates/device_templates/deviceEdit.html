@@ -32,7 +32,7 @@
         </div>
         <div class="row my-2">
           <div class="col-2">
-            <label th:text="#{device.user}">User</label>
+            <label th:text="#{user}">User</label>
           </div>
           <div class="col-4">
             <select class="form-control" id="userId" name="userId" th:field="*{userId}">
@@ -43,7 +43,7 @@
         </div>
         <div class="row my-2">
           <div class="col-2">
-            <label th:text="#{device.note}">Note</label>
+            <label th:text="#{note}">Note</label>
           </div>
           <div class="col-4">
             <input type="text" class="form-control" id="note" name="note" th:value="*{note}" />
@@ -51,7 +51,7 @@
         </div>
         <div class="row my-2">
           <div class="col-2">
-            <label th:text="#{device.date}">Date</label>
+            <label th:text="#{date}">Date</label>
           </div>
           <div class="col-4">
             <input type="date" class="form-control" id="beginDate" name="beginDate" th:value="*{beginDate}"

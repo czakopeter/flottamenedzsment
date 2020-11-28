@@ -57,11 +57,11 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
 	
   @Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userRepository.findByEmail(username);
-		if (user == null) {
+		Optional<User> user = userRepository.findByEmail(username);
+		if (user.isPresent()) {
 			throw new UsernameNotFoundException(username);
 		}
-		return new UserDetailsImpl(user);
+		return new UserDetailsImpl(user.get());
 	}
 
   public List<User> findAll() {
@@ -69,13 +69,13 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
   }
   
 	public User findByEmail(String email) {
-		return userRepository.findByEmail(email);
+		return userRepository.findByEmail(email).get();
 	}
 	
 	public boolean registerUser(User user) {
-		User userCheck = userRepository.findByEmail(user.getEmail());
+		Optional<User> userCheck = userRepository.findByEmail(user.getEmail());
 
-		if (userCheck != null) {
+		if (userCheck.isPresent()) {
 		  appendMsg("Already exists!");
 			return false;
 		}
@@ -95,6 +95,7 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
 		  userRepository.save(user);
 		} else {
 		  appendMsg("Email send failed!");
+		  return false;
 		}
 		return true;
 	}
@@ -116,7 +117,6 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
     userRepository.save(user);
   }
   
-  //TODO email küldést engedélyezni
   public boolean changePassword(String oldPsw, String newPsw, String confirmPsw) {
     User user = getActualUser();
     if(passwordEncoder.matches(oldPsw, user.getPassword()) && Validator.validPassword(newPsw) && newPsw.contentEquals(confirmPsw)) {
@@ -197,8 +197,9 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
   }
 
   public boolean requestNewPassword(String email) {
-    User user = userRepository.findByEmail(email);
-    if(user != null) {
+    Optional<User> optionalUser = userRepository.findByEmail(email);
+    if(optionalUser.isPresent()) {
+      User user = optionalUser.get();
       String password = generateKey(16);
       user.setPassword(passwordEncoder.encode(password));
       user.setActivationKey(generateKey(16));
@@ -219,7 +220,7 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
   
   private User getActualUser() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    return userRepository.findByEmail(auth.getName());
+    return userRepository.findByEmail(auth.getName()).get();
   }
   
   public User editChargeRatioOfUser(long userId, ChargeRatioByCategory chargeRatio) {

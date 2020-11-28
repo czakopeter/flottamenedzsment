@@ -42,7 +42,7 @@ import com.flotta.model.registry.User;
 import com.flotta.repository.invoice.InvoiceRepository;
 import com.flotta.repository.invoice.ParticipantRepository;
 import com.flotta.repository.invoice.RawInvoiceRepository;
-import com.flotta.service.registry.SubscriptionServiceOnlyInfo;
+import com.flotta.service.registry.SubscriptionServiceGetter;
 
 /**
  * @author CzP
@@ -61,7 +61,7 @@ public class InvoiceService {
 
   private InvoiceTemplateService invoiceTemplateService;
 
-  private SubscriptionServiceOnlyInfo subscriptionInfo;
+  private SubscriptionServiceGetter subscriptionService;
 
   private CategoryService categoryService;
 
@@ -72,13 +72,23 @@ public class InvoiceService {
   private ParticipantRepository participantRepository;
 
   @Autowired
-  public InvoiceService(RawInvoiceRepository rawInvoiceRepository, InvoiceRepository invoiceRepository, InvoiceByUserAndPhoneNumberService invoiceByUserAndPhoneNumberService, FeeItemService feeItemService, InvoiceTemplateService invoiceTemplateService, SubscriptionServiceOnlyInfo subscriptionInfo, CategoryService categoryService, ChargeRatioService chargeRatioService, DescriptionCategoryCouplerService descriptionCategoryCouplerService, ParticipantRepository participantRepository) {
+  public InvoiceService(
+      RawInvoiceRepository rawInvoiceRepository, 
+      InvoiceRepository invoiceRepository,
+      InvoiceByUserAndPhoneNumberService invoiceByUserAndPhoneNumberService, 
+      FeeItemService feeItemService, 
+      InvoiceTemplateService invoiceTemplateService,
+      SubscriptionServiceGetter subscriptionService, 
+      CategoryService categoryService,
+      ChargeRatioService chargeRatioService, 
+      DescriptionCategoryCouplerService descriptionCategoryCouplerService, 
+      ParticipantRepository participantRepository) {
     this.rawInvoiceRepository = rawInvoiceRepository;
     this.invoiceRepository = invoiceRepository;
     this.invoiceByUserAndPhoneNumberService = invoiceByUserAndPhoneNumberService;
     this.feeItemService = feeItemService;
     this.invoiceTemplateService = invoiceTemplateService;
-    this.subscriptionInfo = subscriptionInfo;
+    this.subscriptionService = subscriptionService;
     this.categoryService = categoryService;
     this.chargeRatioService = chargeRatioService;
     this.descriptionCategoryCouplerService = descriptionCategoryCouplerService;
@@ -157,7 +167,7 @@ public class InvoiceService {
     }
     Set<User> users = new HashSet<>();
     for (RawFeeItem rawFeeItem : rawInvoice.getFeeItems()) {
-      Optional<Subscription> optionalSubscription = subscriptionInfo.findByNumber(rawFeeItem.getSubscription());
+      Optional<Subscription> optionalSubscription = subscriptionService.findByNumber(rawFeeItem.getSubscription());
       if (!optionalSubscription.isPresent()) {
         rawInvoice.addProblem("Unknown phone number: " + rawFeeItem.getSubscription());
       } else {
@@ -185,7 +195,7 @@ public class InvoiceService {
 
     for (RawFeeItem rawFeeItem : rawInvoice.getFeeItems()) {
       FeeItem feeItem = parseRawFeeItemToFeeItem(rawFeeItem);
-      Subscription subscription = subscriptionInfo.findByNumber(feeItem.getSubscription()).get();
+      Subscription subscription = subscriptionService.findByNumber(feeItem.getSubscription()).get();
       invoice.processAndAddFeeItem(subscription, feeItem);
     }
     return invoice;

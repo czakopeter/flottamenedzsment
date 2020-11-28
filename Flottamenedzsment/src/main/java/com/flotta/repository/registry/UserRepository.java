@@ -1,5 +1,6 @@
 package com.flotta.repository.registry;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
@@ -7,7 +8,7 @@ import com.flotta.model.registry.User;
 
 public interface UserRepository extends CrudRepository<User, Long> {
 
-	User findByEmail(String email);
+	Optional<User> findByEmail(String email);
 	
 	List<User> findAll();
 

@@ -11,7 +11,7 @@ import com.flotta.model.viewEntity.SubscriptionToView;
 import com.flotta.repository.registry.SubscriptionRepository;
 
 @Service
-public class SubscriptionService extends ServiceWithMsg {
+public class SubscriptionService extends ServiceWithMsg implements SubscriptionServiceGetter {
 	
 	private SubscriptionRepository subscriptionRepository;
 	
@@ -20,14 +20,17 @@ public class SubscriptionService extends ServiceWithMsg {
 		this.subscriptionRepository = subscriptionRepository;
 	}
 	
-	public List<Subscription> findAll() {
-		return subscriptionRepository.findAll();
-	}
+	@Override
+  public List<Subscription> findAll() {
+    return subscriptionRepository.findAll();
+  }
 
+	@Override
   public Optional<Subscription> findById(long id) {
     return subscriptionRepository.findById(id);
   }
   
+	@Override
   public Optional<Subscription> findByNumber(String number) {
       return subscriptionRepository.findByNumber(number);
   }
@@ -46,16 +49,4 @@ public class SubscriptionService extends ServiceWithMsg {
   public void save(Subscription sub) {
     subscriptionRepository.save(sub);
   }
-
-//  public List<SubscriptionToView> findAllCurrentByUser(User user) {
-//    List<SubscriptionToView> result = new LinkedList<SubscriptionToView>();
-//    List<Subscription> all = subscriptionRepository.findAll();
-//    for(Subscription s : all) {
-//      if(Utility.isSameByIdOrBothNull(user, s.getActualUser())) {
-//        result.add(s.toView());
-//      }
-//    }
-//    return result;
-//  }
-
 }
