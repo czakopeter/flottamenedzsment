@@ -26,14 +26,6 @@ public class HomeController {
     model.addAttribute("title", "Homepage");
   }
   
-  @RequestMapping("/")
-  public String home(Model model, Authentication a) {
-//    model.addAttribute("user", service.findUserByEmail(a.getName()));
-//    model.addAttribute("subscriptions", service.findAllActualSubscriptionByUser());
-//    model.addAttribute("devices", service.findAllDeviceByUser(a.getName()));
-    return "index";
-  }
-  
   @RequestMapping("/accessDenied")
   public String accessDenied(Model model) {
     model.addAttribute("title", "no title");

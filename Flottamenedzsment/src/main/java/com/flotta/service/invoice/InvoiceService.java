@@ -121,10 +121,6 @@ public class InvoiceService {
         rawInvoice.setTaxAmount(Double.valueOf(getFirstTagValue(root, "InvTotalTaxA").replace(',', '.')));
         rawInvoice.setGrossAmount(Double.valueOf(getFirstTagValue(root, "InvTotalGrossA").replace(',', '.')));
 
-        Element customerData = (Element) root.getElementsByTagName("CustomerData").item(0);
-        rawInvoice.setCustomerName(getFirstTagValue(customerData, "Name"));
-        rawInvoice.setCustomerAddress(getFirstTagValue(customerData, "City"));
-
         Element companyData = (Element) root.getElementsByTagName("CompanyData").item(0);
         rawInvoice.setCompanyName(getFirstTagValue(companyData, "Name"));
         rawInvoice.setCompanyAddress(getFirstTagValue(companyData, "City"));

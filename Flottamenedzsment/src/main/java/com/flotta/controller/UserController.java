@@ -72,6 +72,8 @@ public class UserController {
     return "user_templates/userEdit";
   }
   
+  // ----- Guest -----
+  
   @GetMapping("/registration")
   public String firstAdminRegistration(Model model, RedirectAttributes redirectAttributes) {
     if(service.registrationAvailable()) {

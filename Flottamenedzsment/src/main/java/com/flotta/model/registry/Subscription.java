@@ -30,7 +30,7 @@ import com.flotta.utility.Utility;
 @Table(name = "subscriptions")
 public class Subscription extends BasicEntityWithCreateDate {
 
-  @Column(length = 9)
+  @Column(length = 9, unique = true, nullable = false)
   private String number;
 
   @OneToMany(mappedBy = "sub", cascade = CascadeType.ALL)
@@ -114,14 +114,6 @@ public class Subscription extends BasicEntityWithCreateDate {
 
   public void setStatuses(Map<LocalDate, SubscriptionStatus> statuses) {
     this.statuses = statuses;
-  }
-
-  public LocalDate getCreateDate() {
-    return createDate;
-  }
-
-  public void setCreateDate(LocalDate createDate) {
-    this.createDate = createDate;
   }
 
   public LocalDate getFirstAvailableDate() {
@@ -346,12 +338,7 @@ public class Subscription extends BasicEntityWithCreateDate {
     }
   }
   
-//  public User getActualUser() {
-//    UserSub userSub = subUsers.get(Utility.getLatestDate(subUsers));
-//    return userSub.getEndDate() == null ? userSub.getUser() : null;
-//  }
-
-  public List<LocalDate> getUserModificationDatesBetween(LocalDate beginDate, LocalDate endDate) {
+  public List<LocalDate> getUserChangeDatesBetween(LocalDate beginDate, LocalDate endDate) {
     List<LocalDate> result = new LinkedList<>();
     List<LocalDate> dates = new LinkedList<>(getModificationDates(subUsers));
     Collections.sort(dates);

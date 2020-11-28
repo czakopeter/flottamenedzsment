@@ -41,7 +41,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr name="fee" th:each="feeItem : ${invoicePart.fees}">
+          <tr name="fee" th:each="feeItem : ${invoicePart.feeItems}">
             <td th:text="${feeItem.description}"></td>
             <td th:text="${feeItem.getPeriod()}" class="text-center"></td>
             <td class="text-right" th:text="${#numbers.formatDecimal(feeItem.userGrossAmount, 1, 2)} + ' Ft'"></td>
@@ -51,11 +51,11 @@
           </tr>
         </tbody>
       </table>
-      <label th:text="#{reviewNoteForEntireInvoice}">REview note for entire invoice</label>
+      <label th:text="#{reviewNoteForEntireInvoice}">Review note for entire invoice</label>
       <textarea th:if="${not invoicePart.acceptedByUser}" class="form-control mb-2" name="textarea" oninput="modifyNotes()"></textarea>
       
       <div class="btn-group">
-        <button id="revisionBtn" type="submit" th:formaction="'/profile/invoice/' + ${invoicePart.id} + '/revision'" class="btn btn-warning" th:if="${not invoicePart.acceptedByUser}" disabled="disabled" th:text="#{button.askForReview}">Ask for review</button>
+        <button id="reviewBtn" type="submit" th:formaction="'/profile/invoice/' + ${invoicePart.id} + '/revision'" class="btn btn-warning" th:if="${not invoicePart.acceptedByUser}" disabled="disabled" th:text="#{button.askForReview}">Ask for review</button>
         <a class="btn btn-primary" href="/profile/invoice" th:text="#{button.back}"></a>
       </div>
       </form>

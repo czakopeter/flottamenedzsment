@@ -29,7 +29,7 @@ public class InvoiceByUserAndPhoneNumber extends BasicAccountElement {
   private User user;
   
   @OneToMany(mappedBy = "invoiceByUserAndPhoneNumber", cascade = CascadeType.ALL)
-  private List<FeeItem> fees = new LinkedList<>();
+  private List<FeeItem> feeItems = new LinkedList<>();
 
   private double userGrossAmount;
   
@@ -39,7 +39,7 @@ public class InvoiceByUserAndPhoneNumber extends BasicAccountElement {
   
   private boolean acceptedByCompany;
   
-  private String revisionNote;
+  private String reviewNote;
   
   public InvoiceByUserAndPhoneNumber() {
   }
@@ -74,12 +74,12 @@ public class InvoiceByUserAndPhoneNumber extends BasicAccountElement {
     this.user = user;
   }
 
-  public List<FeeItem> getFees() {
-    return fees;
+  public List<FeeItem> getFeeItems() {
+    return feeItems;
   }
 
-  public void setFees(List<FeeItem> fees) {
-    this.fees = fees;
+  public void setFeeItems(List<FeeItem> feeItems) {
+    this.feeItems = feeItems;
   }
 
 
@@ -115,43 +115,43 @@ public class InvoiceByUserAndPhoneNumber extends BasicAccountElement {
     this.acceptedByCompany = acceptedByCompany;
   }
 
-  public String getRevisionNote() {
-    return revisionNote;
+  public String getReviewNote() {
+    return reviewNote;
   }
 
-  public void setRevisionNote(String revisionNote) {
-    if(revisionNote == null || revisionNote.isEmpty()) {
-      this.revisionNote = null;
+  public void setReviewNote(String reviewNote) {
+    if(reviewNote == null || reviewNote.isEmpty()) {
+      this.reviewNote = null;
     } else {
-      this.revisionNote = revisionNote;
+      this.reviewNote = reviewNote;
     }
   }
 
-  public void addFeeItem(FeeItem item) {
-    item.setInvoiceByUserAndPhoneNumber(this);
-    amountUpdate(item);
-    dateUpdate(item);
-    fees.add(item);
+  public void addFeeItem(FeeItem feeItem) {
+    feeItem.setInvoiceByUserAndPhoneNumber(this);
+    amountUpdate(feeItem);
+    dateUpdate(feeItem);
+    feeItems.add(feeItem);
   }
   
-  private void amountUpdate(FeeItem item) {
-    this.userGrossAmount += item.getUserGrossAmount();
-    this.companyGrossAmount += item.getCompanyGrossAmount();
-    this.netAmount += item.getNetAmount();
-    this.taxAmount += item.getTaxAmount();
-    this.grossAmount += item.getGrossAmount();
+  private void amountUpdate(FeeItem feeItem) {
+    this.userGrossAmount += feeItem.getUserGrossAmount();
+    this.companyGrossAmount += feeItem.getCompanyGrossAmount();
+    this.netAmount += feeItem.getNetAmount();
+    this.taxAmount += feeItem.getTaxAmount();
+    this.grossAmount += feeItem.getGrossAmount();
   }
   
-  private void dateUpdate(FeeItem item) {
+  private void dateUpdate(FeeItem feeItem) {
     if(beginDate == null) {
-      beginDate = item.getBeginDate();
-      endDate = item.getEndDate();
+      beginDate = feeItem.getBeginDate();
+      endDate = feeItem.getEndDate();
     } else {
-      if(item.getBeginDate().isBefore(beginDate)) {
-        beginDate = item.getBeginDate();
+      if(feeItem.getBeginDate().isBefore(beginDate)) {
+        beginDate = feeItem.getBeginDate();
       }
-      if(item.getEndDate().isAfter(endDate)) {
-        endDate = item.getEndDate();
+      if(feeItem.getEndDate().isAfter(endDate)) {
+        endDate = feeItem.getEndDate();
       }
     }
   }
@@ -166,8 +166,8 @@ public class InvoiceByUserAndPhoneNumber extends BasicAccountElement {
     this.userGrossAmount = 0;
     this.companyGrossAmount = 0.0;
     this.grossAmount = 0;
-    for(FeeItem item : fees) {
-      amountUpdate(item);
+    for(FeeItem feeItem : feeItems) {
+      amountUpdate(feeItem);
     }
   }
   
@@ -175,16 +175,16 @@ public class InvoiceByUserAndPhoneNumber extends BasicAccountElement {
     return Utility.getPeriod(beginDate, endDate);
   }
 
-  public void setRevisionNoteOfFeeItem(long id, String note) {
-    for(FeeItem fee : fees) {
-      if(fee.getId() == id) {
-        fee.setRevisionNote(note);
+  public void setReviewNoteOfFeeItem(long id, String note) {
+    for(FeeItem feeItem : feeItems) {
+      if(feeItem.getId() == id) {
+        feeItem.setReviewNote(note);
       }
     }
   }
 
   public boolean hasRevisionNote() {
-    return revisionNote != null;
+    return reviewNote != null;
   }
   
   public boolean hasAnyRevisionNote() {
@@ -192,8 +192,8 @@ public class InvoiceByUserAndPhoneNumber extends BasicAccountElement {
   }
   
   public boolean hasAnyRevisionNoteOfFees() {
-    for(FeeItem fee : fees) {
-      if(fee.hasRevisionNote()) {
+    for(FeeItem feeItem : feeItems) {
+      if(feeItem.hasReviewNote()) {
         return true;
       }
     }
@@ -201,15 +201,15 @@ public class InvoiceByUserAndPhoneNumber extends BasicAccountElement {
   }
 
   public void removeRevisionNote() {
-    revisionNote = null;
-    for(FeeItem feeItem : fees) {
-      feeItem.setRevisionNote(null);
+    reviewNote = null;
+    for(FeeItem feeItem : feeItems) {
+      feeItem.setReviewNote(null);
     }
   }
   
   public Set<String> getAllDescription() {
     Set<String> descriptions = new HashSet<>();
-    for(FeeItem feeItem : fees) {
+    for(FeeItem feeItem : feeItems) {
       descriptions.add(feeItem.getDescription());
     }
     return descriptions;

@@ -1,16 +1,13 @@
 package com.flotta.service.registry;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.flotta.model.registry.Device;
-import com.flotta.model.registry.User;
 import com.flotta.model.viewEntity.DeviceToView;
 import com.flotta.repository.registry.DeviceRepository;
-import com.flotta.utility.Utility;
 
 @Service
 public class DeviceService extends ServiceWithMsg{
@@ -58,31 +55,6 @@ public class DeviceService extends ServiceWithMsg{
   public String getError() {
     return removeMsg();
   }
-
-//  public void userHasConnected(Device dev, LocalDate date) {
-//    deviceStatusService.setStatus(dev, DeviceStatusEnum.ACTIVE, date);
-//  }
-//
-//  public void userHasntConnected(Device dev, LocalDate date) {
-//    deviceStatusService.setStatus(dev, DeviceStatusEnum.FREE, date);
-//  }
-//
-//  public void deleteLastSatus(Device dev) {
-//    deviceStatusService.deleteLastStatus(dev);
-//  }
-
-  
-  //TODO nem kell az összes eszköz, csak ami valaha a felhasználónál volt és aktív
-//  public List<DeviceToView> findAllCurrentByUser(User user) {
-//    List<DeviceToView> result = new LinkedList<DeviceToView>();
-//    List<Device> all = deviceRepository.findAll();
-//    for(Device d : all) {
-//      if(Utility.isSameByIdOrBothNull(user, d.getActualUser())) {
-//        result.add(d.toView());
-//      }
-//    }
-//    return result;
-//  }
 
   public void save(Device device) {
     deviceRepository.save(device);

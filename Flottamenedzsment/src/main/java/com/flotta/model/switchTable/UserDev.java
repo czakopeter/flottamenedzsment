@@ -1,6 +1,5 @@
 package com.flotta.model.switchTable;
 
-import java.security.InvalidParameterException;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -11,7 +10,6 @@ import javax.persistence.Table;
 
 import com.flotta.model.registry.Device;
 import com.flotta.model.registry.User;
-import com.flotta.utility.Utility;
 
 @Entity
 @Table( name="user_dev_st")
@@ -59,16 +57,16 @@ public class UserDev extends BasicSwitchTable {
 				", disconnect=" + Objects.toString(endDate, "no endDate") + "]";
 	}
 
-  @Override
-  public <Other extends BasicSwitchTable> boolean isSameSwitchedPairs(Other other) {
-    if(other == null) {
-      throw new NullPointerException();
-    }
-    if(!(other instanceof UserDev)) {
-      throw new InvalidParameterException();
-    }
-    UserDev act = (UserDev)other;
-    
-    return Utility.isSameByIdOrBothNull(this.user, act.user) && Utility.isSameByIdOrBothNull(this.dev, act.dev);
-  }
+//  @Override
+//  public <Other extends BasicSwitchTable> boolean isSameSwitchedPairs(Other other) {
+//    if(other == null) {
+//      throw new NullPointerException();
+//    }
+//    if(!(other instanceof UserDev)) {
+//      throw new InvalidParameterException();
+//    }
+//    UserDev act = (UserDev)other;
+//    
+//    return Utility.isSameByIdOrBothNull(this.user, act.user) && Utility.isSameByIdOrBothNull(this.dev, act.dev);
+//  }
 }

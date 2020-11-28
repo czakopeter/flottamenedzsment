@@ -1,6 +1,5 @@
 package com.flotta.model.note;
 
-import java.security.InvalidParameterException;
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
@@ -9,7 +8,6 @@ import javax.persistence.Table;
 
 import com.flotta.model.registry.Subscription;
 import com.flotta.model.switchTable.BasicSwitchTable;
-import com.flotta.utility.Utility;
 
 @Entity
 @Table( name = "sub_note" )
@@ -45,17 +43,17 @@ public class SubNote extends BasicSwitchTable {
     this.sub = sub;
   }
   
-  @Override
-  public <Other extends BasicSwitchTable> boolean isSameSwitchedPairs(Other other) {
-    if(other == null) {
-      throw new NullPointerException();
-    }
-    if(!(other instanceof SubNote)) {
-      throw new InvalidParameterException();
-    }
-    SubNote act = (SubNote)other;
-    
-    return (act.note == null && this.note == null || this.note.equals(act.note)) && Utility.isSameByIdOrBothNull(this.sub, act.sub);
-  }
+//  @Override
+//  public <Other extends BasicSwitchTable> boolean isSameSwitchedPairs(Other other) {
+//    if(other == null) {
+//      throw new NullPointerException();
+//    }
+//    if(!(other instanceof SubNote)) {
+//      throw new InvalidParameterException();
+//    }
+//    SubNote act = (SubNote)other;
+//    
+//    return (act.note == null && this.note == null || this.note.equals(act.note)) && Utility.isSameByIdOrBothNull(this.sub, act.sub);
+//  }
   
 }

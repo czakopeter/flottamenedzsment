@@ -214,51 +214,51 @@ public class Device extends BasicEntityWithCreateDate {
     }
   }
 
-  public void addSubscription(Subscription sub, LocalDate date) {
-    if (devSubs.isEmpty()) {
-      if (sub != null) {
-        devSubs.put(date, new SubDev(sub, this, date));
-      }
-    } else {
-      LocalDate lastSubModDate = Utility.getLatestDate(devSubs);
-      SubDev last = devSubs.get(lastSubModDate);
-      if(last.getEndDate() != null) {
-        if(date.minusDays(1).isEqual(last.getEndDate())) {
-          if(sub == null) {
-          //nem csinálunk semmit
-          } else if(last.getSub().equals(sub)) {
-            last.setEndDate(null);
-          } else {
-            devSubs.put(date, new SubDev(sub, this, date));
-          }
-        } else if(date.minusDays(1).isAfter(last.getEndDate())) {
-          if(sub == null) {
-            //nem csinálunk semmit
-          } else {
-            devSubs.put(date, new SubDev(sub, this, date));
-          }
-        }
-      } else {
-        //Valakihez éppen hozzá van rendelve
-        if(last.getSub().equals(sub)) {
-          //nem csinálunk semmit
-        } else if(sub != null) {
-          if(date.isAfter(lastSubModDate)) {
-            last.setEndDate(date.minusDays(1));
-            devSubs.put(date, new SubDev(sub, this, date));
-          } else if(date.isEqual(lastSubModDate)) {
-         // Módosítjuk az új felhasználóval vagy nem történik módosítás
-          }
-        } else {
-          if(date.isAfter(lastSubModDate)) {
-            last.setEndDate(date.minusDays(1));
-          } else if(date.isEqual(lastSubModDate)) {
-            // Még nem tudom mi történjen
-          }
-        }
-      }
-    }
-  }
+//  public void addSubscription(Subscription sub, LocalDate date) {
+//    if (devSubs.isEmpty()) {
+//      if (sub != null) {
+//        devSubs.put(date, new SubDev(sub, this, date));
+//      }
+//    } else {
+//      LocalDate lastSubModDate = Utility.getLatestDate(devSubs);
+//      SubDev last = devSubs.get(lastSubModDate);
+//      if(last.getEndDate() != null) {
+//        if(date.minusDays(1).isEqual(last.getEndDate())) {
+//          if(sub == null) {
+//          //nem csinálunk semmit
+//          } else if(last.getSub().equals(sub)) {
+//            last.setEndDate(null);
+//          } else {
+//            devSubs.put(date, new SubDev(sub, this, date));
+//          }
+//        } else if(date.minusDays(1).isAfter(last.getEndDate())) {
+//          if(sub == null) {
+//            //nem csinálunk semmit
+//          } else {
+//            devSubs.put(date, new SubDev(sub, this, date));
+//          }
+//        }
+//      } else {
+//        //Valakihez éppen hozzá van rendelve
+//        if(last.getSub().equals(sub)) {
+//          //nem csinálunk semmit
+//        } else if(sub != null) {
+//          if(date.isAfter(lastSubModDate)) {
+//            last.setEndDate(date.minusDays(1));
+//            devSubs.put(date, new SubDev(sub, this, date));
+//          } else if(date.isEqual(lastSubModDate)) {
+//         // Módosítjuk az új felhasználóval vagy nem történik módosítás
+//          }
+//        } else {
+//          if(date.isAfter(lastSubModDate)) {
+//            last.setEndDate(date.minusDays(1));
+//          } else if(date.isEqual(lastSubModDate)) {
+//            // Még nem tudom mi történjen
+//          }
+//        }
+//      }
+//    }
+//  }
 
   public void addNote(String note, LocalDate date) {
     if(notes.isEmpty()) {

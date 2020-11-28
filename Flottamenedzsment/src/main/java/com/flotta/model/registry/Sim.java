@@ -14,7 +14,7 @@ import com.flotta.model.switchTable.SubSim;
 @Table(name = "sims")
 public class Sim extends BasicEntity {
 
-  @Column(unique = true)
+  @Column(unique = true, nullable = false)
   private String imei;
   
   private String pin;

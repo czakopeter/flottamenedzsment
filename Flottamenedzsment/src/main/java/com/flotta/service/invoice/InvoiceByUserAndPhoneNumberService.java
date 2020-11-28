@@ -55,9 +55,9 @@ public class InvoiceByUserAndPhoneNumberService {
     if(optional.isPresent()) {
       InvoiceByUserAndPhoneNumber part = optional.get();
       part.getInvoice().setAcceptedByCompany(false);
-      part.setRevisionNote(map.remove("textarea"));
+      part.setReviewNote(map.remove("textarea"));
       map.forEach((k,v) -> {
-        part.setRevisionNoteOfFeeItem(Long.parseLong(k), v);
+        part.setReviewNoteOfFeeItem(Long.parseLong(k), v);
       });
       part.setAcceptedByCompany(false);
       invoiceByUserAndPhoneNumberRepository.save(part);

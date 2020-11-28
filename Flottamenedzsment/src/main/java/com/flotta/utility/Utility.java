@@ -10,9 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.flotta.model.BasicEntity;
-import com.flotta.model.registry.User;
 import com.flotta.model.switchTable.BasicSwitchTable;
-import com.flotta.model.switchTable.UserDev;
 
 public class Utility {
   
@@ -61,28 +59,28 @@ public class Utility {
     return r;
   }
   
-  public static boolean areTwoLastAreSame(Map<LocalDate, ? extends BasicSwitchTable> map) {
-    if(map == null) {
-      throw new NullPointerException();
-    }
-    if(map.size() > 1) {
-      List<LocalDate> dates = new LinkedList<>(map.keySet());
-      Collections.sort(dates, Collections.reverseOrder());
-      return equals(map.get(dates.get(0)), map.get(dates.get(1)));
-    }
-    return false;
-  }
+//  public static boolean areTwoLastAreSame(Map<LocalDate, ? extends BasicSwitchTable> map) {
+//    if(map == null) {
+//      throw new NullPointerException();
+//    }
+//    if(map.size() > 1) {
+//      List<LocalDate> dates = new LinkedList<>(map.keySet());
+//      Collections.sort(dates, Collections.reverseOrder());
+//      return equals(map.get(dates.get(0)), map.get(dates.get(1)));
+//    }
+//    return false;
+//  }
   
-  public static boolean equals(BasicSwitchTable o1, BasicSwitchTable o2) {
-    if(o1 == null || o2 == null) {
-      throw new NullPointerException();
-    }
-    if(o1.getClass() != o2.getClass()) {
-      throw new IllegalArgumentException();
-    }
-    
-    return o1.isSameSwitchedPairs(o2);
-  }
+//  public static boolean equals(BasicSwitchTable o1, BasicSwitchTable o2) {
+//    if(o1 == null || o2 == null) {
+//      throw new NullPointerException();
+//    }
+//    if(o1.getClass() != o2.getClass()) {
+//      throw new IllegalArgumentException();
+//    }
+//    
+//    return o1.isSameSwitchedPairs(o2);
+//  }
   
   public static <E extends BasicEntity> boolean isSameByIdOrBothNull(E e1, E e2) {
     if(e1 == null && e2 == null) {

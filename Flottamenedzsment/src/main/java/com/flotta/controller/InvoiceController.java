@@ -54,7 +54,6 @@ public class InvoiceController {
     return "redirect:/invoice/all";
   }
   
-//TODO show full header of invoice
   @GetMapping("invoice/{invoiceNumber}/details")
   public String invoiceDetails(Model model, @PathVariable("invoiceNumber") String invoiceNumber) {
     Optional<Invoice> invoice = service.findInvoiceByInvoiceNumber(invoiceNumber);
@@ -64,24 +63,6 @@ public class InvoiceController {
     }
     return "redirect:/invoice/all";
   }
-  
-  @PostMapping("/invoice/{invoiceNumber}/restartProcessing")
-  public String rehashInvoice(@PathVariable(value = "invoiceNumber") String invoiceNumber) {
-    service.restartProcessingInvoiceBy(invoiceNumber);
-    return "redirect:/invoice/all";
-  }
-  
-//  @PostMapping("/invoice/{invoiceNumber}/delete")
-//  public String deleteInvoice(@PathVariable(value = "invoiceNumber") String invoiceNumber) {
-//    service.deleteInvoiceByInvoiceNumber(invoiceNumber);
-//    return "redirect:/invoice/all";
-//  }
-  
-//  @PostMapping("invoice/{invoiceNumber}/accept")
-//  public String acceptInoiveByCompany(@PathVariable(value = "invoiceNumber") String invoiceNumber) {
-//    service.acceptInvoiceByInvoiceNumber(invoiceNumber);
-//    return "redirect:/invoice/all";
-//  }
   
   @PostMapping("invoice/acceptByCompany")
   @ResponseBody
@@ -97,22 +78,22 @@ public class InvoiceController {
     return new ResponseTransfer(invoiceNumber);
   }
   
-  @PostMapping("/invoice/modifyFeeItemGrossAmountRatio")
+  @PostMapping("/invoice/modifyFeeItemGrossAmount")
   @ResponseStatus(value = HttpStatus.OK)
   public void modifyFeeItemAmountRatio(@RequestParam ("id") long id, @RequestParam ("userGrossAmount") double userAmount, @RequestParam ("compGrossAmount") double compAmount) {
     service.modifyFeeItemGrossAmountRatio(id, userAmount, compAmount);
   }
   
-//  @PostMapping("/invoice/getDescriptionsOfInvoice")
-//  @ResponseBody
-//  public List<String> getDescriptionsOfInvoice(@RequestParam ("id") long id) {
-//    return service.findDescriptionsOfInvoiceById(id);
-//  }
+  @PostMapping("/rawInvoice/{invoiceNumber}/restartProcessing")
+  public String restartProcessingRawInvoice(@PathVariable("invoiceNumber") String invoiceNumber) {
+    service.restartProcessingInvoiceBy(invoiceNumber);
+    return "redirect:/invoice/all";
+  }
   
   /**
    * @param invoiceNumber
    */
-  @PostMapping(value = "/rawInvoice/delete", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping("/rawInvoice/delete")
   @ResponseBody
   public ResponseTransfer deleteRawInvoice(@RequestParam("invoiceNumber") Optional<String> invoiceNumber) {
     if(invoiceNumber.isPresent()) {

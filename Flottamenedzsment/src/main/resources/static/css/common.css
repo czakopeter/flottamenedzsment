@@ -126,15 +126,15 @@ a img, button img {
 	height: 15px;
 }
 
-.hasRevisionNote {
+.hasReviewNote {
 	background-color: #ffdddd;
 }
 
-.table tbody tr.hasRevisionNote:hover {
+.table tbody tr.hasReviewNote:hover {
 	background-color: #ffdddd;
 }
 
-.table tbody.hasRevisionNote:hover {
+.table tbody.hasReviewNote:hover {
 	background-color: #ffdddd;
 }
 

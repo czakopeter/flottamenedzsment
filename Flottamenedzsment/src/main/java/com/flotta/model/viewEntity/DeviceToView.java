@@ -10,7 +10,6 @@ import com.flotta.model.registry.User;
 import com.flotta.model.switchTable.BasicSwitchTable;
 import com.flotta.model.switchTable.SubDev;
 import com.flotta.model.switchTable.UserDev;
-import com.flotta.model.switchTable.UserSub;
 import com.flotta.utility.Utility;
 
 public class DeviceToView {

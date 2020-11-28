@@ -1,13 +1,11 @@
 package com.flotta.service.switchTable;
 
-import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.flotta.model.registry.Subscription;
 import com.flotta.model.registry.User;
 import com.flotta.model.switchTable.UserSub;
 import com.flotta.model.viewEntity.SubscriptionToView;

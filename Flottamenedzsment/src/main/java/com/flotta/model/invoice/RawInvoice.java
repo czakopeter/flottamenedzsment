@@ -15,9 +15,6 @@ import javax.persistence.Table;
 @Table(name = "raw_invoices")
 public class RawInvoice extends BasicInvoice {
 
-  private String customerName;
-  private String customerAddress;
-  
   private String companyName;
   private String companyAddress;
   
@@ -29,22 +26,6 @@ public class RawInvoice extends BasicInvoice {
   
   public RawInvoice() {}
   
-  public String getCustomerName() {
-    return customerName;
-  }
-
-  public void setCustomerName(String customerName) {
-    this.customerName = customerName;
-  }
-
-  public String getCustomerAddress() {
-    return customerAddress;
-  }
-
-  public void setCustomerAddress(String customerAddress) {
-    this.customerAddress = customerAddress;
-  }
-
   public String getCompanyName() {
     return companyName;
   }

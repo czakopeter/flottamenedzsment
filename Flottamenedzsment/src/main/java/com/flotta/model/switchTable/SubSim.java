@@ -1,6 +1,5 @@
 package com.flotta.model.switchTable;
 
-import java.security.InvalidParameterException;
 import java.time.LocalDate;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -9,11 +8,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.flotta.model.registry.Sim;
 import com.flotta.model.registry.Subscription;
-import com.flotta.utility.Utility;
 
 @Entity
 @Table( name="sub_sim_st")
@@ -53,16 +49,16 @@ public class SubSim extends BasicSwitchTable {
     this.sim = sim;
   }
 
-  @Override
-  public <Other extends BasicSwitchTable> boolean isSameSwitchedPairs(Other other) {
-    if(other == null) {
-      throw new NullPointerException();
-    }
-    if(!(other instanceof SubSim)) {
-      throw new InvalidParameterException();
-    }
-    SubSim act = (SubSim)other;
-    
-    return Utility.isSameByIdOrBothNull(this.sub, act.sub) && Utility.isSameByIdOrBothNull(this.sim, act.sim);
-  }
+//  @Override
+//  public <Other extends BasicSwitchTable> boolean isSameSwitchedPairs(Other other) {
+//    if(other == null) {
+//      throw new NullPointerException();
+//    }
+//    if(!(other instanceof SubSim)) {
+//      throw new InvalidParameterException();
+//    }
+//    SubSim act = (SubSim)other;
+//    
+//    return Utility.isSameByIdOrBothNull(this.sub, act.sub) && Utility.isSameByIdOrBothNull(this.sim, act.sim);
+//  }
 }

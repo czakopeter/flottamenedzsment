@@ -91,9 +91,9 @@
               </td>
             </tr>
           </thead>
-          <tbody th:if="${partOfInvoice.hasRevisionNote()}" class="hasRevisionNote">
-            <tr class="hasRevisionNote">
-              <td th:colspan="${partOfInvoice.acceptedByCompany or partOfInvoice.user == null} ? 5 : 6" th:text="${partOfInvoice.revisionNote}"></td>
+          <tbody th:if="${partOfInvoice.hasReviewNote()}">
+            <tr class="hasReviewNote">
+              <td th:colspan="${partOfInvoice.acceptedByCompany or partOfInvoice.user == null} ? 5 : 6" th:text="${partOfInvoice.reviewNote}"></td>
             </tr>
           </tbody>
         </table>
@@ -113,8 +113,8 @@
               <th th:unless="${partOfInvoice.acceptedByCompany or partOfInvoice.user == null}"></th>
             </tr>
           </thead>
-          <tbody th:each="feeItem : ${partOfInvoice.fees}" >
-              <tr th:id="'feeItem' + ${feeItem.id}" th:classappend=" ${feeItem.hasRevisionNote()} ? 'hasRevisionNote' :''">
+          <tbody th:each="feeItem : ${partOfInvoice.feeItems}" >
+              <tr th:id="'feeItem' + ${feeItem.id}" th:classappend=" ${feeItem.hasReviewNote()} ? 'hasReviewNote' :''">
                 <td name="description" th:text="${feeItem.description}"></td>
                 <td name="period" th:text="${feeItem.getPeriod()}"></td>
                 <td class="text-right" name="totalGrossAmount"
@@ -142,8 +142,8 @@
                   </div>
                 </td>
               </tr>
-              <tr th:if="${feeItem.hasRevisionNote()}" class="hasRevisionNote">
-                <td th:text="${feeItem.revisionNote}" th:colspan="${partOfInvoice.acceptedByCompany or partOfInvoice.user == null} ? 5 : 6"></td>
+              <tr th:if="${feeItem.hasReviewNote()}" class="hasReviewNote">
+                <td th:text="${feeItem.reviewNote}" th:colspan="${partOfInvoice.acceptedByCompany or partOfInvoice.user == null} ? 5 : 6"></td>
               </tr>
           </tbody>
         </table>

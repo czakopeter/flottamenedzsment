@@ -33,5 +33,5 @@ public abstract class BasicSwitchTable extends BasicEntity {
     this.endDate = endDate;
   }
 
-  public abstract <Other extends BasicSwitchTable> boolean isSameSwitchedPairs(Other other);
+//  public abstract <Other extends BasicSwitchTable> boolean isSameSwitchedPairs(Other other);
 }

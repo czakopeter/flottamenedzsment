@@ -29,7 +29,7 @@ public class FeeItem extends BasicFeeItem {
   @OneToOne
   private Category category;
   
-  private String revisionNote;
+  private String reviewNote;
   
   public FeeItem() {
   }
@@ -62,7 +62,7 @@ public class FeeItem extends BasicFeeItem {
     this.grossAmount = feeItem.grossAmount;
     this.userGrossAmount = feeItem.userGrossAmount;
     this.companyGrossAmount = feeItem.companyGrossAmount;
-    this.revisionNote = feeItem.revisionNote;
+    this.reviewNote = feeItem.reviewNote;
     this.category = feeItem.category;
   }
 
@@ -106,15 +106,15 @@ public class FeeItem extends BasicFeeItem {
     this.userId = userId;
   }
   
-  public String getRevisionNote() {
-    return revisionNote;
+  public String getReviewNote() {
+    return reviewNote;
   }
 
-  public void setRevisionNote(String revisionNote) {
-    if(revisionNote == null || revisionNote.isEmpty()) {
-      this.revisionNote = null;
+  public void setReviewNote(String reviewNote) {
+    if(reviewNote == null || reviewNote.isEmpty()) {
+      this.reviewNote = null;
     } else {
-      this.revisionNote = revisionNote;
+      this.reviewNote = reviewNote;
     }
   }
 
@@ -133,7 +133,7 @@ public class FeeItem extends BasicFeeItem {
       }
     }
     FeeItem last = getPartOfFeeItem(begin, endDate.plusDays(1));
-    last.setId(this.id);
+    last.setId(id);
     result.add(last);
     return result;
   }
@@ -161,8 +161,8 @@ public class FeeItem extends BasicFeeItem {
     companyGrossAmount = Utility.round(grossAmount * (100 - userRatio) / 100, 2);
   }
   
-  public boolean hasRevisionNote() {
-    return revisionNote != null;
+  public boolean hasReviewNote() {
+    return reviewNote != null;
   }
 
 }

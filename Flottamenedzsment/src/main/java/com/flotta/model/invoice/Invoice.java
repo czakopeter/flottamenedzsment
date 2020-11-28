@@ -88,7 +88,7 @@ public class Invoice extends BasicInvoice {
   }
 
   private List<FeeItem> splitByUser(FeeItem feeItem, Subscription subscription) {
-    List<LocalDate> dates = subscription.getUserModificationDatesBetween(feeItem.getBeginDate(), feeItem.getEndDate());
+    List<LocalDate> dates = subscription.getUserChangeDatesBetween(feeItem.getBeginDate(), feeItem.getEndDate());
     List<FeeItem> splittedFeeItems = feeItem.splitBeforeDate(dates);
     return splittedFeeItems;
   }
@@ -107,23 +107,14 @@ public class Invoice extends BasicInvoice {
     }
   }
 
-  public List<FeeItem> getFeeItems() {
-    List<FeeItem> result = new LinkedList<>();
-    for (InvoiceByUserAndPhoneNumber part : invoicePart) {
-      result.addAll(part.getFees());
-    }
-    return result;
-  }
-
   public boolean canDelete() {
     return !acceptedByUsers && !acceptedByCompany;
   }
 
-  // TODO konzisztenciát ellenőrző függvényt elkészíteni
-  public boolean isConsistent() {
+  public boolean isConsistant() {
     return true;
   }
-
+  
   public void setAcceptedByCompany() {
     acceptedByCompany = true;
     int partOfCompany = 0;
@@ -140,7 +131,7 @@ public class Invoice extends BasicInvoice {
     }
   }
 
-  public boolean hasAnyRevisionNote() {
+  public boolean hasAnyReviewNote() {
     for (InvoiceByUserAndPhoneNumber part : invoicePart) {
       if (part.hasRevisionNote() || part.hasAnyRevisionNoteOfFees()) {
         return true;

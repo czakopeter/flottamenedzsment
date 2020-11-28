@@ -23,7 +23,7 @@ function accept_editing(acceptButton) {
     tr.querySelector('#acceptOrCancelEditingButton').style.display = 'none';
     
     let id = tr.id.substr("feeItem".length);
-    sendData('POST', '/invoice/modifyFeeItemGrossAmountRatio', 'id=' + id + '&userGrossAmount=' + userGrossAmount + '&compGrossAmount=' + compGrossAmount, function () {});
+    sendData('POST', '/invoice/modifyFeeItemGrossAmount', 'id=' + id + '&userGrossAmount=' + userGrossAmount + '&compGrossAmount=' + compGrossAmount, function () {});
 }
 
 function cancel_editing(cancelButton) {

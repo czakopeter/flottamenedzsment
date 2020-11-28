@@ -7,19 +7,19 @@ function modifyNotes() {
 	}
 	for(fee of fees) {
 		if(fee.querySelector("input").value.length > 0) {
-			showRevisionBtn();
+			showReviewBtn();
 			return;
 		}
 	}
-	hideRevisionBtn();
+	hideReviewBtn();
 }
 
-function showRevisionBtn() {
-	document.querySelector("#revisionBtn").disabled = false;
+function showReviewBtn() {
+	document.querySelector("#reviewBtn").disabled = false;
 }
 
-function hideRevisionBtn() {
-	document.querySelector("#revisionBtn").disabled = true;
+function hideReviewBtn() {
+	document.querySelector("#reviewBtn").disabled = true;
 }
 
 

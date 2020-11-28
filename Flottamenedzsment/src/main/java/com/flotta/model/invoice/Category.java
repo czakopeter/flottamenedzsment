@@ -1,9 +1,6 @@
 package com.flotta.model.invoice;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.flotta.model.BasicEntity;
@@ -13,6 +10,8 @@ import com.flotta.model.BasicEntity;
 public class Category extends BasicEntity implements Comparable<Category> {
   
   private String name;
+  
+  BasicFeeItem fee = new FeeItem();
   
   public Category() {}
   
