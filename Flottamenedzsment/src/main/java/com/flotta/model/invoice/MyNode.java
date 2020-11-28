@@ -23,7 +23,7 @@ public class MyNode extends BasicEntity {
   private MyNode parent;
   
   @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
-  private List<MyNode> child = new LinkedList<MyNode>();
+  private List<MyNode> children = new LinkedList<MyNode>();
 
   public MyNode(MyNode parent, String name) {
     this.templateId = parent.getTemplateId();
@@ -32,7 +32,10 @@ public class MyNode extends BasicEntity {
   }
 
   public MyNode() {}
-
+  
+  public MyNode(String name) {
+    this.name = name;
+  }
 
   public long getTemplateId() {
     return templateId;
@@ -58,20 +61,20 @@ public class MyNode extends BasicEntity {
     this.parent = parent;
   }
 
-  public List<MyNode> getChild() {
-    return child;
+  public List<MyNode> getChildren() {
+    return children;
   }
 
-  public void setChild(List<MyNode> child) {
-    this.child = child;
+  public void setChildren(List<MyNode> children) {
+    this.children = children;
   }
   
   public void show() {
-    if(child.isEmpty()) {
+    if(children.isEmpty()) {
       System.out.println("name = " + name);
     } else {
       System.out.println("name = " + name + "(OPEN)");
-      for(MyNode n : child) {
+      for(MyNode n : children) {
         n.show();
       }
       System.out.println("name = " + name + "(CLOSE)");
@@ -79,25 +82,17 @@ public class MyNode extends BasicEntity {
   }
   
   public MyNode appendChild(String name) {
-    for(MyNode c : this.child) {
+    for(MyNode c : this.children) {
       if(c.getName().equalsIgnoreCase(name)) {
         return c;
       }
     }
     MyNode n = new MyNode(this, name);
-    child.add(n);
+    children.add(n);
     return n;
   }
 
-  public static MyNode createRoot(int templateId, String name) {
-    MyNode root = new MyNode();
-    root.setTemplateId(templateId);
-    root.setParent(null);
-    root.setName(name);
-    return root;
-  }
-  
-  public boolean equalsName(String name) {
+  public boolean equalsByName(String name) {
     return this.name.equalsIgnoreCase(name);
   }
 }

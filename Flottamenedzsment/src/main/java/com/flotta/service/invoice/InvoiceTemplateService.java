@@ -28,7 +28,7 @@ public class InvoiceTemplateService {
 
   private void createBasicTemplate() {
 
-    MyNode root = MyNode.createRoot(1, "Account");
+    MyNode root = createRootNode("Account");
 
     MyNode feeItems = root.appendChild("FeeItems");
     MyNode feeItem = feeItems.appendChild("FeeItem");
@@ -61,6 +61,10 @@ public class InvoiceTemplateService {
     invoiceTemplateRepository.save(root);
   }
   
+  private MyNode createRootNode(String name) {
+    return invoiceTemplateRepository.save(new MyNode(name));
+  }
+  
   public List<MyNode> findAllRoot() {
     return invoiceTemplateRepository.findAllByParentIsNull();
   }
@@ -76,7 +80,7 @@ public class InvoiceTemplateService {
     }
     
     for(MyNode template : templates) {
-      if (equals(root.getChildNodes(), template.getChild())) {
+      if (equals(root.getChildNodes(), template.getChildren())) {
         return true;
       }
     }
@@ -104,7 +108,7 @@ public class InvoiceTemplateService {
       Node node = nodes.item(i);
       if (node.getNodeType() == Node.ELEMENT_NODE) {
         int index = indexOf(templates, node.getNodeName());
-        if(index == -1 || !equals(node.getChildNodes(), templates.get(index).getChild())) {
+        if(index == -1 || !equals(node.getChildNodes(), templates.get(index).getChildren())) {
           return false;
         }
         appear.put(templates.get(index).getName(), true);
@@ -121,7 +125,7 @@ public class InvoiceTemplateService {
   private int indexOf(List<MyNode> nodes, String searched) {
     for(int i = 0; i < nodes.size(); i++) {
       MyNode node = nodes.get(i);
-      if(node.equalsName(searched)) {
+      if(node.equalsByName(searched)) {
         return i;
       }
     }

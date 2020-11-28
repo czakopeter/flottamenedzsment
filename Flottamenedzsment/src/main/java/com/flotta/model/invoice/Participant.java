@@ -16,10 +16,6 @@ public class Participant extends BasicEntity {
   
   private String address;
   
-//  @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL)
-//  @MapKey(name = "beginDate")
-//  private Map<LocalDate, ParticipantDescriptionCategoryCouplerST> participantDescriptionCategoryCouplersST = new HashMap<>();
-  
   @ManyToOne
   private DescriptionCategoryCoupler descriptionCategoryCoupler;
   
@@ -46,18 +42,6 @@ public class Participant extends BasicEntity {
     this.address = address;
   }
 
-//  public Map<LocalDate, ParticipantDescriptionCategoryCouplerST> getParticipantDescriptionCategoryCouplersST() {
-//    return participantDescriptionCategoryCouplersST;
-//  }
-
-//  public void setParticipantDescriptionCategoryCouplersST(Map<LocalDate, ParticipantDescriptionCategoryCouplerST> participantDescriptionCategoryCouplersST) {
-//    if(participantDescriptionCategoryCouplersST == null) {
-//      this.participantDescriptionCategoryCouplersST = new HashMap<>();
-//    } else {
-//      this.participantDescriptionCategoryCouplersST = participantDescriptionCategoryCouplersST;
-//    }
-//  }
-  
   public DescriptionCategoryCoupler getDescriptionCategoryCoupler() {
     return descriptionCategoryCoupler;
   }
