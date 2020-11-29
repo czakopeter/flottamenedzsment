@@ -35,7 +35,7 @@ public class SubscriptionService extends ServiceWithMsg implements SubscriptionS
       return subscriptionRepository.findByNumber(number);
   }
   
-  public boolean add(SubscriptionToView stv) {
+  public boolean create(SubscriptionToView stv) {
     Optional<Subscription> optional = subscriptionRepository.findByNumber(stv.getNumber());
     if(optional.isPresent()) {
       appendMsg("Number already exists");
@@ -46,7 +46,7 @@ public class SubscriptionService extends ServiceWithMsg implements SubscriptionS
     return !optional.isPresent();
   }
 
-  public void save(Subscription sub) {
+  public void update(Subscription sub) {
     subscriptionRepository.save(sub);
   }
 }

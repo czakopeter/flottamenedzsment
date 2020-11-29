@@ -24,22 +24,22 @@ import com.flotta.model.registry.User;
 import com.flotta.model.viewEntity.DeviceToView;
 import com.flotta.model.viewEntity.SubscriptionToView;
 import com.flotta.service.invoice.InvoiceService;
-import com.flotta.service.registry.RecordService;
+import com.flotta.service.registry.RegistryService;
 import com.flotta.service.switchTable.SwitchTableService;
 import com.flotta.utility.MessageToView;
 
 @Service
 public class MainService {
 
-  private RecordService recordService;
+  private RegistryService registryService;
 
   private InvoiceService invoiceService;
 
   private SwitchTableService switchTableService;
 
   @Autowired
-  public MainService(RecordService recordService, InvoiceService invoiceService, SwitchTableService switchTableService) {
-    this.recordService = recordService;
+  public MainService(RegistryService registryService, InvoiceService invoiceService, SwitchTableService switchTableService) {
+    this.registryService = registryService;
     this.invoiceService = invoiceService;
     this.switchTableService = switchTableService;
   }
@@ -105,10 +105,6 @@ public class MainService {
   public InvoiceByUserAndPhoneNumber getPendingInvoiceOfCurrentUserById(Long id) {
     return invoiceService.getPendingInvoiceOfUserById(getCurrentUser(), id);
   }
-
-//  public boolean acceptInvoiceOfCurrentUserByInvoiceNumberAndNumber(String number) {
-//    return billingService.acceptInvoiceOfUserByNumber(getCurrentUser(), number);
-//  }
 
   public boolean acceptInvoicesOfCurrentUserByInvoiceNumbersAndPhoneNumbers(List<Long> ids) {
     return invoiceService.acceptInvoicesOfUserByInvoiceNumbersAndSubscription(getCurrentUser(), ids);
@@ -181,181 +177,177 @@ public class MainService {
   // --- RECORD SERVIVE ---
 
   private User getCurrentUser() {
-    return recordService.getCurrentUser();
+    return registryService.getCurrentUser();
   }
 
   public List<DeviceToView> findAllDevices() {
-    return recordService.findAllDevices();
+    return registryService.findAllDevices();
   }
 
   public boolean saveDevice(DeviceToView dtv) {
-    return recordService.saveDevice(dtv);
+    return registryService.saveDevice(dtv);
   }
 
   public boolean updateDevice(DeviceToView dtv) {
-    return recordService.updateDevice(dtv);
+    return registryService.updateDevice(dtv);
   }
 
   public DeviceToView findDeviceById(long id) {
-    return recordService.findDeviceById(id);
+    return registryService.findDeviceById(id);
   }
 
   public DeviceToView findDeviceByIdAndDate(long id, LocalDate date) {
-    return recordService.findDeviceByIdAndDate(id, date);
+    return registryService.findDeviceByIdAndDate(id, date);
   }
 
   public List<LocalDate> findDeviceDatesById(long id) {
-    return recordService.findDeviceDatesById(id);
+    return registryService.findDeviceDatesById(id);
   }
 
   public String getDeviceServiceError() {
-    return recordService.getDeviceServiceError();
+    return registryService.getDeviceServiceError();
   }
 
 //-------- DEVICE TYPE SERVICE --------
 
   public List<DeviceType> findAllDeviceTypes() {
-    return recordService.findAllDeviceTypes();
+    return registryService.findAllDeviceTypes();
   }
 
   public List<String> findAllBrandOfDevicesType() {
-    return recordService.findAllBrandOfDevicesType();
+    return registryService.findAllBrandOfDevicesType();
   }
 
   public boolean saveDeviceType(DeviceType deviceType) {
-    return recordService.saveDeviceType(deviceType);
+    return registryService.saveDeviceType(deviceType);
   }
 
   public DeviceType findDeviceTypeById(long id) {
-    return recordService.findDeviceTypeById(id);
+    return registryService.findDeviceTypeById(id);
   }
 
   public void updateDeviceType(DeviceType deviceType) {
-    recordService.updateDeviceType(deviceType);
+    registryService.updateDeviceType(deviceType);
   }
 
   public List<DeviceType> findAllVisibleDeviceTypes() {
-    return recordService.findAllVisibleDeviceTypes();
+    return registryService.findAllVisibleDeviceTypes();
   }
 
 //-------- SIM SERVICE --------
 
   public List<Sim> findAllFreeSim() {
-    return recordService.findAllFreeSim();
+    return registryService.findAllFreeSim();
   }
 
   public List<Sim> findAllSim() {
-    return recordService.findAllSim();
+    return registryService.findAllSim();
   }
 
   public Sim findSimById(int id) {
-    return recordService.findSimById(id);
+    return registryService.findSimById(id);
   }
 
   public boolean addSim(Sim sim) {
-    return recordService.addSim(sim);
+    return registryService.addSim(sim);
   }
 
   public String getSimError() {
-    return recordService.getSimError();
+    return registryService.getSimError();
   }
 
   public boolean canCreateSubscription() {
-    return recordService.canCreateSubscription();
+    return registryService.canCreateSubscription();
   }
 
 //------- SUBSCRIPTION SERVICE --------
 
   public List<SubscriptionToView> findAllSubscription() {
-    return recordService.findAllSubscription();
+    return registryService.findAllSubscription();
   }
 
   public Optional<Subscription> findSubscriptionById(long id) {
-    return recordService.findSubscriptionById(id);
+    return registryService.findSubscriptionById(id);
   }
 
   public SubscriptionToView findSubscriptionByIdAndDate(long id, LocalDate date) {
-    return recordService.findSubscriptionByIdAndDate(id, date);
+    return registryService.findSubscriptionByIdAndDate(id, date);
   }
 
-//  public Optional<Subscription> findSubscriptionByNumber(String number) {
-//    return recordService.findSubscriptionByNumber(number);
-//  }
-
   public SubscriptionToView findSubscriptionByNumberAndDate(String number, LocalDate date) {
-    return recordService.findSubscriptionByNumberAndDate(number, date);
+    return registryService.findSubscriptionByNumberAndDate(number, date);
   }
 
   public List<LocalDate> findSubscriptionDatesById(long id) {
-    return recordService.findSubscriptionDatesById(id);
+    return registryService.findSubscriptionDatesById(id);
   }
 
-  public boolean addSubscription(SubscriptionToView stv) {
-    return recordService.addSubscription(stv);
+  public boolean createSubscription(SubscriptionToView stv) {
+    return registryService.createSubscription(stv);
   }
 
   public boolean updateSubscription(SubscriptionToView stv) {
-    return recordService.updateSubscription(stv);
+    return registryService.updateSubscription(stv);
   }
 
   public String getSubscriptionServiceError() {
-    return recordService.getSubscriptionServiceError();
+    return registryService.getSubscriptionServiceError();
   }
 
 //TODO put UserServiceImp function here
   // -------- USER SERVICE --------
   public boolean registerUser(User user) {
-    return recordService.registerUser(user);
+    return registryService.registerUser(user);
   }
 
   public List<User> findAllUser() {
-    return recordService.findAllUser();
+    return registryService.findAllUser();
   }
 
   public User findUserByEmail(String email) {
-    return recordService.findUserByEmail(email);
+    return registryService.findUserByEmail(email);
   }
 
   public boolean changePassword(String oldPsw, String newPsw, String confirmPsw) {
-    return recordService.changePassword(oldPsw, newPsw, confirmPsw);
+    return registryService.changePassword(oldPsw, newPsw, confirmPsw);
   }
 
   public List<MessageToView> getUserError() {
-    return recordService.getUserError();
+    return registryService.getUserError();
   }
 
   public boolean firstAdminRegistration(User user) {
-    return recordService.firstAdminRegistration(user);
+    return registryService.firstAdminRegistration(user);
   }
 
   public boolean registrationAvailable() {
-    return recordService.registrationAvailable();
+    return registryService.registrationAvailable();
   }
 
   public boolean activation(String key) {
-    return recordService.activation(key);
+    return registryService.activation(key);
   }
 
   public List<User> findAllUserByStatus(int status) {
-    return recordService.findAllUserByStatus(status);
+    return registryService.findAllUserByStatus(status);
   }
 
   public User findUserById(long id) {
-    return recordService.findUserById(id);
+    return registryService.findUserById(id);
   }
 
   public boolean updateUser(long id, Map<String, Boolean> roles) {
-    return recordService.updateUser(id, roles);
+    return registryService.updateUser(id, roles);
   }
 
   public boolean requestNewPassword(String email) {
-    return recordService.requestNewPassword(email);
+    return registryService.requestNewPassword(email);
   }
 
   public User editChargeRatioOfUser(long userId, long chargeRatioId) {
     Optional<ChargeRatioByCategory> optionalChargeRatio = invoiceService.findChargeRatioById(chargeRatioId);
     if (optionalChargeRatio.isPresent()) {
-      return recordService.editChargeRatioOfUser(userId, optionalChargeRatio.get());
+      return registryService.editChargeRatioOfUser(userId, optionalChargeRatio.get());
     }
     return null;
   }
@@ -371,7 +363,7 @@ public class MainService {
   }
 
   public List<DeviceToView> findAllCurrentDeviceByUser(long userId) {
-    return switchTableService.findAllCurrentDeviceByUser(recordService.findUserById(userId));
+    return switchTableService.findAllCurrentDeviceByUser(registryService.findUserById(userId));
   }
 
 }

@@ -25,7 +25,7 @@ import com.flotta.model.viewEntity.SubscriptionToView;
 import com.flotta.utility.MessageToView;
 
 @Service
-public class RecordService {
+public class RegistryService {
 
   private DeviceService deviceService;
 
@@ -38,7 +38,7 @@ public class RecordService {
   private UserService userService;
 
   @Autowired
-  public RecordService(DeviceService deviceService, DeviceTypeService deviceTypeService, SimService simService, SubscriptionService subscriptionService, UserService userService) {
+  public RegistryService(DeviceService deviceService, DeviceTypeService deviceTypeService, SimService simService, SubscriptionService subscriptionService, UserService userService) {
     this.deviceService = deviceService;
     this.deviceTypeService = deviceTypeService;
     this.simService = simService;
@@ -97,14 +97,6 @@ public class RecordService {
   public String getDeviceServiceError() {
     return deviceService.getError();
   }
-
-//  public List<DeviceToView> findAllCurrentDeviceOfUser() {
-//    return deviceService.findAllCurrentByUser(getCurrentUser());
-//  }
-//  
-//  public List<DeviceToView> findAllCurrentDeviceOfUser(long userId) {
-//    return deviceService.findAllCurrentByUser(userService.findById(userId));
-//  }
 
 //-------- DEVICE TYPE SERVICE --------
 
@@ -205,13 +197,13 @@ public class RecordService {
     }
   }
 
-  public boolean addSubscription(SubscriptionToView stv) {
+  public boolean createSubscription(SubscriptionToView stv) {
     Sim sim = simService.findByImei(stv.getImei());
-    if (sim != null && subscriptionService.add(stv)) {
+    if (sim != null && subscriptionService.create(stv)) {
       Subscription saved = subscriptionService.findByNumber(stv.getNumber()).get();
       sim.setStatus(SimStatusEnum.ACTIVE);
       saved.addSim(sim, null, stv.getBeginDate());
-      subscriptionService.save(saved);
+      subscriptionService.update(saved);
       return true;
     }
     return false;
@@ -229,7 +221,7 @@ public class RecordService {
       sub.addUser(user, stv.getBeginDate());
       sub.addDevice(dev, stv.getBeginDate());
       sub.addNote(stv.getNote(), stv.getBeginDate());
-      subscriptionService.save(sub);
+      subscriptionService.update(sub);
     }
 
     return optional.isPresent();

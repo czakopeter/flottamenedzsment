@@ -43,7 +43,7 @@ public class SubscriptionController {
   }
 
   @GetMapping("/subscription/new")
-  public String prepareAddingSubscription(Model model) {
+  public String prepareCreatingSubscription(Model model) {
     if(service.canCreateSubscription()) {
       model.addAttribute("subscription", new SubscriptionToView());
       model.addAttribute("freeSims", service.findAllFreeSim());
@@ -54,8 +54,8 @@ public class SubscriptionController {
   }
 
   @PostMapping("/subscription/new")
-  public String addSubscription(Model model, @ModelAttribute("subscription") SubscriptionToView stv) {
-      if (service.addSubscription(stv)) {
+  public String createSubscription(Model model, @ModelAttribute("subscription") SubscriptionToView stv) {
+      if (service.createSubscription(stv)) {
         return "redirect:/subscription/all";
       } else {
         model.addAttribute("subscription", stv);
