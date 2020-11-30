@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.flotta.model.registry.Sim;
 import com.flotta.model.registry.Subscription;
 import com.flotta.model.viewEntity.SubscriptionToView;
 import com.flotta.repository.registry.SubscriptionRepository;
@@ -35,12 +36,13 @@ public class SubscriptionService extends ServiceWithMsg implements SubscriptionS
       return subscriptionRepository.findByNumber(number);
   }
   
-  public boolean create(SubscriptionToView stv) {
+  public boolean create(SubscriptionToView stv, Optional<Sim> simOpt) {
     Optional<Subscription> optional = subscriptionRepository.findByNumber(stv.getNumber());
     if(optional.isPresent()) {
       appendMsg("Number already exists");
     } else {
       Subscription entity = new Subscription(stv.getNumber(), stv.getBeginDate());
+      entity.addSim(simOpt, null, stv.getBeginDate());
       subscriptionRepository.save(entity);
     }
     return !optional.isPresent();

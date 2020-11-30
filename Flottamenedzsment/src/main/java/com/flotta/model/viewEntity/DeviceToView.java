@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.flotta.model.note.DevNote;
+import com.flotta.model.registry.Device;
 import com.flotta.model.registry.Subscription;
 import com.flotta.model.registry.User;
 import com.flotta.model.switchTable.BasicSwitchTable;
@@ -35,8 +36,31 @@ public class DeviceToView {
 	
 	private String min;
 	
-	public DeviceToView() {
+	public DeviceToView() {}
+	
+	public DeviceToView(Device device) {
+	  id = device.getId();
+	  serialNumber = device.getSerialNumber();
+	  typeName = device.getDeviceType().getName();
+	  beginDate = getLastModificationDateOfDevice(device);
+	  
+	  setUser(Utility.getBasicSwitchTable(device.getDevUsers()));
+	  setSubscription(Utility.getBasicSwitchTable(device.getDevSubs()));
+	  setNote(Utility.getBasicSwitchTable(device.getNotes()));
 	}
+
+  public DeviceToView(Device device, LocalDate date) {
+    id = device.getId();
+    serialNumber = device.getSerialNumber();
+    typeName = device.getDeviceType().getName();
+    beginDate = date;
+    
+    setUser(Utility.getBasicSwitchTable(device.getDevUsers(), date));
+
+    setSubscription(Utility.getBasicSwitchTable(device.getDevSubs(), date));
+
+    setNote(Utility.getBasicSwitchTable(device.getNotes(), date));
+  }
 
   public long getId() {
     return id;
@@ -154,5 +178,9 @@ public class DeviceToView {
   
   public String getPeriod() {
     return Utility.getPeriod(beginDate, endDate);
+  }
+  
+  private LocalDate getLastModificationDateOfDevice(Device device) {
+    return device.getAllModificationDateDesc().get(0);
   }
 }

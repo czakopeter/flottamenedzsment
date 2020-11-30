@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -167,11 +168,13 @@ public class Subscription extends BasicEntityWithCreateDate {
     return stv;
   }
 
-  public void addSim(Sim sim, String reason, LocalDate date) {
+  public void addSim(Optional<Sim> simOpt, String reason, LocalDate date) {
+    Sim sim = simOpt.get();
     if (sim == null) {
       System.err.println("Never happened");
       return;
     }
+    sim.setStatus(SimStatusEnum.ACTIVE);
     if (subSim.isEmpty()) {
       subSim.put(date, new SubSim(this, sim, date));
     } else {
@@ -196,7 +199,8 @@ public class Subscription extends BasicEntityWithCreateDate {
     }
   }
 
-  public void addUser(User user, LocalDate date) {
+  public void addUser(Optional<User> userOpt, LocalDate date) {
+    User user = userOpt.orElse(null);
     if (subUsers.isEmpty()) {
       //Még nem rendelték felhasználóhoz
       if (user != null) {

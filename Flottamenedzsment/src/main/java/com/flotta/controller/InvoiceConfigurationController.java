@@ -18,7 +18,6 @@ import com.flotta.model.invoice.Category;
 import com.flotta.model.invoice.ChargeRatioByCategory;
 import com.flotta.model.invoice.DescriptionCategoryCoupler;
 import com.flotta.model.invoice.Participant;
-import com.flotta.model.registry.User;
 import com.flotta.service.MainService;
 import com.flotta.utility.ResponseTransfer;
 
@@ -147,17 +146,15 @@ public class InvoiceConfigurationController {
   @PostMapping("/invoiceConfiguration/getChargeRatioOfUser")
   @ResponseBody
   public ResponseTransfer getChargeRatioIdOfUser(@RequestParam ("userId") long id) {
-    User user = service.findUserById(id);
-    long chargeRatioId = user.getChargeRatio() != null ? user.getChargeRatio().getId() : 0;
-    return new ResponseTransfer(String.valueOf(chargeRatioId));
+    Optional<ChargeRatioByCategory> chargeRatioOpt = service.getChargeRatioOfUserById(id);
+    long chargeRatioId = chargeRatioOpt.isPresent() ? chargeRatioOpt.get().getId() : 0;
+    return new ResponseTransfer(chargeRatioId);
   }
   
   @PostMapping("/invoiceConfiguration/modifyChargeRatioOfUser")
   @ResponseBody
   public ResponseTransfer modifyChargeRatioOfUser(@RequestParam ("userId") long userId, @RequestParam long chargeRatioId) {
-    User user = service.editChargeRatioOfUser(userId, chargeRatioId);
-    chargeRatioId = user.getChargeRatio() != null ? user.getChargeRatio().getId() : 0;
-    return new ResponseTransfer(String.valueOf(chargeRatioId));
+    return new ResponseTransfer(service.updateChargeRatioOfUser(userId, chargeRatioId) ? chargeRatioId : 0);
   }
   
   @GetMapping("/invoiceConfiguration/participant/new")

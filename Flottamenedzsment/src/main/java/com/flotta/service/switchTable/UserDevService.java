@@ -3,6 +3,7 @@ package com.flotta.service.switchTable;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 import com.flotta.model.registry.Device;
 import com.flotta.model.registry.User;
 import com.flotta.model.switchTable.UserDev;
-import com.flotta.model.viewEntity.DeviceToView;
 import com.flotta.repository.switchTable.UserDevRepository;
 
 /**
@@ -50,28 +50,27 @@ public class UserDevService {
    * @param user
    * @return visszadja az eszközet melyeket a felhasználó birtokol vagy valaha birtokolt
    */
-  public List<DeviceToView> findAllDeviceByUser(User user) {
-    List<DeviceToView> result = new LinkedList<>();
-    List<UserDev> userDevs = userDevRepository.findAllByUserOrderByBeginDateDesc(user);
-    for(UserDev userDev : userDevs) {
-      if(userDev.getDev() != null) {
-        DeviceToView actual = userDev.getDev().toView(userDev.getBeginDate());
-        actual.setEndDate(userDev.getEndDate());
-        result.add(actual);
-      }
-    }
-    return result;
-  }
+//  public List<Device> findAllDeviceByUser(Optional<User> userOpt) {
+//    List<Device> result = new LinkedList<>();
+//    if(userOpt.isPresent()) {
+//      for(UserDev userDev : userDevRepository.findAllByUserOrderByBeginDateDesc(userOpt.get())) {
+//          result.add(new DeviceToView(userDev.getDev(), userDev.getBeginDate()));
+//        }
+//      }
+//    }
+//    return result;
+//  }
   
   /**
-   * @param user
+   * @param userOpt
    * @return visszadja az eszközet melyeket a felhasználó birtokol
    */
-  public List<DeviceToView> findAllCurrentDeviceByUser(User user) {
-    List<DeviceToView> result = new LinkedList<>();
-    List<UserDev> userDevs = userDevRepository.findAllByUserAndEndDateNull(user);
-    for(UserDev userDev : userDevs) {
-      result.add(userDev.getDev().toView());
+  public List<Device> findAllCurrentDeviceByUser(Optional<User> userOpt) {
+    List<Device> result = new LinkedList<>();
+    if(userOpt.isPresent()) {
+      for(UserDev userDev : userDevRepository.findAllByUserAndEndDateNull(userOpt.get())) {
+        result.add(userDev.getDev());
+      }
     }
     return result;
   }

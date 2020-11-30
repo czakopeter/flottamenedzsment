@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.flotta.model.note.SubNote;
 import com.flotta.model.registry.Device;
 import com.flotta.model.registry.Sim;
+import com.flotta.model.registry.Subscription;
 import com.flotta.model.registry.User;
 import com.flotta.model.switchTable.BasicSwitchTable;
 import com.flotta.model.switchTable.SubDev;
@@ -43,7 +44,34 @@ public class SubscriptionToView {
 
   private String min;
 
-  public SubscriptionToView() {
+  public SubscriptionToView() {}
+  
+  public SubscriptionToView(Subscription subscription) {
+    id = subscription.getId();
+    number = subscription.getNumber();
+    beginDate = getLastModificationDateOfDevice(subscription);
+
+    setSim(Utility.getBasicSwitchTable(subscription.getSubSim()));
+
+    setUser(Utility.getBasicSwitchTable(subscription.getSubUsers()));
+
+    setDevice(Utility.getBasicSwitchTable(subscription.getSubDev()));
+
+    setNote(Utility.getBasicSwitchTable(subscription.getNotes()));
+  }
+  
+  public SubscriptionToView(Subscription subscription, LocalDate date) {
+    id = subscription.getId();
+    number = subscription.getNumber();
+    beginDate = date;
+
+    setSim(Utility.getBasicSwitchTable(subscription.getSubSim(), date));
+
+    setUser(Utility.getBasicSwitchTable(subscription.getSubUsers(), date));
+
+    setDevice(Utility.getBasicSwitchTable(subscription.getSubDev(), date));
+
+    setNote(Utility.getBasicSwitchTable(subscription.getNotes(), date));  
   }
 
   public long getId() {
@@ -199,6 +227,10 @@ public class SubscriptionToView {
 
   public String getPeriod() {
     return Utility.getPeriod(beginDate, endDate);
+  }
+  
+  private LocalDate getLastModificationDateOfDevice(Subscription subscription) {
+    return subscription.getAllModificationDateDesc().get(0);
   }
 
 }

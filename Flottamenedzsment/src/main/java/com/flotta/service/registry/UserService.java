@@ -11,8 +11,6 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -58,7 +56,7 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
   @Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Optional<User> user = userRepository.findByEmail(username);
-		if (user.isPresent()) {
+		if (!user.isPresent()) {
 			throw new UsernameNotFoundException(username);
 		}
 		return new UserDetailsImpl(user.get());
@@ -68,8 +66,8 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
     return userRepository.findAll();
   }
   
-	public User findByEmail(String email) {
-		return userRepository.findByEmail(email).get();
+	public Optional<User> findByEmail(String email) {
+		return userRepository.findByEmail(email);
 	}
 	
 	public boolean registerUser(User user) {
@@ -109,25 +107,27 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
 		return new String(key);
   }
 
-	public User findById(long userId) {
-	  return userId <= 0 ? null : userRepository.findById(userId).orElse(null);
+	public Optional<User> findById(long userId) {
+	  return userRepository.findById(userId);
 	}
 
   public void save(User user) {
     userRepository.save(user);
   }
   
-  public boolean changePassword(String oldPsw, String newPsw, String confirmPsw) {
-    User user = getActualUser();
-    if(passwordEncoder.matches(oldPsw, user.getPassword()) && Validator.validPassword(newPsw) && newPsw.contentEquals(confirmPsw)) {
-      user.setPassword(passwordEncoder.encode(newPsw));
-      user.setStatus(UserStatusEnum.ENABLED);
-      userRepository.save(user);
-      return true;
-    } else {
-      appendMsg("Problem with the added data!");
-      return false;
+  public boolean changePassword(String email, String oldPsw, String newPsw, String confirmPsw) {
+    Optional<User> userOpt = userRepository.findByEmail(email);
+    if(userOpt.isPresent()) {
+      User user = userOpt.get();
+      if(passwordEncoder.matches(oldPsw, user.getPassword()) && Validator.validPassword(newPsw) && newPsw.contentEquals(confirmPsw)) {
+        user.setPassword(passwordEncoder.encode(newPsw));
+        user.setStatus(UserStatusEnum.ENABLED);
+        userRepository.save(user);
+        return true;
+      }
     }
+    appendMsg("Problem with the added data!");
+    return false;
   }
 
   public boolean registrationAvailable() {
@@ -159,14 +159,13 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
   }
 
   public boolean activation(String key) {
-    User user = userRepository.findByActivationKey(key);
-    if(user != null) {
+    Optional<User> userOpt = userRepository.findByActivationKey(key);
+    userOpt.ifPresent(user ->  {
       user.setEnabled(true);
       user.setStatus(UserStatusEnum.ENABLED);
       userRepository.save(user);
-      return true;
-    }
-    return false;
+    });
+    return userOpt.isPresent();
   }
 
   public List<User> findAllByStatus(int status) {
@@ -174,15 +173,13 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
   }
 
   public boolean updateUser(long id,  Map<String, Boolean> roles) {
-    User user = userRepository.findById(id).orElse(null);
-    if(user != null) {
+    
+    Optional<User> userOpt = userRepository.findById(id);
+    userOpt.ifPresent(user -> {
       user.setRoles(toRoleSet(roles));
       userRepository.save(user);
-      return true;
-    } else {
-      appendMsg("User doesn't exists!");
-    }
-    return false;
+    });
+    return userOpt.isPresent();
   }
   
   private Set<Role> toRoleSet(Map<String, Boolean> roles) {
@@ -218,19 +215,13 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
     return false;
   }
   
-  private User getActualUser() {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    return userRepository.findByEmail(auth.getName()).get();
-  }
-  
-  public User editChargeRatioOfUser(long userId, ChargeRatioByCategory chargeRatio) {
-    Optional<User> optionalUser = userRepository.findById(userId);
-    if(optionalUser.isPresent() && chargeRatio != null) {
-      User user = optionalUser.get();
+  public boolean editChargeRatioOfUser(long userId, ChargeRatioByCategory chargeRatio) {
+    Optional<User> userOpt = userRepository.findById(userId);
+    userOpt.ifPresent(user -> {
       user.setChargeRatio(chargeRatio);
-      return userRepository.save(user);
-    }
-    return optionalUser.get();
+      userRepository.save(user);
+    });
+    return userOpt.isPresent();
   }
   
   //TOTO delete create first admin

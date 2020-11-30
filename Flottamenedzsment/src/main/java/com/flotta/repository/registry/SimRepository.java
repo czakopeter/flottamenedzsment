@@ -1,5 +1,6 @@
 package com.flotta.repository.registry;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
@@ -10,7 +11,7 @@ public interface SimRepository extends CrudRepository<Sim, Long> {
 
 	List<Sim> findAll();
 
-  Sim findByImei(String imei);
+  Optional<Sim> findByImei(String imei);
 
   List<Sim> findAllBySimSubIsNullAndChangeReasonIsNull();
 

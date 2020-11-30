@@ -1,6 +1,7 @@
 package com.flotta.controller;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +58,12 @@ public class UserController {
   
   @GetMapping("/user/{id}/update")
   public String user(Model model, @PathVariable("id") long id) {
-    model.addAttribute("user", service.findUserById(id));
-    return "user_templates/userEdit";
+    Optional<User> userOpt = service.findUserById(id);
+    if(userOpt.isPresent()) {
+      model.addAttribute("user", userOpt.get());
+      return "user_templates/userEdit";
+    }
+    return "redirect:/user/all";
   }
   
   //TODO fetch-csel küldeni az adatokat (role, boolean)
@@ -68,7 +73,7 @@ public class UserController {
     if(!service.updateUser(id, roles)) {
       model.addAttribute("messages", service.getUserError());
     }
-    model.addAttribute("user", service.findUserById(id));
+    model.addAttribute("user", service.findUserById(id).get());
     return "user_templates/userEdit";
   }
   

@@ -1,6 +1,7 @@
 package com.flotta.service.registry;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,24 +15,17 @@ public class DeviceService extends ServiceWithMsg{
   
   private DeviceRepository deviceRepository;
   
-//  private DeviceStatusService deviceStatusService;
-
   @Autowired
   public void setDeviceRepository(DeviceRepository deviceRepository) {
     this.deviceRepository = deviceRepository;
   }
   
-//  @Autowired
-//  public void setDeviceStatusService(DeviceStatusService deviceStatusService) {
-//    this.deviceStatusService = deviceStatusService;
-//  }
-
   public List<Device> findAll() {
     return deviceRepository.findAll();
   }
   
-  public Device findById(long id) {
-    return deviceRepository.findById(id).orElse(null);
+  public Optional<Device> findById(long id) {
+    return deviceRepository.findById(id);
   }
   
   public Device findBySerialNumber(String selialNumber) {

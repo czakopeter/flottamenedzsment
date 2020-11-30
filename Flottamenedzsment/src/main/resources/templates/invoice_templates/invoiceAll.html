@@ -23,10 +23,10 @@
           <thead>
             <tr>
               <th th:text="#{invoice.invoiceNumber}">Invoice number</th>
-              <th th:text="#{invoice.from}">From</th>
-              <th th:text="#{invoice.to}">To</th>
-              <th th:text="#{invoice.netAmount}">Net amount</th>
-              <th th:text="#{invoice.grossAmount}">Gross amount</th>
+              <th class="text-center" th:text="#{invoice.periodBegin}">Period begin</th>
+              <th class="text-center" th:text="#{invoice.periodEnd}">Period end</th>
+              <th class="text-right" th:text="#{invoice.netAmount}">Net amount</th>
+              <th class="text-right" th:text="#{invoice.grossAmount}">Gross amount</th>
               <th></th>
             </tr>
           </thead>
@@ -35,10 +35,10 @@
               th:id="'invoiceNumber' + ${rawInvoice.invoiceNumber}"
             >
               <td name="invoiceNumber" th:text="${rawInvoice.invoiceNumber}"></td>
-              <td name="beginDate" th:text="${rawInvoice.beginDate}"></td>
-              <td name="endDate" th:text="${rawInvoice.endDate}"></td>
-              <td th:text="${rawInvoice.netAmount} + ' Ft'"></td>
-              <td th:text="${rawInvoice.grossAmount} + ' Ft'"></td>
+              <td class="text-center" name="beginDate" th:text="${rawInvoice.beginDate}"></td>
+              <td class="text-center" name="endDate" th:text="${rawInvoice.endDate}"></td>
+              <td class="text-right" th:text="${rawInvoice.netAmount} + ' Ft'"></td>
+              <td class="text-right" th:text="${rawInvoice.grossAmount} + ' Ft'"></td>
               <td class="text-right"><a th:if="${rawInvoice.hasProblem()}" href="#"
                 class="dropdown" data-toggle="dropdown" role="button" aria-haspopup="true"
                 aria-expanded="false"
@@ -78,10 +78,10 @@
         <thead>
           <tr>
             <th th:text="#{invoice.invoiceNumber}">Invoice number</th>
-            <th th:text="#{invoice.from}">From</th>
-            <th th:text="#{invoice.to}">To</th>
-            <th th:text="#{invoice.netAmount}">Net amount</th>
-            <th th:text="#{invoice.grossAmount}">Gross amount</th>
+            <th class="text-center" th:text="#{invoice.periodBegin}">Period begin</th>
+            <th class="text-center" th:text="#{invoice.periodEnd}">Period end</th>
+            <th class="text-right" th:text="#{invoice.netAmount}">Net amount</th>
+            <th class="text-right" th:text="#{invoice.grossAmount}">Gross amount</th>
             <th></th>
           </tr>
         </thead>
@@ -90,10 +90,10 @@
             th:classappend="${invoice.hasAnyReviewNote() ? 'hasReviewNote' : ''}"
           >
             <td name="invoiceNumber" th:text="${invoice.invoiceNumber}"></td>
-            <td name="beginDate" th:text="${invoice.beginDate}"></td>
-            <td name="endDate" th:text="${invoice.endDate}"></td>
-            <td th:text="${invoice.netAmount}  + ' Ft'"></td>
-            <td th:text="${invoice.grossAmount}  + ' Ft'"></td>
+            <td class="text-center" name="beginDate" th:text="${invoice.beginDate}"></td>
+            <td class="text-center" name="endDate" th:text="${invoice.endDate}"></td>
+            <td class="text-right" th:text="${invoice.netAmount}  + ' Ft'"></td>
+            <td class="text-right" th:text="${invoice.grossAmount}  + ' Ft'"></td>
             <td class="text-right">
               <button name="acceptBtn" th:unless="${invoice.acceptedByCompany}" type="button" class="btn btn-sm btn-success"
                 onclick="acceptInvoiceByCompany(this)"

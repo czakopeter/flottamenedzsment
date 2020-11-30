@@ -98,8 +98,16 @@ public class User extends BasicEntity {
 	public void setUserSubs(Set<UserSub> userSubs) {
 		this.userSubs = userSubs;
 	}
+	
+	public Set<UserDev> getUserDevs() {
+    return userDevs;
+  }
 
-	public Set<Role> getRoles() {
+  public void setUserDevs(Set<UserDev> userDevs) {
+    this.userDevs = userDevs;
+  }
+
+  public Set<Role> getRoles() {
 		return roles;
 	}
 

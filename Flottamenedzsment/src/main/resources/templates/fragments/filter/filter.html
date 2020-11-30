@@ -41,40 +41,13 @@
       <input id="invoice-number" type="text" class="form-control" />
     </div>
     <div>
-      <label for="begin-date" th:text="#{invoice.from}">From</label>
+      <label for="begin-date" th:text="#{invoice.periodBegin}">Period begin</label>
       <input id="begin-date" type="date" onchange="filterDateSet(this)" class="form-control" />
     </div>
     <div>
-      <label for="end-date" th:text="#{invoice.to}">To</label>
+      <label for="end-date" th:text="#{invoice.periodEnd}">Period end</label>
       <input id="end-date" type="date" onchange="filterDateSet(this)" class="form-control" />
     </div>
-  </div>
-
-  <div th:fragment="invoice-filter-options-table" id="filter-options-content">
-    <table class="table table-sm">
-      <thead>
-        <tr>
-          <th th:text="#{invoice.invoiceNumber}">Invoice number</th>
-          <th th:text="#{invoice.fromDate}">From</th>
-          <th th:text="#{invoice.emdDate}">To</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td name="invoiceNumber"><input id="invoice-number" type="text"
-            class="form-control form-control-sm"
-          /></td>
-          <td><input id="begin-date" type="date" onchange="filterDateSet(this)"
-            class="form-control  form-control-sm"
-          /></td>
-          <td><input id="end-date" type="date" onchange="filterDateSet(this)"
-            class="form-control  form-control-sm"
-          /></td>
-          <td class="pull-right"><div th:replace=" :: filter-button-group"></div></td>
-        </tr>
-      </tbody>
-    </table>
   </div>
 
   <div th:fragment="user-filter-options" id="filter-options-content">

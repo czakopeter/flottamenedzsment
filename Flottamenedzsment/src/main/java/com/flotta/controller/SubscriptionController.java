@@ -19,6 +19,7 @@ import com.flotta.model.registry.Subscription;
 import com.flotta.model.viewEntity.DeviceToView;
 import com.flotta.model.viewEntity.SubscriptionToView;
 import com.flotta.service.MainService;
+import com.flotta.utility.Utility;
 
 @Controller
 public class SubscriptionController {
@@ -38,7 +39,7 @@ public class SubscriptionController {
   @GetMapping("/subscription/all")
   public String listSubscriptions(Model model) {
     model.addAttribute("canCreateNew", service.canCreateSubscription());
-    model.addAttribute("subscriptions", service.findAllSubscription());
+    model.addAttribute("subscriptions", Utility.convertSubscripionToView(service.findAllSubscription()));
     return "subscription_templates/subscriptionAll";
   }
 
@@ -67,13 +68,13 @@ public class SubscriptionController {
 
   @GetMapping("/subscription/{id}/update")
   public String prepareUpdatingSubscription(Model model, @PathVariable("id") long id) {
-    Optional<Subscription> optional = service.findSubscriptionById(id);
-    if(optional.isPresent()) {
-      SubscriptionToView stv = optional.get().toView();
+    Optional<Subscription> subscriptionOpt = service.findSubscriptionById(id);
+    if(subscriptionOpt.isPresent()) {
+      SubscriptionToView stv = new SubscriptionToView(subscriptionOpt.get());
       model.addAttribute("subscription", stv);
       model.addAttribute("freeSims", service.findAllFreeSim());
       model.addAttribute("users", service.findAllUser());
-      model.addAttribute("devices", service.findAllCurrentDeviceByUser(stv.getUserId()));
+      model.addAttribute("devices", Utility.convertDevicesToView(service.findAllCurrentDeviceByUser(stv.getUserId())));
       return "subscription_templates/subscriptionEdit";
     } else {
       return "redirect:/subscription/all";
@@ -85,37 +86,40 @@ public class SubscriptionController {
     if(!service.updateSubscription(stv)) {
       model.addAttribute("error", service.getSubscriptionServiceError());
     }
-    stv = service.findSubscriptionById(stv.getId()).get().toView();
+    stv = new SubscriptionToView(service.findSubscriptionById(stv.getId()).get());
     model.addAttribute("freeSims", service.findAllFreeSim());
     model.addAttribute("users", service.findAllUser());
-    model.addAttribute("devices", service.findAllCurrentDeviceByUser(stv.getUserId()));
+    model.addAttribute("devices", Utility.convertDevicesToView(service.findAllCurrentDeviceByUser(stv.getUserId())));
     model.addAttribute("subscription", stv);
     return "subscription_templates/subscriptionEdit";
   }
   
   @GetMapping("/subscription/{id}/view")
   public String viewSubscription(Model model, @PathVariable("id") long id) {
-    model.addAttribute("subscription", service.findSubscriptionById(id).get().toView());
-    model.addAttribute("dates", service.findSubscriptionDatesById(id));
-    return "subscription_templates/subscriptionView";
+    Optional<Subscription> subscriptionOpt = service.findSubscriptionById(id);
+    if(subscriptionOpt.isPresent()) {
+      model.addAttribute("subscription", new SubscriptionToView(subscriptionOpt.get()));
+      model.addAttribute("dates", subscriptionOpt.get().getAllModificationDateDesc());
+      return "subscription_templates/subscriptionView";
+    }
+    return "redirect:/subscription/all";
   }
   
   @PostMapping("/subscription/{id}/view")
   @ResponseBody
   public SubscriptionToView viewChangeDate(@PathVariable("id") long id, @RequestParam("date")@DateTimeFormat(pattern = "yyyy-MM-dd")  LocalDate date) {
-    return service.findSubscriptionByIdAndDate(id, date);
+    return new SubscriptionToView(service.findSubscriptionById(id).get(), date);
   }
   
   @PostMapping("/subscription/getDevicesByUser")
   @ResponseBody
   public List<DeviceToView> getDevicesByUser(@RequestParam ("userId") long userId) {
-    return service.findAllCurrentDeviceByUser(userId);
+    return Utility.convertDevicesToView(service.findAllCurrentDeviceByUser(userId));
   }
   
   @PostMapping("/subscription/getDeviceById")
   @ResponseBody
   public DeviceToView getDeviceById(Model model, @RequestParam ("id") long id) {
-    return service.findDeviceById(id);
+    return new DeviceToView(service.findDeviceById(id).get());
   }
-  
 }

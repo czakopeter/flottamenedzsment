@@ -2,6 +2,8 @@ package com.flotta.service.registry;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,51 +32,28 @@ public class SimService extends ServiceWithMsg {
     return result;
 	}
 
-	public Sim findById(long id) {
-		return simRepository.findById(id).orElse(null);
+	public Optional<Sim> findById(long id) {
+		return simRepository.findById(id);
 	}
 	
-	public Sim findByImei(String imei) {
+	public Optional<Sim> findByImei(String imei) {
     return simRepository.findByImei(imei);
 	}
 
-//  public void save(Sim sim, LocalDate date) {
-//    Sim check = simRepository.findByImei(sim.getImei());
-//    if(check == null) {
-//      sim.addStatus(SimStatusEnum.FREE, date);
-//      simRepository.save(sim);
-//    }
-//  }
-//
-//  public void removeLastStatusModification(long id) {
-//    Sim sim = simRepository.findOne(id);
-//    if(sim != null) {
-//     simStatusService.deleteLastStatus(sim);
-//    }
-//  }
-
-//  public void modifySimLastStatus(long simId, String imeiChangeReason) {
-//    Sim sim = simRepository.findOne(simId);
-//    if(sim != null && !sim.isFree()) {
-//      simStatusService.modifyLastStatus(sim, imeiChangeReason);
-//    }
-//  }
-
   //TODO check imei, pin, puk format
-  public boolean add(Sim sim) {
+  public boolean create(Sim sim) {
 //    if(Validator.isValidImieWithLuhnAlg(sim.getImei())) {
 //      appendMsg("Imei " + sim.getImei() + " is not valid!");
 //      return false;
 //    }
-    Sim check = simRepository.findByImei(sim.getImei());
-    if(check == null) {
+    Optional<Sim> simOpt = simRepository.findByImei(sim.getImei());
+    if(simOpt.isPresent()) {
+      appendMsg("Imei " + sim.getImei() + " already exists!");
+    } else {
       sim.setStatus(SimStatusEnum.FREE);
       simRepository.save(sim);
-      return true;
-    } else {
-      appendMsg("Imei " + sim.getImei() + " already exists!");
-      return false;
     }
+    return !simOpt.isPresent();
   }
 
   public List<String> getAllChagneReason() {

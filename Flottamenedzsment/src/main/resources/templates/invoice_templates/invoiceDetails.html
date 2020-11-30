@@ -15,7 +15,7 @@
       <div class="col-2">
         <label th:text="#{name}">Company name</label>
       </div>
-      <div class="col-8">
+      <div class="col-2 text-right">
         <label th:text="${invoice.company.name}"></label>
       </div>
     </div>
@@ -23,7 +23,7 @@
       <div class="col-2">
         <label th:text="#{participant.address}">Address</label>
       </div>
-      <div class="col-8">
+      <div class="col-2 text-right">
         <label th:text="${invoice.company.address}"></label>
       </div>
     </div>
@@ -34,23 +34,23 @@
       <div class="col-2">
         <label th:text="#{invoice.invoiceNumber}">Invoice number</label>
       </div>
-      <div class="col-8">
+      <div class="col-2 text-right">
         <label th:text="${invoice.invoiceNumber}">Invoice number</label>
       </div>
     </div>
     <div class="row my-2">
       <div class="col-2">
-        <label th:text="#{invoice.from}">From</label>
+        <label th:text="#{invoice.periodBegin}">Period begin</label>
       </div>
-      <div class="col-8">
+      <div class="col-2 text-right">
         <label th:text="${invoice.beginDate}">Begin date</label>
       </div>
     </div>
     <div class="row my-2">
       <div class="col-2">
-        <label th:text="#{invoice.to}">To</label>
+        <label th:text="#{invoice.periodEnd}">Period end</label>
       </div>
-      <div class="col-8">
+      <div class="col-2 text-right">
         <label th:text="${invoice.endDate}">End date</label>
       </div>
     </div>
@@ -58,7 +58,7 @@
       <div class="col-2">
         <label th:text="#{invoice.netAmount}">Net amount</label>
       </div>
-      <div class="col-8">
+      <div class="col-2 text-right">
         <label th:text="${invoice.netAmount} + ' Ft'">Net amount</label>
       </div>
     </div>
@@ -66,7 +66,7 @@
       <div class="col-2">
         <label th:text="#{invoice.taxAmount}">Tax amount</label>
       </div>
-      <div class="col-8">
+      <div class="col-2 text-right">
         <label th:text="${invoice.taxAmount} + ' Ft'">Tax amount</label>
       </div>
     </div>
@@ -106,7 +106,7 @@
           <thead>
             <tr>
               <th th:text="#{description}">Description</th>
-              <th th:text="#{period}">Period</th>
+              <th class="text-center" th:text="#{period}">Period</th>
               <th class="text-right" th:text="#{invoice.grossAmount}">Gross amount</th>
               <th class="text-right" th:text="#{user}">User</th>
               <th class="text-right" th:text="#{company}">Company</th>
@@ -116,7 +116,7 @@
           <tbody th:each="feeItem : ${partOfInvoice.feeItems}" >
               <tr th:id="'feeItem' + ${feeItem.id}" th:classappend=" ${feeItem.hasReviewNote()} ? 'hasReviewNote' :''">
                 <td name="description" th:text="${feeItem.description}"></td>
-                <td name="period" th:text="${feeItem.getPeriod()}"></td>
+                <td class="text-center" name="period" th:text="${feeItem.getPeriod()}"></td>
                 <td class="text-right" name="totalGrossAmount"
                   th:text="${#numbers.formatDecimal(feeItem.grossAmount, 1, 2)} + ' Ft'"
                 ></td>

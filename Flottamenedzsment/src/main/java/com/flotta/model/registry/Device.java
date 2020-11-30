@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -21,14 +22,9 @@ import com.flotta.model.note.DevNote;
 import com.flotta.model.switchTable.BasicSwitchTable;
 import com.flotta.model.switchTable.SubDev;
 import com.flotta.model.switchTable.UserDev;
-import com.flotta.model.viewEntity.DeviceToView;
 import com.flotta.status.DeviceStatus;
 import com.flotta.utility.Utility;
 
-/**
- * @author CzP
- *
- */
 /**
  * @author CzP
  *
@@ -127,87 +123,47 @@ public class Device extends BasicEntityWithCreateDate {
     return firstAvailableDate;
   }
 
-  public DeviceToView toView() {
-    DeviceToView dtv = new DeviceToView();
-    dtv.setId(id);
-    dtv.setSerialNumber(serialNumber);
-    dtv.setTypeName(deviceType.getName());
-    dtv.setBeginDate(getAllModificationDateDesc().get(0));
-    dtv.setMin(firstAvailableDate.toString());
-
-    dtv.setUser(Utility.getBasicSwitchTable(devUsers));
-
-    dtv.setSubscription(Utility.getBasicSwitchTable(devSubs));
-
-    dtv.setNote(Utility.getBasicSwitchTable(notes));
-
-    return dtv;
-  }
-
-  public DeviceToView toView(LocalDate date) {
-    DeviceToView dtv = new DeviceToView();
-    dtv.setId(id);
-    dtv.setSerialNumber(serialNumber);
-    dtv.setTypeName(deviceType.getName());
-    dtv.setBeginDate(date);
-
-    dtv.setUser(Utility.getBasicSwitchTable(devUsers, date));
-
-    dtv.setSubscription(Utility.getBasicSwitchTable(devSubs, date));
-
-    dtv.setNote(Utility.getBasicSwitchTable(notes, date));
-
-    return dtv;
-  }
-
-  public void addUser(User user, LocalDate date) {
+  public void addUser(Optional<User> userOpt, LocalDate date) {
     if (devUsers.isEmpty()) {
-      //Még nem rendelték felhasználóhoz
-      if (user != null) {
-        //Most hozzárendelik egy felhasználóhoz
+      userOpt.ifPresent(user -> {
         devUsers.put(date, new UserDev(user, this, date));
         firstAvailableDate = date;
-      }
+      });
     } else {
-      //Már legalább egyszer hozzárendelték egy felhazsnálóhoz
       LocalDate lastUserModDate = Utility.getLatestDate(devUsers);
       UserDev last = devUsers.get(lastUserModDate);
       if(last.getEndDate() != null) {
         //Az utolsó hozzárendelést már lezárták jelenleg nem tartozik senkihez
         if(date.minusDays(1).isEqual(last.getEndDate())) {
-          if(user == null) {
-          //nem csinálunk semmit
-          } else if(last.getUser().equals(user)) {
-            last.setEndDate(null);
-          } else {
-            devUsers.put(date, new UserDev(user, this, date));
-            firstAvailableDate = date;
+          if(userOpt.isPresent()) {
+            User user = userOpt.get();
+            if(last.getUser().equals(user)) {
+              last.setEndDate(null);
+            } else {
+              devUsers.put(date, new UserDev(user, this, date));
+              firstAvailableDate = date;
+            }
           }
         } else if(date.minusDays(1).isAfter(last.getEndDate())) {
-          if(user == null) {
-            //nem csinálunk semmit
-          } else {
+          userOpt.ifPresent(user -> {
             devUsers.put(date, new UserDev(user, this, date));
             firstAvailableDate = date;
-          }
+          });
         }
       } else {
         //Valakihez éppen hozzá van rendelve
-        if(last.getUser().equals(user)) {
-          //nem csinálunk semmit
-        } else if(user != null) {
-          if(date.isAfter(lastUserModDate)) {
-            last.setEndDate(date.minusDays(1));
-            devUsers.put(date, new UserDev(user, this, date));
-            firstAvailableDate = date;
-          } else if(date.isEqual(lastUserModDate)) {
-         // Módosítjuk az új felhasználóval vagy nem történik módosítás
+        if(userOpt.isPresent()) {
+          User user = userOpt.get();
+          if(!last.getUser().equals(user)) {
+            if(date.isAfter(lastUserModDate)) {
+              last.setEndDate(date.minusDays(1));
+              devUsers.put(date, new UserDev(user, this, date));
+              firstAvailableDate = date;
+            }
           }
         } else {
           if(date.isAfter(lastUserModDate)) {
             last.setEndDate(date.minusDays(1));
-          } else if(date.isEqual(lastUserModDate)) {
-            // Még nem tudom mi történjen
           }
         }
       }

@@ -10,7 +10,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.flotta.model.BasicEntity;
+import com.flotta.model.registry.Device;
+import com.flotta.model.registry.Subscription;
+import com.flotta.model.registry.User;
 import com.flotta.model.switchTable.BasicSwitchTable;
+import com.flotta.model.switchTable.UserDev;
+import com.flotta.model.switchTable.UserSub;
+import com.flotta.model.viewEntity.DeviceToView;
+import com.flotta.model.viewEntity.SubscriptionToView;
 
 public class Utility {
   
@@ -156,5 +163,41 @@ public class Utility {
       return last.getEndDate().isBefore(ceil) ? null : last;
     }
     
+  }
+  
+  public static List<DeviceToView> convertDevicesToView(List<Device> devices) {
+    List<DeviceToView> devicesToView = new LinkedList<>();
+    for(Device device : devices) {
+      devicesToView.add(new DeviceToView(device));
+    }
+    return devicesToView;
+  }
+
+  public static List<SubscriptionToView> convertSubscripionToView(List<Subscription> subscriptions) {
+    List<SubscriptionToView> subscriptionsToView = new LinkedList<>();
+    for(Subscription subscription : subscriptions) {
+      subscriptionsToView.add(new SubscriptionToView(subscription));
+    }
+    return subscriptionsToView;
+  }
+
+  public static List<DeviceToView> convertUserDevicesToView(User user) {
+    List<DeviceToView> devicesToView = new LinkedList<>();
+    for(UserDev userDev : user.getUserDevs()) {
+      DeviceToView dtv = new DeviceToView(userDev.getDev(), userDev.getBeginDate());
+      dtv.setEndDate(userDev.getEndDate());
+      devicesToView.add(dtv);
+    }
+    return devicesToView;
+  }
+  
+  public static List<SubscriptionToView> convertUserSubscriptionsToView(User user) {
+    List<SubscriptionToView> subscriptionsToView = new LinkedList<>();
+    for(UserSub userSub : user.getUserSubs()) {
+      SubscriptionToView stv = new SubscriptionToView(userSub.getSub(), userSub.getBeginDate());
+      stv.setEndDate(userSub.getEndDate());
+      subscriptionsToView.add(stv);
+    }
+    return subscriptionsToView;
   }
 }

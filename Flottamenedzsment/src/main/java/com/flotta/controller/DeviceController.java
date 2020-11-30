@@ -1,6 +1,7 @@
 package com.flotta.controller;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.flotta.model.registry.Device;
 import com.flotta.model.viewEntity.DeviceToView;
 import com.flotta.service.MainService;
+import com.flotta.utility.Utility;
 
 @Controller
 public class DeviceController {
@@ -35,7 +38,7 @@ public class DeviceController {
   @RequestMapping("/device/all")
   public String listDevices(Model model) {
     model.addAttribute("canCreateNew", !service.findAllBrandOfDevicesType().isEmpty());
-    model.addAttribute("devices", service.findAllDevices());
+    model.addAttribute("devices", Utility.convertDevicesToView(service.findAllDevices()));
     return "device_templates/deviceAll";
   }
   
@@ -48,7 +51,7 @@ public class DeviceController {
   
   @PostMapping("/device/new")
   public String addDevice(Model model, @ModelAttribute("device") DeviceToView dtv) {
-    if(service.saveDevice(dtv)) {
+    if(service.createDevice(dtv)) {
       return "redirect:/device/all";
     } else {
       model.addAttribute("device", dtv);
@@ -60,9 +63,14 @@ public class DeviceController {
   
   @GetMapping("/device/{id}/update")
   public String prepareUpdatingDevice(Model model, @PathVariable("id") long id) {
-    model.addAttribute("device", service.findDeviceById(id));
-    model.addAttribute("users", service.findAllUser());
-    return "device_templates/deviceEdit";
+    Optional<Device> deviceOpt = service.findDeviceById(id);
+    if(deviceOpt.isPresent()) {
+      model.addAttribute("device", new DeviceToView(deviceOpt.get()));
+      model.addAttribute("users", service.findAllUser());
+      return "device_templates/deviceEdit";
+    } else {
+      return "redirect:/device/all";
+    }
   }
   
   @PostMapping("/device/{id}/update")
@@ -70,21 +78,24 @@ public class DeviceController {
     if(service.updateDevice(dtv)) {
       model.addAttribute("error", service.getDeviceServiceError());
     }
-    model.addAttribute("users", service.findAllUser());
-    model.addAttribute("device", service.findDeviceById(dtv.getId()));
-    return "device_templates/deviceEdit";
+    return "redirect:/device/" + dtv.getId() + "/update";
   }
   
   @GetMapping("/device/{id}/view")
   public String viewDevice(Model model, @PathVariable("id") long id) {
-    model.addAttribute("device", service.findDeviceById(id));
-    model.addAttribute("dates", service.findDeviceDatesById(id));
-    return "device_templates/deviceView";
+    Optional<Device> deviceOpt = service.findDeviceById(id);
+    if(deviceOpt.isPresent()) {
+      model.addAttribute("device", new DeviceToView(deviceOpt.get()));
+      model.addAttribute("dates", deviceOpt.get().getAllModificationDateDesc());
+      return "device_templates/deviceView";
+    } else {
+      return "redirect:/device/all";
+    }
   }
   
   @PostMapping("/device/{id}/view")
   @ResponseBody
   public DeviceToView viewChangeDate(@PathVariable("id") long id, @RequestParam("date")@DateTimeFormat(pattern = "yyyy-MM-dd")  LocalDate date) {
-    return service.findDeviceByIdAndDate(id, date);
+    return new DeviceToView(service.findDeviceById(id).get(), date);
   }
 }

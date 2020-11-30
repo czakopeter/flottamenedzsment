@@ -12,7 +12,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 	
 	List<User> findAll();
 
-  User findByActivationKey(String key);
+	Optional<User> findByActivationKey(String key);
 
   List<User> findAllByStatus(int status);
 

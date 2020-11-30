@@ -17,6 +17,7 @@ import com.flotta.model.invoice.Invoice;
 import com.flotta.model.invoice.InvoiceByUserAndPhoneNumber;
 import com.flotta.model.invoice.Participant;
 import com.flotta.model.invoice.RawInvoice;
+import com.flotta.model.registry.Device;
 import com.flotta.model.registry.DeviceType;
 import com.flotta.model.registry.Sim;
 import com.flotta.model.registry.Subscription;
@@ -98,20 +99,20 @@ public class MainService {
     return invoiceService.getUnusedCategoryOfChargeRatio(id);
   }
 
-  public List<InvoiceByUserAndPhoneNumber> getPendingInvoicesOfCurrentUser() {
-    return invoiceService.getPendingInvoicesOfUser(getCurrentUser());
+//  public List<InvoiceByUserAndPhoneNumber> getPendingInvoices(String email) {
+//    return invoiceService.getPendingInvoicesOfUser(getCurrentUser());
+//  }
+
+  public InvoiceByUserAndPhoneNumber getPendingInvoiceOfCurrentUserById(String email, Long id) {
+    return invoiceService.getPendingInvoiceOfUserById(registryService.findUserByEmail(email).get(), id);
   }
 
-  public InvoiceByUserAndPhoneNumber getPendingInvoiceOfCurrentUserById(Long id) {
-    return invoiceService.getPendingInvoiceOfUserById(getCurrentUser(), id);
+  public boolean acceptInvoicesOfCurrentUserByInvoiceNumbersAndPhoneNumbers(String email, List<Long> ids) {
+    return invoiceService.acceptInvoicesOfUserByInvoiceNumbersAndSubscription(registryService.findUserByEmail(email).get(), ids);
   }
 
-  public boolean acceptInvoicesOfCurrentUserByInvoiceNumbersAndPhoneNumbers(List<Long> ids) {
-    return invoiceService.acceptInvoicesOfUserByInvoiceNumbersAndSubscription(getCurrentUser(), ids);
-  }
-
-  public void askForRevision(long id, Map<String, String> map) {
-    invoiceService.askForRevision(getCurrentUser(), id, map);
+  public void askForRevision(String email, long id, Map<String, String> map) {
+    invoiceService.askForRevision(registryService.findUserByEmail(email).get(), id, map);
   }
 
   public void restartProcessingInvoiceBy(String invoiceNumber) {
@@ -130,16 +131,16 @@ public class MainService {
     invoiceService.modifyFeeItemGrossAmountRatio(id, userAmount, compAmount);
   }
 
-  public List<InvoiceByUserAndPhoneNumber> getAcceptedInvoicesOfCurrentUser() {
-    return invoiceService.getAcceptedInvoicesOfUser(getCurrentUser());
+  public List<InvoiceByUserAndPhoneNumber> getAcceptedInvoicesOfCurrentUser(String email) {
+    return invoiceService.getAcceptedInvoicesOfUser(registryService.findUserByEmail(email).get());
   }
 
-  public InvoiceByUserAndPhoneNumber getAcceptedInvoiceOfCurrentUserById(long id) {
-    return invoiceService.getAcceptedInvoiceOfUserById(getCurrentUser(), id);
+  public InvoiceByUserAndPhoneNumber getAcceptedInvoiceOfCurrentUserById(String email, long id) {
+    return invoiceService.getAcceptedInvoiceOfUserById(registryService.findUserByEmail(email).get(), id);
   }
 
-  public List<InvoiceByUserAndPhoneNumber> getAcceptedByCompanyInvoicesOfCurrentUser() {
-    return invoiceService.getAcceptedByCompanyInvoicesOfUser(getCurrentUser());
+  public List<InvoiceByUserAndPhoneNumber> getInvoicesOfUserByEmail(String email) {
+    return invoiceService.getAcceptedByCompanyInvoicesOfUser(registryService.findUserByEmail(email).get());
   }
 
   public List<Participant> findAllParticipant() {
@@ -176,33 +177,33 @@ public class MainService {
 
   // --- RECORD SERVIVE ---
 
-  private User getCurrentUser() {
-    return registryService.getCurrentUser();
-  }
+//  private User getCurrentUser() {
+//    return registryService.getCurrentUser();
+//  }
 
-  public List<DeviceToView> findAllDevices() {
+  public List<Device> findAllDevices() {
     return registryService.findAllDevices();
   }
 
-  public boolean saveDevice(DeviceToView dtv) {
-    return registryService.saveDevice(dtv);
+  public boolean createDevice(DeviceToView dtv) {
+    return registryService.createDevice(dtv);
   }
 
   public boolean updateDevice(DeviceToView dtv) {
     return registryService.updateDevice(dtv);
   }
 
-  public DeviceToView findDeviceById(long id) {
+  public Optional<Device> findDeviceById(long id) {
     return registryService.findDeviceById(id);
   }
 
-  public DeviceToView findDeviceByIdAndDate(long id, LocalDate date) {
-    return registryService.findDeviceByIdAndDate(id, date);
-  }
+//  public DeviceToView findDeviceByIdAndDate(long id, LocalDate date) {
+//    return registryService.findDeviceByIdAndDate(id, date);
+//  }
 
-  public List<LocalDate> findDeviceDatesById(long id) {
-    return registryService.findDeviceDatesById(id);
-  }
+//  public List<LocalDate> findDeviceDatesById(long id) {
+//    return registryService.findDeviceDatesById(id);
+//  }
 
   public String getDeviceServiceError() {
     return registryService.getDeviceServiceError();
@@ -244,12 +245,12 @@ public class MainService {
     return registryService.findAllSim();
   }
 
-  public Sim findSimById(int id) {
+  public Optional<Sim> findSimById(int id) {
     return registryService.findSimById(id);
   }
 
-  public boolean addSim(Sim sim) {
-    return registryService.addSim(sim);
+  public boolean createSim(Sim sim) {
+    return registryService.createSim(sim);
   }
 
   public String getSimError() {
@@ -262,7 +263,7 @@ public class MainService {
 
 //------- SUBSCRIPTION SERVICE --------
 
-  public List<SubscriptionToView> findAllSubscription() {
+  public List<Subscription> findAllSubscription() {
     return registryService.findAllSubscription();
   }
 
@@ -270,13 +271,13 @@ public class MainService {
     return registryService.findSubscriptionById(id);
   }
 
-  public SubscriptionToView findSubscriptionByIdAndDate(long id, LocalDate date) {
-    return registryService.findSubscriptionByIdAndDate(id, date);
-  }
-
-  public SubscriptionToView findSubscriptionByNumberAndDate(String number, LocalDate date) {
-    return registryService.findSubscriptionByNumberAndDate(number, date);
-  }
+//  public SubscriptionToView findSubscriptionByIdAndDate(long id, LocalDate date) {
+//    return registryService.findSubscriptionByIdAndDate(id, date);
+//  }
+//
+//  public SubscriptionToView findSubscriptionByNumberAndDate(String number, LocalDate date) {
+//    return registryService.findSubscriptionByNumberAndDate(number, date);
+//  }
 
   public List<LocalDate> findSubscriptionDatesById(long id) {
     return registryService.findSubscriptionDatesById(id);
@@ -304,12 +305,12 @@ public class MainService {
     return registryService.findAllUser();
   }
 
-  public User findUserByEmail(String email) {
+  public Optional<User> findUserByEmail(String email) {
     return registryService.findUserByEmail(email);
   }
 
-  public boolean changePassword(String oldPsw, String newPsw, String confirmPsw) {
-    return registryService.changePassword(oldPsw, newPsw, confirmPsw);
+  public boolean changePassword(String email, String oldPsw, String newPsw, String confirmPsw) {
+    return registryService.changePassword(email, oldPsw, newPsw, confirmPsw);
   }
 
   public List<MessageToView> getUserError() {
@@ -332,7 +333,7 @@ public class MainService {
     return registryService.findAllUserByStatus(status);
   }
 
-  public User findUserById(long id) {
+  public Optional<User> findUserById(long id) {
     return registryService.findUserById(id);
   }
 
@@ -344,26 +345,25 @@ public class MainService {
     return registryService.requestNewPassword(email);
   }
 
-  public User editChargeRatioOfUser(long userId, long chargeRatioId) {
-    Optional<ChargeRatioByCategory> optionalChargeRatio = invoiceService.findChargeRatioById(chargeRatioId);
-    if (optionalChargeRatio.isPresent()) {
-      return registryService.editChargeRatioOfUser(userId, optionalChargeRatio.get());
+  public boolean updateChargeRatioOfUser(long userId, long chargeRatioId) {
+    Optional<ChargeRatioByCategory> chargeRatioOpt = invoiceService.findChargeRatioById(chargeRatioId);
+    if(chargeRatioOpt.isPresent()) {
+      return registryService.updateChargeRatioOfUser(userId, chargeRatioOpt.get());
     }
-    return null;
+    return false;
+  }
+  
+  public Optional<ChargeRatioByCategory> getChargeRatioOfUserById(long id) {
+    Optional<User> userOpt = registryService.findUserById(id);
+    if(userOpt.isPresent()) {
+      return Optional.of(userOpt.get().getChargeRatio());
+    }
+    return Optional.empty();
   }
 
   // --- SWITCH TABLE SERVICE ---
 
-  public List<SubscriptionToView> findAllSubscriptionOfCurrentUser() {
-    return switchTableService.findAllCurrentSubscriptionByUser(getCurrentUser());
-  }
-
-  public List<DeviceToView> findAllDeviceOfCurrentUser() {
-    return switchTableService.findAllDeviceByUser(getCurrentUser());
-  }
-
-  public List<DeviceToView> findAllCurrentDeviceByUser(long userId) {
+  public List<Device> findAllCurrentDeviceByUser(long userId) {
     return switchTableService.findAllCurrentDeviceByUser(registryService.findUserById(userId));
   }
-
 }
