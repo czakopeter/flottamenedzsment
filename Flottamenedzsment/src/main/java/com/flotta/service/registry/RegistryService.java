@@ -41,11 +41,6 @@ public class RegistryService {
     this.userService = userService;
   }
 
-//  public User getCurrentUser() {
-//    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//    return userService.findByEmail(((UserDetailsImpl) auth.getPrincipal()).getUsername());
-//  }
-
 //-------- DEVICE SERVICE --------
 
   public List<Device> findAllDevices() {
