@@ -42,8 +42,6 @@ public class SubscriptionToView {
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   private LocalDate endDate;
 
-  private String min;
-
   public SubscriptionToView() {}
   
   public SubscriptionToView(Subscription subscription) {
@@ -170,20 +168,7 @@ public class SubscriptionToView {
     this.endDate = endDate;
   }
 
-  public String getMin() {
-    return min;
-  }
-
-  public void setMin(String min) {
-    this.min = min;
-  }
-
-  @Override
-  public String toString() {
-    return "SubscriptionToView [number=" + number + ", imei=" + imei + ", simChangeReason=" + simChangeReason + ", userId=" + userId + ", userName=" + userName + ", deviceId=" + deviceId + ", deviceName=" + deviceName + ", beginDate=" + beginDate + ", min=" + min + "]";
-  }
-
-  public void setUser(BasicSwitchTable bst) {
+  private void setUser(BasicSwitchTable bst) {
     if(bst == null || !(bst instanceof UserSub)) {
       this.userId = 0;
       this.userName = "";
@@ -194,7 +179,7 @@ public class SubscriptionToView {
     }
   }
 
-  public void setSim(BasicSwitchTable bst) {
+  private void setSim(BasicSwitchTable bst) {
     if(bst == null || !(bst instanceof SubSim)) {
       this.oldImei = "";
       this.imei = "";
@@ -205,7 +190,7 @@ public class SubscriptionToView {
     }
   }
 
-  public void setDevice(BasicSwitchTable bst) {
+  private void setDevice(BasicSwitchTable bst) {
     if(bst == null || !(bst instanceof SubDev)) {
       this.deviceId = 0;
       this.deviceName = "";
@@ -216,7 +201,7 @@ public class SubscriptionToView {
     }
   }
 
-  public void setNote(BasicSwitchTable bst) {
+  private void setNote(BasicSwitchTable bst) {
     if(bst == null || !(bst instanceof SubNote)) {
       this.note = "";
     } else {

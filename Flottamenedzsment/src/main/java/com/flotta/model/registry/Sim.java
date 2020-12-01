@@ -6,7 +6,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.flotta.enums.SimStatusEnum;
+import com.flotta.enums.SimStatus;
 import com.flotta.model.BasicEntity;
 import com.flotta.model.switchTable.SubSim;
 
@@ -27,7 +27,7 @@ public class Sim extends BasicEntity {
   @JoinColumn(name = "sub_id")
   private SubSim simSub;
 
-  private SimStatusEnum status;
+  private SimStatus status;
   
   public Sim() {
   }
@@ -72,11 +72,11 @@ public class Sim extends BasicEntity {
     this.simSub = simSub;
   }
 
-  public SimStatusEnum getStatus() {
+  public SimStatus getStatus() {
     return status;
   }
   
-  public void setStatus(SimStatusEnum status) {
+  public void setStatus(SimStatus status) {
     this.status = status;
   }
 

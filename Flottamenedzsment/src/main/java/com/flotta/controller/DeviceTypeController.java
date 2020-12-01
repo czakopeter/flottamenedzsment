@@ -44,7 +44,7 @@ public class DeviceTypeController {
   
   @PostMapping("/deviceType/new")
   public String addDeviceTypes(Model model, @ModelAttribute("deviceType") DeviceType deviceType) {
-    if(service.saveDeviceType(deviceType)) {
+    if(service.createDeviceType(deviceType)) {
       return "redirect:/deviceType/all";
     } else {
       model.addAttribute("brandList", service.findAllBrandOfDevicesType());

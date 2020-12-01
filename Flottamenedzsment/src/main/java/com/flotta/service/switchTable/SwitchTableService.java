@@ -32,10 +32,10 @@ public class SwitchTableService {
 //  }
   
 //TODO visszamenőlegesen kiírtnál a kezdeti dátumnál levő egyéb infomációkat írja ki, lehet volt változás az időszak alatt amíg a felhasználónál volt
-  public List<SubscriptionToView> findAllCurrentSubscriptionByUser(User user) {
-    return userSubService.findAllSubscriptionByUser(user);
+//  public List<SubscriptionToView> findAllCurrentSubscriptionByUser(User user) {
+//    return userSubService.findAllSubscriptionByUser(user);
 //    return subscriptionService.findAllCurrentByUser(getCurrentUser());
-  }
+//  }
 
 //  public List<DeviceToView> findAllDeviceByUser(User user) {
 //    return userDevService.findAllDeviceByUser(user);

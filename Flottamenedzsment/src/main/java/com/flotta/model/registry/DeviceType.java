@@ -2,6 +2,7 @@ package com.flotta.model.registry;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -16,6 +17,7 @@ public class DeviceType extends BasicEntity {
 
   private String model;
   
+  @Column(unique = true, nullable = false)
   private String name;
 
   private boolean visible;

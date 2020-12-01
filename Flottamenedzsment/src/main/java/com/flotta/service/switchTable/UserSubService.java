@@ -22,16 +22,16 @@ public class UserSubService {
     this.userSubRepository = userSubRepository;
   }
 
-  public List<SubscriptionToView> findAllSubscriptionByUser(User user) {
-    List<SubscriptionToView> result = new LinkedList<>();
-    List<UserSub> userSubs = userSubRepository.findAllByUserOrderByBeginDateDesc(user);
-    for(UserSub userSub : userSubs) {
-      if(userSub.getSub() != null) {
-        SubscriptionToView actual = userSub.getSub().toView(userSub.getBeginDate());
-        actual.setEndDate(userSub.getEndDate());
-        result.add(actual);
-      }
-    }
-    return result;
-  }
+//  public List<SubscriptionToView> findAllSubscriptionByUser(User user) {
+//    List<SubscriptionToView> result = new LinkedList<>();
+//    List<UserSub> userSubs = userSubRepository.findAllByUserOrderByBeginDateDesc(user);
+//    for(UserSub userSub : userSubs) {
+//      if(userSub.getSub() != null) {
+//        SubscriptionToView actual = userSub.getSub().toView(userSub.getBeginDate());
+//        actual.setEndDate(userSub.getEndDate());
+//        result.add(actual);
+//      }
+//    }
+//    return result;
+//  }
 }

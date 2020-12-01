@@ -42,7 +42,7 @@ import com.flotta.model.registry.User;
 import com.flotta.repository.invoice.InvoiceRepository;
 import com.flotta.repository.invoice.ParticipantRepository;
 import com.flotta.repository.invoice.RawInvoiceRepository;
-import com.flotta.service.registry.SubscriptionServiceGetter;
+import com.flotta.service.registry.SubscriptionFinderService;
 
 /**
  * @author CzP
@@ -61,7 +61,7 @@ public class InvoiceService {
 
   private InvoiceTemplateService invoiceTemplateService;
 
-  private SubscriptionServiceGetter subscriptionService;
+  private SubscriptionFinderService subscriptionService;
 
   private CategoryService categoryService;
 
@@ -78,7 +78,7 @@ public class InvoiceService {
       InvoiceByUserAndPhoneNumberService invoiceByUserAndPhoneNumberService, 
       FeeItemService feeItemService, 
       InvoiceTemplateService invoiceTemplateService,
-      SubscriptionServiceGetter subscriptionService, 
+      SubscriptionFinderService subscriptionService, 
       CategoryService categoryService,
       ChargeRatioService chargeRatioService, 
       DescriptionCategoryCouplerService descriptionCategoryCouplerService, 

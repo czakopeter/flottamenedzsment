@@ -17,13 +17,12 @@ import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.flotta.enums.SimStatusEnum;
+import com.flotta.enums.SimStatus;
 import com.flotta.model.note.SubNote;
 import com.flotta.model.switchTable.BasicSwitchTable;
 import com.flotta.model.switchTable.SubDev;
 import com.flotta.model.switchTable.SubSim;
 import com.flotta.model.switchTable.UserSub;
-import com.flotta.model.viewEntity.SubscriptionToView;
 import com.flotta.status.SubscriptionStatus;
 import com.flotta.utility.Utility;
 
@@ -130,51 +129,14 @@ public class Subscription extends BasicEntityWithCreateDate {
     return "Subscription [id=" + id + ", number=" + number + ", subSim=" + subSim + ", subUsers=" + subUsers + "]";
   }
 
-  public SubscriptionToView toView() {
-    SubscriptionToView stv = new SubscriptionToView();
-    stv.setId(id);
-    stv.setNumber(number);
-    stv.setBeginDate(getAllModificationDateDesc().get(0));
-    stv.setEndDate(null);
-    stv.setMin(firstAvailableDate.toString());
-
-    stv.setSim(Utility.getBasicSwitchTable(subSim));
-
-    stv.setUser(Utility.getBasicSwitchTable(subUsers));
-
-    stv.setDevice(Utility.getBasicSwitchTable(subDev));
-
-    stv.setNote(Utility.getBasicSwitchTable(notes));
-
-    return stv;
-  }
-
-  public SubscriptionToView toView(LocalDate date) {
-    if (date.isBefore(createDate)) {
-    }
-
-    SubscriptionToView stv = new SubscriptionToView();
-    stv.setId(id);
-    stv.setNumber(number);
-    stv.setBeginDate(date);
-
-    stv.setSim(Utility.getBasicSwitchTable(subSim, date));
-
-    stv.setUser(Utility.getBasicSwitchTable(subUsers, date));
-
-    stv.setDevice(Utility.getBasicSwitchTable(subDev, date));
-
-    stv.setNote(Utility.getBasicSwitchTable(notes, date));
-    return stv;
-  }
-
+  //TODO OPTIONAL-lel megold
   public void addSim(Optional<Sim> simOpt, String reason, LocalDate date) {
     Sim sim = simOpt.get();
     if (sim == null) {
       System.err.println("Never happened");
       return;
     }
-    sim.setStatus(SimStatusEnum.ACTIVE);
+    sim.setStatus(SimStatus.ACTIVE);
     if (subSim.isEmpty()) {
       subSim.put(date, new SubSim(this, sim, date));
     } else {
@@ -188,8 +150,8 @@ public class Subscription extends BasicEntityWithCreateDate {
           if (date.isAfter(lastModDate)) {
             last.setEndDate(date.minusDays(1));
             last.getSim().setChangeReason(reason);
-            last.getSim().setStatus(SimStatusEnum.CHANGED);
-            sim.setStatus(SimStatusEnum.ACTIVE);
+            last.getSim().setStatus(SimStatus.CHANGED);
+            sim.setStatus(SimStatus.ACTIVE);
             subSim.put(date, new SubSim(this, sim, date));
           } else if (date.isEqual(lastModDate)) {
             // Módosítjuk az új simmel vagy nem történik módosítás
@@ -199,6 +161,7 @@ public class Subscription extends BasicEntityWithCreateDate {
     }
   }
 
+  //TODO OPTIONAL-lel megold
   public void addUser(Optional<User> userOpt, LocalDate date) {
     User user = userOpt.orElse(null);
     if (subUsers.isEmpty()) {
@@ -250,7 +213,9 @@ public class Subscription extends BasicEntityWithCreateDate {
     }
   }
 
-  public void addDevice(Device device, LocalDate date) {
+  //TODO OPTIONAL-lel megold
+  public void addDevice(Optional<Device> deviceOpt, LocalDate date) {
+    Device device = deviceOpt.get();
     if (subDev.isEmpty()) {
       if (device != null) {
         subDev.put(date, new SubDev(this, device, date));

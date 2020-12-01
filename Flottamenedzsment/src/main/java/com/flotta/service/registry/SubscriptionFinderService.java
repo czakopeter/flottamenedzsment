@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.flotta.model.registry.Subscription;
 
 @Service
-public interface SubscriptionServiceGetter {
+public interface SubscriptionFinderService {
 	
 	public List<Subscription> findAll();
 

@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.flotta.enums.SimStatusEnum;
+import com.flotta.enums.SimStatus;
 import com.flotta.model.registry.Sim;
 
 public interface SimRepository extends CrudRepository<Sim, Long> {
@@ -15,5 +15,5 @@ public interface SimRepository extends CrudRepository<Sim, Long> {
 
   List<Sim> findAllBySimSubIsNullAndChangeReasonIsNull();
 
-  List<Sim> findAllByStatus(SimStatusEnum free);
+  List<Sim> findAllByStatus(SimStatus free);
 }

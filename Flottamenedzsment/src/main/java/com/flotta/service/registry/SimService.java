@@ -7,15 +7,14 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.flotta.enums.SimStatusEnum;
+import com.flotta.enums.SimStatus;
 import com.flotta.model.registry.Sim;
 import com.flotta.repository.registry.SimRepository;
+import com.flotta.utility.Validator;
 
 @Service
 public class SimService extends ServiceWithMsg {
   
-  private static String[] changeReasons = {"CHANGED", "STOLE", "LOST"};
-	
 	private SimRepository simRepository;
 	
 	@Autowired
@@ -27,9 +26,8 @@ public class SimService extends ServiceWithMsg {
     return simRepository.findAll(); 
   }
 	
-	public List<Sim> findAllFree() {
-	  List<Sim> result = simRepository.findAllByStatus(SimStatusEnum.FREE);
-    return result;
+	public List<Sim> findAllByStatus(SimStatus status) {
+    return simRepository.findAllByStatus(status);
 	}
 
 	public Optional<Sim> findById(long id) {
@@ -42,7 +40,7 @@ public class SimService extends ServiceWithMsg {
 
   //TODO check imei, pin, puk format
   public boolean create(Sim sim) {
-//    if(Validator.isValidImieWithLuhnAlg(sim.getImei())) {
+//    if(Validator.checkImieWithLuhnAlg(sim.getImei())) {
 //      appendMsg("Imei " + sim.getImei() + " is not valid!");
 //      return false;
 //    }
@@ -50,13 +48,10 @@ public class SimService extends ServiceWithMsg {
     if(simOpt.isPresent()) {
       appendMsg("Imei " + sim.getImei() + " already exists!");
     } else {
-      sim.setStatus(SimStatusEnum.FREE);
+      sim.setStatus(SimStatus.FREE);
       simRepository.save(sim);
     }
     return !simOpt.isPresent();
   }
 
-  public List<String> getAllChagneReason() {
-    return Arrays.asList(changeReasons);
-  }
 }

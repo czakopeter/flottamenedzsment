@@ -23,12 +23,12 @@ class ValidatorTest {
   
   @Test
   void validImieWithLuhnAlg() {
-    assertTrue(Validator.isValidImieWithLuhnAlg("8936304419070454006"));
+    assertTrue(Validator.checkImieWithLuhnAlg("8936304419070454006"));
   }
   
   @Test
   void invalidImieWithLuhnAlg() {
-    assertFalse(Validator.isValidImieWithLuhnAlg("8936304419070454007"));
+    assertFalse(Validator.checkImieWithLuhnAlg("8936304419070454007"));
   }
 
 }

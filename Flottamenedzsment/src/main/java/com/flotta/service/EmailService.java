@@ -22,7 +22,7 @@ public class EmailService extends ServiceWithMsg {
   private String MESSAGE_FROM;
 
   @Autowired
-  public JavaMailSender emailSender;
+  private JavaMailSender emailSender;
 
   public static String ACTIVATION_AND_INITIAL_PASSWORD = "Kedves $name$!\n\n" + "Aktiválja a profilját <a href=\"http://localhost:8080/activation/$key$\"  target=\"_blank\">IDE</a> kattintva.\n" + "Kezdeti jelszava: $initialPassword$\n\n" + "Üdvözlettel:\n" + "Flottamenedzsment";
 

@@ -16,7 +16,7 @@ public class Validator {
   
   //Luhn algorithm
   //length min 15
-  public static boolean isValidImieWithLuhnAlg(String imei) {
+  public static boolean checkImieWithLuhnAlg(String imei) {
     int i = imei.length() - 1;
     int count = 0;
     boolean isSecondDigit = false;

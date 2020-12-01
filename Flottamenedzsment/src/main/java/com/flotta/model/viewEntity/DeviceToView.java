@@ -34,8 +34,6 @@ public class DeviceToView {
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private LocalDate endDate;
 	
-	private String min;
-	
 	public DeviceToView() {}
 	
 	public DeviceToView(Device device) {
@@ -45,7 +43,9 @@ public class DeviceToView {
 	  beginDate = getLastModificationDateOfDevice(device);
 	  
 	  setUser(Utility.getBasicSwitchTable(device.getDevUsers()));
+	  
 	  setSubscription(Utility.getBasicSwitchTable(device.getDevSubs()));
+	  
 	  setNote(Utility.getBasicSwitchTable(device.getNotes()));
 	}
 
@@ -134,20 +134,7 @@ public class DeviceToView {
     this.endDate = endDate;
   }
 
-  public String getMin() {
-    return min;
-  }
-
-  public void setMin(String min) {
-    this.min = min;
-  }
-
-  @Override
-  public String toString() {
-    return "DeviceToView [serialNumber=" + serialNumber + ", typeName=" + typeName + ", beginDate=" + beginDate + ", min=" + min + "]";
-  }
-
-  public void setUser(BasicSwitchTable bst) {
+  private void setUser(BasicSwitchTable bst) {
     if(bst == null || !(bst instanceof UserDev)) {
       this.userId = 0;
       this.userName = "";
@@ -158,7 +145,7 @@ public class DeviceToView {
     }
   }
 
-  public void setSubscription(BasicSwitchTable bst) {
+  private void setSubscription(BasicSwitchTable bst) {
     if(bst == null || !(bst instanceof SubDev)) {
       this.number = "";
     } else {
@@ -167,7 +154,7 @@ public class DeviceToView {
     }
   }
   
-  public void setNote(BasicSwitchTable bst) {
+  private void setNote(BasicSwitchTable bst) {
     if(bst == null || !(bst instanceof DevNote)) {
       this.note = "";
     } else {

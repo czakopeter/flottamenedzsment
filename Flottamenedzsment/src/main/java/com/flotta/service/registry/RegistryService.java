@@ -1,8 +1,6 @@
 package com.flotta.service.registry;
 
-import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -10,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.flotta.enums.SimStatus;
 import com.flotta.model.invoice.ChargeRatioByCategory;
 import com.flotta.model.registry.Device;
 import com.flotta.model.registry.DeviceType;
@@ -52,44 +51,26 @@ public class RegistryService {
   public List<Device> findAllDevices() {
     return deviceService.findAll();
   }
-
-  //TODO
-  public boolean createDevice(DeviceToView dtv) {
-    DeviceType deviceType = deviceTypeService.findByName(dtv.getTypeName());
-    if (deviceType != null && deviceService.add(dtv)) {
-      Device saved = deviceService.findBySerialNumber(dtv.getSerialNumber());
-      saved.setDeviceType(deviceType);
-      deviceService.save(saved);
-      return true;
-    }
-    return false;
-  }
-
-  public boolean updateDevice(DeviceToView dtv) {
-    Optional<Device> optional = deviceService.findById(dtv.getId());
-    if(optional.isPresent()) {
-      Device device = optional.get();
-      Optional<User> user = userService.findById(dtv.getUserId());
-      
-      device.addUser(user, dtv.getBeginDate());
-      device.addNote(dtv.getNote(), dtv.getBeginDate());
-      deviceService.save(device);
-    }
-    
-    return optional.isPresent();
-  }
-
+  
   public Optional<Device> findDeviceById(long id) {
     return deviceService.findById(id);
   }
 
-//  public DeviceToView findDeviceByIdAndDate(long id, LocalDate date) {
-//    return deviceService.findById(id).get().toView(date);
-//  }
+  public boolean createDevice(DeviceToView dtv) {
+    Optional<DeviceType> deviceTypeOpt = deviceTypeService.findByName(dtv.getTypeName());
+    return deviceService.create(dtv, deviceTypeOpt);
+  }
 
-//  public List<LocalDate> findDeviceDatesById(long id) {
-//    return deviceService.findById(id).get().getAllModificationDateDesc();
-//  }
+  public boolean updateDevice(DeviceToView dtv) {
+    Optional<Device> deviceOpt = deviceService.findById(dtv.getId());
+    deviceOpt.ifPresent(device -> {
+      device.addUser(userService.findById(dtv.getUserId()), dtv.getBeginDate());
+      device.addNote(dtv.getNote(), dtv.getBeginDate());
+      deviceService.update(device);
+    });
+
+    return deviceOpt.isPresent();
+  }
 
   public String getDeviceServiceError() {
     return deviceService.getError();
@@ -102,11 +83,11 @@ public class RegistryService {
   }
 
   public List<String> findAllBrandOfDevicesType() {
-    return deviceTypeService.findAllBrandOfDevicesType();
+    return deviceTypeService.findAllBrandOfDeviceTypes();
   }
 
   public boolean saveDeviceType(DeviceType deviceType) {
-    return deviceTypeService.save(deviceType);
+    return deviceTypeService.create(deviceType);
   }
 
   public DeviceType findDeviceTypeById(long id) {
@@ -118,13 +99,13 @@ public class RegistryService {
   }
 
   public List<DeviceType> findAllVisibleDeviceTypes() {
-    return deviceTypeService.findAllVisibleDeviceTypes();
+    return deviceTypeService.findAllVisible();
   }
 
 //-------- SIM SERVICE --------
 
   public List<Sim> findAllFreeSim() {
-    return simService.findAllFree();
+    return simService.findAllByStatus(SimStatus.FREE);
   }
 
   public List<Sim> findAllSim() {
@@ -133,10 +114,6 @@ public class RegistryService {
 
   public Optional<Sim> findSimById(int id) {
     return simService.findById(id);
-  }
-
-  public List<String> getSimChangeReasons() {
-    return simService.getAllChagneReason();
   }
 
   public boolean createSim(Sim sim) {
@@ -148,7 +125,7 @@ public class RegistryService {
   }
 
   public boolean canCreateSubscription() {
-    return !simService.findAllFree().isEmpty();
+    return !simService.findAllByStatus(SimStatus.FREE).isEmpty();
   }
 
 //------- SUBSCRIPTION SERVICE --------
@@ -165,34 +142,22 @@ public class RegistryService {
     return subscriptionService.findByNumber(number);
   }
 
-  public List<LocalDate> findSubscriptionDatesById(long id) {
-    Optional<Subscription> optional = subscriptionService.findById(id);
-    if (optional.isPresent()) {
-      return optional.get().getAllModificationDateDesc();
-    } else {
-      return Collections.emptyList();
-    }
-  }
-
   public boolean createSubscription(SubscriptionToView stv) {
     Optional<Sim> simOpt = simService.findByImei(stv.getImei());
     return subscriptionService.create(stv, simOpt);
   }
 
   public boolean updateSubscription(SubscriptionToView stv) {
-    Optional<Subscription> optional = subscriptionService.findById(stv.getId());
-    if (optional.isPresent()) {
-      Subscription sub = optional.get();
-      Device dev = deviceService.findById(stv.getDeviceId()).orElse(null);
+    Optional<Subscription> subscriptonOpt = subscriptionService.findById(stv.getId());
+    subscriptonOpt.ifPresent(subscription -> {
+      subscription.addSim(simService.findByImei(stv.getImei()), stv.getSimChangeReason(), stv.getBeginDate());
+      subscription.addUser(userService.findById(stv.getUserId()), stv.getBeginDate());
+      subscription.addDevice(deviceService.findById(stv.getDeviceId()), stv.getBeginDate());
+      subscription.addNote(stv.getNote(), stv.getBeginDate());
+      subscriptionService.update(subscription);
+    });
 
-      sub.addSim(simService.findByImei(stv.getImei()), stv.getSimChangeReason(), stv.getBeginDate());
-      sub.addUser(userService.findById(stv.getUserId()), stv.getBeginDate());
-      sub.addDevice(dev, stv.getBeginDate());
-      sub.addNote(stv.getNote(), stv.getBeginDate());
-      subscriptionService.update(sub);
-    }
-
-    return optional.isPresent();
+    return subscriptonOpt.isPresent();
   }
 
   public String getSubscriptionServiceError() {

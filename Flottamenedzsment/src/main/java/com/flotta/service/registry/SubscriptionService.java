@@ -12,7 +12,7 @@ import com.flotta.model.viewEntity.SubscriptionToView;
 import com.flotta.repository.registry.SubscriptionRepository;
 
 @Service
-public class SubscriptionService extends ServiceWithMsg implements SubscriptionServiceGetter {
+public class SubscriptionService extends ServiceWithMsg implements SubscriptionFinderService {
 	
 	private SubscriptionRepository subscriptionRepository;
 	

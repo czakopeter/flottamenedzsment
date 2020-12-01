@@ -6,10 +6,10 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 @Converter(autoApply = true)
-public class SimStatusConverter implements AttributeConverter<SimStatusEnum, Integer> {
+public class SimStatusConverter implements AttributeConverter<SimStatus, Integer> {
 
   @Override
-  public Integer convertToDatabaseColumn(SimStatusEnum status) {
+  public Integer convertToDatabaseColumn(SimStatus status) {
     if (status == null) {
       return null;
     }
@@ -17,12 +17,12 @@ public class SimStatusConverter implements AttributeConverter<SimStatusEnum, Int
   }
 
   @Override
-  public SimStatusEnum convertToEntityAttribute(Integer code) {
+  public SimStatus convertToEntityAttribute(Integer code) {
     if (code == null) {
       return null;
     }
 
-    return Stream.of(SimStatusEnum.values()).filter(c -> c.getCode() == code).
+    return Stream.of(SimStatus.values()).filter(c -> c.getCode() == code).
         findFirst().
         orElseThrow(IllegalArgumentException::new);
   }

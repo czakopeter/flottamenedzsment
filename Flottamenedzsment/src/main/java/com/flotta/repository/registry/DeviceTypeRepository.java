@@ -1,5 +1,6 @@
 package com.flotta.repository.registry;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -13,10 +14,10 @@ public interface DeviceTypeRepository extends CrudRepository<DeviceType, Long> {
 	@Query("select distinct d.brand from DeviceType d")
   List<String> findAllBrandOfDevicesType();
 
-  DeviceType findByNameIgnoreCase(String name);
+  Optional<DeviceType> findByNameIgnoreCase(String name);
 
-  DeviceType findByBrandAndModelIgnoreCase(String brand, String model);
+  Optional<DeviceType> findByBrandAndModelIgnoreCase(String brand, String model);
 
-  List<DeviceType> findAllDeviceTypeByVisibleTrue();
+  List<DeviceType> findAllByVisibleTrue();
 
 }

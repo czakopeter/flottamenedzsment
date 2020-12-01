@@ -1,6 +1,5 @@
 package com.flotta.service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -99,10 +98,6 @@ public class MainService {
     return invoiceService.getUnusedCategoryOfChargeRatio(id);
   }
 
-//  public List<InvoiceByUserAndPhoneNumber> getPendingInvoices(String email) {
-//    return invoiceService.getPendingInvoicesOfUser(getCurrentUser());
-//  }
-
   public InvoiceByUserAndPhoneNumber getPendingInvoiceOfCurrentUserById(String email, Long id) {
     return invoiceService.getPendingInvoiceOfUserById(registryService.findUserByEmail(email).get(), id);
   }
@@ -176,10 +171,9 @@ public class MainService {
   }
 
   // --- RECORD SERVIVE ---
-
-//  private User getCurrentUser() {
-//    return registryService.getCurrentUser();
-//  }
+  
+  
+  //-------- DEVICE SERVICE --------
 
   public List<Device> findAllDevices() {
     return registryService.findAllDevices();
@@ -197,14 +191,6 @@ public class MainService {
     return registryService.findDeviceById(id);
   }
 
-//  public DeviceToView findDeviceByIdAndDate(long id, LocalDate date) {
-//    return registryService.findDeviceByIdAndDate(id, date);
-//  }
-
-//  public List<LocalDate> findDeviceDatesById(long id) {
-//    return registryService.findDeviceDatesById(id);
-//  }
-
   public String getDeviceServiceError() {
     return registryService.getDeviceServiceError();
   }
@@ -219,14 +205,14 @@ public class MainService {
     return registryService.findAllBrandOfDevicesType();
   }
 
-  public boolean saveDeviceType(DeviceType deviceType) {
-    return registryService.saveDeviceType(deviceType);
-  }
-
   public DeviceType findDeviceTypeById(long id) {
     return registryService.findDeviceTypeById(id);
   }
 
+  public boolean createDeviceType(DeviceType deviceType) {
+    return registryService.saveDeviceType(deviceType);
+  }
+  
   public void updateDeviceType(DeviceType deviceType) {
     registryService.updateDeviceType(deviceType);
   }
@@ -269,18 +255,6 @@ public class MainService {
 
   public Optional<Subscription> findSubscriptionById(long id) {
     return registryService.findSubscriptionById(id);
-  }
-
-//  public SubscriptionToView findSubscriptionByIdAndDate(long id, LocalDate date) {
-//    return registryService.findSubscriptionByIdAndDate(id, date);
-//  }
-//
-//  public SubscriptionToView findSubscriptionByNumberAndDate(String number, LocalDate date) {
-//    return registryService.findSubscriptionByNumberAndDate(number, date);
-//  }
-
-  public List<LocalDate> findSubscriptionDatesById(long id) {
-    return registryService.findSubscriptionDatesById(id);
   }
 
   public boolean createSubscription(SubscriptionToView stv) {
@@ -356,7 +330,7 @@ public class MainService {
   public Optional<ChargeRatioByCategory> getChargeRatioOfUserById(long id) {
     Optional<User> userOpt = registryService.findUserById(id);
     if(userOpt.isPresent()) {
-      return Optional.of(userOpt.get().getChargeRatio());
+      return Optional.ofNullable(userOpt.get().getChargeRatio());
     }
     return Optional.empty();
   }

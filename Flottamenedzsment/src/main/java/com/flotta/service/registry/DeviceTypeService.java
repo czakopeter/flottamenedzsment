@@ -1,6 +1,8 @@
 package com.flotta.service.registry;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,35 +27,29 @@ public class DeviceTypeService {
     return deviceTypeRepository.findById(id).orElse(null);
   }
 
-  public List<String> findAllBrandOfDevicesType() {
+  public List<String> findAllBrandOfDeviceTypes() {
     return deviceTypeRepository.findAllBrandOfDevicesType();
   }
 
-  public boolean save(DeviceType deviceType) {
-    boolean saveable = deviceIsSaveable(deviceType);
-    if (saveable) {
+  public boolean create(DeviceType deviceType) {
+    if (deviceIsSaveable(deviceType)) {
         deviceTypeRepository.save(deviceType);
+        return true;
     }
-    return saveable;
+    return false;
   }
   
   private boolean deviceIsSaveable(DeviceType deviceType) {
-    DeviceType name = deviceTypeRepository.findByNameIgnoreCase(deviceType.getName());
-    DeviceType brandAndModel = deviceTypeRepository.findByBrandAndModelIgnoreCase(deviceType.getBrand(), deviceType.getModel());
-    if(deviceType.getId() == 0) {
-      return name == null && brandAndModel == null;
-    } else {
-      DeviceType saved = deviceTypeRepository.findById(deviceType.getId()).orElse(null);
-      if((saved.getDevices() != null && saved.getDevices().size() > 0) ||
-         (name != null && name.getId() != saved.getId()) || 
-         (brandAndModel != null && brandAndModel.getId() != saved.getId())) {
-        return false;
-      }
-      return true;
-    }
+    Optional<DeviceType> savedTypeOpt = deviceTypeRepository.findById(deviceType.getId());
+    Optional<DeviceType> typeByNameOpt = deviceTypeRepository.findByNameIgnoreCase(deviceType.getName());
+    Optional<DeviceType> typeByBrandAndModelOpt = deviceTypeRepository.findByBrandAndModelIgnoreCase(deviceType.getBrand(), deviceType.getModel());
+      return 
+          !(typeByNameOpt.isPresent() || typeByBrandAndModelOpt.isPresent()) || 
+          (typeByNameOpt.isPresent() && typeByNameOpt.get().equals(savedTypeOpt.get())) ||
+          (typeByBrandAndModelOpt.isPresent() && typeByBrandAndModelOpt.get().equals(savedTypeOpt.get()));
   }
   
-  public DeviceType findByName(String name) {
+  public Optional<DeviceType> findByName(String name) {
     return deviceTypeRepository.findByNameIgnoreCase(name);
   }
 
@@ -61,7 +57,7 @@ public class DeviceTypeService {
     deviceTypeRepository.save(deviceType);
   }
 
-  public List<DeviceType> findAllVisibleDeviceTypes() {
-    return deviceTypeRepository.findAllDeviceTypeByVisibleTrue();
+  public List<DeviceType> findAllVisible() {
+    return deviceTypeRepository.findAllByVisibleTrue();
   }
 }

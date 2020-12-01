@@ -1,13 +1,13 @@
 package com.flotta.enums;
 
-public enum SimStatusEnum {
+public enum SimStatus {
   FREE(0),
   ACTIVE(1),
   CHANGED(2);
   
   private int code;
   
-  private SimStatusEnum(int code) {
+  private SimStatus(int code) {
     this.code = code;
   }
   

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.flotta.model.registry.Device;
+import com.flotta.model.registry.DeviceType;
 import com.flotta.model.viewEntity.DeviceToView;
 import com.flotta.repository.registry.DeviceRepository;
 
@@ -28,29 +29,24 @@ public class DeviceService extends ServiceWithMsg{
     return deviceRepository.findById(id);
   }
   
-  public Device findBySerialNumber(String selialNumber) {
-    if (selialNumber != null) {
-      return deviceRepository.findBySerialNumber(selialNumber);
+  public boolean create(DeviceToView dtv, Optional<DeviceType> deviceTypeOpt ) {
+    if(deviceRepository.findBySerialNumber(dtv.getSerialNumber()).isPresent()) {
+      appendMsg("Serial number already exists");
+    } else {
+      if(deviceTypeOpt.isPresent()) {
+        Device entity = new Device(dtv.getSerialNumber(), deviceTypeOpt.get() ,dtv.getBeginDate());
+        deviceRepository.save(entity);
+        return true;
+      }
     }
-    return null;
+    return false;
   }
   
-  public boolean add(DeviceToView dtv) {
-    if(deviceRepository.findBySerialNumber(dtv.getSerialNumber()) == null) {
-      Device entity = new Device(dtv.getSerialNumber(), dtv.getBeginDate());
-      deviceRepository.save(entity);
-      return true;
-    } else {
-      appendMsg("Serial number already exists");
-      return false;
-    }
+  public void update(Device device) {
+    deviceRepository.save(device);
   }
   
   public String getError() {
     return removeMsg();
-  }
-
-  public void save(Device device) {
-    deviceRepository.save(device);
   }
 }

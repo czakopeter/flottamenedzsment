@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -33,6 +34,7 @@ import com.flotta.utility.Utility;
 @Table(name = "devices")
 public class Device extends BasicEntityWithCreateDate {
 
+  @Column(unique = true, nullable = false)
   private String serialNumber;
 
   @ManyToOne
@@ -64,11 +66,11 @@ public class Device extends BasicEntityWithCreateDate {
     this.serialNumber = serialNumber;
   }
 
-  public Device(String serialNumber, LocalDate date) {
+  public Device(String serialNumber, DeviceType deviceType, LocalDate date) {
     this.serialNumber = serialNumber;
     this.createDate = date;
+    this.deviceType = deviceType;
     this.firstAvailableDate = date;
-    this.deviceType = null;
   }
 
   public String getSerialNumber() {
