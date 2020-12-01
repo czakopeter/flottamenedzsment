@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.flotta.model.registry.Subscription;
 import com.flotta.model.viewEntity.DeviceToView;
@@ -82,16 +83,11 @@ public class SubscriptionController {
   }
 
   @PostMapping("/subscription/{id}/update")
-  public String updateSubscription(Model model, @ModelAttribute() SubscriptionToView stv) {
+  public String updateSubscription(RedirectAttributes ra, @ModelAttribute() SubscriptionToView stv) {
     if(!service.updateSubscription(stv)) {
-      model.addAttribute("error", service.getSubscriptionServiceError());
+      ra.addFlashAttribute("error", service.getSubscriptionServiceError());
     }
-    stv = new SubscriptionToView(service.findSubscriptionById(stv.getId()).get());
-    model.addAttribute("freeSims", service.findAllFreeSim());
-    model.addAttribute("users", service.findAllUser());
-    model.addAttribute("devices", Utility.convertDevicesToView(service.findAllCurrentDeviceByUser(stv.getUserId())));
-    model.addAttribute("subscription", stv);
-    return "subscription_templates/subscriptionEdit";
+    return "redirect:/subscription/" + stv.getId() + "update";
   }
   
   @GetMapping("/subscription/{id}/view")

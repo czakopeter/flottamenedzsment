@@ -34,15 +34,14 @@ public class SimController {
   }
   
   @RequestMapping("sim/new")
-  public String addSim(Model model) {
+  public String prepareCreatingSim(Model model) {
     model.addAttribute("sim", new Sim());
     return "sim_templates/simNew";
   }
   
   @PostMapping("sim/new")
-  public String addSim(Model model, RedirectAttributes ra, @ModelAttribute Sim sim) {
+  public String createSim(Model model, RedirectAttributes ra, @ModelAttribute Sim sim) {
     if(service.createSim(sim)) {
-      ra.addFlashAttribute("success", "Creation was successful");
       return "redirect:/sim/all";
     } else {
       model.addAttribute("sim", sim);

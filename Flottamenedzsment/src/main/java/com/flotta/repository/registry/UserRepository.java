@@ -8,13 +8,11 @@ import com.flotta.model.registry.User;
 
 public interface UserRepository extends CrudRepository<User, Long> {
 
+  List<User> findAll();
+  
 	Optional<User> findByEmail(String email);
-	
-	List<User> findAll();
 
 	Optional<User> findByActivationKey(String key);
-
-  List<User> findAllByStatus(int status);
 
   List<User> findAllByEnabled(boolean enabled);
 	

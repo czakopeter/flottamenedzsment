@@ -1,14 +1,10 @@
-package com.flotta.service.registry;
+package com.flotta.model.registry;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.security.core.userdetails.UserDetails;
-
-import com.flotta.model.registry.Role;
-import com.flotta.model.registry.User;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -22,7 +18,6 @@ public class UserDetailsImpl implements UserDetails {
 		this.user = user;
 	}
 
-	//TODO kötelező jelszó csere nem kell
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
@@ -66,10 +61,6 @@ public class UserDetailsImpl implements UserDetails {
 	public String getFullName() {
 	  return user.getFullName();
 	}
-	
-//	public boolean isPasswordExpired() {
-//	  return user.isPasswordChangeRequired();
-//	}
 	
 	public boolean hasRole(String role) {
 	  return user.hasRole(role);

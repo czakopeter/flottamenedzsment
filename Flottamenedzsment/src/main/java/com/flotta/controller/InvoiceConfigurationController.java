@@ -33,8 +33,7 @@ public class InvoiceConfigurationController {
   @Autowired
   public void setMainService(MainService service) {
     this.service = service;
-  }
-  
+  }  
   
   @GetMapping("/invoiceConfiguration/main")
   public String invoiceConfigureMain(Model model, @RequestParam Optional<String> active) {
@@ -51,18 +50,18 @@ public class InvoiceConfigurationController {
   
   @PostMapping("/invoiceConfiguration/category/addOrModify")
   @ResponseBody
-  public Category addOrModifyCategory(@RequestParam("id") long id, @RequestParam("name") String name) {
+  public Category createOrModifyCategory(@RequestParam("id") long id, @RequestParam("name") String name) {
     return service.addOrModifyCategory(id, name);
   }
   
   @GetMapping("/invoiceConfiguration/descriptionCategoryCoupler/new")
-  public String prepareAddingInvoiceDescriptionCategoryCoupler(Model model) {
+  public String prepareCreatingInvoiceDescriptionCategoryCoupler(Model model) {
     model.addAttribute("coupler", new DescriptionCategoryCoupler());
     return TEMPLATE_PATH + "/descriptionCategoryCouplerNew";
   }
   
   @PostMapping("/invoiceConfiguration/descriptionCategoryCoupler/new")
-  public String addInvoiceDescriptionCategoryCoupler(Model model, @ModelAttribute DescriptionCategoryCoupler dcc) {
+  public String createInvoiceDescriptionCategoryCoupler(Model model, @ModelAttribute DescriptionCategoryCoupler dcc) {
     if(service.addDescriptionCategoryCoupler(dcc)) {
       return "redirect:/invoiceConfiguration/main?active=description-category-coupler";
     }
@@ -71,7 +70,7 @@ public class InvoiceConfigurationController {
   }
   
   @GetMapping("/invoiceConfiguration/descriptionCategoryCoupler/{id}")
-  public String prepareEditingInvoiceDescriptionCategoryCoupler(Model model, @PathVariable("id") long id) {
+  public String prepareUpdatingInvoiceDescriptionCategoryCoupler(Model model, @PathVariable("id") long id) {
     DescriptionCategoryCoupler dcc = service.findDescriptionCategoryCouplerById(id);
     if(model.containsAttribute("descriptions")) {
       @SuppressWarnings("unchecked")
@@ -92,7 +91,7 @@ public class InvoiceConfigurationController {
   }
   
   @PostMapping("/invoiceConfiguration/descriptionCategoryCoupler/{id}")
-  public String editInvoiceDescriptionCategoryCoupler(
+  public String updateInvoiceDescriptionCategoryCoupler(
       Model model, 
       @PathVariable("id") long id, 
       @RequestParam(name = "description") Optional<List<String>> descriptions,
@@ -111,13 +110,13 @@ public class InvoiceConfigurationController {
   }
   
   @GetMapping("/invoiceConfiguration/chargeRatio/new")
-  public String prepareAddingChargeRatio(Model model) {
+  public String prepareCreatingChargeRatio(Model model) {
     model.addAttribute("chargeRatio", new ChargeRatioByCategory());
     return TEMPLATE_PATH + "/chargeRatioByCategoryNew";
   }
   
   @PostMapping("/invoiceConfiguration/chargeRatio/new")
-  public String addChargeRatio(Model model, @ModelAttribute("chargeRatio") ChargeRatioByCategory chargeRatio) {
+  public String createChargeRatio(Model model, @ModelAttribute("chargeRatio") ChargeRatioByCategory chargeRatio) {
     if(service.addChargeRatio(chargeRatio)) {
       return "redirect:/invoiceConfiguration/main?active=charge-ratio";
     }
@@ -126,7 +125,7 @@ public class InvoiceConfigurationController {
   }
   
   @GetMapping("/invoiceConfiguration/chargeRatio/{id}")
-  public String prepareEditingChargeRatio(Model model, @PathVariable("id") long id) {
+  public String prepareUpdatingChargeRatio(Model model, @PathVariable("id") long id) {
     Optional<ChargeRatioByCategory> optional = service.findChargeRatioById(id);
     if(optional.isPresent()) {
       model.addAttribute("chargeRatio", optional.get());
@@ -137,12 +136,11 @@ public class InvoiceConfigurationController {
   }
   
   @PostMapping("/invoiceConfiguration/chargeRatio/{id}")
-  public String editChargeRatio(Model model, @PathVariable("id") long id, @RequestParam("category") List<Long> categories, @RequestParam("ratio") List<Integer> ratios) {
+  public String updateChargeRatio(Model model, @PathVariable("id") long id, @RequestParam("category") List<Long> categories, @RequestParam("ratio") List<Integer> ratios) {
     service.editChargeRatio(id, categories, ratios);
     return "redirect:/invoiceConfiguration/chargeRatio/" + id;
   }
   
-  //service-be getChargeRatioIdOfUser function, logikát átvinni service-be
   @PostMapping("/invoiceConfiguration/getChargeRatioOfUser")
   @ResponseBody
   public ResponseTransfer getChargeRatioIdOfUser(@RequestParam ("userId") long id) {
@@ -153,19 +151,19 @@ public class InvoiceConfigurationController {
   
   @PostMapping("/invoiceConfiguration/modifyChargeRatioOfUser")
   @ResponseBody
-  public ResponseTransfer modifyChargeRatioOfUser(@RequestParam ("userId") long userId, @RequestParam long chargeRatioId) {
+  public ResponseTransfer updateChargeRatioOfUser(@RequestParam ("userId") long userId, @RequestParam long chargeRatioId) {
     return new ResponseTransfer(service.updateChargeRatioOfUser(userId, chargeRatioId) ? chargeRatioId : 0);
   }
   
   @GetMapping("/invoiceConfiguration/participant/new")
-  public String prepareAddingParticipant(Model model) {
+  public String prepareCreatingParticipant(Model model) {
     model.addAttribute("participant", new Participant());
     model.addAttribute("descriptionCategoryCouplers", service.findAllDescriptionCategoryCoupler());
     return TEMPLATE_PATH + "/participantNew";
   }
   
   @PostMapping("/invoiceConfiguration/participant/new")
-  public String addParticipant(Model model, @ModelAttribute Participant participant, @RequestParam ("descriptionCategoryCoupler") long dccId) {
+  public String createParticipant(Model model, @ModelAttribute Participant participant, @RequestParam ("descriptionCategoryCoupler") long dccId) {
     if(service.addParticipant(participant, dccId)) {
       return "redirect:/invoiceConfiguration/main?active=participant";
     }
@@ -175,7 +173,7 @@ public class InvoiceConfigurationController {
   }
   
   @GetMapping("/invoiceConfiguration/participant/{id}")
-  public String prepareEditingParticipant(Model model, @PathVariable("id") long id) {
+  public String prepareUpdatingParticipant(Model model, @PathVariable("id") long id) {
     Optional<Participant> participant = service.findParticipantById(id);
     if(participant.isPresent()) {
       model.addAttribute("participant", participant.get());
@@ -187,10 +185,9 @@ public class InvoiceConfigurationController {
   }
   
   @PostMapping("/invoiceConfiguration/participant/{id}")
-  public String editParticipant(Model model, @PathVariable("id") long id, @ModelAttribute("participant") Participant participant) {
+  public String updateParticipant(Model model, @PathVariable("id") long id, @ModelAttribute("participant") Participant participant) {
     service.updateParticipant(participant);
     service.updateParticipant(participant);
       return "redirect:/invoiceConfiguration/main?active=participant";
   }
-  
 }

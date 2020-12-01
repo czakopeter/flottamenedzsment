@@ -205,7 +205,7 @@ public class MainService {
     return registryService.findAllBrandOfDevicesType();
   }
 
-  public DeviceType findDeviceTypeById(long id) {
+  public Optional<DeviceType> findDeviceTypeById(long id) {
     return registryService.findDeviceTypeById(id);
   }
 
@@ -271,8 +271,8 @@ public class MainService {
 
 //TODO put UserServiceImp function here
   // -------- USER SERVICE --------
-  public boolean registerUser(User user) {
-    return registryService.registerUser(user);
+  public boolean createUser(User user) {
+    return registryService.createUser(user);
   }
 
   public List<User> findAllUser() {
@@ -291,8 +291,8 @@ public class MainService {
     return registryService.getUserError();
   }
 
-  public boolean firstAdminRegistration(User user) {
-    return registryService.firstAdminRegistration(user);
+  public boolean createFirstAdmin(User user) {
+    return registryService.createFirstAdmin(user);
   }
 
   public boolean registrationAvailable() {
@@ -301,10 +301,6 @@ public class MainService {
 
   public boolean activation(String key) {
     return registryService.activation(key);
-  }
-
-  public List<User> findAllUserByStatus(int status) {
-    return registryService.findAllUserByStatus(status);
   }
 
   public Optional<User> findUserById(long id) {
@@ -320,11 +316,7 @@ public class MainService {
   }
 
   public boolean updateChargeRatioOfUser(long userId, long chargeRatioId) {
-    Optional<ChargeRatioByCategory> chargeRatioOpt = invoiceService.findChargeRatioById(chargeRatioId);
-    if(chargeRatioOpt.isPresent()) {
-      return registryService.updateChargeRatioOfUser(userId, chargeRatioOpt.get());
-    }
-    return false;
+    return registryService.updateChargeRatioOfUser(userId, invoiceService.findChargeRatioById(chargeRatioId));
   }
   
   public Optional<ChargeRatioByCategory> getChargeRatioOfUserById(long id) {

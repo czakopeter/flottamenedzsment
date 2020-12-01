@@ -44,7 +44,7 @@ public class InvoiceController {
   }
   
   @PostMapping("/invoice/fileUpload")
-  public String addInvoice(RedirectAttributes ra, @RequestParam("file") MultipartFile file) {
+  public String uploadInvoice(RedirectAttributes ra, @RequestParam("file") MultipartFile file) {
     try {
       service.fileUpload(file);
     } catch (FileUploadException e) {

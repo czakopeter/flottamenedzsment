@@ -40,14 +40,14 @@ public class UserController {
   }
 
   @GetMapping("/user/new")
-  public String prepareAddingUser(Model model) {
+  public String prepareCreatingUser(Model model) {
     model.addAttribute("user", new User());
     return "user_templates/userNew";
   }
   
   @PostMapping("/user/new")
-  public String addUser(Model model, @ModelAttribute("user") User user) {
-    if(service.registerUser(user)) {
+  public String createUser(Model model, @ModelAttribute("user") User user) {
+    if(service.createUser(user)) {
       return "redirect:/user/all";
     } else {
       model.addAttribute("user", user);
@@ -57,24 +57,22 @@ public class UserController {
   }
   
   @GetMapping("/user/{id}/update")
-  public String user(Model model, @PathVariable("id") long id) {
+  public String prepareUpdatingUser(Model model, @PathVariable("id") long id) {
     Optional<User> userOpt = service.findUserById(id);
     if(userOpt.isPresent()) {
       model.addAttribute("user", userOpt.get());
       return "user_templates/userEdit";
+    } else {
+      return "redirect:/user/all";
     }
-    return "redirect:/user/all";
   }
   
-  //TODO fetch-csel küldeni az adatokat (role, boolean)
   @PostMapping("/user/{id}/update")
-//  @ResponseBody
-  public String editUser(Model model, @PathVariable("id") long id, @RequestParam  Map<String, Boolean> roles) {
+  public String updateUser(RedirectAttributes ra, @PathVariable("id") long id, @RequestParam  Map<String, Boolean> roles) {
     if(!service.updateUser(id, roles)) {
-      model.addAttribute("messages", service.getUserError());
+      ra.addFlashAttribute("messages", service.getUserError());
     }
-    model.addAttribute("user", service.findUserById(id).get());
-    return "user_templates/userEdit";
+    return "redirect/:user/" + id + "update";
   }
   
   // ----- Guest -----
@@ -92,7 +90,7 @@ public class UserController {
   
   @PostMapping("/registration")
   public String firstAdminRegistration(Model model, @ModelAttribute User user, RedirectAttributes redirectAttributes) {
-    if(service.firstAdminRegistration(user)) {
+    if(service.createFirstAdmin(user)) {
       redirectAttributes.addFlashAttribute("success", "Successful registration! Activation link and initial password have been sent to "
           + user.getEmail() + 
           " address!");

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.flotta.model.registry.Device;
 import com.flotta.model.viewEntity.DeviceToView;
@@ -43,14 +44,14 @@ public class DeviceController {
   }
   
   @GetMapping("/device/new")
-  public String prepareAddingDevice(Model model) {
+  public String prepareCreatingDevice(Model model) {
     model.addAttribute("device", new DeviceToView());
     model.addAttribute("deviceTypes", service.findAllVisibleDeviceTypes());
     return "device_templates/deviceNew";
   }
   
   @PostMapping("/device/new")
-  public String addDevice(Model model, @ModelAttribute("device") DeviceToView dtv) {
+  public String createDevice(Model model, @ModelAttribute("device") DeviceToView dtv) {
     if(service.createDevice(dtv)) {
       return "redirect:/device/all";
     } else {
@@ -74,9 +75,9 @@ public class DeviceController {
   }
   
   @PostMapping("/device/{id}/update")
-  public String updateDevice(Model model,  @ModelAttribute() DeviceToView dtv) {
-    if(service.updateDevice(dtv)) {
-      model.addAttribute("error", service.getDeviceServiceError());
+  public String updateDevice(RedirectAttributes ra,  @ModelAttribute() DeviceToView dtv) {
+    if(!service.updateDevice(dtv)) {
+      ra.addFlashAttribute("error", service.getDeviceServiceError());
     }
     return "redirect:/device/" + dtv.getId() + "/update";
   }

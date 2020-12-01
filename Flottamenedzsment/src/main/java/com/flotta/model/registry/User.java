@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.flotta.enums.UserStatusEnum;
+import com.flotta.enums.UserStatus;
 import com.flotta.model.BasicEntity;
 import com.flotta.model.invoice.ChargeRatioByCategory;
 import com.flotta.model.switchTable.UserDev;
@@ -26,10 +26,9 @@ import javax.persistence.JoinColumn;
 @Table(name = "users")
 public class User extends BasicEntity {
 
-	@Column( unique=true, nullable=false )
+	@Column(unique = true)
 	private String email;
 	
-	@Column( nullable=false )
 	private String password;
 	
 	private String fullName;
@@ -52,7 +51,7 @@ public class User extends BasicEntity {
 	)
 	private Set<Role> roles = new HashSet<Role>();
 	
-	private UserStatusEnum status;
+	private UserStatus status;
 	
 	@ManyToOne
 	private ChargeRatioByCategory chargeRatio;
@@ -123,11 +122,11 @@ public class User extends BasicEntity {
 		this.enabled = enabled;
 	}
 	
-	public UserStatusEnum getStatus() {
+	public UserStatus getStatus() {
     return status;
   }
 
-  public void setStatus(UserStatusEnum status) {
+  public void setStatus(UserStatus status) {
     this.status = status;
   }
 

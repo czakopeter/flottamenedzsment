@@ -85,7 +85,7 @@ public class RegistryService {
     return deviceTypeService.create(deviceType);
   }
 
-  public DeviceType findDeviceTypeById(long id) {
+  public Optional<DeviceType> findDeviceTypeById(long id) {
     return deviceTypeService.findById(id);
   }
 
@@ -159,13 +159,9 @@ public class RegistryService {
     return subscriptionService.removeMsg();
   }
 
-//TODO put UserServiceImp function here
   // -------- USER SERVICE --------
-  public boolean registerUser(User user) {
-    if (userService.registerUser(user)) {
-      return true;
-    }
-    return false;
+  public boolean createUser(User user) {
+    return userService.create(user);
   }
 
   public List<User> findAllUser() {
@@ -186,8 +182,8 @@ public class RegistryService {
     return Arrays.asList(mtv);
   }
 
-  public boolean firstAdminRegistration(User user) {
-    return userService.firstAdminRegistration(user);
+  public boolean createFirstAdmin(User user) {
+    return userService.createFirstAdmin(user);
   }
 
   public boolean registrationAvailable() {
@@ -196,10 +192,6 @@ public class RegistryService {
 
   public boolean activation(String key) {
     return userService.activation(key);
-  }
-
-  public List<User> findAllUserByStatus(int status) {
-    return userService.findAllByStatus(status);
   }
 
   public Optional<User> findUserById(long id) {
@@ -214,7 +206,7 @@ public class RegistryService {
     return userService.requestNewPassword(email);
   }
 
-  public boolean updateChargeRatioOfUser(long userId, ChargeRatioByCategory chargeRatio) {
-    return userService.editChargeRatioOfUser(userId, chargeRatio);
+  public boolean updateChargeRatioOfUser(long userId, Optional<ChargeRatioByCategory> chargeRatioOpt) {
+    return userService.updateChargeRatioOfUser(userId, chargeRatioOpt);
   }
 }

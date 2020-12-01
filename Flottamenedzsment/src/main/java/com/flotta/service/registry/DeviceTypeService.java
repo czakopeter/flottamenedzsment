@@ -23,8 +23,8 @@ public class DeviceTypeService {
     return deviceTypeRepository.findAll();
   }
 
-  public DeviceType findById(long id) {
-    return deviceTypeRepository.findById(id).orElse(null);
+  public Optional<DeviceType> findById(long id) {
+    return deviceTypeRepository.findById(id);
   }
 
   public List<String> findAllBrandOfDeviceTypes() {

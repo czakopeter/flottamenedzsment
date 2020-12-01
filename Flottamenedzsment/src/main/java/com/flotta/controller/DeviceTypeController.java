@@ -2,6 +2,8 @@ package com.flotta.controller;
 
 
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,14 +38,14 @@ public class DeviceTypeController {
   }
   
   @GetMapping("/deviceType/new")
-  public String prepareAddingDeviceTypes(Model model) {
+  public String prepareCreatingDeviceTypes(Model model) {
     model.addAttribute("brandList", service.findAllBrandOfDevicesType());
     model.addAttribute("deviceType", new DeviceType());
     return "device_type_templates/deviceTypeNew";
   }
   
   @PostMapping("/deviceType/new")
-  public String addDeviceTypes(Model model, @ModelAttribute("deviceType") DeviceType deviceType) {
+  public String createDeviceTypes(Model model, @ModelAttribute("deviceType") DeviceType deviceType) {
     if(service.createDeviceType(deviceType)) {
       return "redirect:/deviceType/all";
     } else {
@@ -54,14 +56,19 @@ public class DeviceTypeController {
   }
   
   @GetMapping("/deviceType/{id}/update")
-  public String prepareEditingDeviceType(Model model, @PathVariable("id") long id) {
-    model.addAttribute("deviceType", service.findDeviceTypeById(id));
-    return "device_type_templates/deviceTypeEdit";
+  public String prepareUpdatingDeviceType(Model model, @PathVariable("id") long id) {
+    Optional<DeviceType> deviceTypeOpt = service.findDeviceTypeById(id);
+    if(deviceTypeOpt.isPresent()) {
+      model.addAttribute("deviceType", deviceTypeOpt.get());
+      return "device_type_templates/deviceTypeEdit";
+    } else {
+      return "redirect:/diviceType/all";
+    }
   }
   
   @PostMapping("/deviceType/{id}/update")
-  public String addDeviceType(Model model, @ModelAttribute DeviceType deviceType) {
+  public String updateDeviceType(Model model, @ModelAttribute DeviceType deviceType) {
     service.updateDeviceType(deviceType);
-    return "device_type_templates/deviceTypeEdit";
+    return "redirect:/deviceType/" + deviceType.getId() + "/update";
   }
 }
