@@ -30,11 +30,12 @@ public class ParticipantService implements ParticipantFinderService {
     return participantRepository.findById(id);
   }
   
+  @Override
   public Optional<Participant> findByName(String name) {
     return participantRepository.findByName(name);
   }
 
-  public boolean create(Participant participant, Optional<DescriptionCategoryCoupler> dccOpt) {
+   boolean create(Participant participant, Optional<DescriptionCategoryCoupler> dccOpt) {
     if(dccOpt.isPresent()) {
       Optional<Participant> participantOpt = participantRepository.findByName(participant.getName());
       if(!participantOpt.isPresent()) {
@@ -46,7 +47,7 @@ public class ParticipantService implements ParticipantFinderService {
     return false;
   }
   
-  public void update(Participant participant) {
+  void update(Participant participant) {
     participantRepository.save(participant);
     
   }

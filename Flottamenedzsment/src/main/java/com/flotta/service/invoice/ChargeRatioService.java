@@ -22,9 +22,16 @@ public class ChargeRatioService {
   
   public ChargeRatioService() {}
 
-  public boolean addChargeRatio(ChargeRatioByCategory chargeRatio) {
+  List<ChargeRatioByCategory> findAll() {
+    return chargeRatioRepository.findAll();
+  }
+
+  Optional<ChargeRatioByCategory> findById(long id) {
+    return chargeRatioRepository.findById(id);
+  }
+  
+  boolean create(ChargeRatioByCategory chargeRatio) {
     Optional<ChargeRatioByCategory> optional = chargeRatioRepository.findByName(chargeRatio.getName());
-    
     if(!optional.isPresent()) {
       chargeRatio.setAvailable(true);
       chargeRatioRepository.save(chargeRatio);
@@ -32,24 +39,19 @@ public class ChargeRatioService {
     return !optional.isPresent();
   }
 
-  public List<ChargeRatioByCategory> findAll() {
-    return chargeRatioRepository.findAll();
-  }
-
-  public Optional<ChargeRatioByCategory> findChargeRatioById(long id) {
-    return chargeRatioRepository.findById(id);
-  }
-
-  public boolean updateChargeRatio(long id, List<Category> categories, List<Integer> ratios) {
-    Optional<ChargeRatioByCategory> optional = chargeRatioRepository.findById(id);
-    if(optional.isPresent() && categories.size() == ratios.size()) {
-      ChargeRatioByCategory entity = optional.get();
-      for(int i = 0; i < ratios.size(); i++) {
-        entity.add(categories.get(i), ratios.get(i));
-      }
-      chargeRatioRepository.save(entity);
+  boolean update(long id, List<Category> categories, List<Integer> ratios) {
+    if(categories.size() != ratios.size()) {
+      return false;
     }
-    return optional.isPresent();
+    
+    Optional<ChargeRatioByCategory> chargeRatioOpt = chargeRatioRepository.findById(id);
+    chargeRatioOpt.ifPresent(chargeRatio -> {
+      for(int i = 0; i < ratios.size(); i++) {
+        chargeRatio.add(categories.get(i), ratios.get(i));
+      }
+      chargeRatioRepository.save(chargeRatio);
+    });
+    return chargeRatioOpt.isPresent();
   }
 
 }

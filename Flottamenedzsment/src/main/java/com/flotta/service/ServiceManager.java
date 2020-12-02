@@ -142,12 +142,12 @@ public class ServiceManager {
     return invoiceManager.findInvoiceOfUserById(registryManager.findUserByEmail(email).get(), id);
   }
 
-  public void acceptInvoicesOfUserByEmailAndInvoiceIds(String email, List<Long> ids) {
-    invoiceManager.acceptInvoicesOfUserByUserAndEmailAndInvoiceIds(registryManager.findUserByEmail(email).get(), ids);
+  public void acceptInvoicesOfUserByEmailAndIdsFromUser(String email, List<Long> ids) {
+    invoiceManager.acceptInvoicesOfUserByIdsFromUser(registryManager.findUserByEmail(email).get(), ids);
   }
 
-  public void askRevisionOfInvoiceByUser(String email, long id, Map<String, String> map) {
-    invoiceManager.askRevisionOfInvoiceByUser(registryManager.findUserByEmail(email).get(), id, map);
+  public void askForRevision(String email, long id, Map<String, String> notes) {
+    invoiceManager.askForRevision(registryManager.findUserByEmail(email).get(), id, notes);
   }
 
   public List<InvoiceByUserAndPhoneNumber> findInvoicesOfUserByEmail(String email) {

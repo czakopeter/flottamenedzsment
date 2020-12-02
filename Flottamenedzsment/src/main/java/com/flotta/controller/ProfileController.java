@@ -65,7 +65,7 @@ public class ProfileController {
   @PostMapping("/profile/invoice/accept")
   @ResponseBody
   public List<Long> acceptInvoicesOfCurrentUserByInvoiceIds(@RequestParam("ids") List<Long> ids) {
-    service.acceptInvoicesOfUserByEmailAndInvoiceIds(getActualUserEmail(), ids);
+    service.acceptInvoicesOfUserByEmailAndIdsFromUser(getActualUserEmail(), ids);
     return ids;
   }
 
@@ -81,8 +81,8 @@ public class ProfileController {
   }
   
   @PostMapping("/profile/invoice/{id}/revision")
-  public String createRevisionText(Model model, @PathVariable ("id") long id, @RequestParam Map<String, String> map) {
-    service.askRevisionOfInvoiceByUser(getActualUserEmail(), id, map);
+  public String createRevisionText(Model model, @PathVariable ("id") long id, @RequestParam Map<String, String> notes) {
+    service.askForRevision(getActualUserEmail(), id, notes);
     return "redirect:/profile/invoice";
   }
   

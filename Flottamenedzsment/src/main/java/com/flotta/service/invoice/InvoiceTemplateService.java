@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Element;
@@ -16,16 +18,29 @@ import com.flotta.repository.invoice.InvoiceTemplateRepository;
 @Service
 public class InvoiceTemplateService {
 
-  //TODO function to add new template or modify
-  
   private InvoiceTemplateRepository invoiceTemplateRepository;
 
   @Autowired
-  public void setBillTemplateRepository(InvoiceTemplateRepository invoiceTemplateRepository) {
+  public void setInvoiceTemplateRepository(InvoiceTemplateRepository invoiceTemplateRepository) {
     this.invoiceTemplateRepository = invoiceTemplateRepository;
-    createBasicTemplate();
   }
 
+  public boolean invoiceTreeFormalCheck(Element root) {
+    List<MyNode> templates = invoiceTemplateRepository.findAllByParentIsNullAndName(root.getNodeName());
+    if (templates.isEmpty()) {
+      return false;
+    }
+    
+    for(MyNode template : templates) {
+      if (equals(root.getChildNodes(), template.getChildren())) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+  
+  @PostConstruct
   private void createBasicTemplate() {
 
     MyNode root = createRootNode("Account");
@@ -63,29 +78,6 @@ public class InvoiceTemplateService {
   
   private MyNode createRootNode(String name) {
     return invoiceTemplateRepository.save(new MyNode(name));
-  }
-  
-  public List<MyNode> findAllRoot() {
-    return invoiceTemplateRepository.findAllByParentIsNull();
-  }
-
-  public List<MyNode> findAllRootByName(String name) {
-    return invoiceTemplateRepository.findAllByParentIsNullAndName(name);
-  }
-
-  public boolean invoiceTreeFormalCheck(Element root) {
-    List<MyNode> templates = findAllRootByName(root.getNodeName());
-    if (templates.isEmpty()) {
-      return false;
-    }
-    
-    for(MyNode template : templates) {
-      if (equals(root.getChildNodes(), template.getChildren())) {
-        return true;
-      }
-    }
-
-    return false;
   }
   
   //kijavítani, nem működik jól

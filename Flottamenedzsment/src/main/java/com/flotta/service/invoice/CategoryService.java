@@ -1,7 +1,6 @@
 package com.flotta.service.invoice;
 
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +26,7 @@ public class CategoryService {
     return result;
   }
   
-  List<Category> findAllCategoryByIds(List<Long> ids) {
+  List<Category> findAllByIds(List<Long> ids) {
     return categoryRepository.findAllById(ids);
   }
 
@@ -35,7 +34,7 @@ public class CategoryService {
     return categoryRepository.findById(id);
   }
 
-  Category createOrModifyCategory(long id, String name) {
+  Category createOrModify(long id, String name) {
     Category result;
     
     Optional<Category> optionalByName = categoryRepository.findByName(name);

@@ -18,19 +18,11 @@ public class FeeItemService {
     this.feeItemRepository = feeItemRepository;
   }
 
-  public FeeItem getById(long id) {
-    return feeItemRepository.findById(id).orElse(null);
-  }
-
-  public void save(FeeItem feeItem) {
-    feeItemRepository.save(feeItem);
-  }
-
-  public void modifyGrossAmountRatio(long id, double userAmount, double compAmount) {
+  void modifyGrossAmountRatio(long id, double user, double company) {
     Optional<FeeItem> feeItemOpt = feeItemRepository.findById(id);
     feeItemOpt.ifPresent(feeItem -> {
-      feeItem.setUserGrossAmount(userAmount);
-      feeItem.setCompanyGrossAmount(compAmount);
+      feeItem.setUserGrossAmount(user);
+      feeItem.setCompanyGrossAmount(company);
       feeItem.getInvoiceByUserAndPhoneNumber().setAmountsByFeeItems();
       feeItemRepository.save(feeItem);
     });

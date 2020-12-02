@@ -88,24 +88,20 @@ public class InvoiceManager {
 
 //-------- INVOICE BY USER AND PHONE NUMBER SERVICE --------
   
-  public List<InvoiceByUserAndPhoneNumber> getPendingInvoicesOfUser(User user) {
-    return invoiceByUserAndPhoneNumberService.getPendingInvoicesOfUser(user);
-  }
-
   public Optional<InvoiceByUserAndPhoneNumber> findInvoiceOfUserById(User user, Long id) {
     return invoiceByUserAndPhoneNumberService.findInvoiceOfUserById(user, id);
   }
 
-  public void acceptInvoicesOfUserByUserAndEmailAndInvoiceIds(User user, List<Long> ids) {
-    invoiceByUserAndPhoneNumberService.acceptInvoicesOfUserByUserAndIds(user, ids);
+  public void acceptInvoicesOfUserByIdsFromUser(User user, List<Long> ids) {
+    invoiceByUserAndPhoneNumberService.acceptInvoicesOfUserByIdsFromUser(user, ids);
   }
 
-  public void askRevisionOfInvoiceByUser(User user, long id, Map<String, String> map) {
-    invoiceByUserAndPhoneNumberService.askRevisionOfInvoiceByUser(user, id, map);
+  public void askForRevision(User user, long id, Map<String, String> notes) {
+    invoiceByUserAndPhoneNumberService.askForRevision(user, id, notes);
   }
   
   public List<InvoiceByUserAndPhoneNumber> findInvoicesOfUserByEmail(User user) {
-    return invoiceByUserAndPhoneNumberService.findInvoicesOfUserByEmail(user);
+    return invoiceByUserAndPhoneNumberService.findInvoicesOfUser(user);
   }
   
 //-------- FEE ITEM SERVICE --------
@@ -121,7 +117,7 @@ public class InvoiceManager {
   }
 
   public Category createOrModifyCategory(long id, String name) {
-      return categoryService.createOrModifyCategory(id, name);
+      return categoryService.createOrModify(id, name);
   }
   
 //-------- DESCRIPTION CATEGORY COUPLER SERVICE --------
@@ -131,8 +127,8 @@ public class InvoiceManager {
   }
 
   public void updateDescriptionCategoryCoupler(long id, List<String> descriptions, List<Long> categoryIds, boolean available) {
-    List<Category> categories = categoryService.findAllCategoryByIds(categoryIds);
-    descriptionCategoryCouplerService.updateDescriptionCategoryCoupler(id, descriptions, categories, available);
+    List<Category> categories = categoryService.findAllByIds(categoryIds);
+    descriptionCategoryCouplerService.update(id, descriptions, categories, available);
   }
   
   public Optional<DescriptionCategoryCoupler> findDescriptionCategoryCoupler(long id) {
@@ -140,14 +136,14 @@ public class InvoiceManager {
   }
   
   public boolean createDescriptionCategoryCoupler(DescriptionCategoryCoupler dcc) {
-    return descriptionCategoryCouplerService.createDescriptionCategoryCoupler(dcc);
+    return descriptionCategoryCouplerService.create(dcc);
   }
   
   
 //-------- CHARGE RATIO BY CATEGORY SERVICE --------
   
   public boolean createChargeRatio(ChargeRatioByCategory chargeRatio) {
-    return chargeRatioService.addChargeRatio(chargeRatio);
+    return chargeRatioService.create(chargeRatio);
   }
 
   public List<ChargeRatioByCategory> findAllChargeRatio() {
@@ -155,17 +151,17 @@ public class InvoiceManager {
   }
 
   public Optional<ChargeRatioByCategory> findChargeRatioById(long id) {
-    return chargeRatioService.findChargeRatioById(id);
+    return chargeRatioService.findById(id);
   }
 
   public boolean updateChargeRatio(long id, List<Long> categoryIds, List<Integer> ratios) {
-    List<Category> categories = categoryService.findAllCategoryByIds(categoryIds);
-    return chargeRatioService.updateChargeRatio(id, categories, ratios);
+    List<Category> categories = categoryService.findAllByIds(categoryIds);
+    return chargeRatioService.update(id, categories, ratios);
   }
 
   public List<Category> findAllUnusedCategoryOfChargeRatio(long id) {
     List<Category> result = new LinkedList<>(categoryService.findAll());
-    Optional<ChargeRatioByCategory> optional = chargeRatioService.findChargeRatioById(id);
+    Optional<ChargeRatioByCategory> optional = chargeRatioService.findById(id);
     if (optional.isPresent()) {
       result.removeAll(optional.get().getCategoryRatioMap().keySet());
     }

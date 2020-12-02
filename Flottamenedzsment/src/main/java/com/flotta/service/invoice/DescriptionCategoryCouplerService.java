@@ -20,15 +20,15 @@ public class DescriptionCategoryCouplerService {
     this.descriptionCategoryCouplerRepository = descriptionCategoryCouplerRepository;
   }
 
-  public List<DescriptionCategoryCoupler> findAll() {
+  List<DescriptionCategoryCoupler> findAll() {
     return descriptionCategoryCouplerRepository.findAll();
   }
   
-  public Optional<DescriptionCategoryCoupler> findById(long id) {
+  Optional<DescriptionCategoryCoupler> findById(long id) {
     return descriptionCategoryCouplerRepository.findById(id);
   }
   
-  public boolean createDescriptionCategoryCoupler(DescriptionCategoryCoupler dcc) {
+  boolean create(DescriptionCategoryCoupler dcc) {
     Optional<DescriptionCategoryCoupler> optional = descriptionCategoryCouplerRepository.findByName(dcc.getName());
     if(!optional.isPresent()) {
       descriptionCategoryCouplerRepository.save(dcc);
@@ -36,18 +36,18 @@ public class DescriptionCategoryCouplerService {
     return !optional.isPresent();
   }
 
-  public void updateDescriptionCategoryCoupler(long id, List<String> descriptions, List<Category> categories, boolean available) {
+  boolean update(long id, List<String> descriptions, List<Category> categories, boolean available) {
     if(descriptions == null || categories == null) {
-      return;
+      return false;
     }
-    Optional<DescriptionCategoryCoupler> optional = descriptionCategoryCouplerRepository.findById(id);
-    if(optional.isPresent()) {
-      DescriptionCategoryCoupler dcc = optional.get();
+    Optional<DescriptionCategoryCoupler> dccOpt = descriptionCategoryCouplerRepository.findById(id);
+    dccOpt.ifPresent(dcc ->{
       for(int i = 0; i < descriptions.size(); i++) {
         dcc.addToDescriptionCategoryMap(descriptions.get(i), categories.get(i));
       }
       dcc.setAvailable(available);
       descriptionCategoryCouplerRepository.save(dcc);
-    }
+    });
+    return dccOpt.isPresent();
   }
 }
