@@ -1,5 +1,6 @@
 package com.flotta.service.invoice;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -40,10 +41,13 @@ public class InvoiceByUserAndPhoneNumberService {
   }
 
   void acceptInvoicesOfUserByIdsFromUser(User user, List<Long> ids) {
-    List<InvoiceByUserAndPhoneNumber> invoices = invoiceByUserAndPhoneNumberRepository.findAllByIdAndUser(ids);
-    for(InvoiceByUserAndPhoneNumber invoice : invoices) {
-      invoice.setAcceptedByUser(true);
-    }
+    List<InvoiceByUserAndPhoneNumber> invoices = new LinkedList<>();
+    ids.forEach(id -> {
+      invoiceByUserAndPhoneNumberRepository.findByIdAndUser(id, user).ifPresent(invoice -> {
+        invoice.acceptByUser();
+        invoices.add(invoice);
+      });
+    });
     invoiceByUserAndPhoneNumberRepository.save(invoices);
   }
 
@@ -51,11 +55,11 @@ public class InvoiceByUserAndPhoneNumberService {
     Optional<InvoiceByUserAndPhoneNumber> optional = invoiceByUserAndPhoneNumberRepository.findByIdAndUser(id, user);
     optional.ifPresent(invoice -> {
       invoice.getInvoice().setAcceptedByCompany(false);
+      invoice.setAcceptedByCompany(false);
       invoice.setReviewNote(notes.remove("textarea"));
       notes.forEach((feeItemId, note) -> {
         invoice.setReviewNoteOfFeeItem(Long.parseLong(feeItemId), note);
       });
-      invoice.setAcceptedByCompany(false);
       invoiceByUserAndPhoneNumberRepository.save(invoice);
     });
   }

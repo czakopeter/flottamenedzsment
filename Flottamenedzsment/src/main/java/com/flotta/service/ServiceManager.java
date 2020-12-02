@@ -170,8 +170,8 @@ public class ServiceManager {
     return invoiceManager.findParticipantById(id);
   }
 
-  public boolean createParticipant(Participant participant, long descriptionCategoryCouplerId) {
-    return invoiceManager.createParticipant(participant, descriptionCategoryCouplerId);
+  public boolean createParticipant(Participant participant) {
+    return invoiceManager.createParticipant(participant);
   }
 
   public void updateParticipant(Participant participant) {

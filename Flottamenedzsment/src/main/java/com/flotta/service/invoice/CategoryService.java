@@ -1,6 +1,7 @@
 package com.flotta.service.invoice;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,9 +26,13 @@ public class CategoryService {
     Collections.sort(result);
     return result;
   }
-  
+
   List<Category> findAllByIds(List<Long> ids) {
-    return categoryRepository.findAllById(ids);
+    List<Category> result = new LinkedList<>();
+    ids.forEach(id -> {
+      categoryRepository.findById(id).ifPresent(category -> result.add(category));
+    });
+    return result;
   }
 
   Optional<Category> findById(long id) {
@@ -35,26 +40,20 @@ public class CategoryService {
   }
 
   Category createOrModify(long id, String name) {
-    Category result;
-    
     Optional<Category> optionalByName = categoryRepository.findByName(name);
-    Optional<Category> optionalById = categoryRepository.findById(id);
-    
-    if(optionalById.isPresent()) {
-      if(!optionalByName.isPresent()) {
-        Category category = optionalById.get();
-        category.setName(name);
-        result = categoryRepository.save(category);
-      } else {
-        result = optionalByName.get();
-      }
-    } else {
-      if(optionalByName.isPresent()) {
-        result = optionalByName.get();
-      } else {
-        result = categoryRepository.save(new Category(name));
-      }
+
+    if (optionalByName.isPresent()) {
+      return optionalByName.get();
     }
-    return result;
+
+    Optional<Category> optionalById = categoryRepository.findById(id);
+    Category category;
+    if (optionalById.isPresent()) {
+      category = optionalById.get();
+      category.setName(name);
+    } else {
+      category = categoryRepository.save(new Category(name));
+    }
+    return categoryRepository.save(category);
   }
 }

@@ -39,6 +39,7 @@
             <option th:each="descriptionCategoryCoupler : ${descriptionCategoryCouplers}"
               th:value="${descriptionCategoryCoupler.id}"
               th:text="${descriptionCategoryCoupler.name}"
+              th:selected="${participant.descriptionCategoryCoupler.id} == ${descriptionCategoryCoupler.id}"
             ></option>
           </select>
         </div>

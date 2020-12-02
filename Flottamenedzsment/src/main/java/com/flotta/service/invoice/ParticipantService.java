@@ -12,9 +12,9 @@ import com.flotta.repository.invoice.ParticipantRepository;
 
 @Service
 public class ParticipantService implements ParticipantFinderService {
-  
+
   private ParticipantRepository participantRepository;
-  
+
   @Autowired
   public void setParticipantRepository(ParticipantRepository participantRepository) {
     this.participantRepository = participantRepository;
@@ -29,26 +29,21 @@ public class ParticipantService implements ParticipantFinderService {
   public Optional<Participant> findById(long id) {
     return participantRepository.findById(id);
   }
-  
+
   @Override
   public Optional<Participant> findByName(String name) {
     return participantRepository.findByName(name);
   }
 
-   boolean create(Participant participant, Optional<DescriptionCategoryCoupler> dccOpt) {
-    if(dccOpt.isPresent()) {
-      Optional<Participant> participantOpt = participantRepository.findByName(participant.getName());
-      if(!participantOpt.isPresent()) {
-        participant.setDescriptionCategoryCoupler(dccOpt.get());
-        participantRepository.save(participant);
-      }
-      return !participantOpt.isPresent();
+  boolean create(Participant participant) {
+    Optional<Participant> participantOpt = participantRepository.findByName(participant.getName());
+    if (!participantOpt.isPresent()) {
+      participantRepository.save(participant);
     }
-    return false;
+    return !participantOpt.isPresent();
   }
-  
+
   void update(Participant participant) {
     participantRepository.save(participant);
-    
   }
 }

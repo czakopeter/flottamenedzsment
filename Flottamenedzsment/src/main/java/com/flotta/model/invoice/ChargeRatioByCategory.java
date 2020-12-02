@@ -42,7 +42,7 @@ public class ChargeRatioByCategory extends BasicEntity {
     this.available = available;
   }
 
-  public void add(Category category, int ratio) {
+  public void addToCategoryRatioMap(Category category, int ratio) {
     if(validRatio(ratio)) {
       categoryRatioMap.put(category, ratio);
     }

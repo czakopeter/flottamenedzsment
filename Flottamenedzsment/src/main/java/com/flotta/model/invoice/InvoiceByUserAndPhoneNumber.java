@@ -209,4 +209,8 @@ public class InvoiceByUserAndPhoneNumber extends BasicAccountElement {
     }
     return descriptions;
   }
+
+  public void acceptByUser() {
+    acceptedByUser = true;
+  }
 }

@@ -175,8 +175,8 @@ public class InvoiceConfigurationController {
   }
   
   @PostMapping("/invoiceConfiguration/participant/new")
-  public String createParticipant(Model model, @ModelAttribute Participant participant, @RequestParam ("descriptionCategoryCoupler") long dccId) {
-    if(service.createParticipant(participant, dccId)) {
+  public String createParticipant(Model model, @ModelAttribute Participant participant) {
+    if(service.createParticipant(participant)) {
       return "redirect:/invoiceConfiguration/main?active=participant";
     } else {
       model.addAttribute("participant", participant);

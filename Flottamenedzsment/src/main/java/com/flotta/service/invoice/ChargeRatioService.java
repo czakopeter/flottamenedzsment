@@ -47,7 +47,7 @@ public class ChargeRatioService {
     Optional<ChargeRatioByCategory> chargeRatioOpt = chargeRatioRepository.findById(id);
     chargeRatioOpt.ifPresent(chargeRatio -> {
       for(int i = 0; i < ratios.size(); i++) {
-        chargeRatio.add(categories.get(i), ratios.get(i));
+        chargeRatio.addToCategoryRatioMap(categories.get(i), ratios.get(i));
       }
       chargeRatioRepository.save(chargeRatio);
     });
