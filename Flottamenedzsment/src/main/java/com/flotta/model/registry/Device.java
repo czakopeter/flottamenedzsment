@@ -57,8 +57,6 @@ public class Device extends BasicEntityWithCreateDate {
   @MapKey(name = "date")
   private Map<LocalDate, DeviceStatus> statuses = new HashMap<LocalDate, DeviceStatus>();
 
-  private LocalDate firstAvailableDate;
-
   public Device() {
   }
 
@@ -70,7 +68,6 @@ public class Device extends BasicEntityWithCreateDate {
     this.serialNumber = serialNumber;
     this.createDate = date;
     this.deviceType = deviceType;
-    this.firstAvailableDate = date;
   }
 
   public String getSerialNumber() {
@@ -121,15 +118,10 @@ public class Device extends BasicEntityWithCreateDate {
     this.statuses = statuses;
   }
   
-  public LocalDate getFirstAvailableDate() {
-    return firstAvailableDate;
-  }
-
   public void addUser(Optional<User> userOpt, LocalDate date) {
     if (devUsers.isEmpty()) {
       userOpt.ifPresent(user -> {
         devUsers.put(date, new UserDev(user, this, date));
-        firstAvailableDate = date;
       });
     } else {
       LocalDate lastUserModDate = Utility.getLatestDate(devUsers);
@@ -143,13 +135,11 @@ public class Device extends BasicEntityWithCreateDate {
               last.setEndDate(null);
             } else {
               devUsers.put(date, new UserDev(user, this, date));
-              firstAvailableDate = date;
             }
           }
         } else if(date.minusDays(1).isAfter(last.getEndDate())) {
           userOpt.ifPresent(user -> {
             devUsers.put(date, new UserDev(user, this, date));
-            firstAvailableDate = date;
           });
         }
       } else {
@@ -160,7 +150,6 @@ public class Device extends BasicEntityWithCreateDate {
             if(date.isAfter(lastUserModDate)) {
               last.setEndDate(date.minusDays(1));
               devUsers.put(date, new UserDev(user, this, date));
-              firstAvailableDate = date;
             }
           }
         } else {
@@ -171,52 +160,6 @@ public class Device extends BasicEntityWithCreateDate {
       }
     }
   }
-
-//  public void addSubscription(Subscription sub, LocalDate date) {
-//    if (devSubs.isEmpty()) {
-//      if (sub != null) {
-//        devSubs.put(date, new SubDev(sub, this, date));
-//      }
-//    } else {
-//      LocalDate lastSubModDate = Utility.getLatestDate(devSubs);
-//      SubDev last = devSubs.get(lastSubModDate);
-//      if(last.getEndDate() != null) {
-//        if(date.minusDays(1).isEqual(last.getEndDate())) {
-//          if(sub == null) {
-//          //nem csinálunk semmit
-//          } else if(last.getSub().equals(sub)) {
-//            last.setEndDate(null);
-//          } else {
-//            devSubs.put(date, new SubDev(sub, this, date));
-//          }
-//        } else if(date.minusDays(1).isAfter(last.getEndDate())) {
-//          if(sub == null) {
-//            //nem csinálunk semmit
-//          } else {
-//            devSubs.put(date, new SubDev(sub, this, date));
-//          }
-//        }
-//      } else {
-//        //Valakihez éppen hozzá van rendelve
-//        if(last.getSub().equals(sub)) {
-//          //nem csinálunk semmit
-//        } else if(sub != null) {
-//          if(date.isAfter(lastSubModDate)) {
-//            last.setEndDate(date.minusDays(1));
-//            devSubs.put(date, new SubDev(sub, this, date));
-//          } else if(date.isEqual(lastSubModDate)) {
-//         // Módosítjuk az új felhasználóval vagy nem történik módosítás
-//          }
-//        } else {
-//          if(date.isAfter(lastSubModDate)) {
-//            last.setEndDate(date.minusDays(1));
-//          } else if(date.isEqual(lastSubModDate)) {
-//            // Még nem tudom mi történjen
-//          }
-//        }
-//      }
-//    }
-//  }
 
   public void addNote(String note, LocalDate date) {
     if(notes.isEmpty()) {
@@ -268,10 +211,6 @@ public class Device extends BasicEntityWithCreateDate {
   public String toString() {
     return "Device [id=" + id + ", serialNumber=" + serialNumber + ", deviceType=" + deviceType + "]";
   }
-
-//  public User getActualUser() {
-//    return devUsers.get(Utility.getLatestDate(devUsers)).getUser();
-//  }
 
   /**
    * visszaadja a Device objektum létrehozásának és adatainak változásának dátumát csökkenő sorrendben

@@ -1,6 +1,7 @@
 package com.flotta.model.viewEntity;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -35,6 +36,10 @@ public class SubscriptionToView {
   private String deviceName;
 
   private String note;
+  
+  public static final Comparator<SubscriptionToView> BY_PHONE_NUMBER = 
+      (SubscriptionToView stv1, SubscriptionToView stv2) -> 
+      stv1.getNumber().compareToIgnoreCase(stv2.getNumber());
 
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   private LocalDate beginDate;
@@ -42,12 +47,15 @@ public class SubscriptionToView {
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   private LocalDate endDate;
 
+  private String minDate;
+  
   public SubscriptionToView() {}
   
   public SubscriptionToView(Subscription subscription) {
     id = subscription.getId();
     number = subscription.getNumber();
     beginDate = getLastModificationDateOfDevice(subscription);
+    minDate = subscription.getCreateDate().toString();
 
     setSim(Utility.getBasicSwitchTable(subscription.getSubSim()));
 
@@ -56,6 +64,8 @@ public class SubscriptionToView {
     setDevice(Utility.getBasicSwitchTable(subscription.getSubDev()));
 
     setNote(Utility.getBasicSwitchTable(subscription.getNotes()));
+    
+    minDate = beginDate.toString();
   }
   
   public SubscriptionToView(Subscription subscription, LocalDate date) {
@@ -167,6 +177,18 @@ public class SubscriptionToView {
   public void setEndDate(LocalDate endDate) {
     this.endDate = endDate;
   }
+  
+  public String getMinDate() {
+    return minDate;
+  }
+
+  public void setMinDate(String minDate) {
+    this.minDate = minDate;
+  }
+
+  public String getPeriod() {
+    return Utility.getPeriod(beginDate, endDate);
+  }
 
   private void setUser(BasicSwitchTable bst) {
     if(bst == null || !(bst instanceof UserSub)) {
@@ -208,10 +230,6 @@ public class SubscriptionToView {
       String note = ((SubNote) bst).getNote();
       this.note = note != null ? note : "";
     }
-  }
-
-  public String getPeriod() {
-    return Utility.getPeriod(beginDate, endDate);
   }
   
   private LocalDate getLastModificationDateOfDevice(Subscription subscription) {

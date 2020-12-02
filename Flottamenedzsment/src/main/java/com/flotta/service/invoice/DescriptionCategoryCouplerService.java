@@ -24,11 +24,11 @@ public class DescriptionCategoryCouplerService {
     return descriptionCategoryCouplerRepository.findAll();
   }
   
-  public DescriptionCategoryCoupler findById(long id) {
-    return descriptionCategoryCouplerRepository.findById(id).orElse(null);
+  public Optional<DescriptionCategoryCoupler> findById(long id) {
+    return descriptionCategoryCouplerRepository.findById(id);
   }
   
-  public boolean addDescriptionCategoryCoupler(DescriptionCategoryCoupler dcc) {
+  public boolean createDescriptionCategoryCoupler(DescriptionCategoryCoupler dcc) {
     Optional<DescriptionCategoryCoupler> optional = descriptionCategoryCouplerRepository.findByName(dcc.getName());
     if(!optional.isPresent()) {
       descriptionCategoryCouplerRepository.save(dcc);

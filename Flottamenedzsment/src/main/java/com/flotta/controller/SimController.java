@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.flotta.model.registry.Sim;
-import com.flotta.service.MainService;
+import com.flotta.service.ServiceManager;
 
 @Controller
 public class SimController {
 
-  private MainService service;
+  private ServiceManager service;
   
   @Autowired
-  public void setService(MainService service) {
+  public void setService(ServiceManager service) {
     this.service = service;
   }
 

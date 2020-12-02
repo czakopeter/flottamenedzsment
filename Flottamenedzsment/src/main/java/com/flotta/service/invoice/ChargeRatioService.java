@@ -40,7 +40,7 @@ public class ChargeRatioService {
     return chargeRatioRepository.findById(id);
   }
 
-  public boolean editChargeRatio(long id, List<Category> categories, List<Integer> ratios) {
+  public boolean updateChargeRatio(long id, List<Category> categories, List<Integer> ratios) {
     Optional<ChargeRatioByCategory> optional = chargeRatioRepository.findById(id);
     if(optional.isPresent() && categories.size() == ratios.size()) {
       ChargeRatioByCategory entity = optional.get();

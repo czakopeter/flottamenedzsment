@@ -10,7 +10,6 @@ import java.time.format.DateTimeParseException;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -28,19 +27,15 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.flotta.exception.invoice.FileUploadException;
-import com.flotta.model.invoice.Category;
-import com.flotta.model.invoice.ChargeRatioByCategory;
 import com.flotta.model.invoice.DescriptionCategoryCoupler;
 import com.flotta.model.invoice.FeeItem;
 import com.flotta.model.invoice.Invoice;
-import com.flotta.model.invoice.InvoiceByUserAndPhoneNumber;
 import com.flotta.model.invoice.Participant;
 import com.flotta.model.invoice.RawFeeItem;
 import com.flotta.model.invoice.RawInvoice;
 import com.flotta.model.registry.Subscription;
 import com.flotta.model.registry.User;
 import com.flotta.repository.invoice.InvoiceRepository;
-import com.flotta.repository.invoice.ParticipantRepository;
 import com.flotta.repository.invoice.RawInvoiceRepository;
 import com.flotta.service.registry.SubscriptionFinderService;
 
@@ -55,44 +50,32 @@ public class InvoiceService {
 
   private InvoiceRepository invoiceRepository;
 
-  private InvoiceByUserAndPhoneNumberService invoiceByUserAndPhoneNumberService;
-
-  private FeeItemService feeItemService;
-
   private InvoiceTemplateService invoiceTemplateService;
 
   private SubscriptionFinderService subscriptionService;
 
-  private CategoryService categoryService;
-
-  private ChargeRatioService chargeRatioService;
-
-  private DescriptionCategoryCouplerService descriptionCategoryCouplerService;
-
-  private ParticipantRepository participantRepository;
+  private ParticipantFinderService participantService;
 
   @Autowired
   public InvoiceService(
       RawInvoiceRepository rawInvoiceRepository, 
       InvoiceRepository invoiceRepository,
-      InvoiceByUserAndPhoneNumberService invoiceByUserAndPhoneNumberService, 
-      FeeItemService feeItemService, 
       InvoiceTemplateService invoiceTemplateService,
       SubscriptionFinderService subscriptionService, 
-      CategoryService categoryService,
-      ChargeRatioService chargeRatioService, 
-      DescriptionCategoryCouplerService descriptionCategoryCouplerService, 
-      ParticipantRepository participantRepository) {
+      ParticipantService participantService) {
     this.rawInvoiceRepository = rawInvoiceRepository;
     this.invoiceRepository = invoiceRepository;
-    this.invoiceByUserAndPhoneNumberService = invoiceByUserAndPhoneNumberService;
-    this.feeItemService = feeItemService;
     this.invoiceTemplateService = invoiceTemplateService;
     this.subscriptionService = subscriptionService;
-    this.categoryService = categoryService;
-    this.chargeRatioService = chargeRatioService;
-    this.descriptionCategoryCouplerService = descriptionCategoryCouplerService;
-    this.participantRepository = participantRepository;
+    this.participantService = participantService;
+  }
+  
+  public List<Invoice> findAll() {
+    return invoiceRepository.findAll();
+  }
+
+  public Optional<Invoice> findByInvoiceNumber(String invoiceNumber) {
+    return invoiceRepository.findByInvoiceNumber(invoiceNumber);
   }
 
   public void uploadInvoice(MultipartFile file) throws FileUploadException {
@@ -106,18 +89,53 @@ public class InvoiceService {
       processRawInvoice(rawInvoice);
     }
   }
-
-  private boolean processRawInvoice(RawInvoice rawInvoice) {
-    if (check(rawInvoice)) {
-      Invoice invoice = parseRawInvoiceToInvoice(rawInvoice);
+  
+  public void deleteInvoiceByInvoiceNumber(String invoiceNumber) {
+    Optional<Invoice> invoiceOpt = invoiceRepository.findByInvoiceNumber(invoiceNumber);
+    invoiceOpt.ifPresent(invoice -> invoiceRepository.delete(invoice));
+  }
+  
+  public void acceptInvoiceByInvoiceNumberFromCompany(String invoiceNumber) {
+    Optional<Invoice> invoiceOpt = invoiceRepository.findByInvoiceNumber(invoiceNumber);
+    invoiceOpt.ifPresent(invoice -> {
+      invoice.setAcceptedByCompany();
       invoiceRepository.save(invoice);
-      return true;
-    } else {
-      rawInvoiceRepository.save(rawInvoice);
-      return false;
-    }
+    });
   }
 
+  public List<RawInvoice> findAllRawInvoice() {
+    return rawInvoiceRepository.findAll();
+  }
+  
+  public void restartProcessingRawInvoiceByInvoiceNumber(String invoiceNumber) {
+    Optional<RawInvoice> rawInvoiceOpt= rawInvoiceRepository.findByInvoiceNumber(invoiceNumber);
+    rawInvoiceOpt.ifPresent(rawInvoice -> {
+      rawInvoice.clearProblem();
+      if(processRawInvoice(rawInvoice)) {
+        rawInvoiceRepository.delete(rawInvoice);
+      }
+    });
+  }
+
+  public void deleteRawInvoiceByInvoiceNumber(String invoiceNumber) {
+    Optional<RawInvoice> optional = rawInvoiceRepository.findByInvoiceNumber(invoiceNumber);
+    if(optional.isPresent()) {
+      rawInvoiceRepository.delete(optional.get());
+    }
+  }
+  
+  public List<String> findDescriptionsOfInvoiceByInvoiceNumber(String invoiceNumber) {
+    Optional<Invoice> optionalInvoice = invoiceRepository.findByInvoiceNumber(invoiceNumber);
+    Optional<RawInvoice> optionalRawInvoice = rawInvoiceRepository.findByInvoiceNumber(invoiceNumber);
+    if (optionalInvoice.isPresent()) {
+      return optionalInvoice.get().getAllDescription();
+    }
+    if(optionalRawInvoice.isPresent()) {
+      return optionalRawInvoice.get().getAllDescription();
+    }
+    return new LinkedList<>();
+  }
+  
   private RawInvoice parseXmlStringToRawInvoice(String xml) throws FileUploadException {
     Element root = getTreeFromXMLString(xml);
 
@@ -149,12 +167,20 @@ public class InvoiceService {
       throw new FileUploadException("Invalid structure");
     }
   }
+  
+  private boolean processRawInvoice(RawInvoice rawInvoice) {
+    if (check(rawInvoice)) {
+      Invoice invoice = parseRawInvoiceToInvoice(rawInvoice);
+      invoiceRepository.save(invoice);
+      return true;
+    } else {
+      rawInvoiceRepository.save(rawInvoice);
+      return false;
+    }
+  }
 
-  // TODO a különböző hibák visszajelzése, először csak szöveges hibajegyzék,
-  // később megoldás ajánlása plusz átirányítás (hiányzó előfizetés -> új
-  // felvétele a számmal, hiányzó cég -> felvétele névvel címmel...)
   private boolean check(RawInvoice rawInvoice) {
-    Optional<Participant> optionalParticipant = participantRepository.findByName(rawInvoice.getCompanyName());
+    Optional<Participant> optionalParticipant = participantService.findByName(rawInvoice.getCompanyName());
     if (optionalParticipant.isPresent()) {
       DescriptionCategoryCoupler dcc = optionalParticipant.get().getDescriptionCategoryCoupler();
       for (RawFeeItem rawFeeItem : rawInvoice.getFeeItems()) {
@@ -191,7 +217,7 @@ public class InvoiceService {
     invoice.setNetAmount(rawInvoice.getNetAmount());
     invoice.setTaxAmount(rawInvoice.getTaxAmount());
     invoice.setGrossAmount(rawInvoice.getGrossAmount());
-    invoice.setCompany(participantRepository.findByName(rawInvoice.getCompanyName()).get());
+    invoice.setCompany(participantService.findByName(rawInvoice.getCompanyName()).get());
 
     for (RawFeeItem rawFeeItem : rawInvoice.getFeeItems()) {
       FeeItem feeItem = parseRawFeeItemToFeeItem(rawFeeItem);
@@ -264,184 +290,5 @@ public class InvoiceService {
     } catch (IOException e) {
       throw new FileUploadException("IOException");
     }
-  }
-
-  public List<Invoice> findAllInvoice() {
-    return invoiceRepository.findAll();
-  }
-
-  public Optional<Invoice> findInvoiceByInvoiceNumber(String invoiceNumber) {
-    return invoiceRepository.findByInvoiceNumber(invoiceNumber);
-  }
-
-  public Invoice findById(long id) {
-    return invoiceRepository.findById(id).orElse(null);
-  }
-
-  public List<InvoiceByUserAndPhoneNumber> getPendingInvoicesOfUser(User user) {
-    return invoiceByUserAndPhoneNumberService.getPendingInvoicesOfUser(user);
-//    return feeItemService.getPendingInvoicesOfCurrentUser(user);
-  }
-
-  public InvoiceByUserAndPhoneNumber getPendingInvoiceOfUserById(User user, Long id) {
-    return invoiceByUserAndPhoneNumberService.getPendingInvoiceOfUserById(user, id);
-  }
-
-  public boolean acceptInvoicesOfUserByInvoiceNumbersAndSubscription(User user, List<Long> ids) {
-    return invoiceByUserAndPhoneNumberService.acceptInvoicesOfUserByInvoiceNumbersAndSubscription(user, ids);
-  }
-
-  public void askForRevision(User user, long id, Map<String, String> map) {
-    invoiceByUserAndPhoneNumberService.askForRevision(user, id, map);
-  }
-
-  public void restartProcessingInvoiceBy(String invoiceNumber) {
-    Optional<RawInvoice> optional = rawInvoiceRepository.findByInvoiceNumber(invoiceNumber);
-
-    if (optional.isPresent()) {
-      RawInvoice rawInvoice = optional.get();
-      rawInvoice.clearProblem();
-      if (processRawInvoice(rawInvoice)) {
-        rawInvoiceRepository.delete(rawInvoice);
-      }
-    }
-  }
-
-  public void deleteInvoiceByInvoiceNumber(String invoiceNumber) {
-    Optional<Invoice> invoice = invoiceRepository.findByInvoiceNumber(invoiceNumber);
-    if (invoice.isPresent()) {
-      invoiceRepository.delete(invoice.get());
-    }
-  }
-
-  public void acceptInvoiceByInvoiceNumber(String invoiceNumber) {
-    Optional<Invoice> invoice = invoiceRepository.findByInvoiceNumber(invoiceNumber);
-    if (invoice.isPresent()) {
-      invoice.get().setAcceptedByCompany();
-      invoiceRepository.save(invoice.get());
-    }
-  }
-
-  public void modifyFeeItemGrossAmountRatio(long id, double userAmount, double compAmount) {
-    FeeItem feeItem = feeItemService.getById(id);
-    feeItem.setUserGrossAmount(userAmount);
-    feeItem.setCompanyGrossAmount(compAmount);
-    feeItem.getInvoiceByUserAndPhoneNumber().setAmountsByFeeItems();
-    feeItemService.save(feeItem);
-  }
-
-  public List<InvoiceByUserAndPhoneNumber> getAcceptedInvoicesOfUser(User user) {
-    return invoiceByUserAndPhoneNumberService.getAcceptedInvoicesOfUser(user);
-  }
-
-  public InvoiceByUserAndPhoneNumber getAcceptedInvoiceOfUserById(User user, long id) {
-    return invoiceByUserAndPhoneNumberService.getAcceptedInvoiceOfUserById(user, id);
-  }
-
-  public List<InvoiceByUserAndPhoneNumber> getAcceptedByCompanyInvoicesOfUser(User user) {
-    return invoiceByUserAndPhoneNumberService.getAcceptedByCompanyInvoicesOfUser(user);
-  }
-
-  public List<RawInvoice> findAllRawInvoice() {
-    return rawInvoiceRepository.findAll();
-  }
-
-  public List<Participant> findAllParticipant() {
-    return participantRepository.findAll();
-  }
-
-  public Optional<Participant> findParticipantById(long id) {
-    return participantRepository.findById(id);
-  }
-
-  public boolean addParticipant(Participant participant, long descriptionCategoryCouplerId) {
-    DescriptionCategoryCoupler dcc = descriptionCategoryCouplerService.findById(descriptionCategoryCouplerId);
-    Optional<Participant> result = participantRepository.findByName(participant.getName());
-    if (!result.isPresent()) {
-      participant.setDescriptionCategoryCoupler(dcc);
-      participantRepository.save(participant);
-    }
-    return !result.isPresent();
-  }
-
-  public List<String> findDescriptionsOfInvoiceByInvoiceNumber(String invoiceNumber) {
-    Optional<Invoice> optionalInvoice = invoiceRepository.findByInvoiceNumber(invoiceNumber);
-    Optional<RawInvoice> optionalRawInvoice = rawInvoiceRepository.findByInvoiceNumber(invoiceNumber);
-    if (optionalInvoice.isPresent()) {
-      return optionalInvoice.get().getAllDescription();
-    }
-    if(optionalRawInvoice.isPresent()) {
-      return optionalRawInvoice.get().getAllDescription();
-    }
-    return new LinkedList<>();
-  }
-
-  public List<Category> findAllCategory() {
-    return categoryService.findAll();
-  }
-
-  public Category addOrModifyCategory(long id, String name) {
-    return categoryService.addOrModifyCategory(id, name);
-  }
-
-  public List<DescriptionCategoryCoupler> findAllDescriptionCategoryCoupler() {
-    return descriptionCategoryCouplerService.findAll();
-  }
-
-  public void updateDescriptionCategoryCoupler(long id, List<String> descriptions, List<Long> categories, boolean available) {
-    descriptionCategoryCouplerService.updateDescriptionCategoryCoupler(id, descriptions, idListToCategoryList(categories), available);
-  }
-
-  private List<Category> idListToCategoryList(List<Long> catIds) {
-    List<Category> result = new LinkedList<>();
-    for (long id : catIds) {
-      result.add(categoryService.findById(id).get());
-    }
-    return result;
-  }
-
-  public DescriptionCategoryCoupler findDescriptionCategoryCoupler(long id) {
-    return descriptionCategoryCouplerService.findById(id);
-  }
-
-  public boolean addChargeRatio(ChargeRatioByCategory chargeRatio) {
-    return chargeRatioService.addChargeRatio(chargeRatio);
-  }
-
-  public List<ChargeRatioByCategory> findAllChargeRatio() {
-    return chargeRatioService.findAll();
-  }
-
-  public Optional<ChargeRatioByCategory> findChargeRatioById(long id) {
-    return chargeRatioService.findChargeRatioById(id);
-  }
-
-  public boolean editChargeRatio(long id, List<Long> categories, List<Integer> ratios) {
-    return chargeRatioService.editChargeRatio(id, idListToCategoryList(categories), ratios);
-  }
-
-  public List<Category> getUnusedCategoryOfChargeRatio(long id) {
-    List<Category> result = new LinkedList<>(categoryService.findAll());
-    Optional<ChargeRatioByCategory> optional = chargeRatioService.findChargeRatioById(id);
-    if (optional.isPresent()) {
-      result.removeAll(optional.get().getCategoryRatioMap().keySet());
-    }
-    return result;
-  }
-
-  public boolean addDescriptionCategoryCoupler(DescriptionCategoryCoupler dcc) {
-    return descriptionCategoryCouplerService.addDescriptionCategoryCoupler(dcc);
-  }
-
-  
-  public void deleteRawInvoiceByInvoiceNumber(String invoiceNumber) {
-    Optional<RawInvoice> optional = rawInvoiceRepository.findByInvoiceNumber(invoiceNumber);
-    if(optional.isPresent()) {
-      rawInvoiceRepository.delete(optional.get());
-    }
-  }
-
-  public void updateParticipant(Participant participant) {
-    participantRepository.save(participant);
   }
 }

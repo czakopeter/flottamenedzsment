@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.flotta.model.registry.DeviceType;
-import com.flotta.service.MainService;
+import com.flotta.service.ServiceManager;
 
 @Controller
 public class DeviceTypeController {
 
-  private MainService service;
+  private ServiceManager service;
 
   @Autowired
-  public void setMainService(MainService service) {
+  public void setMainService(ServiceManager service) {
     this.service = service;
   }
   

@@ -19,16 +19,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.flotta.model.registry.Subscription;
 import com.flotta.model.viewEntity.DeviceToView;
 import com.flotta.model.viewEntity.SubscriptionToView;
-import com.flotta.service.MainService;
+import com.flotta.service.ServiceManager;
 import com.flotta.utility.Utility;
 
 @Controller
 public class SubscriptionController {
 
-  private MainService service;
+  private ServiceManager service;
 
   @Autowired
-  public void setMainService(MainService service) {
+  public void setMainService(ServiceManager service) {
     this.service = service;
   }
 
@@ -87,7 +87,7 @@ public class SubscriptionController {
     if(!service.updateSubscription(stv)) {
       ra.addFlashAttribute("error", service.getSubscriptionServiceError());
     }
-    return "redirect:/subscription/" + stv.getId() + "update";
+    return "redirect:/subscription/" + stv.getId() + "/update";
   }
   
   @GetMapping("/subscription/{id}/view")

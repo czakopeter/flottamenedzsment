@@ -16,15 +16,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.flotta.model.registry.User;
-import com.flotta.service.MainService;
+import com.flotta.service.ServiceManager;
 
 @Controller
 public class UserController {
 
-  private MainService service;
+  private ServiceManager service;
 
   @Autowired
-  public void setMainService(MainService service) {
+  public void setMainService(ServiceManager service) {
     this.service = service;
   }
 
@@ -72,7 +72,7 @@ public class UserController {
     if(!service.updateUser(id, roles)) {
       ra.addFlashAttribute("messages", service.getUserError());
     }
-    return "redirect/:user/" + id + "update";
+    return "redirect/:user/" + id + "/update";
   }
   
   // ----- Guest -----

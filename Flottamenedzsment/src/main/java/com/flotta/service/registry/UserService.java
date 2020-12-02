@@ -75,7 +75,7 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
     return userRepository.findByEmail(email);
   }
 
-  public boolean create(User user) {
+  boolean create(User user) {
     Optional<User> userOpt = userRepository.findByEmail(user.getEmail());
 
     if (userOpt.isPresent()) {
@@ -96,7 +96,7 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
     return false;
   }
 
-  public boolean updateUser(long id, Map<String, Boolean> roles) {
+  boolean updateUser(long id, Map<String, Boolean> roles) {
     Optional<User> userOpt = userRepository.findById(id);
     userOpt.ifPresent(user -> {
       user.setRoles(convertToRoleSet(roles));
@@ -105,7 +105,7 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
     return userOpt.isPresent();
   }
 
-  public boolean activation(String key) {
+  boolean activation(String key) {
     Optional<User> userOpt = userRepository.findByActivationKey(key);
     userOpt.ifPresent(user -> {
       user.setEnabled(true);
@@ -115,7 +115,7 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
     return userOpt.isPresent();
   }
 
-  public boolean changePassword(String email, String oldPsw, String newPsw, String confirmPsw) {
+  boolean changePassword(String email, String oldPsw, String newPsw, String confirmPsw) {
     Optional<User> userOpt = userRepository.findByEmail(email);
     if (userOpt.isPresent()) {
       User user = userOpt.get();
@@ -130,7 +130,7 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
     return false;
   }
   
-  public boolean requestNewPassword(String email) {
+  boolean requestNewPassword(String email) {
     Optional<User> optionalUser = userRepository.findByEmail(email);
     if (optionalUser.isPresent()) {
       User user = optionalUser.get();
@@ -146,7 +146,7 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
     return false;
   }
 
-  public boolean updateChargeRatioOfUser(long userId, Optional<ChargeRatioByCategory> chargeRatioOpt) {
+  boolean updateChargeRatioOfUser(long userId, Optional<ChargeRatioByCategory> chargeRatioOpt) {
     if(chargeRatioOpt.isPresent()) {
       Optional<User> userOpt = userRepository.findById(userId);
       userOpt.ifPresent(user -> {
@@ -158,11 +158,11 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
     return false;
   }
 
-  public boolean registrationAvailable() {
+  boolean registrationAvailable() {
     return userRepository.findAllByEnabled(true).isEmpty();
   }
 
-  public boolean createFirstAdmin(User user) {
+  boolean createFirstAdmin(User user) {
     String password = generateKey(16);
     user.setEnabled(false);
     user.addRole(roleRepository.findByRole("ADMIN").get());

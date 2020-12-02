@@ -170,6 +170,7 @@ public class Utility {
     for(Device device : devices) {
       devicesToView.add(new DeviceToView(device));
     }
+    Collections.sort(devicesToView, DeviceToView.BY_SERIAL_NUMBER);
     return devicesToView;
   }
 
@@ -178,6 +179,7 @@ public class Utility {
     for(Subscription subscription : subscriptions) {
       subscriptionsToView.add(new SubscriptionToView(subscription));
     }
+    Collections.sort(subscriptionsToView, SubscriptionToView.BY_PHONE_NUMBER);
     return subscriptionsToView;
   }
 

@@ -11,6 +11,8 @@ import com.flotta.model.registry.User;
 
 public interface InvoiceByUserAndPhoneNumberRepository extends CrudRepository<InvoiceByUserAndPhoneNumber, Long> {
   
+  List<InvoiceByUserAndPhoneNumber> findAllById(List<Long> ids);
+  
   //Felhasználóhoz tartózó összes felhasználó elfogadására váró
   List<InvoiceByUserAndPhoneNumber> findAllByUserAndAcceptedByCompanyTrueAndAcceptedByUserFalse(User user);
 
@@ -28,4 +30,8 @@ public interface InvoiceByUserAndPhoneNumberRepository extends CrudRepository<In
   List<InvoiceByUserAndPhoneNumber> findAllByUserOrderByAcceptedByUserAscBeginDateAsc(User user);
 
   List<InvoiceByUserAndPhoneNumber> findAllByUserAndAcceptedByCompanyTrueOrderByAcceptedByUserAscBeginDateAsc(User user);
+
+  void save(List<InvoiceByUserAndPhoneNumber> invoices);
+
+  List<InvoiceByUserAndPhoneNumber> findAllByIdAndUser(List<Long> ids);
 }

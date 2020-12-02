@@ -79,9 +79,9 @@
           </div>
           <div class="col-4">
             <input type="date" class="form-control" id="beginDate" name="beginDate" th:value="*{beginDate}" required="required"
-              th:min="${subscription.min}"
+              th:min="*{minDate}"
             />
-            <input type="hidden" id="min" name="min" th:value="*{min}" />
+            <input type="hidden" id="minDate" name="minDate" th:value="*{minDate}" />
           </div>
         </div>
         <div class="row">

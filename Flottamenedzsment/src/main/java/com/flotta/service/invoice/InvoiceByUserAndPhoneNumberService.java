@@ -25,52 +25,42 @@ public class InvoiceByUserAndPhoneNumberService {
     this.invoiceByUserAndPhoneNumberRepository = invoiceByUserAndPhoneNumberRepository;
   }
 
-  //TODO null helyett Exception-t dobni, nincs ilyen id vagy nem a bejelentkezett felhaszáló-é
-  public InvoiceByUserAndPhoneNumber getPendingInvoiceOfUserById(User user, Long id) {
-    Optional<InvoiceByUserAndPhoneNumber> optional = invoiceByUserAndPhoneNumberRepository.findByIdAndUser(id, user);
-    if(optional.isPresent()) {
-      return optional.get();
-    }
-    return null;
-  }
-
-  public List<InvoiceByUserAndPhoneNumber> getPendingInvoicesOfUser(User user) {
+  List<InvoiceByUserAndPhoneNumber> getPendingInvoicesOfUser(User user) {
     return invoiceByUserAndPhoneNumberRepository.findAllByUserAndAcceptedByCompanyTrueAndAcceptedByUserFalse(user);
   }
-
-  public boolean acceptInvoicesOfUserByInvoiceNumbersAndSubscription(User user, List<Long> ids) {
-    for(Long id : ids) {
-      Optional<InvoiceByUserAndPhoneNumber> optional = invoiceByUserAndPhoneNumberRepository.findByIdAndUser(id, user);
-      if(optional.isPresent()) {
-        InvoiceByUserAndPhoneNumber part = optional.get();
-        part.setAcceptedByUser(true);
-        invoiceByUserAndPhoneNumberRepository.save(part);
-      }
-    }
-    return true;
+  
+  Optional<InvoiceByUserAndPhoneNumber> findInvoiceOfUserById(User user, Long id) {
+    return invoiceByUserAndPhoneNumberRepository.findByIdAndUser(id, user);
   }
 
-  public void askForRevision(User user, long id, Map<String, String> map) {
+  void acceptInvoicesOfUserByUserAndIds(User user, List<Long> ids) {
+    List<InvoiceByUserAndPhoneNumber> invoices = invoiceByUserAndPhoneNumberRepository.findAllByIdAndUser(ids);
+    for(InvoiceByUserAndPhoneNumber invoice : invoices) {
+      invoice.setAcceptedByUser(true);
+    }
+    invoiceByUserAndPhoneNumberRepository.save(invoices);
+  }
+
+  public void askRevisionOfInvoiceByUser(User user, long id, Map<String, String> map) {
     Optional<InvoiceByUserAndPhoneNumber> optional = invoiceByUserAndPhoneNumberRepository.findByIdAndUser(id, user);
-    if(optional.isPresent()) {
-      InvoiceByUserAndPhoneNumber part = optional.get();
-      part.getInvoice().setAcceptedByCompany(false);
-      part.setReviewNote(map.remove("textarea"));
+    optional.ifPresent(invoice -> {
+      invoice.getInvoice().setAcceptedByCompany(false);
+      invoice.setReviewNote(map.remove("textarea"));
       map.forEach((k,v) -> {
-        part.setReviewNoteOfFeeItem(Long.parseLong(k), v);
+        invoice.setReviewNoteOfFeeItem(Long.parseLong(k), v);
       });
-      part.setAcceptedByCompany(false);
-      invoiceByUserAndPhoneNumberRepository.save(part);
-    }
+      invoice.setAcceptedByCompany(false);
+      invoiceByUserAndPhoneNumberRepository.save(invoice);
+    });
   }
 
-  public List<InvoiceByUserAndPhoneNumber> getAcceptedInvoicesOfUser(User user) {
-    return invoiceByUserAndPhoneNumberRepository.findAllByUserAndAcceptedByCompanyTrueAndAcceptedByUserTrue(user);
-  }
-
-  public InvoiceByUserAndPhoneNumber getAcceptedInvoiceOfUserById(User user, long id) {
-    return invoiceByUserAndPhoneNumberRepository.findByIdAndUserAndAcceptedByCompanyTrueAndAcceptedByUserTrue(id, user);
-  }
+//  public List<InvoiceByUserAndPhoneNumber> getAcceptedInvoicesOfUser(User user) {
+//    return invoiceByUserAndPhoneNumberRepository.findAllByUserAndAcceptedByCompanyTrueAndAcceptedByUserTrue(user);
+//  }
+//
+//  public InvoiceByUserAndPhoneNumber getAcceptedInvoiceOfUserById(User user, long id) {
+//    return invoiceByUserAndPhoneNumberRepository.findByIdAndUserAndAcceptedByCompanyTrueAndAcceptedByUserTrue(id, user);
+//  }
   
   
   /**
@@ -79,7 +69,7 @@ public class InvoiceByUserAndPhoneNumberService {
    * @param user
    * @return Felhasználóhoz tartózó számlatételeket listája
    */
-  public List<InvoiceByUserAndPhoneNumber> getAcceptedByCompanyInvoicesOfUser(User user) {
+  public List<InvoiceByUserAndPhoneNumber> findInvoicesOfUserByEmail(User user) {
     return invoiceByUserAndPhoneNumberRepository.findAllByUserAndAcceptedByCompanyTrueOrderByAcceptedByUserAscBeginDateAsc(user);
   }
 }

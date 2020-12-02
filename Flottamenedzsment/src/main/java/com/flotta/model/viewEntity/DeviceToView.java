@@ -1,6 +1,7 @@
 package com.flotta.model.viewEntity;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -28,11 +29,18 @@ public class DeviceToView {
 	
 	private String note;
 	
+	
+	public static final Comparator<DeviceToView> BY_SERIAL_NUMBER = 
+	    (DeviceToView dtv1, DeviceToView dtv2) -> 
+	    dtv1.getSerialNumber().compareToIgnoreCase(dtv2.getSerialNumber());
+	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private LocalDate beginDate;
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private LocalDate endDate;
+	
+	private String minDate;
 	
 	public DeviceToView() {}
 	
@@ -41,13 +49,15 @@ public class DeviceToView {
 	  serialNumber = device.getSerialNumber();
 	  typeName = device.getDeviceType().getName();
 	  beginDate = getLastModificationDateOfDevice(device);
+	  minDate = beginDate.toString();
 	  
 	  setUser(Utility.getBasicSwitchTable(device.getDevUsers()));
 	  
 	  setSubscription(Utility.getBasicSwitchTable(device.getDevSubs()));
 	  
 	  setNote(Utility.getBasicSwitchTable(device.getNotes()));
-	}
+	  
+	  }
 
   public DeviceToView(Device device, LocalDate date) {
     id = device.getId();
@@ -133,6 +143,18 @@ public class DeviceToView {
   public void setEndDate(LocalDate endDate) {
     this.endDate = endDate;
   }
+  
+  public String getMinDate() {
+    return minDate;
+  }
+
+  public void setMinDate(String minDate) {
+    this.minDate = minDate;
+  }
+  
+  public String getPeriod() {
+    return Utility.getPeriod(beginDate, endDate);
+  }
 
   private void setUser(BasicSwitchTable bst) {
     if(bst == null || !(bst instanceof UserDev)) {
@@ -161,10 +183,6 @@ public class DeviceToView {
       String note = ((DevNote) bst).getNote();
       this.note = note != null ? note : "";
     }
-  }
-  
-  public String getPeriod() {
-    return Utility.getPeriod(beginDate, endDate);
   }
   
   private LocalDate getLastModificationDateOfDevice(Device device) {

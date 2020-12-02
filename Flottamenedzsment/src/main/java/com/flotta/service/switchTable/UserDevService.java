@@ -28,39 +28,20 @@ public class UserDevService {
     this.userDevRepository = userDevRepository;
   }
 
-  public List<Device> findAllFreeDeviceByUser(User user) {
-    if(user == null) {
-      return new LinkedList<>();
-    }
-    List<UserDev> udList = userDevRepository.findAllByUser(user);
-    Set<Device> dSet = new HashSet<Device>();
-    udList.forEach(ud -> {
-      if(user.equalsByEmail(userDevRepository.findFirstByDevOrderByBeginDateDesc(ud.getDev()).getUser())) {
-        dSet.add(ud.getDev());
-      }
-    });
-    return new LinkedList<>(dSet);
-  }
-
-  public User findLastUser(Device device) {
-    return userDevRepository.findFirstByDevOrderByBeginDateDesc(device).getUser();
-  }
-
-  /**
-   * @param user
-   * @return visszadja az eszközet melyeket a felhasználó birtokol vagy valaha birtokolt
-   */
-//  public List<Device> findAllDeviceByUser(Optional<User> userOpt) {
-//    List<Device> result = new LinkedList<>();
-//    if(userOpt.isPresent()) {
-//      for(UserDev userDev : userDevRepository.findAllByUserOrderByBeginDateDesc(userOpt.get())) {
-//          result.add(new DeviceToView(userDev.getDev(), userDev.getBeginDate()));
-//        }
-//      }
+//  public List<Device> findAllFreeDeviceByUser(User user) {
+//    if(user == null) {
+//      return new LinkedList<>();
 //    }
-//    return result;
+//    List<UserDev> udList = userDevRepository.findAllByUser(user);
+//    Set<Device> dSet = new HashSet<Device>();
+//    udList.forEach(ud -> {
+//      if(user.equalsByEmail(userDevRepository.findFirstByDevOrderByBeginDateDesc(ud.getDev()).getUser())) {
+//        dSet.add(ud.getDev());
+//      }
+//    });
+//    return new LinkedList<>(dSet);
 //  }
-  
+
   /**
    * @param userOpt
    * @return visszadja az eszközet melyeket a felhasználó birtokol

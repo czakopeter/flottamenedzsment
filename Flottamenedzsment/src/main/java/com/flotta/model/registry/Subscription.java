@@ -53,8 +53,6 @@ public class Subscription extends BasicEntityWithCreateDate {
   @MapKey(name = "date")
   private Map<LocalDate, SubscriptionStatus> statuses = new HashMap<>();
 
-  private LocalDate firstAvailableDate;
-
   public Subscription() {
   }
 
@@ -65,7 +63,6 @@ public class Subscription extends BasicEntityWithCreateDate {
   public Subscription(String number, LocalDate date) {
     this.number = number;
     this.createDate = date;
-    this.firstAvailableDate = date;
   }
 
   public String getNumber() {
@@ -116,14 +113,6 @@ public class Subscription extends BasicEntityWithCreateDate {
     this.statuses = statuses;
   }
 
-  public LocalDate getFirstAvailableDate() {
-    return firstAvailableDate;
-  }
-
-  public void setFirstAvailableDate(LocalDate firstAvailableDate) {
-    this.firstAvailableDate = firstAvailableDate;
-  }
-
   @Override
   public String toString() {
     return "Subscription [id=" + id + ", number=" + number + ", subSim=" + subSim + ", subUsers=" + subUsers + "]";
@@ -131,7 +120,7 @@ public class Subscription extends BasicEntityWithCreateDate {
 
   //TODO OPTIONAL-lel megold
   public void addSim(Optional<Sim> simOpt, String reason, LocalDate date) {
-    Sim sim = simOpt.get();
+    Sim sim = simOpt.orElse(null);
     if (sim == null) {
       System.err.println("Never happened");
       return;
@@ -215,7 +204,7 @@ public class Subscription extends BasicEntityWithCreateDate {
 
   //TODO OPTIONAL-lel megold
   public void addDevice(Optional<Device> deviceOpt, LocalDate date) {
-    Device device = deviceOpt.get();
+    Device device = deviceOpt.orElse(null);
     if (subDev.isEmpty()) {
       if (device != null) {
         subDev.put(date, new SubDev(this, device, date));

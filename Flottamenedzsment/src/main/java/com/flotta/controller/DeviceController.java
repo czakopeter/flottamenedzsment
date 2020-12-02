@@ -18,16 +18,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.flotta.model.registry.Device;
 import com.flotta.model.viewEntity.DeviceToView;
-import com.flotta.service.MainService;
+import com.flotta.service.ServiceManager;
 import com.flotta.utility.Utility;
 
 @Controller
 public class DeviceController {
 
-  private MainService service;
+  private ServiceManager service;
 
   @Autowired
-  public void setMainService(MainService service) {
+  public void setMainService(ServiceManager service) {
     this.service = service;
   }
 

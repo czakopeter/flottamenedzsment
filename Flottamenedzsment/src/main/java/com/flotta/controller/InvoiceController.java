@@ -18,16 +18,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.flotta.exception.invoice.FileUploadException;
 import com.flotta.model.invoice.Invoice;
-import com.flotta.service.MainService;
+import com.flotta.service.ServiceManager;
 import com.flotta.utility.ResponseTransfer;
 
 @Controller
 public class InvoiceController {
 
-  private MainService service;
+  private ServiceManager service;
   
   @Autowired
-  public void setMainService(MainService service) {
+  public void setMainService(ServiceManager service) {
     this.service = service;
   }
   
@@ -59,14 +59,15 @@ public class InvoiceController {
     if(invoice.isPresent()) {
       model.addAttribute("invoice", invoice.get());
       return "invoice_templates/invoiceDetails";
+    } else {
+      return "redirect:/invoice/all";
     }
-    return "redirect:/invoice/all";
   }
   
   @PostMapping("invoice/acceptByCompany")
   @ResponseBody
-  public ResponseTransfer acceptInoiveByCompany(@RequestParam("invoiceNumber") String invoiceNumber) {
-    service.acceptInvoiceByInvoiceNumber(invoiceNumber);
+  public ResponseTransfer acceptInvoiceByCompany(@RequestParam("invoiceNumber") String invoiceNumber) {
+    service.acceptInvoiceByInvoiceNumberFromCompany(invoiceNumber);
     return new ResponseTransfer(invoiceNumber);
   }
   
@@ -85,7 +86,7 @@ public class InvoiceController {
   
   @PostMapping("/rawInvoice/{invoiceNumber}/restartProcessing")
   public String restartProcessingRawInvoice(@PathVariable("invoiceNumber") String invoiceNumber) {
-    service.restartProcessingInvoiceBy(invoiceNumber);
+    service.restartProcessingRawInvoiceBy(invoiceNumber);
     return "redirect:/invoice/all";
   }
   
@@ -94,12 +95,9 @@ public class InvoiceController {
    */
   @PostMapping("/rawInvoice/delete")
   @ResponseBody
-  public ResponseTransfer deleteRawInvoice(@RequestParam("invoiceNumber") Optional<String> invoiceNumber) {
-    if(invoiceNumber.isPresent()) {
-      service.deleteRawInvoiceByInvoiceNumber(invoiceNumber.get());
-    }
-    return new ResponseTransfer(invoiceNumber.get());
+  public ResponseTransfer deleteRawInvoice(@RequestParam("invoiceNumber") String invoiceNumber) {
+    service.deleteRawInvoiceByInvoiceNumber(invoiceNumber);
+    return new ResponseTransfer(invoiceNumber);
   }
-  
 }
  

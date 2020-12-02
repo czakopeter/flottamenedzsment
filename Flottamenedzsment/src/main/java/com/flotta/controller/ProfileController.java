@@ -1,7 +1,5 @@
 package com.flotta.controller;
 
-
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -18,17 +16,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.flotta.model.invoice.InvoiceByUserAndPhoneNumber;
 import com.flotta.model.registry.User;
-import com.flotta.service.MainService;
+import com.flotta.service.ServiceManager;
 import com.flotta.utility.Utility;
 
 @Controller
 public class ProfileController {
 
-  private MainService service;
+  private ServiceManager service;
 
   @Autowired
-  public void setMainService(MainService service) {
+  public void setMainService(ServiceManager service) {
     this.service = service;
   }
 
@@ -59,28 +58,31 @@ public class ProfileController {
   //TODO Felhasználóhoz kapcsolt összes visszaadása, javascript-ből szűrés rá(elfogadot vagy nem, min összeg stb.)
   @GetMapping("/profile/invoice")
   public String showActualUserPendingInvoices(Model model) {
-    model.addAttribute("invoiceParts", service.getInvoicesOfUserByEmail(getActualUserEmail()));
+    model.addAttribute("invoiceParts", service.findInvoicesOfUserByEmail(getActualUserEmail()));
     return "profile/invoiceSummary";
   }
   
   @PostMapping("/profile/invoice/accept")
   @ResponseBody
-  public List<Long> acceptInvoicesOfCurrentUserByNumbers(@RequestParam("ids") List<Long> ids) {
-    if(service.acceptInvoicesOfCurrentUserByInvoiceNumbersAndPhoneNumbers(getActualUserEmail(), ids)) {
-      return ids;
-    }
-    return new LinkedList<>();
+  public List<Long> acceptInvoicesOfCurrentUserByInvoiceIds(@RequestParam("ids") List<Long> ids) {
+    service.acceptInvoicesOfUserByEmailAndInvoiceIds(getActualUserEmail(), ids);
+    return ids;
   }
 
   @PostMapping("/profile/invoice/{id}")
   public String details(Model model, @PathVariable ("id") long id) {
-    model.addAttribute("invoicePart", service.getPendingInvoiceOfCurrentUserById(getActualUserEmail(), id));
-    return "profile/invoiceDetails";
+    Optional<InvoiceByUserAndPhoneNumber> invoiceOpt = service.findInvoiceOfUserByEmailAndId(getActualUserEmail(), id);
+    if(invoiceOpt.isPresent()) {
+      model.addAttribute("invoicePart", invoiceOpt.get());
+      return "profile/invoiceDetails";
+    } else {
+      return "redirect:/profile/invoice";
+    }
   }
   
   @PostMapping("/profile/invoice/{id}/revision")
   public String createRevisionText(Model model, @PathVariable ("id") long id, @RequestParam Map<String, String> map) {
-    service.askForRevision(getActualUserEmail(), id, map);
+    service.askRevisionOfInvoiceByUser(getActualUserEmail(), id, map);
     return "redirect:/profile/invoice";
   }
   

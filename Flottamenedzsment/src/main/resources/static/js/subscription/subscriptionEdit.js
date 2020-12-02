@@ -18,14 +18,16 @@ function resetSimChange() {
 }
 
 function selectUser(userSelect) {
-	sendData("POST", "/subscription/getDevicesByUser", "userId=" + userSelect.value, setDeviceSelect);
+	let min = document.querySelector("#minDate").value;
+	document.querySelector("#beginDate").min = min;
+	clearDeviceSelect();
+	if(userSelect.value > 0) {
+		sendData("POST", "/subscription/getDevicesByUser", "userId=" + userSelect.value, setDeviceSelect);
+	}
 }
 
 function setDeviceSelect(devices) {
 	let select = document.querySelector("#deviceSelect");
-	while(select.length > 1) {
-		select.remove(1);
-	}
 	devices.forEach(obj => {
 		let option = document.createElement("option");
 		option.text = obj.typeName + ' (' + obj.serialNumber + ')';
@@ -34,21 +36,31 @@ function setDeviceSelect(devices) {
 	});
 }
 
+function clearDeviceSelect() {
+	let select = document.querySelector("#deviceSelect");
+	while(select.length > 1) {
+		select.remove(select.length - 1);
+	}
+}
+
 function selectDevice(deviceSelect) {
-	sendData("POST", "/subscription/getDeviceById", "id=" + deviceSelect.value, setDateMinimal);
+	let min = document.querySelector("#minDate").value;
+	document.querySelector("#beginDate").min = min;
+	if(deviceSelect.value > 0) {
+		sendData("POST", "/subscription/getDeviceById", "id=" + deviceSelect.value, setDateMinimal);
+	}
 }
 
 function setDateMinimal(device) {
-	let min = document.querySelector("#min").value;
+	let min = document.querySelector("#minDate").value;
+	console.log(device);
 	if(device.error) {
-		document.querySelector("#date").min = min
+		document.querySelector("#beginDate").min = min
 	} else {
-		console.log('ok');
-		let deviceDate = jsonDateToString(device.date);
-		let dateInput = document.querySelector("#date");
+		let dateInput = document.querySelector("#beginDate");
 		
-		if(deviceDate > min) {
-			dateInput.min = deviceDate;
+		if(device.beginDate > min) {
+			dateInput.min = device.beginDate;
 		} else {
 			dateInput.min = min;
 		}

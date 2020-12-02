@@ -1,5 +1,7 @@
 package com.flotta.service.invoice;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +24,15 @@ public class FeeItemService {
 
   public void save(FeeItem feeItem) {
     feeItemRepository.save(feeItem);
+  }
+
+  public void modifyGrossAmountRatio(long id, double userAmount, double compAmount) {
+    Optional<FeeItem> feeItemOpt = feeItemRepository.findById(id);
+    feeItemOpt.ifPresent(feeItem -> {
+      feeItem.setUserGrossAmount(userAmount);
+      feeItem.setCompanyGrossAmount(compAmount);
+      feeItem.getInvoiceByUserAndPhoneNumber().setAmountsByFeeItems();
+      feeItemRepository.save(feeItem);
+    });
   }
 }

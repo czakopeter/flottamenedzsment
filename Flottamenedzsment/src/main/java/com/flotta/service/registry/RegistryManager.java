@@ -20,7 +20,7 @@ import com.flotta.model.viewEntity.SubscriptionToView;
 import com.flotta.utility.MessageToView;
 
 @Service
-public class RegistryService {
+public class RegistryManager {
 
   private DeviceService deviceService;
 
@@ -33,7 +33,7 @@ public class RegistryService {
   private UserService userService;
 
   @Autowired
-  public RegistryService(DeviceService deviceService, DeviceTypeService deviceTypeService, SimService simService, SubscriptionService subscriptionService, UserService userService) {
+  public RegistryManager(DeviceService deviceService, DeviceTypeService deviceTypeService, SimService simService, SubscriptionService subscriptionService, UserService userService) {
     this.deviceService = deviceService;
     this.deviceTypeService = deviceTypeService;
     this.simService = simService;
