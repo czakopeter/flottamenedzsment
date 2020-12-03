@@ -1,5 +1,6 @@
 package com.flotta.model.registry;
 
+import java.util.Comparator;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -24,6 +25,8 @@ public class DeviceType extends BasicEntity {
   
   @OneToMany(mappedBy = "deviceType")
   private List<Device> devices;
+  
+  public static final Comparator<DeviceType> BY_NAME = (o1,o2) -> o1.name.compareTo(o2.name);
 
   //TODO description or attributes; sim type, battery, size ...
   

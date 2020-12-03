@@ -36,18 +36,14 @@ public class DescriptionCategoryCouplerService {
     return !optional.isPresent();
   }
 
-  boolean update(long id, List<String> descriptions, List<Category> categories, boolean available) {
-    if(descriptions == null || categories == null) {
+  public boolean update(DescriptionCategoryCoupler coupler, List<String> descriptions, List<Category> categories) {
+    if(descriptions == null || categories == null || descriptions.size() != categories.size()) {
       return false;
     }
-    Optional<DescriptionCategoryCoupler> dccOpt = descriptionCategoryCouplerRepository.findById(id);
-    dccOpt.ifPresent(dcc ->{
-      for(int i = 0; i < descriptions.size(); i++) {
-        dcc.addToDescriptionCategoryMap(descriptions.get(i), categories.get(i));
-      }
-      dcc.setAvailable(available);
-      descriptionCategoryCouplerRepository.save(dcc);
-    });
-    return dccOpt.isPresent();
+    for(int i = 0; i < descriptions.size(); i++) {
+      coupler.addToDescriptionCategoryMap(descriptions.get(i), categories.get(i));
+    }
+    descriptionCategoryCouplerRepository.save(coupler);
+    return true;
   }
 }

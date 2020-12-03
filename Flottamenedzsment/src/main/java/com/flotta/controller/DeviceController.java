@@ -46,7 +46,7 @@ public class DeviceController {
   @GetMapping("/device/new")
   public String prepareCreatingDevice(Model model) {
     model.addAttribute("device", new DeviceToView());
-    model.addAttribute("deviceTypes", service.findAllVisibleDeviceTypes());
+    model.addAttribute("deviceTypes", Utility.sortDeviceTypeByName(service.findAllVisibleDeviceTypes()));
     return "device_templates/deviceNew";
   }
   
@@ -56,7 +56,7 @@ public class DeviceController {
       return "redirect:/device/all";
     } else {
       model.addAttribute("device", dtv);
-      model.addAttribute("deviceTypes", service.findAllDeviceTypes());
+      model.addAttribute("deviceTypes", Utility.sortDeviceTypeByName(service.findAllVisibleDeviceTypes()));
       model.addAttribute("error", service.getDeviceServiceError());
       return "device_templates/deviceNew";
     }
@@ -67,7 +67,7 @@ public class DeviceController {
     Optional<Device> deviceOpt = service.findDeviceById(id);
     if(deviceOpt.isPresent()) {
       model.addAttribute("device", new DeviceToView(deviceOpt.get()));
-      model.addAttribute("users", service.findAllUser());
+      model.addAttribute("users", Utility.sortUserByName(service.findAllUser()));
       return "device_templates/deviceEdit";
     } else {
       return "redirect:/device/all";
@@ -99,4 +99,6 @@ public class DeviceController {
   public DeviceToView viewChangeDate(@PathVariable("id") long id, @RequestParam("date")@DateTimeFormat(pattern = "yyyy-MM-dd")  LocalDate date) {
     return new DeviceToView(service.findDeviceById(id).get(), date);
   }
+  
+  
 }

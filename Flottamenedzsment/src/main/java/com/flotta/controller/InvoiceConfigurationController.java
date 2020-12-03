@@ -97,15 +97,13 @@ public class InvoiceConfigurationController {
   
   @PostMapping("/invoiceConfiguration/descriptionCategoryCoupler/{id}")
   public String updateInvoiceDescriptionCategoryCoupler(
-      Model model, 
-      @PathVariable("id") long id, 
-      @RequestParam(name = "description") Optional<List<String>> descriptions,
-      @RequestParam(name = "category") Optional<List<Long>> categories, 
-      @RequestParam(name = "available", defaultValue = "false") boolean available) {
-    if(descriptions.isPresent() && categories.isPresent()) {
-      service.updateDescriptionCategoryCoupler(id, descriptions.get(), categories.get(), available);
+      @ModelAttribute("coupler") DescriptionCategoryCoupler coupler,
+      @RequestParam("description") Optional<List<String>> descriptions,
+      @RequestParam("category") Optional<List<Long>> categoryIds) {
+    if(descriptions.isPresent() && categoryIds.isPresent()) {
+      service.updateDescriptionCategoryCoupler(coupler, descriptions.get(), categoryIds.get());
     }
-    return "redirect:/invoiceConfiguration/descriptionCategoryCoupler/" + id;
+    return "redirect:/invoiceConfiguration/descriptionCategoryCoupler/" + coupler.getId();
   }
   
   @GetMapping("/invoiceConfiguration/descriptionCategoryCoupler/{id}/view")
@@ -148,9 +146,14 @@ public class InvoiceConfigurationController {
   }
   
   @PostMapping("/invoiceConfiguration/chargeRatio/{id}")
-  public String updateChargeRatio(Model model, @PathVariable("id") long id, @RequestParam("category") List<Long> categories, @RequestParam("ratio") List<Integer> ratios) {
-    service.updateChargeRatio(id, categories, ratios);
-    return "redirect:/invoiceConfiguration/chargeRatio/" + id;
+  public String updateChargeRatio(
+      @ModelAttribute("chargeRatio") ChargeRatioByCategory chargeRatio,
+      @RequestParam("category") Optional<List<Long>> categories,
+      @RequestParam("ratio") Optional<List<Integer>> ratios) {
+    if(categories.isPresent() && ratios.isPresent()) {
+      service.updateChargeRatio(chargeRatio, categories.get(), ratios.get());
+    }
+    return "redirect:/invoiceConfiguration/chargeRatio/" + chargeRatio.getId();
   }
   
   @PostMapping("/invoiceConfiguration/getChargeRatioOfUser")

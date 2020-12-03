@@ -10,11 +10,25 @@
       <h3 th:text="#{descCatCoupler.viewInvoiceDescriptionAndCategoryCoupler}">View invoice description category coupler</h3>
 
       <div class="container">
-        <label th:text="#{descCatCoupler.name}">Name</label>
-        <input type="text" class="form-control" id="name" name="name" th:value="${coupler.name}" readonly="readonly"/>
-        <label for="available">Available</label>
-        <input type="checkbox" id="available" name="available" th:checked="${coupler.available}" onclick="return false;" />
+        <div class="row my-2">
+          <div class="col-1 ">
+            <label for="name" th:text="#{name}">Name</label>
+          </div>
+          <div class="col-4">
+            <input type="text" class="form-control" id="name" name="name" th:value="${coupler.name}" readonly="readonly"/>
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-1 ">
+            <label for="available" th:text="#{available}">Available</label>
+          </div>
+          <div class="col-4">
+            <input type="checkbox" id="available" name="available" th:checked="${coupler.available}" onclick="return false;"/>
+          </div>
+        </div>
+        
         <hr />
+        
         <div class="row my-2" th:each="description : ${coupler.getDescriptions()}">
           <div class="col-4">
             <input type="text" class="form-control" id="description" name="description" th:value="${description}" readonly="readonly" />
@@ -23,7 +37,11 @@
             <input type="text" class="form-control" id="category" name="category" th:value="${coupler.descriptionCategoryMap.get(description).name}" readonly="readonly" />
           </div>
         </div>
-        <a href="/invoiceConfiguration/main?active=description-category-coupler" class="btn btn-primary" th:text="#{button.back}"></a>
+        <div class="row my-2">
+          <div class="col-6 text-right">
+            <a href="/invoiceConfiguration/main?active=description-category-coupler" class="btn btn-primary" th:text="#{button.back}"></a>
+          </div>
+        </div>
       </div>
       
 

@@ -9,9 +9,11 @@
 
     <h3 th:text="#{chargeRatio.editChargeRatio}">Edit charge ratio</h3>
 
-    <form th:action="'/invoiceConfiguration/chargeRatio/' + ${chargeRatio.id}" method="post" th:object="${chargeRatio}" >
-      <div class="row mb-3">
-        <div class="col-2">
+    <form th:action="'/invoiceConfiguration/chargeRatio/' + ${chargeRatio.id}" method="post"
+      th:object="${chargeRatio}"
+    >
+      <div class="row my-2">
+        <div class="col-1">
           <label th:text="#{name}">Name</label>
         </div>
         <div class="col-4">
@@ -20,70 +22,72 @@
           />
         </div>
       </div>
-      
-      <br />
+      <div class="row my-2">
+        <div class="col-1 ">
+          <label for="available" th:text="#{available}">Available</label>
+        </div>
+        <div class="col-4">
+          <input type="checkbox" id="available" name="available" th:checked="*{available}" />
+        </div>
+      </div>
 
-      <table id="table" class="table table-sm table-hover" style="width: 50%">
-        <thead>
-          <tr>
-            <th th:text="#{category}">Category</th>
-            <th class="text-left" colspan="2" th:text="#{company}">Company</th>
-            <th></th>
-            <th class="text-right" colspan="2" th:text="#{user}">User</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr th:each="category, i : ${chargeRatio.getCategories()}">
-            <td class="align-middle">
-              <label th:text="${category.name}"></label>
-              <input type="hidden" name="category" th:value="${category.id}" />
-            </td>
-            <td class="text-left" style="width: 4em;">
-              <label th:id="companyPercent + ${i.count}" class="form-check-label">0</label>
-              <label>%</label>
-            </td>
-            <td class="align-middle text-center">
-            <input type="radio" th:id="company + ${i.count}" th:name="radio + ${i.count}" th:onclick="|clickOnRadioButton('company', ${i.count})|" />
-            </td>
-            <td class="align-middle">
-              <input type="range" class="form-control-range"
+        <br />
+
+        <table id="table" class="table table-sm table-hover" style="width: 50%">
+          <thead>
+            <tr>
+              <th th:text="#{category}">Category</th>
+              <th class="text-left" colspan="2" th:text="#{company}">Company</th>
+              <th></th>
+              <th class="text-right" colspan="2" th:text="#{user}">User</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="category, i : ${chargeRatio.getCategories()}">
+              <td class="align-middle"><label th:text="${category.name}"></label> <input
+                type="hidden" name="category" th:value="${category.id}"
+              /></td>
+              <td class="text-left" style="width: 4em;"><label
+                th:id="companyPercent + ${i.count}" class="form-check-label"
+              >0</label> <label>%</label></td>
+              <td class="align-middle text-center"><input type="radio"
+                th:id="company + ${i.count}" th:name="radio + ${i.count}"
+                th:onclick="|clickOnRadioButton('company', ${i.count})|"
+              /></td>
+              <td class="align-middle"><input type="range" class="form-control-range"
                 th:id="ratio + ${i.count}" name="ratio" min="0" max="100" step="5"
                 th:value="${chargeRatio.categoryRatioMap.get(category)}"
                 th:oninput="|setRangeInput(${i.count})|"
-            /></td>
-            <td class="align-middle text-center">
-              <input type="radio" th:id="user + ${i.count}" th:name="radio + ${i.count}" th:onclick="|clickOnRadioButton('user', ${i.count})|"
-            /></td>
-            <td class="text-right" style="width: 4em;">
-              <label th:id="userPercent + ${i.count}" class="form-check-label">0</label>
-              <label>%</label>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              /></td>
+              <td class="align-middle text-center"><input type="radio"
+                th:id="user + ${i.count}" th:name="radio + ${i.count}"
+                th:onclick="|clickOnRadioButton('user', ${i.count})|"
+              /></td>
+              <td class="text-right" style="width: 4em;"><label
+                th:id="userPercent + ${i.count}" class="form-check-label"
+              >0</label> <label>%</label></td>
+            </tr>
+          </tbody>
+        </table>
 
-      <div id="category-adder" th:if="${unusedCategories != null and not #lists.isEmpty(unusedCategories)}" class="form-group form-inline">
-        <select id="selectUnusedCategory" class="form-control">
-          <option th:each="unusedCategory : ${unusedCategories}" th:text="${unusedCategory.name}"
-            th:value="${unusedCategory.id}"
-          ></option>
-        </select>
-        <button type="button" th:text="#{button.add}" class="btn btn-sm btn-primary"
-          onclick="addCategory()"
-        ></button>
-      </div>
+        <div id="category-adder"
+          th:if="${unusedCategories != null and not #lists.isEmpty(unusedCategories)}"
+          class="form-group form-inline"
+        >
+          <select id="selectUnusedCategory" class="form-control">
+            <option th:each="unusedCategory : ${unusedCategories}" th:text="${unusedCategory.name}"
+              th:value="${unusedCategory.id}"
+            ></option>
+          </select>
+          <button type="button" th:text="#{button.add}" class="btn btn-sm btn-primary ml-1"
+            onclick="addCategory()"
+          ></button>
+        </div>
 
-      <div class="form-check">
-        <input id="confirmSelect" type="checkbox" class="form-check-input"
-          onclick="clickOnConfirmButton()" checked="checked"
-        /> <label for="confirmSelect" th:text="#{chargeRatio.confirmChargeRatioSettings}">Confirm charge ratio settings!</label>
-      </div>
-
-
-      <button type="submit" id="saveButton" class="btn btn-primary" th:text="#{button.save}">Save</button>
-      <a href="/invoiceConfiguration/main?active=charge-ratio" class="btn btn-primary" th:text="#{button.back}">Back</a>
-
-
+        <button type="submit" id="saveButton" class="btn btn-primary" th:text="#{button.save}">Save</button>
+        <a href="/invoiceConfiguration/main?active=charge-ratio" class="btn btn-primary"
+          th:text="#{button.back}"
+        >Back</a>
     </form>
 
     <script src="/js/invoiceConfiguration/chargeRatioByCategory.js"></script>

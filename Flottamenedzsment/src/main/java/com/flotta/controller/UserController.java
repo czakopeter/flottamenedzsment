@@ -1,5 +1,6 @@
 package com.flotta.controller;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -68,11 +69,14 @@ public class UserController {
   }
   
   @PostMapping("/user/{id}/update")
-  public String updateUser(RedirectAttributes ra, @PathVariable("id") long id, @RequestParam  Map<String, Boolean> roles) {
+  public String updateUser(RedirectAttributes ra, @PathVariable("id") long id, @RequestParam(required = false) Map<String, Boolean> roles) {
+    if(roles == null) {
+      roles = Collections.emptyMap();
+    }
     if(!service.updateUser(id, roles)) {
       ra.addFlashAttribute("messages", service.getUserError());
     }
-    return "redirect/:user/" + id + "/update";
+    return "redirect:/user/" + id + "/update";
   }
   
   // ----- Guest -----

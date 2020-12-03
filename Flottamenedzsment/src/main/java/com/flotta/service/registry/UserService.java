@@ -35,6 +35,8 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
   private EmailService emailService;
 
   private RoleRepository roleRepository;
+  
+  private static final int MIN_ADMIN_NUMBER = 1;
 
   @Autowired
   private PasswordEncoder passwordEncoder;
@@ -96,13 +98,22 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
     return false;
   }
 
+  //TODO
   boolean updateUser(long id, Map<String, Boolean> roles) {
     Optional<User> userOpt = userRepository.findById(id);
-    userOpt.ifPresent(user -> {
-      user.setRoles(convertToRoleSet(roles));
-      userRepository.save(user);
-    });
-    return userOpt.isPresent();
+    Optional<Role> adminRoleOpt = roleRepository.findByRole("ADMIN");
+    if(userOpt.isPresent() && adminRoleOpt.isPresent()) {
+      User user = userOpt.get();
+      Set<Role> savableRoles = convertToRoleSet(roles);
+      if(adminRoleOpt.get().getUsers().size() == MIN_ADMIN_NUMBER && user.hasRole("admin") && !savableRoles.contains(new Role("admin"))) {
+        appendMsg("Can't reduce number of admin!");
+        return false;
+      } else {
+        user.setRoles(savableRoles);
+        userRepository.save(user);
+      }
+    }
+    return true;
   }
 
   boolean activation(String key) {

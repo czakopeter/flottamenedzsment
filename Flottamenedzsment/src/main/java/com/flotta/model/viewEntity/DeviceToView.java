@@ -30,9 +30,7 @@ public class DeviceToView {
 	private String note;
 	
 	
-	public static final Comparator<DeviceToView> BY_SERIAL_NUMBER = 
-	    (DeviceToView dtv1, DeviceToView dtv2) -> 
-	    dtv1.getSerialNumber().compareToIgnoreCase(dtv2.getSerialNumber());
+	public static final Comparator<DeviceToView> BY_SERIAL_NUMBER = (o1, o2) -> o1.serialNumber.compareToIgnoreCase(o2.serialNumber);
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private LocalDate beginDate;

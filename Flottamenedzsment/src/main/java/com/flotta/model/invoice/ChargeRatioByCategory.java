@@ -69,5 +69,10 @@ public class ChargeRatioByCategory extends BasicEntity {
   public int getRatioByCategory(Category category) {
     return categoryRatioMap.get(category);
   }
+
+  @Override
+  public String toString() {
+    return "ChargeRatioByCategory [name=" + name + ", available=" + available + "]";
+  }
   
 }

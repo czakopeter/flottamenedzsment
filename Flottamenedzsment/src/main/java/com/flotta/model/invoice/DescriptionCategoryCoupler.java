@@ -18,7 +18,7 @@ public class DescriptionCategoryCoupler extends BasicEntity {
 
   private String name;
 
-  private boolean available = true;
+  private boolean available;
 
   @JoinTable(name = "description_category_map")
   @ManyToMany(cascade = CascadeType.ALL)
@@ -64,5 +64,12 @@ public class DescriptionCategoryCoupler extends BasicEntity {
   public Category getCategoryByDescription(String description) {
     return descriptionCategoryMap.get(description);
   }
+
+  @Override
+  public String toString() {
+    return "DescriptionCategoryCoupler [name=" + name + ", available=" + available + "]";
+  }
+  
+  
 
 }

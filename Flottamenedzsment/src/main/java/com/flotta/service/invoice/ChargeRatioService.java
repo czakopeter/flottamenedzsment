@@ -33,25 +33,19 @@ public class ChargeRatioService {
   boolean create(ChargeRatioByCategory chargeRatio) {
     Optional<ChargeRatioByCategory> optional = chargeRatioRepository.findByName(chargeRatio.getName());
     if(!optional.isPresent()) {
-      chargeRatio.setAvailable(true);
       chargeRatioRepository.save(chargeRatio);
     }
     return !optional.isPresent();
   }
 
-  boolean update(long id, List<Category> categories, List<Integer> ratios) {
-    if(categories.size() != ratios.size()) {
+  boolean update(ChargeRatioByCategory chargeRatio, List<Category> categories, List<Integer> ratios) {
+    if(categories == null || ratios == null || categories.size() != ratios.size()) {
       return false;
     }
-    
-    Optional<ChargeRatioByCategory> chargeRatioOpt = chargeRatioRepository.findById(id);
-    chargeRatioOpt.ifPresent(chargeRatio -> {
-      for(int i = 0; i < ratios.size(); i++) {
-        chargeRatio.addToCategoryRatioMap(categories.get(i), ratios.get(i));
-      }
-      chargeRatioRepository.save(chargeRatio);
-    });
-    return chargeRatioOpt.isPresent();
+    for(int i = 0; i < ratios.size(); i++) {
+      chargeRatio.addToCategoryRatioMap(categories.get(i), ratios.get(i));
+    }
+    chargeRatioRepository.save(chargeRatio);
+    return true;
   }
-
 }

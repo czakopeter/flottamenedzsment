@@ -1,5 +1,6 @@
  package com.flotta.model.registry;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -55,6 +56,8 @@ public class User extends BasicEntity {
 	
 	@ManyToOne
 	private ChargeRatioByCategory chargeRatio;
+	
+	public static final Comparator<User> BY_NAME = ((o1, o2) -> o1.fullName.compareTo(o2.fullName));
 
   public User() {}
 

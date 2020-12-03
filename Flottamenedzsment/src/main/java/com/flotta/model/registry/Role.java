@@ -59,7 +59,7 @@ public class Role extends BasicEntity {
     if (role == null) {
       if (other.role != null)
         return false;
-    } else if (!role.equals(other.role))
+    } else if (!role.equalsIgnoreCase(other.role))
       return false;
     return true;
   }

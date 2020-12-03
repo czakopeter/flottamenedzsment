@@ -24,7 +24,6 @@ function refreshView(id) {
 
 function setRangeInput(id) {
 	refreshView(id);
-	setToNotComfirmed();
 }
 
 function clickOnRadioButton(group, id) {
@@ -32,17 +31,11 @@ function clickOnRadioButton(group, id) {
 	ratio.value = group == 'user' ? 100 : 0;
 	
 	refreshView(id);
-
-	setToNotComfirmed();
 }
 
 function addCategory() {
 	lastId++;
 	let table = document.querySelector('tbody');
-	
-	if(table.children.length == 0) {
-		document.querySelector('#confirmSelect').disabled = null;
-	}
 	
 	let row = document.createElement('tr');
 	row.className = 'table-warning';
@@ -52,12 +45,9 @@ function addCategory() {
 	
 	refreshView(lastId);
 	
-	
 	if(document.querySelector('#selectUnusedCategory').length == 0) {
 		document.querySelector('#category-adder').style.display = 'none';
 	}
-	
-	setToNotComfirmed();
 }
 
 function createCell(parent) {
@@ -134,18 +124,4 @@ function createRangeColumn(id, parent) {
 	rangeInput.step = 5;
 	rangeInput.value = 0;
 	cell.appendChild(rangeInput);
-}
-
-function clickOnConfirmButton() {
-	if(document.querySelector('#confirmSelect').checked) {
-		document.querySelector('#saveButton').disabled = null;
-	} else {
-		document.querySelector('#saveButton').disabled = true;
-	}
-}
-
-function setToNotComfirmed() {
-	
-	document.querySelector('#confirmSelect').checked = false;
-	document.querySelector('#saveButton').disabled = true;
 }

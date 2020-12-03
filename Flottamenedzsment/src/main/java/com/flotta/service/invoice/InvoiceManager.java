@@ -126,17 +126,17 @@ public class InvoiceManager {
     return descriptionCategoryCouplerService.findAll();
   }
 
-  public void updateDescriptionCategoryCoupler(long id, List<String> descriptions, List<Long> categoryIds, boolean available) {
-    List<Category> categories = categoryService.findAllByIds(categoryIds);
-    descriptionCategoryCouplerService.update(id, descriptions, categories, available);
-  }
-  
   public Optional<DescriptionCategoryCoupler> findDescriptionCategoryCoupler(long id) {
     return descriptionCategoryCouplerService.findById(id);
   }
   
   public boolean createDescriptionCategoryCoupler(DescriptionCategoryCoupler dcc) {
     return descriptionCategoryCouplerService.create(dcc);
+  }
+  
+  public boolean updateDescriptionCategoryCoupler(DescriptionCategoryCoupler coupler, List<String> descriptions, List<Long> categoryIds) {
+    List<Category> categories = categoryService.findAllByIds(categoryIds);
+    return descriptionCategoryCouplerService.update(coupler, descriptions, categories);
   }
   
   
@@ -154,9 +154,9 @@ public class InvoiceManager {
     return chargeRatioService.findById(id);
   }
 
-  public boolean updateChargeRatio(long id, List<Long> categoryIds, List<Integer> ratios) {
+  public boolean updateChargeRatio(ChargeRatioByCategory chargeRatio, List<Long> categoryIds, List<Integer> ratios) {
     List<Category> categories = categoryService.findAllByIds(categoryIds);
-    return chargeRatioService.update(id, categories, ratios);
+    return chargeRatioService.update(chargeRatio, categories, ratios);
   }
 
   public List<Category> findAllUnusedCategoryOfChargeRatio(long id) {
@@ -185,5 +185,4 @@ public class InvoiceManager {
   public void updateParticipant(Participant participant) {
     participantService.update(participant);
   }
-
 }

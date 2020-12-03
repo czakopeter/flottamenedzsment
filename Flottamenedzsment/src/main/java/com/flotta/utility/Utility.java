@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.flotta.model.BasicEntity;
 import com.flotta.model.registry.Device;
+import com.flotta.model.registry.DeviceType;
 import com.flotta.model.registry.Subscription;
 import com.flotta.model.registry.User;
 import com.flotta.model.switchTable.BasicSwitchTable;
@@ -201,5 +202,15 @@ public class Utility {
       subscriptionsToView.add(stv);
     }
     return subscriptionsToView;
+  }
+  
+  public static List<DeviceType> sortDeviceTypeByName(List<DeviceType> deviceTypes) {
+    Collections.sort(deviceTypes, DeviceType.BY_NAME);
+    return deviceTypes;
+  }
+
+  public static List<User> sortUserByName(List<User> users) {
+    Collections.sort(users, User.BY_NAME);
+    return users;
   }
 }

@@ -9,14 +9,14 @@
 
       <h3 th:text="#{descCatCoupler.newInvoiceDescriptionAndCategoryCoupler}">New invoice description category coupler</h3>
 
-      <form action="/invoiceConfiguration/descriptionCategoryCoupler/new" method="post">
+      <form action="/invoiceConfiguration/descriptionCategoryCoupler/new" method="post" th:object="${coupler}">
       <div class="container">
         <div class="row my-2">
           <div class="col-1 ">
             <label for="name" th:text="#{name}">Name</label>
           </div>
           <div class="col-4">
-            <input type="text" class="form-control" id="name" name="name" th:value="${coupler.name}"/>
+            <input type="text" class="form-control" id="name" name="name" th:value="${coupler.name}" required="required"/>
           </div>
         </div>
         <div class="row">

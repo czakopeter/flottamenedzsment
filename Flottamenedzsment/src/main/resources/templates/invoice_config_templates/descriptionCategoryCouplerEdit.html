@@ -9,14 +9,14 @@
 
       <h3 th:text="#{descCatCoupler.editInvoiceDescriptionAndCategoryCoupler}">Edit invoice description category coupler</h3>
 
-      <form method="post">
+      <form method="post" th:object="${coupler}">
       <div class="container">
         <div class="row my-2">
           <div class="col-1 ">
             <label for="name" th:text="#{name}">Name</label>
           </div>
           <div class="col-4">
-            <input type="text" class="form-control" id="name" name="name" th:value="${coupler.name}" readonly="readonly"/>
+            <input type="text" class="form-control" id="name" name="name" th:value="*{name}" readonly="readonly"/>
           </div>
         </div>
         <div class="row my-2">
@@ -24,7 +24,7 @@
             <label for="available" th:text="#{available}">Available</label>
           </div>
           <div class="col-4">
-            <input type="checkbox" id="available" name="available" th:checked="*{coupler.available}" />
+            <input type="checkbox" id="available" name="available" th:checked="*{available}" />
           </div>
         </div>
         
@@ -34,7 +34,7 @@
           <div>
             <div>
               <label for="invoices" th:text="#{descCatCoupler.addDescOfInvoice}">Add descriptions of invoice</label>
-              </div>
+            </div>
             
             <form method="post">
             <select id="selectedInvoice" name="selectedInvoice">

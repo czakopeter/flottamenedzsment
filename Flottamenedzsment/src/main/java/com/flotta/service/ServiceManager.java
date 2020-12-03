@@ -110,8 +110,8 @@ public class ServiceManager {
     return invoiceManager.createDescriptionCategoryCoupler(dcc);
   }
   
-  public void updateDescriptionCategoryCoupler(long id, List<String> descriptions, List<Long> categoryIds, boolean available) {
-    invoiceManager.updateDescriptionCategoryCoupler(id, descriptions, categoryIds, available);
+  public void updateDescriptionCategoryCoupler(DescriptionCategoryCoupler coupler, List<String> descriptions, List<Long> categoryIds) {
+    invoiceManager.updateDescriptionCategoryCoupler(coupler, descriptions, categoryIds); 
   }
 
 //-------- CHARGE RATIO BY CATEGORY SERVICE --------
@@ -128,8 +128,8 @@ public class ServiceManager {
     return invoiceManager.createChargeRatio(chargeRatio);
   }
 
-  public boolean updateChargeRatio(long id, List<Long> categories, List<Integer> ratios) {
-    return invoiceManager.updateChargeRatio(id, categories, ratios);
+  public boolean updateChargeRatio(ChargeRatioByCategory chargeRatio, List<Long> categories, List<Integer> ratios) {
+    return invoiceManager.updateChargeRatio(chargeRatio, categories, ratios);
   }
 
   public List<Category> findAllUnusedCategoryOfChargeRatio(long id) {
