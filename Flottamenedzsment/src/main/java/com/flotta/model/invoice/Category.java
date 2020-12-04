@@ -1,5 +1,7 @@
 package com.flotta.model.invoice;
 
+import java.util.Comparator;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -10,6 +12,8 @@ import com.flotta.model.BasicEntity;
 public class Category extends BasicEntity implements Comparable<Category> {
   
   private String name;
+  
+  public static final Comparator<Category> BY_NAME  = Comparator.comparing(Category::getName);
   
   public Category() {}
   
@@ -27,7 +31,7 @@ public class Category extends BasicEntity implements Comparable<Category> {
 
   @Override
   public int compareTo(Category o) {
-    return name.compareToIgnoreCase(o.name);
+    return BY_NAME.compare(this, o);
   }
   
 }

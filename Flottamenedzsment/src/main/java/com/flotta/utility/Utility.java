@@ -10,6 +10,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.flotta.model.BasicEntity;
+import com.flotta.model.invoice.Category;
+import com.flotta.model.invoice.ChargeRatioByCategory;
+import com.flotta.model.invoice.DescriptionCategoryCoupler;
+import com.flotta.model.invoice.Invoice;
+import com.flotta.model.invoice.Participant;
+import com.flotta.model.invoice.RawInvoice;
 import com.flotta.model.registry.Device;
 import com.flotta.model.registry.DeviceType;
 import com.flotta.model.registry.Subscription;
@@ -212,5 +218,35 @@ public class Utility {
   public static List<User> sortUserByName(List<User> users) {
     Collections.sort(users, User.BY_NAME);
     return users;
+  }
+
+  public static List<RawInvoice> sortRawInvoice(List<RawInvoice> rawInvoices) {
+    Collections.sort(rawInvoices, RawInvoice.BY_INVOICE_NUMBER_ADN_ACCEPT_BY_COMPANY_AMD_DATE);
+    return rawInvoices;
+  }
+  
+  public static List<Invoice> sortInvoice(List<Invoice> invoices) {
+    Collections.sort(invoices, Invoice.BY_INVOICE_NUMBER_ADN_ACCEPT_BY_COMPANY_AMD_DATE);
+    return invoices;
+  }
+  
+  public static List<Category> sortCategoryByName(List<Category> categories) {
+    Collections.sort(categories, Category.BY_NAME);
+    return categories;
+  }
+
+  public static List<DescriptionCategoryCoupler> sortCouplerByName(List<DescriptionCategoryCoupler> couplers) {
+    Collections.sort(couplers, DescriptionCategoryCoupler.BY_NAME);
+    return couplers;
+  }
+  
+  public static List<ChargeRatioByCategory> sortChargeRatioByName(List<ChargeRatioByCategory> chargeRaios) {
+    Collections.sort(chargeRaios, ChargeRatioByCategory.BY_NAME);
+    return chargeRaios;
+  }
+
+  public static List<Participant> sortParticipantByName(List<Participant> participants) {
+    Collections.sort(participants, Participant.BY_NAME);
+    return participants;
   }
 }

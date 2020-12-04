@@ -27,7 +27,7 @@ public class DeviceType extends BasicEntity {
   private List<Device> devices;
   
   public static final Comparator<DeviceType> BY_NAME = (o1,o2) -> o1.name.compareTo(o2.name);
-
+  
   //TODO description or attributes; sim type, battery, size ...
   
   public DeviceType() {}

@@ -1,5 +1,7 @@
 package com.flotta.model.invoice;
 
+import java.util.Comparator;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -18,6 +20,8 @@ public class Participant extends BasicEntity {
   
   @ManyToOne
   private DescriptionCategoryCoupler descriptionCategoryCoupler;
+  
+  public static Comparator<Participant> BY_NAME = Comparator.comparing(Participant::getName);
   
   public Participant() {}
 

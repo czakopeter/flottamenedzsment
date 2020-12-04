@@ -1,5 +1,7 @@
 package com.flotta.model.registry;
 
+import java.util.Comparator;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -28,6 +30,8 @@ public class Sim extends BasicEntity {
   private SubSim simSub;
 
   private SimStatus status;
+  
+  public static final Comparator<Sim> BY_IMEI = (o1,o2) -> o1.imei.compareTo(o2.imei);
   
   public Sim() {
   }

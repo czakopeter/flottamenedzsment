@@ -3,6 +3,7 @@ package com.flotta.model.invoice;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,6 +31,9 @@ public class FeeItem extends BasicFeeItem {
   private Category category;
   
   private String reviewNote;
+  
+  public static final Comparator<FeeItem> BY_CATEGORY_AND_DESCRIPTION = 
+      Comparator.comparing(FeeItem::getCategory).thenComparing(FeeItem::getDescription);
   
   public FeeItem() {
   }

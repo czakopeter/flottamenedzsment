@@ -20,6 +20,7 @@ import com.flotta.model.invoice.DescriptionCategoryCoupler;
 import com.flotta.model.invoice.Participant;
 import com.flotta.service.ServiceManager;
 import com.flotta.utility.ResponseTransfer;
+import com.flotta.utility.Utility;
 
 
 
@@ -40,11 +41,11 @@ public class InvoiceConfigurationController {
     if(active.isPresent()) {
       model.addAttribute("active", active.get());
     }
-    model.addAttribute("categories", service.findAllCategory());
-    model.addAttribute("couplers", service.findAllDescriptionCategoryCoupler());
-    model.addAttribute("chargeRatios", service.findAllChargeRatio());
-    model.addAttribute("participants", service.findAllParticipant());
-    model.addAttribute("users", service.findAllUser());
+    model.addAttribute("categories", Utility.sortCategoryByName(service.findAllCategory()));
+    model.addAttribute("couplers", Utility.sortCouplerByName(service.findAllDescriptionCategoryCoupler()));
+    model.addAttribute("chargeRatios", Utility.sortChargeRatioByName(service.findAllChargeRatio()));
+    model.addAttribute("participants", Utility.sortParticipantByName(service.findAllParticipant()));
+    model.addAttribute("users", Utility.sortUserByName(service.findAllUser()));
     return "invoice_config_templates/invoiceConfiguration";
   }
   
@@ -79,7 +80,7 @@ public class InvoiceConfigurationController {
         descriptions.removeAll(dccOpt.get().getDescriptions());
       }
       model.addAttribute("coupler", dccOpt.get());
-      model.addAttribute("categories", service.findAllCategory());
+      model.addAttribute("categories", Utility.sortCategoryByName(service.findAllCategory()));
       model.addAttribute("invoices", service.findAllInvoice());
       model.addAttribute("rawInvoices", service.findAllRawInvoice());
       return TEMPLATE_PATH + "/descriptionCategoryCouplerEdit";

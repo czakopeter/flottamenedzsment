@@ -1,6 +1,5 @@
 package com.flotta.service.invoice;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +22,6 @@ public class CategoryService {
 
   List<Category> findAll() {
     List<Category> result = categoryRepository.findAll();
-    Collections.sort(result);
     return result;
   }
 

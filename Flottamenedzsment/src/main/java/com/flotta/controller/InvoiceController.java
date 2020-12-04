@@ -20,6 +20,7 @@ import com.flotta.exception.invoice.FileUploadException;
 import com.flotta.model.invoice.Invoice;
 import com.flotta.service.ServiceManager;
 import com.flotta.utility.ResponseTransfer;
+import com.flotta.utility.Utility;
 
 @Controller
 public class InvoiceController {
@@ -38,8 +39,8 @@ public class InvoiceController {
   
   @GetMapping("/invoice/all")
   public String listInvoces(Model model) {
-    model.addAttribute("rawInvoices", service.findAllRawInvoice());
-    model.addAttribute("invoices", service.findAllInvoice());
+    model.addAttribute("rawInvoices", Utility.sortRawInvoice(service.findAllRawInvoice()));
+    model.addAttribute("invoices", Utility.sortInvoice(service.findAllInvoice()));
     return "invoice_templates/invoiceAll";
   }
   

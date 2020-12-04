@@ -1,6 +1,7 @@
 package com.flotta.model.invoice;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,6 +30,9 @@ public class Invoice extends BasicInvoice {
   @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
   private List<InvoiceByUserAndPhoneNumber> invoicePart = new LinkedList<>();
 
+  public static final Comparator<Invoice> BY_INVOICE_NUMBER_ADN_ACCEPT_BY_COMPANY_AMD_DATE  = 
+      Comparator.comparing(Invoice::isAcceptedByCompany).thenComparing(Invoice::getBeginDate).thenComparing(Invoice::getInvoiceNumber);
+  
   public Invoice() {}
 
   public Participant getCompany() {

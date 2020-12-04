@@ -1,6 +1,7 @@
 package com.flotta.model.invoice;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,6 +23,8 @@ public class ChargeRatioByCategory extends BasicEntity {
   @ElementCollection
   @JoinTable(name = "category_ratio_map")
   private Map<Category, Integer> categoryRatioMap = new HashMap<>();
+  
+  public static final Comparator<ChargeRatioByCategory> BY_NAME  = (o1,o2) -> o1.name.compareTo(o2.name);
   
   public ChargeRatioByCategory() {
   }
