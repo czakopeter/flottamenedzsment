@@ -17,7 +17,8 @@ import javax.persistence.Table;
 public class RawInvoice extends BasicInvoice {
 
   public static final Comparator<RawInvoice> BY_INVOICE_NUMBER_ADN_ACCEPT_BY_COMPANY_AMD_DATE = 
-      Comparator.comparing(RawInvoice::getBeginDate).thenComparing(RawInvoice::getInvoiceNumber);
+      Comparator.comparing(RawInvoice::getBeginDate)
+      .thenComparing(RawInvoice::getInvoiceNumber);
   
   private String companyName;
   private String companyAddress;

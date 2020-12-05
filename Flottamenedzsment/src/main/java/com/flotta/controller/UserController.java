@@ -3,10 +3,8 @@ package com.flotta.controller;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,27 +14,33 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.flotta.enums.ControllerType;
+import com.flotta.enums.MessageKey;
+import com.flotta.enums.MessageType;
 import com.flotta.model.registry.User;
+import com.flotta.service.MessageService;
 import com.flotta.service.ServiceManager;
+import com.flotta.utility.ExtendedBoolean;
 
 @Controller
 public class UserController {
 
+  @Autowired
   private ServiceManager service;
 
   @Autowired
-  public void setMainService(ServiceManager service) {
-    this.service = service;
-  }
-
+  private MessageService messageService;
+  
   @ModelAttribute
-  public void title(Model model) {
+  public void prepareController(Model model) {
     model.addAttribute("title", "User");
+    messageService.setActualController(ControllerType.USER);
   }
   
   @GetMapping("/user/all")
   public String listUsers(Model model) {
     model.addAttribute("users", service.findAllUser());
+    model.addAttribute("messages", messageService.getMessages());
     return "user_templates/userAll";
   }
 
@@ -48,11 +52,13 @@ public class UserController {
   
   @PostMapping("/user/new")
   public String createUser(Model model, @ModelAttribute("user") User user) {
-    if(service.createUser(user)) {
+    ExtendedBoolean eb = service.createUser(user);
+    messageService.clearAndAddMessage(eb);
+    if(eb.isValid()) {
       return "redirect:/user/all";
     } else {
       model.addAttribute("user", user);
-      model.addAttribute("messages", service.getUserError());
+      model.addAttribute("messages", messageService.getMessages());
       return "user_templates/userNew";
     }
   }
@@ -62,8 +68,10 @@ public class UserController {
     Optional<User> userOpt = service.findUserById(id);
     if(userOpt.isPresent()) {
       model.addAttribute("user", userOpt.get());
+      model.addAttribute("messages", messageService.getMessages());
       return "user_templates/userEdit";
     } else {
+      messageService.clearAndAddMessage(MessageKey.NOT_EXISTS, MessageType.WARNING);
       return "redirect:/user/all";
     }
   }
@@ -73,8 +81,9 @@ public class UserController {
     if(roles == null) {
       roles = Collections.emptyMap();
     }
-    if(!service.updateUser(id, roles)) {
-      ra.addFlashAttribute("messages", service.getUserError());
+    ExtendedBoolean eb = service.updateUser(id, roles);
+    if(!eb.isValid()) {
+      messageService.clearAndAddMessage(eb);
     }
     return "redirect:/user/" + id + "/update";
   }
@@ -83,36 +92,32 @@ public class UserController {
   
   @GetMapping("/registration")
   public String firstAdminRegistration(Model model, RedirectAttributes redirectAttributes) {
-    if(service.registrationAvailable()) {
+    ExtendedBoolean eb = service.registrationAvailable();
+    if(eb.isValid()) {
       model.addAttribute("user", new User());
       return "registration";
     } else {
-      redirectAttributes.addFlashAttribute("warning", ResourceBundle.getBundle("messages", LocaleContextHolder.getLocale()).getString("warning.alreadyHaveAdministratior"));
+      messageService.clearAndAddMessage(eb);
       return "redirect:/login";
     }
   }
   
   @PostMapping("/registration")
   public String firstAdminRegistration(Model model, @ModelAttribute User user, RedirectAttributes redirectAttributes) {
-    if(service.createFirstAdmin(user)) {
-      redirectAttributes.addFlashAttribute("success", "Successful registration! Activation link and initial password have been sent to "
-          + user.getEmail() + 
-          " address!");
+    ExtendedBoolean eb = service.createFirstAdmin(user);
+    messageService.clearAndAddMessage(eb);
+    if(eb.isValid()) {
       return "redirect:/login";
     } else {
       model.addAttribute("user", user);
-      model.addAttribute("error", "Invalid full name or email!");
       return "registration";
     }
   }
   
   @GetMapping("/activation/{key}")
   public String activation(@PathVariable("key") String key, RedirectAttributes redirectAttributes) {
-    if(service.activation(key)) {
-      redirectAttributes.addFlashAttribute("success", "Successful activation!");
-    } else {
-      redirectAttributes.addFlashAttribute("error", "Invalid key '" + key + "'!");
-    }
+    ExtendedBoolean eb = service.activation(key);
+    messageService.clearAndAddMessage(eb);
     return "redirect:/login";
   }
   
@@ -123,10 +128,9 @@ public class UserController {
   
   @PostMapping("/requestNewPassword")
   public String requestNewPassword(RedirectAttributes redirectAttributes, @RequestParam("email") String email) {
-    if(service.requestNewPassword(email)) {
-      redirectAttributes.addFlashAttribute("waring", "The email has been sent to " + email + " address!");
-    }
-    return "redirect:/login";
+    ExtendedBoolean eb = service.requestNewPassword(email);
+    messageService.clearAndAddMessage(eb);
+    return "newPasswordRequest";
   }
   
 }

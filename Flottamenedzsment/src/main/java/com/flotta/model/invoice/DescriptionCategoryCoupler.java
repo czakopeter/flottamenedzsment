@@ -25,7 +25,8 @@ public class DescriptionCategoryCoupler extends BasicEntity {
   @ManyToMany(cascade = CascadeType.ALL)
   private Map<String, Category> descriptionCategoryMap = new HashMap<String, Category>();
 
-  public static final Comparator<DescriptionCategoryCoupler> BY_NAME  = (o1,o2) -> o1.name.compareTo(o2.name);
+  public static final Comparator<DescriptionCategoryCoupler> BY_NAME  = 
+      Comparator.comparing(DescriptionCategoryCoupler::getName, String.CASE_INSENSITIVE_ORDER);
   
   public DescriptionCategoryCoupler() {
   }

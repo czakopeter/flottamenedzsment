@@ -9,6 +9,8 @@
 
     <h3 class="uppercase" th:text="#{main.subscriptions}">Subscriptions</h3>
     
+    <div th:replace="fragments/message :: messages"></div>
+    
     <div th:replace="fragments/filter/filter :: add-and-filter-wrapper('/subscription/new', subscription-filter-options)"></div>
     
     <table id="subscription-table" class="table table-sm">

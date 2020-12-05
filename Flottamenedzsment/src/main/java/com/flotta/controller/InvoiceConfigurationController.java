@@ -18,11 +18,10 @@ import com.flotta.model.invoice.Category;
 import com.flotta.model.invoice.ChargeRatioByCategory;
 import com.flotta.model.invoice.DescriptionCategoryCoupler;
 import com.flotta.model.invoice.Participant;
+import com.flotta.service.MessageService;
 import com.flotta.service.ServiceManager;
 import com.flotta.utility.ResponseTransfer;
 import com.flotta.utility.Utility;
-
-
 
 @Controller
 public class InvoiceConfigurationController {
@@ -30,6 +29,9 @@ public class InvoiceConfigurationController {
   private static final String TEMPLATE_PATH = "invoice_config_templates";
   
   private ServiceManager service;
+  
+  @Autowired
+  private MessageService messageService;
   
   @Autowired
   public void setMainService(ServiceManager service) {
@@ -81,8 +83,8 @@ public class InvoiceConfigurationController {
       }
       model.addAttribute("coupler", dccOpt.get());
       model.addAttribute("categories", Utility.sortCategoryByName(service.findAllCategory()));
-      model.addAttribute("invoices", service.findAllInvoice());
-      model.addAttribute("rawInvoices", service.findAllRawInvoice());
+      model.addAttribute("invoices", Utility.sortInvoice(service.findAllInvoice()));
+      model.addAttribute("rawInvoices", Utility.sortRawInvoice(service.findAllRawInvoice()));
       return TEMPLATE_PATH + "/descriptionCategoryCouplerEdit";
     } else {
       return "redirect:/invoiceConfiguration/main?active=description-category-coupler";
@@ -92,7 +94,7 @@ public class InvoiceConfigurationController {
   
   @PostMapping("/invoiceConfiguration/descriptionCategoryCoupler/{id}/addDescriptionsOfInvoice")
   public String addDescriptionsOfInvoice(RedirectAttributes ra, @PathVariable("id") long id, @RequestParam("selectedInvoice") String invoiceNumber) {
-    ra.addFlashAttribute("descriptions", service.findDescriptionsOfInvoiceByInvoiceNumber(invoiceNumber));
+    ra.addFlashAttribute("descriptions", Utility.sortString(service.findDescriptionsOfInvoiceByInvoiceNumber(invoiceNumber)));
     return "redirect:/invoiceConfiguration/descriptionCategoryCoupler/" + id;
   }
   
@@ -139,7 +141,7 @@ public class InvoiceConfigurationController {
     Optional<ChargeRatioByCategory> chargeRatioOpt = service.findChargeRatioById(id);
     if(chargeRatioOpt.isPresent()) {
       model.addAttribute("chargeRatio", chargeRatioOpt.get());
-      model.addAttribute("unusedCategories", service.findAllUnusedCategoryOfChargeRatio(id));
+      model.addAttribute("unusedCategories", Utility.sortCategoryByName(service.findAllUnusedCategoryOfChargeRatio(id)));
       return TEMPLATE_PATH + "/chargeRatioByCategoryEdit";
     } else {
       return "redirect:/invoiceConfiguration/main?active=charge-ratio";
@@ -174,7 +176,7 @@ public class InvoiceConfigurationController {
   @GetMapping("/invoiceConfiguration/participant/new")
   public String prepareCreatingParticipant(Model model) {
     model.addAttribute("participant", new Participant());
-    model.addAttribute("descriptionCategoryCouplers", service.findAllDescriptionCategoryCoupler());
+    model.addAttribute("descriptionCategoryCouplers", Utility.sortCouplerByName(service.findAllDescriptionCategoryCoupler()));
     return TEMPLATE_PATH + "/participantNew";
   }
   
@@ -184,7 +186,7 @@ public class InvoiceConfigurationController {
       return "redirect:/invoiceConfiguration/main?active=participant";
     } else {
       model.addAttribute("participant", participant);
-      model.addAttribute("descriptionCategoryCouplers", service.findAllDescriptionCategoryCoupler());
+      model.addAttribute("descriptionCategoryCouplers", Utility.sortCouplerByName(service.findAllDescriptionCategoryCoupler()));
       return TEMPLATE_PATH + "/participantNew";
     }
   }
@@ -194,7 +196,7 @@ public class InvoiceConfigurationController {
     Optional<Participant> participantOpt = service.findParticipantById(id);
     if(participantOpt.isPresent()) {
       model.addAttribute("participant", participantOpt.get());
-      model.addAttribute("descriptionCategoryCouplers", service.findAllDescriptionCategoryCoupler());
+      model.addAttribute("descriptionCategoryCouplers", Utility.sortCouplerByName(service.findAllDescriptionCategoryCoupler()));
       return TEMPLATE_PATH + "/participantEdit";
     } else {
       return "redirect:/invoiceConfiguration/main?active=participant";

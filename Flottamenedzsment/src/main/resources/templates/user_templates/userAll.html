@@ -9,6 +9,8 @@
 
     <h3 th:text="#{main.users}">Users</h3>
     
+    <div th:replace="fragments/message :: messages"></div>
+    
     <div th:replace="fragments/filter/filter :: add-and-filter-wrapper('/user/new', user-filter-options)"></div>
     
 

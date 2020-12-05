@@ -31,7 +31,7 @@ public class Sim extends BasicEntity {
 
   private SimStatus status;
   
-  public static final Comparator<Sim> BY_IMEI = (o1,o2) -> o1.imei.compareTo(o2.imei);
+  public static final Comparator<Sim> BY_IMEI = Comparator.comparing(Sim::getImei);
   
   public Sim() {
   }
@@ -41,7 +41,7 @@ public class Sim extends BasicEntity {
   }
 
   public void setImei(String imei) {
-    this.imei = imei;
+    this.imei = imei.toUpperCase();
   }
   
   public String getPin() {

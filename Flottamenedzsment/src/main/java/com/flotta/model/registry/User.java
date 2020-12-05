@@ -57,7 +57,9 @@ public class User extends BasicEntity {
 	@ManyToOne
 	private ChargeRatioByCategory chargeRatio;
 	
-	public static final Comparator<User> BY_NAME = ((o1, o2) -> o1.fullName.compareTo(o2.fullName));
+	public static final Comparator<User> BY_NAME = 
+	    Comparator.comparing(User::getFullName, String.CASE_INSENSITIVE_ORDER)
+	    .thenComparing(User::getEmail, String.CASE_INSENSITIVE_ORDER);
 
   public User() {}
 

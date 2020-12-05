@@ -75,7 +75,7 @@ public class Device extends BasicEntityWithCreateDate {
   }
 
   public void setSerialNumber(String serialNumber) {
-    this.serialNumber = serialNumber;
+    this.serialNumber = serialNumber.toUpperCase();
   }
 
   public DeviceType getDeviceType() {

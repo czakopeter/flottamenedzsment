@@ -8,6 +8,8 @@
 
     <h3 class="uppercase" th:text="#{main.devices}">Devices</h3>
     
+    <div th:replace="fragments/message :: messages"></div>
+    
     <div th:replace="fragments/filter/filter :: add-and-filter-wrapper('/device/new', device-filter-options)"></div>
 
     <table id="device-table" class="table table-sm">

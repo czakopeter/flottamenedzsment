@@ -31,7 +31,7 @@ public class Role extends BasicEntity {
 	}
 
 	public void setRole(String role) {
-		this.role = role;
+		this.role = role.toUpperCase();
 	}
 
 	public Set<User> getUsers() {

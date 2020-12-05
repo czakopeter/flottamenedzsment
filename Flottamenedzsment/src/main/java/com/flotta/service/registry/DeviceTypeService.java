@@ -6,8 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.flotta.enums.MessageKey;
+import com.flotta.enums.MessageType;
 import com.flotta.model.registry.DeviceType;
 import com.flotta.repository.registry.DeviceTypeRepository;
+import com.flotta.utility.ExtendedBoolean;
 
 @Service
 public class DeviceTypeService {
@@ -39,12 +42,13 @@ public class DeviceTypeService {
     return deviceTypeRepository.findAllByVisibleTrue();
   }
 
-  public boolean create(DeviceType deviceType) {
-    if (creatable(deviceType)) {
+  public ExtendedBoolean create(DeviceType deviceType) {
+    ExtendedBoolean eb = creatable(deviceType);
+    if (eb.isValid()) {
         deviceTypeRepository.save(deviceType);
-        return true;
+        eb.addMessage(MessageKey.SUCCESSFULL_CREATION, MessageType.SUCCESS);
     }
-    return false;
+    return eb;
   }
   
   public void update(DeviceType deviceType) {
@@ -53,10 +57,17 @@ public class DeviceTypeService {
     }
   }
   
-  private boolean creatable(DeviceType deviceType) {
+  private ExtendedBoolean creatable(DeviceType deviceType) {
     Optional<DeviceType> typeByNameOpt = deviceTypeRepository.findByNameIgnoreCase(deviceType.getName());
     Optional<DeviceType> typeByBrandAndModelOpt = deviceTypeRepository.findByBrandAndModelIgnoreCase(deviceType.getBrand(), deviceType.getModel());
-    return !(typeByNameOpt.isPresent() || typeByBrandAndModelOpt.isPresent());
+    ExtendedBoolean eb = new ExtendedBoolean(!typeByNameOpt.isPresent() || typeByBrandAndModelOpt.isPresent());
+    if(typeByNameOpt.isPresent()) {
+      eb.addMessage(MessageKey.NAME_ALREADY_EXISTS, MessageType.WARNING);
+    }
+    if(typeByBrandAndModelOpt.isPresent()) {
+      eb.addMessage(MessageKey.BRAND_AND_MODEL_ALREADY_EXISTS, MessageType.WARNING);
+    }
+    return eb;
   }
   
   private boolean updatable(DeviceType deviceType) {

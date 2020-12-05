@@ -9,8 +9,7 @@
 
     <h3 th:text="#{user.newUser}">New user</h3>
 
-    <div th:replace="fragments/message :: message"></div>
-    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    <div th:replace="fragments/message :: messages"></div>
 
     <form th:object="${user}" method="post" id="form">
       <div class="container">

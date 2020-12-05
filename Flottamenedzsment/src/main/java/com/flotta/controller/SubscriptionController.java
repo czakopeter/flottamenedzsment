@@ -16,53 +16,62 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.flotta.enums.ControllerType;
+import com.flotta.enums.MessageKey;
+import com.flotta.enums.MessageType;
 import com.flotta.model.registry.Subscription;
 import com.flotta.model.viewEntity.DeviceToView;
 import com.flotta.model.viewEntity.SubscriptionToView;
+import com.flotta.service.MessageService;
 import com.flotta.service.ServiceManager;
+import com.flotta.utility.ExtendedBoolean;
 import com.flotta.utility.Utility;
 
 @Controller
 public class SubscriptionController {
-
-  private ServiceManager service;
-
   @Autowired
-  public void setMainService(ServiceManager service) {
-    this.service = service;
-  }
+  private ServiceManager service;
+  
+  @Autowired
+  private MessageService messageService;
 
   @ModelAttribute
   public void title(Model model) {
     model.addAttribute("title", "Subscription");
+    messageService.setActualController(ControllerType.SUBSCRIPTION);
   }
 
   @GetMapping("/subscription/all")
   public String listSubscriptions(Model model) {
-    model.addAttribute("canCreateNew", service.canCreateSubscription());
     model.addAttribute("subscriptions", Utility.convertSubscripionToView(service.findAllSubscription()));
+    model.addAttribute("messages", messageService.getMessages());
     return "subscription_templates/subscriptionAll";
   }
 
   @GetMapping("/subscription/new")
   public String prepareCreatingSubscription(Model model) {
-    if(service.canCreateSubscription()) {
+    ExtendedBoolean eb = service.canCreateSubscription();
+    if(eb.isValid()) {
       model.addAttribute("subscription", new SubscriptionToView());
       model.addAttribute("freeSims", service.findAllFreeSim());
+      model.addAttribute("messages", messageService.getMessages());
       return "subscription_templates/subscriptionNew";
     } else {
+      messageService.clearAndAddMessage(eb);
       return "redirect:/subscription/all";
     }
   }
 
   @PostMapping("/subscription/new")
   public String createSubscription(Model model, @ModelAttribute("subscription") SubscriptionToView stv) {
-      if (service.createSubscription(stv)) {
+    ExtendedBoolean eb = service.createSubscription(stv); 
+    messageService.clearAndAddMessage(eb);
+    model.addAttribute("messages", messageService.getMessages());
+      if (eb.isValid()) {
         return "redirect:/subscription/all";
       } else {
         model.addAttribute("subscription", stv);
-        model.addAttribute("freeSims", service.findAllFreeSim());
-        model.addAttribute("error", service.getSubscriptionServiceError());
+        model.addAttribute("freeSims", Utility.sortSimByImei(service.findAllFreeSim()));
         return "subscription_templates/subscriptionNew";
       }
   }
@@ -73,20 +82,20 @@ public class SubscriptionController {
     if(subscriptionOpt.isPresent()) {
       SubscriptionToView stv = new SubscriptionToView(subscriptionOpt.get());
       model.addAttribute("subscription", stv);
-      model.addAttribute("freeSims", service.findAllFreeSim());
-      model.addAttribute("users", service.findAllUser());
+      model.addAttribute("freeSims", Utility.sortSimByImei(service.findAllFreeSim()));
+      model.addAttribute("users", Utility.sortUserByName(service.findAllUser()));
       model.addAttribute("devices", Utility.convertDevicesToView(service.findAllCurrentDeviceByUser(stv.getUserId())));
+      model.addAttribute("messages", messageService.getMessages());
       return "subscription_templates/subscriptionEdit";
     } else {
+      messageService.clearAndAddMessage(MessageKey.NOT_EXISTS, MessageType.WARNING);
       return "redirect:/subscription/all";
     }
   }
 
   @PostMapping("/subscription/{id}/update")
   public String updateSubscription(RedirectAttributes ra, @ModelAttribute() SubscriptionToView stv) {
-    if(!service.updateSubscription(stv)) {
-      ra.addFlashAttribute("error", service.getSubscriptionServiceError());
-    }
+    service.updateSubscription(stv);
     return "redirect:/subscription/" + stv.getId() + "/update";
   }
   
@@ -97,6 +106,8 @@ public class SubscriptionController {
       model.addAttribute("subscription", new SubscriptionToView(subscriptionOpt.get()));
       model.addAttribute("dates", subscriptionOpt.get().getAllModificationDateDesc());
       return "subscription_templates/subscriptionView";
+    } else {
+      messageService.clearAndAddMessage(MessageKey.NOT_EXISTS, MessageType.WARNING);
     }
     return "redirect:/subscription/all";
   }
@@ -115,7 +126,7 @@ public class SubscriptionController {
   
   @PostMapping("/subscription/getDeviceById")
   @ResponseBody
-  public DeviceToView getDeviceById(Model model, @RequestParam ("id") long id) {
+  public DeviceToView getDeviceById(@RequestParam ("id") long id) {
     return new DeviceToView(service.findDeviceById(id).get());
   }
 }

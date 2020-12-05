@@ -13,13 +13,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.flotta.enums.ControllerType;
+import com.flotta.enums.MessageKey;
+import com.flotta.enums.MessageType;
 import com.flotta.model.registry.DeviceType;
+import com.flotta.service.MessageService;
 import com.flotta.service.ServiceManager;
+import com.flotta.utility.ExtendedBoolean;
+import com.flotta.utility.Utility;
 
 @Controller
 public class DeviceTypeController {
 
   private ServiceManager service;
+  
+  @Autowired
+  private MessageService messageService;
 
   @Autowired
   public void setMainService(ServiceManager service) {
@@ -29,11 +38,12 @@ public class DeviceTypeController {
   @ModelAttribute
   public void title(Model model) {
     model.addAttribute("title", "DeviceType");
+    messageService.setActualController(ControllerType.DEVICE_TYPE);
   }
 
   @RequestMapping("/deviceType/all")
   public String listDeviceTypes(Model model) {
-    model.addAttribute("deviceTypes", service.findAllDeviceTypes());
+    model.addAttribute("deviceTypes", Utility.sortDeviceTypeByName(service.findAllDeviceTypes()));
     return "device_type_templates/deviceTypeAll";
   }
   
@@ -46,7 +56,9 @@ public class DeviceTypeController {
   
   @PostMapping("/deviceType/new")
   public String createDeviceTypes(Model model, @ModelAttribute("deviceType") DeviceType deviceType) {
-    if(service.createDeviceType(deviceType)) {
+    ExtendedBoolean eb = service.createDeviceType(deviceType);
+    messageService.addMessage(eb);
+    if(eb.isValid()) {
       return "redirect:/deviceType/all";
     } else {
       model.addAttribute("brandList", service.findAllBrandOfDevicesType());
@@ -62,6 +74,7 @@ public class DeviceTypeController {
       model.addAttribute("deviceType", deviceTypeOpt.get());
       return "device_type_templates/deviceTypeEdit";
     } else {
+      messageService.addMessage(MessageKey.NOT_EXISTS, MessageType.WARNING);
       return "redirect:/diviceType/all";
     }
   }

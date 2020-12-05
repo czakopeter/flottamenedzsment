@@ -18,6 +18,7 @@ import com.flotta.model.invoice.Participant;
 import com.flotta.model.invoice.RawInvoice;
 import com.flotta.model.registry.Device;
 import com.flotta.model.registry.DeviceType;
+import com.flotta.model.registry.Sim;
 import com.flotta.model.registry.Subscription;
 import com.flotta.model.registry.User;
 import com.flotta.model.switchTable.BasicSwitchTable;
@@ -248,5 +249,15 @@ public class Utility {
   public static List<Participant> sortParticipantByName(List<Participant> participants) {
     Collections.sort(participants, Participant.BY_NAME);
     return participants;
+  }
+  
+  public static List<String> sortString(List<String> list) {
+    Collections.sort(list);
+    return list;
+  }
+
+  public static List<Sim> sortSimByImei(List<Sim> sims) {
+    Collections.sort(sims, Sim.BY_IMEI);
+    return sims;
   }
 }

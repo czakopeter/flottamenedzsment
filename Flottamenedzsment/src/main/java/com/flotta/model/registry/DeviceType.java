@@ -26,7 +26,8 @@ public class DeviceType extends BasicEntity {
   @OneToMany(mappedBy = "deviceType")
   private List<Device> devices;
   
-  public static final Comparator<DeviceType> BY_NAME = (o1,o2) -> o1.name.compareTo(o2.name);
+  public static final Comparator<DeviceType> BY_NAME = 
+      Comparator.comparing(DeviceType::getName, String.CASE_INSENSITIVE_ORDER);
   
   //TODO description or attributes; sim type, battery, size ...
   

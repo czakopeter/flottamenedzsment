@@ -8,6 +8,8 @@
   <div layout:fragment="loginContent">
 
     <h3 th:text="#{subscription.editSubscription}">Edit subscription</h3>
+    
+    <div th:replace="fragments/message :: messages"></div>
 
     <form th:action="'/subscription/' + ${subscription.id} + '/update'" th:object="${subscription}" method="post" id="form">
       <div class="container">

@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.flotta.exception.invoice.FileUploadException;
 import com.flotta.model.invoice.Invoice;
+import com.flotta.service.MessageService;
 import com.flotta.service.ServiceManager;
 import com.flotta.utility.ResponseTransfer;
 import com.flotta.utility.Utility;
@@ -26,6 +27,9 @@ import com.flotta.utility.Utility;
 public class InvoiceController {
 
   private ServiceManager service;
+  
+  @Autowired
+  private MessageService messageService;
   
   @Autowired
   public void setMainService(ServiceManager service) {

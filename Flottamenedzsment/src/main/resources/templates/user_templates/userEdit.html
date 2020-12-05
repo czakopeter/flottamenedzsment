@@ -9,7 +9,7 @@
 
     <h3 th:text="#{user.editUser}">Edit user</h3>
     
-    <div th:replace="fragments/message :: message"></div>
+    <div th:replace="fragments/message :: messages"></div>
     
     <form th:object="${user}" method="post" id="form">
       <div class="container">

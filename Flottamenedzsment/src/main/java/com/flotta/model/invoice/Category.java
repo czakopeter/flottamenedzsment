@@ -13,7 +13,8 @@ public class Category extends BasicEntity implements Comparable<Category> {
   
   private String name;
   
-  public static final Comparator<Category> BY_NAME  = Comparator.comparing(Category::getName);
+  public static final Comparator<Category> BY_NAME  = 
+      Comparator.comparing(Category::getName, String.CASE_INSENSITIVE_ORDER);
   
   public Category() {}
   

@@ -1,5 +1,6 @@
 package com.flotta.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,13 +10,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.flotta.enums.ControllerType;
 import com.flotta.model.registry.Sim;
+import com.flotta.service.MessageService;
 import com.flotta.service.ServiceManager;
+import com.flotta.utility.ExtendedBoolean;
 
 @Controller
 public class SimController {
 
   private ServiceManager service;
+  
+  @Autowired
+  private MessageService messageService;
   
   @Autowired
   public void setService(ServiceManager service) {
@@ -25,11 +32,13 @@ public class SimController {
   @ModelAttribute
   public void title(Model model) {
     model.addAttribute("title", "Sim");
+    messageService.setActualController(ControllerType.SIM);
   }
   
   @GetMapping("/sim/all")
   public String listSims(Model model) {
     model.addAttribute("sims", service.findAllSim());
+    model.addAttribute("messages", messageService.getMessages());
     return "sim_templates/simAll";
   }
   
@@ -41,11 +50,13 @@ public class SimController {
   
   @PostMapping("sim/new")
   public String createSim(Model model, RedirectAttributes ra, @ModelAttribute Sim sim) {
-    if(service.createSim(sim)) {
+    ExtendedBoolean eb = service.createSim(sim); 
+    messageService.addMessage(eb);
+    if(eb.isValid()) {
       return "redirect:/sim/all";
     } else {
       model.addAttribute("sim", sim);
-      model.addAttribute("error", service.getSimError());
+      model.addAttribute("messages", messageService.getMessages());
       return "sim_templates/simNew";
     }
   }

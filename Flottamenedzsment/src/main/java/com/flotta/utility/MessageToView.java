@@ -1,38 +1,29 @@
 package com.flotta.utility;
 
+import com.flotta.enums.MessageKey;
+import com.flotta.enums.MessageType;
+
 public class MessageToView {
   
-  private String[] types = {"alert-success", "alert-warning", "alert-danger"};
+  private String key;
   
-  private String type;
+  private String css;
   
-  private String text;
-  
-  public MessageToView(String text) {
-    this.text = text;
+  public MessageToView(String key, String type) {
+    this.key = key;
+    this.css = type;
   }
   
-  public String getType() {
-    return type;
-  }
-
-  public String getText() {
-    return text;
+  public MessageToView(MessageKey key, MessageType value) {
+    this.key = key.getKey();
+    this.css = value.getType();
   }
 
-  public void setText(String text) {
-    this.text = text;
+  public String getCss() {
+    return css;
   }
 
-  public void setToSuccess() {
-    type = types[0];
-  }
-  
-  public void setToWarning() {
-    type = types[1];
-  }
-  
-  public void setToDanger() {
-    type = types[2];
+  public String getKey() {
+    return key;
   }
 }

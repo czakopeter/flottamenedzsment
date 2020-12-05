@@ -12,10 +12,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import com.flotta.service.registry.ServiceWithMsg;
-
 @Service
-public class EmailService extends ServiceWithMsg {
+public class EmailService {
   private final Log log = LogFactory.getLog(this.getClass());
 
   @Value("${spring.mail.username}")

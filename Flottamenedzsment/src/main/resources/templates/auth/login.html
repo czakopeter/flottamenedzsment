@@ -12,7 +12,7 @@
 
       <h3 th:text="#{login.login}">Login</h3>
 
-      <div th:replace="fragments/message :: message"></div>
+      <div th:replace="fragments/message :: messages"></div>
 
       <form name="login" th:action="@{/login}" method="post" class="form-signin">
 

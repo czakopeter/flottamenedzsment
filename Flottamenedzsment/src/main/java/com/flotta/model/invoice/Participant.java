@@ -21,7 +21,8 @@ public class Participant extends BasicEntity {
   @ManyToOne
   private DescriptionCategoryCoupler descriptionCategoryCoupler;
   
-  public static Comparator<Participant> BY_NAME = Comparator.comparing(Participant::getName);
+  public static Comparator<Participant> BY_NAME = 
+      Comparator.comparing(Participant::getName, String.CASE_INSENSITIVE_ORDER);
   
   public Participant() {}
 

@@ -17,6 +17,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.flotta.enums.MessageKey;
+import com.flotta.enums.MessageType;
 import com.flotta.enums.UserStatus;
 import com.flotta.model.invoice.ChargeRatioByCategory;
 import com.flotta.model.registry.Role;
@@ -25,10 +27,11 @@ import com.flotta.model.registry.UserDetailsImpl;
 import com.flotta.repository.registry.RoleRepository;
 import com.flotta.repository.registry.UserRepository;
 import com.flotta.service.EmailService;
+import com.flotta.utility.ExtendedBoolean;
 import com.flotta.utility.Validator;
 
 @Service
-public class UserService extends ServiceWithMsg implements UserDetailsService {
+public class UserService implements UserDetailsService {
 
   private UserRepository userRepository;
 
@@ -77,11 +80,13 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
     return userRepository.findByEmail(email);
   }
 
-  boolean create(User user) {
+  ExtendedBoolean create(User user) {
+    ExtendedBoolean eb = new ExtendedBoolean(true);
     Optional<User> userOpt = userRepository.findByEmail(user.getEmail());
 
     if (userOpt.isPresent()) {
-      appendMsg("Already exists!");
+      eb.setInvalid();
+      eb.addMessage(MessageKey.ALREADY_EXISTS, MessageType.WARNING);
     } else {
       String password = generateKey(16);
       user.setEnabled(false);
@@ -90,58 +95,76 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
       user.setActivationKey(generateKey(16));
       if (emailService.sendMessage(user.getEmail(), "Activation email", emailService.createMessageText(EmailService.ACTIVATION_AND_INITIAL_PASSWORD, new String[] { user.getFullName(), user.getActivationKey(), password }))) {
         userRepository.save(user);
-        return true;
+        eb.addMessage(MessageKey.SUCCESSFULL_CREATION, MessageType.SUCCESS);
       } else {
-        appendMsg("Email send failed!");
+        eb.addMessage(MessageKey.EMAIL_FAILURE, MessageType.WARNING);
       }
     }
-    return false;
+    return eb;
   }
 
-  //TODO
-  boolean updateUser(long id, Map<String, Boolean> roles) {
+  ExtendedBoolean updateUser(long id, Map<String, Boolean> roles) {
+    ExtendedBoolean eb = new ExtendedBoolean(true);
     Optional<User> userOpt = userRepository.findById(id);
     Optional<Role> adminRoleOpt = roleRepository.findByRole("ADMIN");
     if(userOpt.isPresent() && adminRoleOpt.isPresent()) {
       User user = userOpt.get();
       Set<Role> savableRoles = convertToRoleSet(roles);
       if(adminRoleOpt.get().getUsers().size() == MIN_ADMIN_NUMBER && user.hasRole("admin") && !savableRoles.contains(new Role("admin"))) {
-        appendMsg("Can't reduce number of admin!");
-        return false;
+        eb.setInvalid();
+        eb.addMessage(MessageKey.NO_REDUCE_ADMIN, MessageType.WARNING);
       } else {
         user.setRoles(savableRoles);
         userRepository.save(user);
       }
     }
-    return true;
+    return eb;
   }
 
-  boolean activation(String key) {
+  ExtendedBoolean activation(String key) {
+    ExtendedBoolean eb = new ExtendedBoolean(true);
     Optional<User> userOpt = userRepository.findByActivationKey(key);
-    userOpt.ifPresent(user -> {
+    if(userOpt.isPresent()) {
+      User user = userOpt.get();
       user.setEnabled(true);
       user.setStatus(UserStatus.ENABLED);
       userRepository.save(user);
-    });
-    return userOpt.isPresent();
+      eb.addMessage(MessageKey.SUCCESSFUL_ACTIVATION, MessageType.SUCCESS);
+    } else {
+      eb.setInvalid();
+      eb.addMessage(MessageKey.UNKNOWN_ACTIVATION_KEY, MessageType.WARNING);
+    }
+    return eb;
   }
 
-  boolean changePassword(String email, String oldPsw, String newPsw, String confirmPsw) {
+//TODO MESSAGES
+  ExtendedBoolean changePassword(String email, String oldPsw, String newPsw, String confirmPsw) {
+    ExtendedBoolean eb = new ExtendedBoolean(false);
     Optional<User> userOpt = userRepository.findByEmail(email);
     if (userOpt.isPresent()) {
       User user = userOpt.get();
-      if (passwordEncoder.matches(oldPsw, user.getPassword()) && Validator.validPassword(newPsw) && newPsw.contentEquals(confirmPsw)) {
+      if (!passwordEncoder.matches(oldPsw, user.getPassword())) {
+        eb.addMessage(MessageKey.OLD_PASSWORD_INCORRECT, MessageType.WARNING);
+      }
+      if (oldPsw.equalsIgnoreCase(newPsw)) {
+        eb.addMessage(MessageKey.PASSWORD_NEW_OLD_SAME, MessageType.WARNING);
+      }
+      if(!Validator.validPassword(newPsw) && newPsw.contentEquals(confirmPsw)) {
+        eb.addMessage(MessageKey.NEW_PASSWORD_INVALID, MessageType.WARNING);
+      }
+      if(eb.isValid()) {
         user.setPassword(passwordEncoder.encode(newPsw));
         user.setStatus(UserStatus.ENABLED);
         userRepository.save(user);
-        return true;
+        eb.setValid();
+        eb.addMessage(MessageKey.PASSWORD_CHANGE_SUCCESSFUL, MessageType.SUCCESS);
       }
     }
-    appendMsg("Problem with the added data!");
-    return false;
+    return eb;
   }
   
-  boolean requestNewPassword(String email) {
+  ExtendedBoolean requestNewPassword(String email) {
+    ExtendedBoolean eb = new ExtendedBoolean(false);
     Optional<User> optionalUser = userRepository.findByEmail(email);
     if (optionalUser.isPresent()) {
       User user = optionalUser.get();
@@ -151,10 +174,14 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
       user.setStatus(UserStatus.WAITING_FOR_ACTIVATION);
       if (emailService.sendMessage(user.getEmail(), "Activation email", emailService.createMessageText(EmailService.ACTIVATION_AND_INITIAL_PASSWORD, new String[] { user.getFullName(), user.getActivationKey(), password }))) {
         userRepository.save(user);
-        return true;
+        eb.setValid();
+      } else {
+        eb.addMessage(MessageKey.EMAIL_FAILURE, MessageType.WARNING);
       }
+    } else {
+      eb.addMessage(MessageKey.UNKNOWN_EMAIL, MessageType.WARNING);
     }
-    return false;
+    return eb;
   }
 
   boolean updateChargeRatioOfUser(long userId, Optional<ChargeRatioByCategory> chargeRatioOpt) {
@@ -169,11 +196,19 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
     return false;
   }
 
-  boolean registrationAvailable() {
-    return userRepository.findAllByEnabled(true).isEmpty();
+  ExtendedBoolean registrationAvailable() {
+    ExtendedBoolean eb = new ExtendedBoolean(userRepository.findAllByEnabled(true).isEmpty());
+    if(eb.isValid()) {
+      userRepository.deleteAll();
+    } else {
+      eb.addMessage(MessageKey.ALREADY_HAS_ADMIN, MessageType.WARNING);
+    }
+    return eb;
   }
 
-  boolean createFirstAdmin(User user) {
+//TODO MESSAGES
+  ExtendedBoolean createFirstAdmin(User user) {
+    ExtendedBoolean eb = new ExtendedBoolean(false);
     String password = generateKey(16);
     user.setEnabled(false);
     user.addRole(roleRepository.findByRole("ADMIN").get());
@@ -182,11 +217,12 @@ public class UserService extends ServiceWithMsg implements UserDetailsService {
     user.setActivationKey(generateKey(16));
     if (emailService.sendMessage(user.getEmail(), "Activation email", emailService.createMessageText(EmailService.ACTIVATION_AND_INITIAL_PASSWORD, new String[] { user.getFullName(), user.getActivationKey(), password }))) {
       userRepository.save(user);
+      eb.setValid();
+      eb.addMessage(MessageKey.SUCCESSFUL_REGISTRATION, MessageType.SUCCESS);
     } else {
-      appendMsg("Email send failed!");
-      return false;
+      eb.addMessage(MessageKey.EMAIL_FAILURE, MessageType.WARNING);
     }
-    return true;
+    return eb;
   }
 
   private String generateKey(int length) {

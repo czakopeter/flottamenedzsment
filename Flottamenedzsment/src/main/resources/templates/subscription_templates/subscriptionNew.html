@@ -9,7 +9,7 @@
 
     <h3 th:text="#{subscription.newSubscription}">New subscription</h3>
 
-    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    <div th:replace="fragments/message :: messages"></div>
 
     <form th:object="${subscription}" method="post" id="form">
       <input type="hidden" id="order" name="order" />

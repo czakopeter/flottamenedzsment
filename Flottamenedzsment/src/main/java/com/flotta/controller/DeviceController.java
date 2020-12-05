@@ -16,69 +16,80 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.flotta.enums.ControllerType;
+import com.flotta.enums.MessageKey;
+import com.flotta.enums.MessageType;
 import com.flotta.model.registry.Device;
 import com.flotta.model.viewEntity.DeviceToView;
+import com.flotta.service.MessageService;
 import com.flotta.service.ServiceManager;
+import com.flotta.utility.ExtendedBoolean;
 import com.flotta.utility.Utility;
 
 @Controller
 public class DeviceController {
 
-  private ServiceManager service;
-
   @Autowired
-  public void setMainService(ServiceManager service) {
-    this.service = service;
-  }
-
+  private ServiceManager service;
+  
+  @Autowired
+  private MessageService messageService;
+  
   @ModelAttribute
   public void title(Model model) {
     model.addAttribute("title", "Device");
+    messageService.setActualController(ControllerType.DEVICE);
   }
 
   @RequestMapping("/device/all")
   public String listDevices(Model model) {
-    model.addAttribute("canCreateNew", !service.findAllBrandOfDevicesType().isEmpty());
     model.addAttribute("devices", Utility.convertDevicesToView(service.findAllDevices()));
+    model.addAttribute("messages", messageService.getMessages());
     return "device_templates/deviceAll";
   }
   
   @GetMapping("/device/new")
-  public String prepareCreatingDevice(Model model) {
-    model.addAttribute("device", new DeviceToView());
-    model.addAttribute("deviceTypes", Utility.sortDeviceTypeByName(service.findAllVisibleDeviceTypes()));
-    return "device_templates/deviceNew";
+  public String prepareCreatingDevice(Model model, RedirectAttributes ra) {
+    ExtendedBoolean eb = service.canCreateDevice();
+    if(eb.isValid()) {
+      model.addAttribute("device", new DeviceToView());
+      model.addAttribute("deviceTypes", Utility.sortDeviceTypeByName(service.findAllVisibleDeviceTypes()));
+      return "device_templates/deviceNew";
+    } else {
+      messageService.clearAndAddMessage(eb);
+      return "redirect:/device/all";
+    }
   }
   
   @PostMapping("/device/new")
   public String createDevice(Model model, @ModelAttribute("device") DeviceToView dtv) {
-    if(service.createDevice(dtv)) {
+    ExtendedBoolean eb = service.createDevice(dtv);
+    messageService.clearAndAddMessage(eb);
+    if(eb.isValid()) {
       return "redirect:/device/all";
     } else {
       model.addAttribute("device", dtv);
       model.addAttribute("deviceTypes", Utility.sortDeviceTypeByName(service.findAllVisibleDeviceTypes()));
-      model.addAttribute("error", service.getDeviceServiceError());
       return "device_templates/deviceNew";
     }
   }
   
   @GetMapping("/device/{id}/update")
-  public String prepareUpdatingDevice(Model model, @PathVariable("id") long id) {
+  public String prepareUpdatingDevice(Model model, RedirectAttributes ra , @PathVariable("id") long id) {
     Optional<Device> deviceOpt = service.findDeviceById(id);
     if(deviceOpt.isPresent()) {
       model.addAttribute("device", new DeviceToView(deviceOpt.get()));
       model.addAttribute("users", Utility.sortUserByName(service.findAllUser()));
       return "device_templates/deviceEdit";
     } else {
+      messageService.clearAndAddMessage(MessageKey.NOT_EXISTS, MessageType.WARNING);
       return "redirect:/device/all";
     }
   }
   
   @PostMapping("/device/{id}/update")
-  public String updateDevice(RedirectAttributes ra,  @ModelAttribute() DeviceToView dtv) {
-    if(!service.updateDevice(dtv)) {
-      ra.addFlashAttribute("error", service.getDeviceServiceError());
-    }
+  public String updateDevice(@ModelAttribute() DeviceToView dtv) {
+    service.updateDevice(dtv); 
     return "redirect:/device/" + dtv.getId() + "/update";
   }
   
@@ -90,6 +101,7 @@ public class DeviceController {
       model.addAttribute("dates", deviceOpt.get().getAllModificationDateDesc());
       return "device_templates/deviceView";
     } else {
+      messageService.clearAndAddMessage(MessageKey.NOT_EXISTS, MessageType.WARNING);
       return "redirect:/device/all";
     }
   }

@@ -8,7 +8,7 @@
 
     <h3 th:text="#{deviceType.newDeviceType}">New device type</h3>
 
-    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    <div th:replace="fragments/message :: messages"></div>
 
     <form th:object="${deviceType}" method="post" if="form">
       <div class="form-group">

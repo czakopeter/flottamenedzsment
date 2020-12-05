@@ -31,7 +31,9 @@ public class Invoice extends BasicInvoice {
   private List<InvoiceByUserAndPhoneNumber> invoicePart = new LinkedList<>();
 
   public static final Comparator<Invoice> BY_INVOICE_NUMBER_ADN_ACCEPT_BY_COMPANY_AMD_DATE  = 
-      Comparator.comparing(Invoice::isAcceptedByCompany).thenComparing(Invoice::getBeginDate).thenComparing(Invoice::getInvoiceNumber);
+      Comparator.comparing(Invoice::isAcceptedByCompany)
+      .thenComparing(Invoice::getBeginDate)
+      .thenComparing(Invoice::getInvoiceNumber);
   
   public Invoice() {}
 

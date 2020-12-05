@@ -26,7 +26,7 @@ import com.flotta.model.viewEntity.SubscriptionToView;
 import com.flotta.service.invoice.InvoiceManager;
 import com.flotta.service.registry.RegistryManager;
 import com.flotta.service.switchTable.SwitchTableService;
-import com.flotta.utility.MessageToView;
+import com.flotta.utility.ExtendedBoolean;
 
 @Service
 public class ServiceManager {
@@ -187,20 +187,16 @@ public class ServiceManager {
     return registryManager.findAllDevices();
   }
 
-  public boolean createDevice(DeviceToView dtv) {
+  public ExtendedBoolean createDevice(DeviceToView dtv) {
     return registryManager.createDevice(dtv);
   }
 
-  public boolean updateDevice(DeviceToView dtv) {
+  public ExtendedBoolean updateDevice(DeviceToView dtv) {
     return registryManager.updateDevice(dtv);
   }
 
   public Optional<Device> findDeviceById(long id) {
     return registryManager.findDeviceById(id);
-  }
-
-  public String getDeviceServiceError() {
-    return registryManager.getDeviceServiceError();
   }
 
 //-------- DEVICE TYPE SERVICE --------
@@ -217,7 +213,7 @@ public class ServiceManager {
     return registryManager.findDeviceTypeById(id);
   }
 
-  public boolean createDeviceType(DeviceType deviceType) {
+  public ExtendedBoolean createDeviceType(DeviceType deviceType) {
     return registryManager.saveDeviceType(deviceType);
   }
   
@@ -227,6 +223,10 @@ public class ServiceManager {
 
   public List<DeviceType> findAllVisibleDeviceTypes() {
     return registryManager.findAllVisibleDeviceTypes();
+  }
+  
+  public ExtendedBoolean canCreateDevice() {
+    return registryManager.canCreateDevice();
   }
 
 //-------- SIM SERVICE --------
@@ -243,15 +243,11 @@ public class ServiceManager {
     return registryManager.findSimById(id);
   }
 
-  public boolean createSim(Sim sim) {
+  public ExtendedBoolean createSim(Sim sim) {
     return registryManager.createSim(sim);
   }
 
-  public String getSimError() {
-    return registryManager.getSimError();
-  }
-
-  public boolean canCreateSubscription() {
+  public ExtendedBoolean canCreateSubscription() {
     return registryManager.canCreateSubscription();
   }
 
@@ -265,7 +261,7 @@ public class ServiceManager {
     return registryManager.findSubscriptionById(id);
   }
 
-  public boolean createSubscription(SubscriptionToView stv) {
+  public ExtendedBoolean createSubscription(SubscriptionToView stv) {
     return registryManager.createSubscription(stv);
   }
 
@@ -273,13 +269,9 @@ public class ServiceManager {
     return registryManager.updateSubscription(stv);
   }
 
-  public String getSubscriptionServiceError() {
-    return registryManager.getSubscriptionServiceError();
-  }
-
   // -------- USER SERVICE --------
   
-  public boolean createUser(User user) {
+  public ExtendedBoolean createUser(User user) {
     return registryManager.createUser(user);
   }
 
@@ -291,23 +283,19 @@ public class ServiceManager {
     return registryManager.findUserByEmail(email);
   }
 
-  public boolean changePassword(String email, String oldPsw, String newPsw, String confirmPsw) {
+  public ExtendedBoolean changePassword(String email, String oldPsw, String newPsw, String confirmPsw) {
     return registryManager.changePassword(email, oldPsw, newPsw, confirmPsw);
   }
 
-  public List<MessageToView> getUserError() {
-    return registryManager.getUserError();
-  }
-
-  public boolean createFirstAdmin(User user) {
+  public ExtendedBoolean createFirstAdmin(User user) {
     return registryManager.createFirstAdmin(user);
   }
 
-  public boolean registrationAvailable() {
+  public ExtendedBoolean registrationAvailable() {
     return registryManager.registrationAvailable();
   }
 
-  public boolean activation(String key) {
+  public ExtendedBoolean activation(String key) {
     return registryManager.activation(key);
   }
 
@@ -315,11 +303,11 @@ public class ServiceManager {
     return registryManager.findUserById(id);
   }
 
-  public boolean updateUser(long id, Map<String, Boolean> roles) {
+  public ExtendedBoolean updateUser(long id, Map<String, Boolean> roles) {
     return registryManager.updateUser(id, roles);
   }
 
-  public boolean requestNewPassword(String email) {
+  public ExtendedBoolean requestNewPassword(String email) {
     return registryManager.requestNewPassword(email);
   }
 

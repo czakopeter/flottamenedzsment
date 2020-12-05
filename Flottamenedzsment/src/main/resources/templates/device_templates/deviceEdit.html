@@ -7,7 +7,9 @@
   <div layout:fragment="loginContent">
 
     <h3 th:text="#{device.editDevice}">Device edit</h3>
-
+    
+    <div th:replace="fragments/message :: messages"></div>
+    
     <form th:action="'/device/' + ${device.id} + '/update'" method="post" th:object="${device}" id="form">
       <div class="container">
         <div class="row my-2">

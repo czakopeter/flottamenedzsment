@@ -4,13 +4,9 @@
 </head>
 <body>
 
-  <div th:fragment="message" th:unless="${#lists.isEmpty(messages)}">
-    <div th:if="${success}" class="alert alert-success" th:text="${success}">Succes</div>
-    <div th:if="${warning}" class="alert alert-warning" th:text="${warning}">Warning</div>
-    <div th:if="${error}" class="alert alert-danger" th:text="${error}">Error</div>
-    
+  <div th:fragment="messages" th:unless="${#lists.isEmpty(messages)}">
     <div th:each="message : ${messages}">
-      <div class="alert" th:classappent="${message.type}" th:text="${message.text}"></div>
+      <div class="alert" th:classappend="${message.css}" th:text="#{__${message.key}__}"></div>
     </div>
   </div>
 

@@ -6,13 +6,16 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.flotta.enums.MessageKey;
+import com.flotta.enums.MessageType;
 import com.flotta.model.registry.Sim;
 import com.flotta.model.registry.Subscription;
 import com.flotta.model.viewEntity.SubscriptionToView;
 import com.flotta.repository.registry.SubscriptionRepository;
+import com.flotta.utility.ExtendedBoolean;
 
 @Service
-public class SubscriptionService extends ServiceWithMsg implements SubscriptionFinderService {
+public class SubscriptionService implements SubscriptionFinderService {
 	
 	private SubscriptionRepository subscriptionRepository;
 	
@@ -36,16 +39,19 @@ public class SubscriptionService extends ServiceWithMsg implements SubscriptionF
       return subscriptionRepository.findByNumber(number);
   }
   
-  public boolean create(SubscriptionToView stv, Optional<Sim> simOpt) {
+  public ExtendedBoolean create(SubscriptionToView stv, Optional<Sim> simOpt) {
+    ExtendedBoolean eb = new ExtendedBoolean(true);
     Optional<Subscription> optional = subscriptionRepository.findByNumber(stv.getNumber());
     if(optional.isPresent()) {
-      appendMsg("Number already exists");
+      eb.setInvalid();
+      eb.addMessage(MessageKey.ALREADY_EXISTS, MessageType.WARNING);
     } else {
       Subscription entity = new Subscription(stv.getNumber(), stv.getBeginDate());
       entity.addSim(simOpt, null, stv.getBeginDate());
       subscriptionRepository.save(entity);
+      eb.addMessage(MessageKey.SUCCESSFULL_CREATION, MessageType.SUCCESS);
     }
-    return !optional.isPresent();
+    return eb;
   }
 
   public void update(Subscription sub) {

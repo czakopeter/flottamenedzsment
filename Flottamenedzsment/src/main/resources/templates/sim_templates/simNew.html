@@ -9,7 +9,7 @@
 
     <h3 th:text="#{sim.newSim}">New sim</h3>
     
-    <div th:if="${error}" class="alert alert-warning" th:text="${error}"></div>
+    <div th:replace="fragments/message :: messages"></div>
 
     <form action="/sim/new" method="post" th:object="${sim}">
       <div>
