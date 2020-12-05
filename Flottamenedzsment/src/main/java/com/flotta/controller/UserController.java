@@ -5,12 +5,14 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -34,6 +36,7 @@ public class UserController {
   @ModelAttribute
   public void prepareController(Model model) {
     model.addAttribute("title", "User");
+    model.addAttribute("locale", LocaleContextHolder.getLocale().getCountry());
     messageService.setActualController(ControllerType.USER);
   }
   
@@ -89,6 +92,30 @@ public class UserController {
   }
   
   // ----- Guest -----
+  
+  @GetMapping("/login")
+  public String login(Model model) {
+    ExtendedBoolean eb = service.registrationAvailable();
+    if(eb.isValid()) {
+      return "redirect:/registration";
+    } else {
+      model.addAttribute("messages", messageService.getMessages());
+      return "auth/login";
+    }
+  }
+  
+  @RequestMapping("/login/failure")
+  public String loginFailure() {
+    System.err.println("LOGIN_FAILURE");
+    messageService.clearAndAddMessage(MessageKey.LOGIN_FAILURE, MessageType.WARNING);
+    return "redirect:/login";
+  }
+  
+  @RequestMapping("/afterlogout")
+  public String logout() {
+    messageService.clearAndAddMessage(MessageKey.SUCCESS_LOGOUT, MessageType.SUCCESS);
+    return "redirect:/login";
+  }
   
   @GetMapping("/registration")
   public String firstAdminRegistration(Model model, RedirectAttributes redirectAttributes) {

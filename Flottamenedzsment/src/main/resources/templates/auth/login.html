@@ -16,14 +16,9 @@
 
       <form name="login" th:action="@{/login}" method="post" class="form-signin">
 
-        <div id="error" th:if="${param.error}" class="alert alert-danger"
-          th:text="#{login.usernameOrPasswordIsIncorrect}"
-        >Error</div>
-        <div th:if="${param.logout}" class="alert alert-success" th:text="#{login.successLogout}">Success logout</div>
-        
         <div class="row">
           <div class="col ">
-            <label for="username" th:text="#{email}">Email address</label>
+            <label for="username" th:text="#{email}" class="required">Email address</label>
           </div>
         </div>
         <div class="row mb-1">
@@ -35,7 +30,7 @@
         </div>
         <div class="row">
           <div class="col">
-            <label for="password" th:text="#{login.password}">Password</label>
+            <label for="password" th:text="#{login.password}" class="required">Password</label>
           </div>
         </div>
         <div class="row mb-3">

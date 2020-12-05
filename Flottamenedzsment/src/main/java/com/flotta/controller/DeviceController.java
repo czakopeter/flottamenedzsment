@@ -3,7 +3,9 @@ package com.flotta.controller;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import org.apache.catalina.Server;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,6 +40,7 @@ public class DeviceController {
   @ModelAttribute
   public void title(Model model) {
     model.addAttribute("title", "Device");
+//    model.addAttribute("locale", LocaleContextHolder.getLocale());
     messageService.setActualController(ControllerType.DEVICE);
   }
 

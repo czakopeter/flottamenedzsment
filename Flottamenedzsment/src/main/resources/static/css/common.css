@@ -160,3 +160,13 @@ a.noneunderline {
 	font-size: .875rem;
 	line-height: 1.5;
 }
+
+.required::after {
+	content: " *";
+	color: red;
+}
+
+a.disabled {
+	border-bottom: 3px solid var(--watermelon);
+	pointer-events: none;
+}

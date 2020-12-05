@@ -19,7 +19,9 @@ public enum MessageKey {
   UNKNOWN_ACTIVATION_KEY("unknownActivationKey"),
   ALREADY_HAS_ADMIN("alreadyHasAdmin"),
   SUCCESSFUL_REGISTRATION("successfulRegistration"), 
-  UNKNOWN_INVOICE("unknownInvoice");
+  UNKNOWN_INVOICE("unknownInvoice"),
+  LOGIN_FAILURE("lognFailure"),
+  SUCCESS_LOGOUT("successLogout");
   
   
   private String key;
