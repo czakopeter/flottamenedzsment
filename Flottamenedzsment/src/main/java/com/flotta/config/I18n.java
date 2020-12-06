@@ -44,6 +44,8 @@ public class I18n implements WebMvcConfigurer {
                                  "messages/message_messages",
                                  "messages/messages_common",
                                  "messages/auth/messages_auth",
+                                 "messages/sim/messages_sim",
+                                 "messages/subscription/messages_subscription",
                                  "messages/user/messages_user"
                                  );
       messageSource.setDefaultEncoding("UTF-8");

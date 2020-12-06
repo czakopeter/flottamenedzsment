@@ -50,7 +50,7 @@ public class SimService {
     Optional<Sim> simOpt = simRepository.findByImei(sim.getImei());
     if(simOpt.isPresent()) {
       eb.setInvalid();
-      eb.addMessage(MessageKey.IMEI_ALREADY_USER, MessageType.WARNING);
+      eb.addMessage(MessageKey.IMEI_ALREADY_USED, MessageType.WARNING);
     } else {
       sim.setStatus(SimStatus.FREE);
       simRepository.save(sim);

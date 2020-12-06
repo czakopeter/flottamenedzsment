@@ -125,7 +125,7 @@ public class RegistryManager {
 
   public ExtendedBoolean canCreateSubscription() {
     ExtendedBoolean eb = new ExtendedBoolean(!simService.findAllByStatus(SimStatus.FREE).isEmpty());
-    if(!eb.isValid()) eb.addMessage(MessageKey.NO_SIM, MessageType.WARNING);
+    if(!eb.isValid()) eb.addMessage(MessageKey.NO_FREE_SIM, MessageType.WARNING);
     return eb;
   }
 

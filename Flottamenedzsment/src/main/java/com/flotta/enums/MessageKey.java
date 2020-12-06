@@ -25,9 +25,9 @@ public enum MessageKey {
   CREATE_FIRST_ADMIN("createFirstAdmin"),
   EMAIL_ALREADY_USED("emailAlreadyUsed"),
   UNKNOWN_USER("unknownUser"),
-  IMEI_ALREADY_USER("imeiAlreadyUsed"),
+  IMEI_ALREADY_USED("imeiAlreadyUsed"),
   IMEI_NUMBER_NOT_VALID("imeiNumberNotValid"),
-  NO_SIM("noSim"),
+  NO_FREE_SIM("noFreeSim"),
   PHONE_NUMBER_ALREADY_USED("phoneNumberAlreadyUsed"),
   UNKNOWN_SUBSCRIPITON("unknownSubscription"),
   
