@@ -28,7 +28,7 @@
           <td name="email" th:text="${user.email}"></td>
           <td name="fullName" th:text="${user.fullName}"></td>
           <td th:text="#{__${user.status.key}__}"></td>
-          <td class="text-right"><a th:href="'/user/' + ${user.id} + '/update'" class="btn btn-sm btn-primary" th:text="#{button.edit}">Edit</a></td>
+          <td class="text-right"><a th:href="'/user/' + ${user.id} + '/update'" class="btn btn-primary" th:text="#{button.edit}">Edit</a></td>
         </tr>
       </tbody>
       <tbody id="no-result-body" th:classappend="${#lists.isEmpty(users)} ? '' : collapse">

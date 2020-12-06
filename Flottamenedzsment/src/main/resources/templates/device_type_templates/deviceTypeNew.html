@@ -11,36 +11,59 @@
     <div th:replace="fragments/message :: messages"></div>
 
     <form th:object="${deviceType}" method="post" if="form">
-      <div class="form-group">
-        <label class="form-control-label" for="autoNameGeneration" th:text="#{deviceType.autoNameGeneration}">Auto name generation:</label> <input type="checkbox"
+      <div class="row my-2">
+        <div class="col-2">
+          <label for="autoNameGeneration" th:text="#{deviceType.generatedName}">Auto name generation:</label>
+        </div>
+        <div class="col-1">
+          <input type="checkbox"
           id="autoNameGeneration" checked="checked" onclick="autoNameGenerattionChange()"
         />
+        </div>
       </div>
-      <div class="form-group">
-        <label class="form-control-label" for="name" th:text="#{name}">Name</label> <input type="text"
+      <div class="row my-2">
+        <div class="col-2">
+          <label for="name" th:text="#{name}" class="required">Name</label>
+        </div>
+        <div class="col-4">
+          <input type="text"
           class="form-control" id="name" name="name" readonly="readonly" required="required"
         />
         </div>
-      <div class="form-group">
-        <label class="form-control-label" for="brand" th:text="#{deviceType.brand}">Brand</label> <input list="brands" id="brand"
-          name="brand" class="form-control" oninput="nameAutoComplete()" required="required"
-        />
+      </div>
+      <div class="row my-2">
+        <div class="col-2">
+          <label for="brand" th:text="#{deviceType.brand}" class="required">Brand</label>
+        </div>
+        <div class="col-4">
+          <input list="brands" id="brand"
+            name="brand" class="form-control" oninput="nameAutoComplete()" required="required"
+            />
         <datalist id="brands">
           <option th:each="brandItem : ${brandList}" th:value="${brandItem}"></option>
         </datalist>
+        </div>
       </div>
-      <div class="form-group">
-        <label class="form-control-label" for="model" th:text="#{deviceType.model}">Model</label> <input type="text" id="model" name="model"
-          class="form-control" oninput="nameAutoComplete()" required="required"
-        />
+      <div class="row my-2">
+        <div class="col-2">
+          <label for="model" th:text="#{deviceType.model}" class="required">Model</label>
+        </div>
+        <div class="col-4">
+          <input type="text" id="model" name="model"
+            class="form-control" oninput="nameAutoComplete()" required="required"
+          />
+        </div>
       </div>
-      <div class="form-group">
-        <label class="form-control-label" for="visible" th:text="#{visible}">Visible</label> <input type="checkbox" id="visible"
-          name="visible" checked="checked"
-        />
+      <div class="row my-2">
+        <div class="col-2">
+          <label for="visible" th:text="#{visible}">Visible</label>
+        </div>
+        <div class="col-1">
+          <input type="checkbox" id="visible" name="visible" checked="checked" class="col-1"/>
+        </div>
       </div>
-      <div class="row">
-       <div  class=" col text-right">
+      <div class="row my-2">
+       <div class="col-6 text-right">
         <button type="submit" class="btn btn-primary" formaction="/deviceType/new" th:text="#{button.save}">Save</button>
         <a href="/deviceType/all" class="btn btn-primary" th:text="#{button.back}">Back</a>
        </div>

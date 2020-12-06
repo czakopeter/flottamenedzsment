@@ -30,15 +30,22 @@
             <input type="hidden" id="oldImei" name="oldImei" th:value="*{oldImei}" readonly="readonly" />
             <input type="text" id="imei" name="imei" th:value="*{imei}" class="form-control" readonly="readonly" />
           </div>
-          <div>
-            <input th:if="${not #lists.isEmpty(freeSims)}" id="simChangeBtn" type="button" class="btn btn-primary" data-toggle="modal"
+        </div>
+        <div class="row my-2" th:if="${not #lists.isEmpty(freeSims)}">
+          <div class="col-2"></div>
+          <div class="col-2">
+            <input  id="simChangeBtn" type="button" class="btn btn-primary btn-block" data-toggle="modal"
               data-target="#simChooserModal" th:value="#{button.change}"
             />
-            <button th:if="${not #lists.isEmpty(freeSims)}" type="button" id="simChangeResetBtn" class="btn btn-primary" onClick="resetSimChange()" th:text="#{button.reset}">Reset</button>
+          </div>
+          <div class="col-2">
+            <button  type="button" id="simChangeResetBtn" class="btn btn-primary btn-block" onClick="resetSimChange()" th:text="#{button.reset}">Reset</button>
           </div>
         </div>
-        <div class="row" id="reasonRow"  style="display: none;">
-          <div class="col-2" th:text="'Sim change reason'"></div>
+        <div class="row" id="reasonRow" style="display: none;">
+          <div class="col-2" >
+            <label for="simChangeReason" th:text="'Sim change reason'" class="required"></label>
+          </div>
           <div class="col-4">
             <input type="text" id="simChangeReason" name="simChangeReason" th:value="*{simChangeReason}" class="form-control"  />
           </div>
@@ -77,7 +84,7 @@
         </div>
         <div class="row my-2">
           <div class="col-2">
-            <label th:text="#{date}">Date</label>
+            <label th:text="#{date}" class="required">Date</label>
           </div>
           <div class="col-4">
             <input type="date" class="form-control" id="beginDate" name="beginDate" th:value="*{beginDate}" required="required"

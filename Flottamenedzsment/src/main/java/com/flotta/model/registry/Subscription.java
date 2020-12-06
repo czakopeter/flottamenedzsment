@@ -125,7 +125,7 @@ public class Subscription extends BasicEntityWithCreateDate {
       System.err.println("Never happened");
       return;
     }
-    sim.setStatus(SimStatus.ACTIVE);
+    sim.setStatus(SimStatus.USED);
     if (subSim.isEmpty()) {
       subSim.put(date, new SubSim(this, sim, date));
     } else {
@@ -140,7 +140,7 @@ public class Subscription extends BasicEntityWithCreateDate {
             last.setEndDate(date.minusDays(1));
             last.getSim().setChangeReason(reason);
             last.getSim().setStatus(SimStatus.CHANGED);
-            sim.setStatus(SimStatus.ACTIVE);
+            sim.setStatus(SimStatus.USED);
             subSim.put(date, new SubSim(this, sim, date));
           } else if (date.isEqual(lastModDate)) {
             // Módosítjuk az új simmel vagy nem történik módosítás

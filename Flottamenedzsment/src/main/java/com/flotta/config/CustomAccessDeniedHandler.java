@@ -10,6 +10,7 @@ import org.springframework.security.access.AccessDeniedException;
 //import org.springframework.security.core.Authentication;
 //import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 

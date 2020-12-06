@@ -29,12 +29,13 @@
           <td name="userName" th:text="${device.userName}"></td>
           <td th:text="${device.number}"></td>
           <td class="text-right">
-            <div class="btn-group">
-              <a th:href="'/device/' + ${device.id} + '/update'" class="btn btn-sm btn-primary"
-                th:title="#{button.edit}"
-              > <img alt="edit" src="/img/edit.png" />
-              </a> <a th:href="'/device/' + ${device.id} + '/view'" class="btn btn-sm btn-primary" title="view">
-                <img alt="view" src="/img/visible.png" />
+            <div >
+              <a th:href="'/device/' + ${device.id} + '/update'" class="btn btn-primary"
+                th:text="#{button.edit}"
+              >
+<!--                <img alt="edit" src="/img/edit.png" /> -->
+              </a> <a th:href="'/device/' + ${device.id} + '/view'" class="btn btn-primary" th:text="#{button.view}">
+<!--                 <img alt="view" src="/img/visible.png" /> -->
               </a>
             </div>
           </td>

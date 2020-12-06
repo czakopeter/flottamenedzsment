@@ -27,7 +27,7 @@
           <td name="imei" th:text="${sim.imei}"></td>
           <td th:text="${sim.pin}"></td>
           <td th:text="${sim.puk}"></td>
-          <td th:text="${sim.status}"></td>
+          <td th:text="#{__${sim.status.key}__}"></td>
         </tr>
       </tbody>
       <tbody id="no-result-body" th:classappend="${#lists.isEmpty(sims)} ? '' : collapse">

@@ -15,7 +15,7 @@
       <div>
         <div class="row my-2">
           <div class="col-2">
-            <label th:text="#{imeiNumber}">IMEI</label>
+            <label th:text="#{imeiNumber}" class="required">IMEI</label>
           </div>
           <div class="col-4">
             <input type="text" id="imei" name="imei" th:value="*{imei}" required="required"
@@ -25,7 +25,7 @@
         </div>
         <div class="row my-2">
           <div class="col-2">
-            <label th:text="#{sim.pin}">PIN</label>
+            <label th:text="#{sim.pin}" class="required">PIN</label>
           </div>
           <div class="col-4">
             <input type="text" id="pin" name="pin" th:value="*{pin}" required="required"
@@ -35,7 +35,7 @@
         </div>
         <div class="row my-2">
           <div class="col-2">
-            <label th:text="#{sim.puk}">PUK</label>
+            <label th:text="#{sim.puk}" class="required">PUK</label>
           </div>
           <div class="col-4">
             <input type="text" id="puk" name="puk" th:value="*{puk}" required="required"

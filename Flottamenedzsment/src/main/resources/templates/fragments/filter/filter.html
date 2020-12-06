@@ -3,11 +3,11 @@
 </head>
 <body>
   
-  <div th:fragment="add-and-filter-wrapper(href ,filterOptionsName)" class="mb-2">
+  <div th:fragment="add-and-filter-wrapper(href ,filterOptionsName)" class="my-2">
     <div>
-      <a th:unless="${#strings.startsWith(href,'/')}" href="#add-wrapper" class="btn btn-info collapsed" data-toggle="collapse" role="button" aria-expanded="false" th:text="#{button.new}">New</a>
-      <a th:if="${#strings.startsWith(href,'/')}" th:href="${href}" class="btn btn-info" th:classappend="${disabled}" th:text="#{button.new}">New</a>
-      <a href="#filter-options-wrapper" class=" btn btn-info collapsed" data-toggle="collapse" role="button" aria-expanded="false" th:text="#{button.search}">Search</a>
+      <a th:unless="${#strings.startsWith(href,'/')}" href="#add-wrapper" class="btn btn-primary collapsed" data-toggle="collapse" role="button" aria-expanded="false" th:text="#{button.new}">New</a>
+      <a th:if="${#strings.startsWith(href,'/')}" th:href="${href}" class="btn btn-primary" th:classappend="${disabled}" th:text="#{button.new}">New</a>
+      <a href="#filter-options-wrapper" class=" btn btn-primary collapsed" data-toggle="collapse" role="button" aria-expanded="false" th:text="#{button.searchPanel}">SearchPanel</a>
     </div>
     
     <div th:unless="${#strings.startsWith(href,'/')}" id="add-wrapper" class="collapse">
@@ -27,10 +27,10 @@
       <h4 th:text="#{invoice.uploadInvoice}">Invoice upload</h4>
       <label for="fileBtn" th:text="#{invoice.selectAnInvoice} + ': '">Select an invoice: </label> <input type="file" id="file" name="file"
         accept=".xml" onchange="selectFile(this)" style="display: none"
-      /> <input type="button" id=fileBtn onclick="browseFile()" class="btn btn-sm btn-primary"
+      /> <input type="button" id=fileBtn onclick="browseFile()" class="btn btn-primary"
         th:value="#{invoice.browse} + '...'"
       /> <label id="fileName" th:text="#{invoice.noFileSelected}">No file selected</label> <input type="submit"
-        class="btn btn-sm btn-primary" th:value="#{button.add}"
+        class="btn btn-primary" th:value="#{button.add}"
       />
     </form>
   </div>
@@ -123,8 +123,8 @@
 
   <div th:fragment="filter-button-group">
     <div class="my-2">
-      <input type="button" class="btn btn-sm btn-primary" value="Search" th:value="#{button.search}" onclick="filter()" />
-      <input type="button" class="btn btn-sm btn-primary" value="Clear" th:value="#{button.clear}" onclick="clearFilter()"
+      <input type="button" class="btn btn-primary" value="Search" th:value="#{button.search}" onclick="filter()" />
+      <input type="button" class="btn btn-primary" value="Clear" th:value="#{button.clear}" onclick="clearFilter()"
       />
     </div>
   </div>

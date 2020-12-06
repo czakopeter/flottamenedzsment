@@ -1,14 +1,17 @@
 package com.flotta.enums;
 
 public enum SimStatus {
-  FREE(0),
-  ACTIVE(1),
-  CHANGED(2);
+  FREE(0, "free"),
+  USED(1, "used"),
+  CHANGED(2, "changed");
   
   private int code;
   
-  private SimStatus(int code) {
+  private String key;
+  
+  private SimStatus(int code, String key) {
     this.code = code;
+    this.key = key;
   }
   
   public int getCode( ) {
@@ -17,5 +20,9 @@ public enum SimStatus {
   
   public boolean isFree() {
     return 0 == this.code;
+  }
+  
+  public String getKey() {
+    return key;
   }
 }
