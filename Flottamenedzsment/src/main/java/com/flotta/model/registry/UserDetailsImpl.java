@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.flotta.enums.UserStatus;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -55,7 +58,7 @@ public class UserDetailsImpl implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		return user.getEnabled();
+		return UserStatus.ENABLED.equals(user.getStatus());
 	}
 	
 	public String getFullName() {

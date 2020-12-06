@@ -23,6 +23,7 @@
         </div>
         <div class="row mb-1">
           <div class="col">
+<!--             <input type="text" id="username" name="username" class="form-control" required="required" /> -->
             <input type="text" id="username" name="username" class="form-control"
                required="required" value="admin@gmail.com"
             />
@@ -35,6 +36,7 @@
         </div>
         <div class="row mb-3">
           <div class="col">
+<!--           <input type="password" id="password" name="password" class="form-control"required="required"/> -->
             <input type="password" id="password" name="password" class="form-control"
                required="required" value="admin"
             />
@@ -43,6 +45,7 @@
         <div class="row">
           <div class="col-6">
             <button class="btn btn-primary" type="submit" th:text="#{login.login}">Login</button>
+            <a th:if="${hasRegBtn}" class="btn btn-primary" href="/registration" th:text="#{button.registration}">Regisztáció</a>
           </div>
           <div class="col-6 text-right">
             <a href="/requestNewPassword"><small th:text="#{login.forgotYourPassword}">Forgot

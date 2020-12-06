@@ -38,9 +38,9 @@ public class DeviceController {
   private MessageService messageService;
   
   @ModelAttribute
-  public void title(Model model) {
+  public void prepareController(Model model) {
     model.addAttribute("title", "Device");
-//    model.addAttribute("locale", LocaleContextHolder.getLocale());
+    model.addAttribute("locale", LocaleContextHolder.getLocale().getCountry());
     messageService.setActualController(ControllerType.DEVICE);
   }
 

@@ -290,11 +290,7 @@ public class ServiceManager {
   public ExtendedBoolean createFirstAdmin(User user) {
     return registryManager.createFirstAdmin(user);
   }
-
-  public ExtendedBoolean registrationAvailable() {
-    return registryManager.registrationAvailable();
-  }
-
+  
   public ExtendedBoolean activation(String key) {
     return registryManager.activation(key);
   }
@@ -322,6 +318,15 @@ public class ServiceManager {
     }
     return Optional.empty();
   }
+  
+  public boolean hasEnabledAdmin() {
+    return registryManager.hasEnabledAdmin();
+  }
+  
+  public boolean hasAdmin() {
+    return registryManager.hasAdmin();
+  }
+  
 
   // --- SWITCH TABLE SERVICE ---
 

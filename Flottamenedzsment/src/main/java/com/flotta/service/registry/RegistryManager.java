@@ -182,10 +182,6 @@ public class RegistryManager {
     return userService.createFirstAdmin(user);
   }
 
-  public ExtendedBoolean registrationAvailable() {
-    return userService.registrationAvailable();
-  }
-
   public ExtendedBoolean activation(String key) {
     return userService.activation(key);
   }
@@ -204,5 +200,13 @@ public class RegistryManager {
 
   public boolean updateChargeRatioOfUser(long userId, Optional<ChargeRatioByCategory> chargeRatioOpt) {
     return userService.updateChargeRatioOfUser(userId, chargeRatioOpt);
+  }
+  
+  public boolean hasAdmin() {
+    return userService.hasAdmin();
+  }
+  
+  public boolean hasEnabledAdmin() {
+    return userService.hasEnabledAdmin();
   }
 }

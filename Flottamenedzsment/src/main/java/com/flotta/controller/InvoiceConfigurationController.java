@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.flotta.enums.ControllerType;
 import com.flotta.model.invoice.Category;
 import com.flotta.model.invoice.ChargeRatioByCategory;
 import com.flotta.model.invoice.DescriptionCategoryCoupler;
@@ -28,15 +30,18 @@ public class InvoiceConfigurationController {
 
   private static final String TEMPLATE_PATH = "invoice_config_templates";
   
+  @Autowired
   private ServiceManager service;
   
   @Autowired
   private MessageService messageService;
   
-  @Autowired
-  public void setMainService(ServiceManager service) {
-    this.service = service;
-  }  
+  @ModelAttribute
+  public void prepareController(Model model) {
+    model.addAttribute("title", "Configuration");
+    model.addAttribute("locale", LocaleContextHolder.getLocale().getCountry());
+    messageService.setActualController(ControllerType.INVOICE_CONFIG);
+  }
   
   @GetMapping("/invoiceConfiguration/main")
   public String invoiceConfigureMain(Model model, @RequestParam Optional<String> active) {

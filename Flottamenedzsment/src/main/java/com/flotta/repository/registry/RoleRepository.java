@@ -8,7 +8,7 @@ import com.flotta.model.registry.Role;
 
 public interface RoleRepository extends CrudRepository<Role, Long> {
 
-	Optional<Role> findByRole(String role);
-	
 	List<Role> findAll();
+
+  Optional<Role> findByRoleIgnoreCase(String string);
 }

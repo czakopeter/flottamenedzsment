@@ -34,7 +34,7 @@ public class User extends BasicEntity {
 	
 	private String fullName;
 	
-	private boolean enabled;
+//	private boolean enabled;
 	
 	private String activationKey;
 	
@@ -119,14 +119,6 @@ public class User extends BasicEntity {
 		this.roles = roles;
 	}
 	
-	public Boolean getEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
-	
 	public UserStatus getStatus() {
     return status;
   }
@@ -152,7 +144,7 @@ public class User extends BasicEntity {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", email=" + email + ", password=" + password + ", fullName=" + fullName
-				+ ", enabled=" + enabled + ", subscriptions=" + Objects.toString(userSubs, "NULL") + ", roles=" + Objects.toString(roles, "NULL") + "]";
+				 + ", subscriptions=" + Objects.toString(userSubs, "NULL") + ", roles=" + Objects.toString(roles, "NULL") + "]";
 	}
 	
 	public boolean equalsByEmail(User other) {

@@ -5,7 +5,6 @@ public enum MessageKey {
   ALREADY_EXISTS("alreadyExists"),
   NOT_EXISTS("notExists"),
   SUCCESSFULL_CREATION("succesfulCreation"),
-  NO_SIM("noSim"),
   NAME_ALREADY_EXISTS("nameAlreadyExists"),
   BRAND_AND_MODEL_ALREADY_EXISTS("brandAndModelAlreadyExists"),
   EMAIL_FAILURE("emailFailure"),
@@ -20,8 +19,19 @@ public enum MessageKey {
   ALREADY_HAS_ADMIN("alreadyHasAdmin"),
   SUCCESSFUL_REGISTRATION("successfulRegistration"), 
   UNKNOWN_INVOICE("unknownInvoice"),
-  LOGIN_FAILURE("lognFailure"),
-  SUCCESS_LOGOUT("successLogout");
+  LOGIN_FAILURE("loginFailure"),
+  SUCCESSFUL_LOGOUT("successfulLogout"), 
+  ACTIVATE_OR_CREATE_FIRST_ADMIN("activateOrCreateFirstAdmin"), 
+  CREATE_FIRST_ADMIN("createFirstAdmin"),
+  EMAIL_ALREADY_USED("emailAlreadyUsed"),
+  UNKNOWN_USER("unknownUser"),
+  IMEI_ALREADY_USER("imeiAlreadyUsed"),
+  IMEI_NUMBER_NOT_VALID("imeiNumberNotValid"),
+  NO_SIM("noSim"),
+  PHONE_NUMBER_ALREADY_USED("phoneNumberAlreadyUsed"),
+  UNKNOWN_SUBSCRIPITON("unknownSubscription"),
+  
+  ;
   
   
   private String key;

@@ -3,6 +3,7 @@ package com.flotta.controller;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.flotta.enums.ControllerType;
 import com.flotta.exception.invoice.FileUploadException;
 import com.flotta.model.invoice.Invoice;
 import com.flotta.service.MessageService;
@@ -37,8 +39,10 @@ public class InvoiceController {
   }
   
   @ModelAttribute
-  private void title(Model model) {
+  private void prepareController(Model model) {
     model.addAttribute("title", "Invoice");
+    model.addAttribute("locale", LocaleContextHolder.getLocale().getCountry());
+    messageService.setActualController(ControllerType.INVOICE);
   }
   
   @GetMapping("/invoice/all")

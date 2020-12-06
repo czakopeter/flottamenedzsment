@@ -74,7 +74,7 @@ public class UserController {
       model.addAttribute("messages", messageService.getMessages());
       return "user_templates/userEdit";
     } else {
-      messageService.clearAndAddMessage(MessageKey.NOT_EXISTS, MessageType.WARNING);
+      messageService.clearAndAddMessage(MessageKey.UNKNOWN_USER, MessageType.WARNING);
       return "redirect:/user/all";
     }
   }
@@ -95,38 +95,50 @@ public class UserController {
   
   @GetMapping("/login")
   public String login(Model model) {
-    ExtendedBoolean eb = service.registrationAvailable();
-    if(eb.isValid()) {
-      return "redirect:/registration";
-    } else {
-      model.addAttribute("messages", messageService.getMessages());
+    boolean hasAdmin = service.hasAdmin();
+    boolean hasEnabledAdmin = service.hasEnabledAdmin();
+    model.addAttribute("messages", messageService.getMessages());
+    if(hasEnabledAdmin) {
+      model.addAttribute("hasRegBtn", false);
       return "auth/login";
+    } else if(hasAdmin){
+      model.addAttribute("hasRegBtn", true);
+      return "auth/login";
+    } else {
+      return "redirect:/registration";
     }
+        
   }
   
   @RequestMapping("/login/failure")
   public String loginFailure() {
-    System.err.println("LOGIN_FAILURE");
     messageService.clearAndAddMessage(MessageKey.LOGIN_FAILURE, MessageType.WARNING);
     return "redirect:/login";
   }
   
   @RequestMapping("/afterlogout")
   public String logout() {
-    messageService.clearAndAddMessage(MessageKey.SUCCESS_LOGOUT, MessageType.SUCCESS);
+    messageService.clearAndAddMessage(MessageKey.SUCCESSFUL_LOGOUT, MessageType.SUCCESS);
     return "redirect:/login";
   }
   
   @GetMapping("/registration")
   public String firstAdminRegistration(Model model, RedirectAttributes redirectAttributes) {
-    ExtendedBoolean eb = service.registrationAvailable();
-    if(eb.isValid()) {
+    boolean hasEnabledAdmin = service.hasEnabledAdmin();
+    if(hasEnabledAdmin) {
+      messageService.clearAndAddMessage(MessageKey.ALREADY_HAS_ADMIN , MessageType.WARNING);
+      return "redirect:/login";
+    } else {
+      boolean hasAdmin = service.hasAdmin();
+      if(hasAdmin) {
+        messageService.clearAndAddMessage(MessageKey.ACTIVATE_OR_CREATE_FIRST_ADMIN, MessageType.WARNING);
+      } else {
+        messageService.clearAndAddMessage(MessageKey.CREATE_FIRST_ADMIN, MessageType.WARNING);
+      }
+      model.addAttribute("messages", messageService.getMessages());
       model.addAttribute("user", new User());
       return "registration";
-    } else {
-      messageService.clearAndAddMessage(eb);
-      return "redirect:/login";
-    }
+    } 
   }
   
   @PostMapping("/registration")

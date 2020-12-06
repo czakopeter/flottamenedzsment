@@ -2,6 +2,7 @@ package com.flotta.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,8 +31,9 @@ public class SimController {
   }
 
   @ModelAttribute
-  public void title(Model model) {
+  public void prepareController(Model model) {
     model.addAttribute("title", "Sim");
+    model.addAttribute("locale", LocaleContextHolder.getLocale().getCountry());
     messageService.setActualController(ControllerType.SIM);
   }
   

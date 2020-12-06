@@ -44,13 +44,13 @@ public class SimService {
     ExtendedBoolean eb = new ExtendedBoolean(true);
 //    if(!Validator.checkImieWithLuhnAlg(sim.getImei())) {
 //      eb.setInvalid();
-//      eb.addMessage("IMEI is not valid!", MessageType.WARNING);
+//      eb.addMessage(MessageKey.IMEI_NUMBER_NOT_VALID, MessageType.WARNING);
 //      return eb;
 //    }
     Optional<Sim> simOpt = simRepository.findByImei(sim.getImei());
     if(simOpt.isPresent()) {
       eb.setInvalid();
-      eb.addMessage(MessageKey.ALREADY_EXISTS, MessageType.WARNING);
+      eb.addMessage(MessageKey.IMEI_ALREADY_USER, MessageType.WARNING);
     } else {
       sim.setStatus(SimStatus.FREE);
       simRepository.save(sim);

@@ -1,5 +1,6 @@
 package com.flotta.service.registry;
 
+import java.awt.geom.AffineTransform;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.MissingRequiredPropertiesException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -38,7 +40,7 @@ public class UserService implements UserDetailsService {
   private EmailService emailService;
 
   private RoleRepository roleRepository;
-  
+
   private static final int MIN_ADMIN_NUMBER = 1;
 
   @Autowired
@@ -86,16 +88,15 @@ public class UserService implements UserDetailsService {
 
     if (userOpt.isPresent()) {
       eb.setInvalid();
-      eb.addMessage(MessageKey.ALREADY_EXISTS, MessageType.WARNING);
+      eb.addMessage(MessageKey.EMAIL_ALREADY_USED, MessageType.WARNING);
     } else {
       String password = generateKey(16);
-      user.setEnabled(false);
       user.setStatus(UserStatus.WAITING_FOR_ACTIVATION);
       user.setPassword(passwordEncoder.encode(password));
       user.setActivationKey(generateKey(16));
       if (emailService.sendMessage(user.getEmail(), "Activation email", emailService.createMessageText(EmailService.ACTIVATION_AND_INITIAL_PASSWORD, new String[] { user.getFullName(), user.getActivationKey(), password }))) {
         userRepository.save(user);
-        eb.addMessage(MessageKey.SUCCESSFULL_CREATION, MessageType.SUCCESS);
+//        eb.addMessage(MessageKey.USER_SUCCESSFULLY_CREATED, MessageType.SUCCESS);
       } else {
         eb.addMessage(MessageKey.EMAIL_FAILURE, MessageType.WARNING);
       }
@@ -106,7 +107,7 @@ public class UserService implements UserDetailsService {
   ExtendedBoolean updateUser(long id, Map<String, Boolean> roles) {
     ExtendedBoolean eb = new ExtendedBoolean(true);
     Optional<User> userOpt = userRepository.findById(id);
-    Optional<Role> adminRoleOpt = roleRepository.findByRole("ADMIN");
+    Optional<Role> adminRoleOpt = roleRepository.findByRoleIgnoreCase("admin");
     if(userOpt.isPresent() && adminRoleOpt.isPresent()) {
       User user = userOpt.get();
       Set<Role> savableRoles = convertToRoleSet(roles);
@@ -126,7 +127,6 @@ public class UserService implements UserDetailsService {
     Optional<User> userOpt = userRepository.findByActivationKey(key);
     if(userOpt.isPresent()) {
       User user = userOpt.get();
-      user.setEnabled(true);
       user.setStatus(UserStatus.ENABLED);
       userRepository.save(user);
       eb.addMessage(MessageKey.SUCCESSFUL_ACTIVATION, MessageType.SUCCESS);
@@ -137,7 +137,7 @@ public class UserService implements UserDetailsService {
     return eb;
   }
 
-//TODO MESSAGES
+  //TODO MESSAGES
   ExtendedBoolean changePassword(String email, String oldPsw, String newPsw, String confirmPsw) {
     ExtendedBoolean eb = new ExtendedBoolean(false);
     Optional<User> userOpt = userRepository.findByEmail(email);
@@ -162,7 +162,7 @@ public class UserService implements UserDetailsService {
     }
     return eb;
   }
-  
+
   ExtendedBoolean requestNewPassword(String email) {
     ExtendedBoolean eb = new ExtendedBoolean(false);
     Optional<User> optionalUser = userRepository.findByEmail(email);
@@ -196,22 +196,11 @@ public class UserService implements UserDetailsService {
     return false;
   }
 
-  ExtendedBoolean registrationAvailable() {
-    ExtendedBoolean eb = new ExtendedBoolean(userRepository.findAllByEnabled(true).isEmpty());
-    if(eb.isValid()) {
-      userRepository.deleteAll();
-    } else {
-      eb.addMessage(MessageKey.ALREADY_HAS_ADMIN, MessageType.WARNING);
-    }
-    return eb;
-  }
-
-//TODO MESSAGES
+  //TODO MESSAGES
   ExtendedBoolean createFirstAdmin(User user) {
     ExtendedBoolean eb = new ExtendedBoolean(false);
     String password = generateKey(16);
-    user.setEnabled(false);
-    user.addRole(roleRepository.findByRole("ADMIN").get());
+    user.addRole(roleRepository.findByRoleIgnoreCase("admin").get());
     user.setStatus(UserStatus.WAITING_FOR_ACTIVATION);
     user.setPassword(passwordEncoder.encode(password));
     user.setActivationKey(generateKey(16));
@@ -225,6 +214,31 @@ public class UserService implements UserDetailsService {
     return eb;
   }
 
+  boolean hasAdmin() {
+    Optional<Role> adminOpt = roleRepository.findByRoleIgnoreCase("admin");
+    if(adminOpt.isPresent()) {
+      Role admin = adminOpt.get();
+      return !admin.getUsers().isEmpty();
+    } else {
+      throw new MissingRequiredPropertiesException();
+    }
+  }
+
+  boolean hasEnabledAdmin() {
+    Optional<Role> adminOpt = roleRepository.findByRoleIgnoreCase("admin");
+    if(adminOpt.isPresent()) {
+      Role admin = adminOpt.get();
+      for(User user : admin.getUsers()) {
+        if(UserStatus.ENABLED.equals(user.getStatus())) {
+          return true;
+        }
+      }
+      return false;
+    } else {
+      throw new MissingRequiredPropertiesException();
+    }
+  }
+
   private String generateKey(int length) {
     Random random = new Random();
     char[] key = new char[length];
@@ -233,25 +247,30 @@ public class UserService implements UserDetailsService {
     }
     return new String(key);
   }
-  
+
   private Set<Role> convertToRoleSet(Map<String, Boolean> roles) {
     Set<Role> result = new HashSet<>();
     for (String key : new LinkedList<>(roles.keySet())) {
-      Optional<Role> roleOpt = roleRepository.findByRole(key.toUpperCase());
+      Optional<Role> roleOpt = roleRepository.findByRoleIgnoreCase(key);
       roleOpt.ifPresent(role -> result.add(role));
     }
     return result;
   }
 
   // TOTO delete create first admin
-  @PostConstruct
-  private void createFirstAdmin() {
-    User user = new User();
-    user.setEmail("admin@gmail.com");
-    user.setFullName("Admin");
-    user.setPassword(passwordEncoder.encode("admin"));
-    user.setEnabled(true);
-    user.setStatus(UserStatus.ENABLED);
-    userRepository.save(user);
-  }
+    @PostConstruct
+    private void createFirstAdmin() {
+      userRepository.save(createUser("admin@gmail.com", "Admin", "admin", UserStatus.ENABLED));
+      userRepository.save(createUser("testuser@gmail.com", "Test User", "testuser", UserStatus.WAITING_FOR_ACTIVATION));
+//      userRepository.save(createUser("disableduser@gmail.com", "", "disabled", UserStatus.DISABLED));
+    }
+    
+    private User createUser(String email, String name, CharSequence psw, UserStatus status) {
+      User user = new User();
+      user.setEmail(email);
+      user.setFullName(name);
+      user.setPassword(passwordEncoder.encode(psw));
+      user.setStatus(status);
+      return user;
+    }
 }
