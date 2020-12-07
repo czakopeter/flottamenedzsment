@@ -30,6 +30,7 @@ public class DescriptionCategoryCoupler extends BasicEntity {
       Comparator.comparing(DescriptionCategoryCoupler::getName, String.CASE_INSENSITIVE_ORDER);
   
   public DescriptionCategoryCoupler() {
+    availability = Availability.NONE;
   }
 
   public String getName() {
