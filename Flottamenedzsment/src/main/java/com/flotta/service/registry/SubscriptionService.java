@@ -13,6 +13,7 @@ import com.flotta.model.registry.Subscription;
 import com.flotta.model.viewEntity.SubscriptionToView;
 import com.flotta.repository.registry.SubscriptionRepository;
 import com.flotta.utility.ExtendedBoolean;
+import com.flotta.utility.Validator;
 
 @Service
 public class SubscriptionService implements SubscriptionFinderService {
@@ -40,16 +41,20 @@ public class SubscriptionService implements SubscriptionFinderService {
   }
   
   public ExtendedBoolean create(SubscriptionToView stv, Optional<Sim> simOpt) {
-    ExtendedBoolean eb = new ExtendedBoolean(true);
-    Optional<Subscription> optional = subscriptionRepository.findByNumber(stv.getNumber());
-    if(optional.isPresent()) {
-      eb.setInvalid();
-      eb.addMessage(MessageKey.UNKNOWN_SUBSCRIPITON, MessageType.WARNING);
+    ExtendedBoolean eb = new ExtendedBoolean(Validator.validHunPhoneNumber(stv.getNumber()));
+    if(eb.isValid()) {
+      Optional<Subscription> optional = subscriptionRepository.findByNumber(stv.getNumber());
+      if(optional.isPresent()) {
+        eb.setInvalid();
+        eb.addMessage(MessageKey.PHONE_NUMBER_ALREADY_USED, MessageType.WARNING);
+      } else {
+        Subscription entity = new Subscription(stv.getNumber(), stv.getBeginDate());
+        entity.addSim(simOpt, null, stv.getBeginDate());
+        subscriptionRepository.save(entity);
+        eb.addMessage(MessageKey.SUCCESSFULL_CREATION, MessageType.SUCCESS);
+      }
     } else {
-      Subscription entity = new Subscription(stv.getNumber(), stv.getBeginDate());
-      entity.addSim(simOpt, null, stv.getBeginDate());
-      subscriptionRepository.save(entity);
-      eb.addMessage(MessageKey.SUCCESSFULL_CREATION, MessageType.SUCCESS);
+      eb.addMessage(MessageKey.PHONE_NUMBER_INVALID, MessageType.WARNING);
     }
     return eb;
   }

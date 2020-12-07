@@ -24,6 +24,7 @@ public enum MessageKey {
   IMEI_NUMBER_NOT_VALID("imeiNumberNotValid"),
   NO_FREE_SIM("noFreeSim"),
   PHONE_NUMBER_ALREADY_USED("phoneNumberAlreadyUsed"),
+  PHONE_NUMBER_INVALID("phoneNumberInvalid"),
   UNKNOWN_SUBSCRIPITON("unknownSubscription"),
   SERIAL_NUMBER_ALREADY_USED("serialNumberAlreadyUsed"),
   UNKNOWN_DEVICE("unknownDevice"),
