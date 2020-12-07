@@ -11,6 +11,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.JoinTable;
 
+import com.flotta.enums.Availability;
 import com.flotta.model.BasicEntity;
 
 @Entity
@@ -18,7 +19,7 @@ public class ChargeRatioByCategory extends BasicEntity {
   
   private String name;
   
-  private boolean available;
+  private Availability availability;
   
   @ElementCollection
   @JoinTable(name = "category_ratio_map")
@@ -28,6 +29,7 @@ public class ChargeRatioByCategory extends BasicEntity {
       Comparator.comparing(ChargeRatioByCategory::getName, String.CASE_INSENSITIVE_ORDER);
   
   public ChargeRatioByCategory() {
+    availability = Availability.NONE;
   }
 
   public String getName() {
@@ -38,12 +40,12 @@ public class ChargeRatioByCategory extends BasicEntity {
     this.name = name;
   }
 
-  public boolean isAvailable() {
-    return available;
+  public Availability getAvailability() {
+    return availability;
   }
 
-  public void setAvailable(boolean available) {
-    this.available = available;
+  public void setAvailability(Availability availability) {
+    this.availability = availability;
   }
 
   public void addToCategoryRatioMap(Category category, int ratio) {
@@ -76,7 +78,7 @@ public class ChargeRatioByCategory extends BasicEntity {
 
   @Override
   public String toString() {
-    return "ChargeRatioByCategory [name=" + name + ", available=" + available + "]";
+    return "ChargeRatioByCategory [name=" + name + ", available=" + availability + "]";
   }
   
 }

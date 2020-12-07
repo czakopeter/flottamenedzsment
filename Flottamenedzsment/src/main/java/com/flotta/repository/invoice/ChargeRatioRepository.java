@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
+import com.flotta.enums.Availability;
 import com.flotta.model.invoice.ChargeRatioByCategory;
 
 public interface ChargeRatioRepository extends CrudRepository<ChargeRatioByCategory, Long> {
@@ -12,5 +13,7 @@ public interface ChargeRatioRepository extends CrudRepository<ChargeRatioByCateg
   Optional<ChargeRatioByCategory> findByName(String name);
   
   List<ChargeRatioByCategory> findAll();
+
+  List<ChargeRatioByCategory> findAllByAvailability(Availability availability);
 
 }

@@ -94,7 +94,6 @@ public class InvoiceConfigurationController {
     } else {
       return "redirect:/invoiceConfiguration/main?active=description-category-coupler";
     }
-    
   }
   
   @PostMapping("/invoiceConfiguration/descriptionCategoryCoupler/{id}/addDescriptionsOfInvoice")

@@ -24,10 +24,14 @@
       </div>
       <div class="row my-2">
         <div class="col-1 ">
-          <label for="available" th:text="#{available}">Available</label>
+          <label for="availability" th:text="#{availability}">Availability</label>
         </div>
         <div class="col-4">
-          <input type="checkbox" id="available" name="available" th:checked="*{available}" />
+          <select id="availability" name="availability" class="form-control">
+            <option th:each="availabilityOpt : ${T(com.flotta.enums.Availability).values()}"
+            th:value="${availabilityOpt}" th:text="#{__${availabilityOpt.key}__}"
+            th:selected="${availabilityOpt == chargeRatio.availability}"></option>
+          </select>
         </div>
       </div>
 

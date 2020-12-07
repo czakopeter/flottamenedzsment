@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import com.flotta.enums.Availability;
 import com.flotta.model.BasicEntity;
 
 @Entity
@@ -19,7 +20,7 @@ public class DescriptionCategoryCoupler extends BasicEntity {
 
   private String name;
 
-  private boolean available;
+  private Availability availability;
 
   @JoinTable(name = "description_category_map")
   @ManyToMany(cascade = CascadeType.ALL)
@@ -39,12 +40,12 @@ public class DescriptionCategoryCoupler extends BasicEntity {
     this.name = name;
   }
 
-  public boolean isAvailable() {
-    return available;
+  public Availability getAvailability() {
+    return availability;
   }
 
-  public void setAvailable(boolean available) {
-    this.available = available;
+  public void setAvailability(Availability availability) {
+    this.availability = availability;
   }
 
   public Map<String, Category> getDescriptionCategoryMap() {
@@ -71,7 +72,7 @@ public class DescriptionCategoryCoupler extends BasicEntity {
 
   @Override
   public String toString() {
-    return "DescriptionCategoryCoupler [name=" + name + ", available=" + available + "]";
+    return "DescriptionCategoryCoupler [name=" + name + ", available=" + availability + "]";
   }
   
   

@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.flotta.enums.Availability;
 import com.flotta.model.invoice.Category;
 import com.flotta.model.invoice.DescriptionCategoryCoupler;
 import com.flotta.repository.invoice.DescriptionCategoryCouplerRepository;
@@ -22,6 +23,10 @@ public class DescriptionCategoryCouplerService {
 
   List<DescriptionCategoryCoupler> findAll() {
     return descriptionCategoryCouplerRepository.findAll();
+  }
+  
+  List<DescriptionCategoryCoupler> findAllByAvailability(Availability availability) {
+    return descriptionCategoryCouplerRepository.findAllByAvailability(availability);
   }
   
   Optional<DescriptionCategoryCoupler> findById(long id) {

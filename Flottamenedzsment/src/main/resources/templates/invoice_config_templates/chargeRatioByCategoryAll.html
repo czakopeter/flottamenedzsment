@@ -18,12 +18,14 @@
         <thead>
           <tr>
             <th th:text="#{name}">Name</th>
+            <th th:text="#{availability}">Availability</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
           <tr th:each="chargeRatio : ${chargeRatios}">
             <td th:text="${chargeRatio.name}"></td>
+            <td th:text="#{__${chargeRatio.availability.key}__}"></td>
             <td class="text-right"><a th:href="${'/invoiceConfiguration/chargeRatio/' + chargeRatio.id}"
               class="btn btn-primary" th:text="#{button.edit}"
             ></a></td>

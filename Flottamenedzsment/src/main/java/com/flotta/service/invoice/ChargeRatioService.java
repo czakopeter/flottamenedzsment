@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.flotta.enums.Availability;
 import com.flotta.model.invoice.Category;
 import com.flotta.model.invoice.ChargeRatioByCategory;
 import com.flotta.repository.invoice.ChargeRatioRepository;
@@ -26,6 +27,10 @@ public class ChargeRatioService {
     return chargeRatioRepository.findAll();
   }
 
+  List<ChargeRatioByCategory> findAllByAvailability(Availability availability) {
+    return chargeRatioRepository.findAllByAvailability(availability);
+  }
+  
   Optional<ChargeRatioByCategory> findById(long id) {
     return chargeRatioRepository.findById(id);
   }

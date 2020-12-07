@@ -42,7 +42,8 @@
         <div class="col-4">
           <select id="availability" name="availability" class="form-control">
           <option th:each="availabilityOpt : ${T(com.flotta.enums.Availability).values()}"
-            th:value="${availabilityOpt}" th:text="#{__${availabilityOpt.key}__}" th:selected="${availabilityOpt == deviceType.availability}"></option>
+            th:value="${availabilityOpt}" th:text="#{__${availabilityOpt.key}__}"
+            th:selected="${availabilityOpt == deviceType.availability}"></option>
         </select>
         </div>
       </div>

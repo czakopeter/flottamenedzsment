@@ -22,7 +22,7 @@ INSERT INTO Categories (name) VALUES ('Monthly')
 INSERT INTO Categories (name) VALUES ('Call')
 INSERT INTO Categories (name) VALUES ('Internet')
 
-INSERT INTO description_category_coupler(name, available) VALUES ('Test description category coupler', true)
+INSERT INTO description_category_coupler(name, availability) VALUES ('Test description category coupler', 0)
 
 INSERT INTO description_category_map (description_category_coupler_id, description_category_map_id, description_category_map_key) VALUES (1, 1, 'Mobil telefon szolgaltatas')
 INSERT INTO description_category_map (description_category_coupler_id, description_category_map_id, description_category_map_key) VALUES (1, 2, 'Telekom mobilhalozaton belul')
@@ -30,7 +30,7 @@ INSERT INTO description_category_map (description_category_coupler_id, descripti
 INSERT INTO description_category_map (description_category_coupler_id, description_category_map_id, description_category_map_key) VALUES (1, 2, 'Belfoldi mas mobilhalozat / Vodafone')
 INSERT INTO description_category_map (description_category_coupler_id, description_category_map_id, description_category_map_key) VALUES (1, 3, 'Mobil net 1GB')
 
-INSERT INTO Charge_ratio_by_category (name, available) VALUES ('Test charge ratio', true)
+INSERT INTO Charge_ratio_by_category (name, availability) VALUES ('Test charge ratio', 0)
 
 INSERT INTO Category_ratio_map (CHARGE_RATIO_BY_CATEGORY_ID, CATEGORY_RATIO_MAP, CATEGORY_RATIO_MAP_KEY) VALUES (1, 0, 1)
 INSERT INTO Category_ratio_map (CHARGE_RATIO_BY_CATEGORY_ID, CATEGORY_RATIO_MAP, CATEGORY_RATIO_MAP_KEY) VALUES (1, 50, 2)
