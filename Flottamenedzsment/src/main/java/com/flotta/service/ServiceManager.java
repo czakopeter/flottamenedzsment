@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.flotta.enums.Availability;
 import com.flotta.exception.invoice.FileUploadException;
 import com.flotta.model.invoice.Category;
 import com.flotta.model.invoice.ChargeRatioByCategory;
@@ -221,8 +222,8 @@ public class ServiceManager {
     registryManager.updateDeviceType(deviceType);
   }
 
-  public List<DeviceType> findAllVisibleDeviceTypes() {
-    return registryManager.findAllVisibleDeviceTypes();
+  public List<DeviceType> findAllDeviceTypesByAvailability(Availability availability) {
+    return registryManager.findAllDeviceTypesByAvailability(availability);
   }
   
   public ExtendedBoolean canCreateDevice() {
@@ -265,7 +266,7 @@ public class ServiceManager {
     return registryManager.createSubscription(stv);
   }
 
-  public boolean updateSubscription(SubscriptionToView stv) {
+  public ExtendedBoolean updateSubscription(SubscriptionToView stv) {
     return registryManager.updateSubscription(stv);
   }
 

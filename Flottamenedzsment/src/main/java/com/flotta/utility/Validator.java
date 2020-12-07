@@ -3,11 +3,11 @@ package com.flotta.utility;
 public class Validator {
   
   public static boolean validPassword(String psw) {
-    return psw != null && psw.length() >= 6 && psw.length() <= 20;
+    return psw != null && !psw.matches("\\s+") && psw.length() >= 6 && psw.length() <= 20;
   }
   
   public static boolean equalsAndValidPassword(String psw, String psw2) {
-    return psw != null && psw.length() >= 6 && psw.length() <= 20 && psw.contentEquals(psw2);
+    return validPassword(psw) && psw.contentEquals(psw2);
   }
   
   public static boolean validHunPhoneNumber(String number) {
@@ -22,13 +22,11 @@ public class Validator {
     boolean isSecondDigit = false;
     while(i >= 0) {
       char ch = imei.charAt(i);
-      System.out.println("ch=" + ch + ", i=" + i + ", count=" + count);
       if(!Character.isDigit(ch)) {
         return false;
       }
       if(isSecondDigit) {
         int n = Character.getNumericValue(ch) * 2;
-        System.out.println(n);
         count += n > 9 ? n - 9 : n;
       } else {
         count += Character.getNumericValue(ch);

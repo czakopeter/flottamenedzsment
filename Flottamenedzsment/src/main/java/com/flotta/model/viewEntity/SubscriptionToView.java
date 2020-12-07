@@ -93,7 +93,7 @@ public class SubscriptionToView {
   }
 
   public void setNumber(String number) {
-    this.number = number;
+    this.number = number.trim();
   }
 
   public String getOldImei() {
@@ -117,7 +117,7 @@ public class SubscriptionToView {
   }
 
   public void setSimChangeReason(String simChangeReason) {
-    this.simChangeReason = simChangeReason;
+    this.simChangeReason = simChangeReason.trim();
   }
 
   public long getUserId() {
@@ -157,7 +157,7 @@ public class SubscriptionToView {
   }
 
   public void setNote(String note) {
-    this.note = note;
+    this.note = note.trim();
   }
 
   public LocalDate getBeginDate() {

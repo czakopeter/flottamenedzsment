@@ -31,63 +31,68 @@
         </div>
       </div>
 
-        <br />
-
-        <table id="table" class="table table-sm table-hover" style="width: 50%">
-          <thead>
-            <tr>
-              <th th:text="#{category}">Category</th>
-              <th class="text-left" colspan="2" th:text="#{company}">Company</th>
-              <th></th>
-              <th class="text-right" colspan="2" th:text="#{user}">User</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr th:each="category, i : ${chargeRatio.getCategories()}">
-              <td class="align-middle"><label th:text="${category.name}"></label> <input
-                type="hidden" name="category" th:value="${category.id}"
-              /></td>
-              <td class="text-left" style="width: 4em;"><label
-                th:id="companyPercent + ${i.count}" class="form-check-label"
-              >0</label> <label>%</label></td>
-              <td class="align-middle text-center"><input type="radio"
-                th:id="company + ${i.count}" th:name="radio + ${i.count}"
-                th:onclick="|clickOnRadioButton('company', ${i.count})|"
-              /></td>
-              <td class="align-middle"><input type="range" class="form-control-range"
-                th:id="ratio + ${i.count}" name="ratio" min="0" max="100" step="5"
-                th:value="${chargeRatio.categoryRatioMap.get(category)}"
-                th:oninput="|setRangeInput(${i.count})|"
-              /></td>
-              <td class="align-middle text-center"><input type="radio"
-                th:id="user + ${i.count}" th:name="radio + ${i.count}"
-                th:onclick="|clickOnRadioButton('user', ${i.count})|"
-              /></td>
-              <td class="text-right" style="width: 4em;"><label
-                th:id="userPercent + ${i.count}" class="form-check-label"
-              >0</label> <label>%</label></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div id="category-adder"
-          th:if="${unusedCategories != null and not #lists.isEmpty(unusedCategories)}"
-          class="form-group form-inline"
-        >
+      <hr />
+        
+      <div id="category-adder" class="row" th:if="${unusedCategories != null and not #lists.isEmpty(unusedCategories)}">
+        <div class="col-4">
           <select id="selectUnusedCategory" class="form-control">
             <option th:each="unusedCategory : ${unusedCategories}" th:text="${unusedCategory.name}"
-              th:value="${unusedCategory.id}"
-            ></option>
+         	  th:value="${unusedCategory.id}"
+          ></option>
           </select>
-          <button type="button" th:text="#{button.add}" class="btn btn-sm btn-primary ml-1"
+        </div>
+        <div class="col-2">
+          <button type="button" th:text="#{button.add}" class="btn btn-primary"
             onclick="addCategory()"
           ></button>
         </div>
-
+      </div>
+      
+      <hr />
+      
+      <table id="table" class="table table-sm table-hover" style="width: 50%">
+        <thead>
+          <tr>
+            <th th:text="#{category}">Category</th>
+            <th class="text-left" colspan="2" th:text="#{company}">Company</th>
+            <th></th>
+            <th class="text-right" colspan="2" th:text="#{user}">User</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="category, i : ${chargeRatio.getCategories()}">
+            <td class="align-middle"><label th:text="${category.name}"></label> <input
+              type="hidden" name="category" th:value="${category.id}"
+            /></td>
+            <td class="text-left" style="width: 4em;"><label
+              th:id="companyPercent + ${i.count}" class="form-check-label"
+            >0</label> <label>%</label></td>
+            <td class="align-middle text-center"><input type="radio"
+              th:id="company + ${i.count}" th:name="radio + ${i.count}"
+              th:onclick="|clickOnRadioButton('company', ${i.count})|"
+            /></td>
+            <td class="align-middle"><input type="range" class="form-control-range"
+              th:id="ratio + ${i.count}" name="ratio" min="0" max="100" step="5"
+              th:value="${chargeRatio.categoryRatioMap.get(category)}"
+              th:oninput="|setRangeInput(${i.count})|"
+            /></td>
+            <td class="align-middle text-center"><input type="radio"
+              th:id="user + ${i.count}" th:name="radio + ${i.count}"
+              th:onclick="|clickOnRadioButton('user', ${i.count})|"
+            /></td>
+            <td class="text-right" style="width: 4em;"><label
+              th:id="userPercent + ${i.count}" class="form-check-label"
+            >0</label> <label>%</label></td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <div class="col-6 text-right">
         <button type="submit" id="saveButton" class="btn btn-primary" th:text="#{button.save}">Save</button>
         <a href="/invoiceConfiguration/main?active=charge-ratio" class="btn btn-primary"
-          th:text="#{button.back}"
+            th:text="#{button.back}"
         >Back</a>
+      </div>
     </form>
 
     <script src="/js/invoiceConfiguration/chargeRatioByCategory.js"></script>

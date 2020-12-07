@@ -112,11 +112,11 @@
       />
     </div>
     <div>
-      <label for="status" th:text="#{deviceType.status}">Status</label>
-        <select id="status" class="form-control">
-          <option value="all" th:text="#{deviceType.filter.all}">All</option>
-          <option value="active" th:text="#{deviceType.filter.active}">Active</option>
-          <option value="archived" th:text="#{deviceType.filter.archived}">Archived</option>
+      <label for="availability" th:text="#{availability}">Availability</label>
+        <select id="availability" class="form-control">
+          <option th:value="ALL" th:text="#{all}"></option>
+          <option th:each="availabilityOpt : ${T(com.flotta.enums.Availability).values()}"
+            th:value="${availabilityOpt}" th:text="#{__${availabilityOpt.key}__}"></option>
         </select>
       </div>
   </div>

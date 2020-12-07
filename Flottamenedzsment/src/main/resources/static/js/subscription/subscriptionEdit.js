@@ -1,6 +1,13 @@
 function simChange(imeiSelectBtn) {
-	imeiSelectBtn.parentElement.parentElement.style.display = 'none';
-	let selectedImei = imeiSelectBtn.parentElement.parentElement.querySelector("[name=imei]").innerText;
+	let selected = imeiSelectBtn.parentElement.parentElement;
+	selected.classList.add("collapse");
+	selected.classList.remove("row");
+	
+	if(selected.parentElement.querySelectorAll(".row").length == 0) {
+		document.querySelector("#simChangeBtn").disabled = true;
+	}
+	
+	let selectedImei = selected.querySelector("[name=imei]").innerText;
 	document.querySelector("#imei").value = selectedImei;
 	document.querySelector("#reasonRow").style.display = null;
 	document.querySelector("#simChangeResetBtn").disabled = false;
@@ -9,7 +16,13 @@ function simChange(imeiSelectBtn) {
 }
 
 function resetSimChange() {
-	console.log("resetSimChange");
+	for(let tr of document.querySelector(".modal-body").querySelectorAll(".collapse")) {
+		tr.classList.remove("collapse");
+		tr.classList.add("row");
+	}
+	if(document.querySelector(".modal-body").querySelectorAll(".row").length != 0) {
+		document.querySelector("#simChangeBtn").disabled = false;
+	}
 	document.querySelector("#imei").value = document.querySelector("#oldImei").value;
 	document.querySelector("#reasonRow").style.display = 'none';
 	document.querySelector("#simChangeResetBtn").disabled = true;

@@ -10,7 +10,6 @@
       <h3 th:text="#{descCatCoupler.editInvoiceDescriptionAndCategoryCoupler}">Edit invoice description category coupler</h3>
 
       <form method="post" th:object="${coupler}">
-      <div class="container">
         <div class="row my-2">
           <div class="col-1 ">
             <label for="name" th:text="#{name}">Name</label>
@@ -37,11 +36,17 @@
             </div>
             
             <form method="post">
-            <select id="selectedInvoice" name="selectedInvoice">
-              <option th:each="invoice : ${invoices}" th:value="${invoice.invoiceNumber}" th:text="${invoice.invoiceNumber} + ' (' + ${invoice.getPeriod()} +')'"></option>
-              <option th:each="rawInvoice : ${rawInvoices}" th:value="${rawInvoice.invoiceNumber}" th:text="${rawInvoice.invoiceNumber} + ' (' + ${rawInvoice.getPeriod()} +')'"></option>
-            </select>
-            <button type="submit" class="btn btn-sm btn-primary" th:formaction="'/invoiceConfiguration/descriptionCategoryCoupler/' + ${coupler.id} + '/addDescriptionsOfInvoice'" th:text="#{button.add}">Add</button>
+            <div class="row">
+              <div class="col-4">
+                <select id="selectedInvoice" name="selectedInvoice" class="form-control">
+                  <option th:each="invoice : ${invoices}" th:value="${invoice.invoiceNumber}" th:text="${invoice.invoiceNumber} + ' (' + ${invoice.getPeriod()} +')'"></option>
+                  <option th:each="rawInvoice : ${rawInvoices}" th:value="${rawInvoice.invoiceNumber}" th:text="${rawInvoice.invoiceNumber} + ' (' + ${rawInvoice.getPeriod()} +')'"></option>
+                </select>
+              </div>
+              <div class="col-2">
+                <button type="submit" class="btn btn-primary" th:formaction="'/invoiceConfiguration/descriptionCategoryCoupler/' + ${coupler.id} + '/addDescriptionsOfInvoice'" th:text="#{button.add}">Add</button>
+              </div>
+            </div>
             </form>
           </div>
           <div class="row my-2" th:each="description : ${descriptions}">
@@ -73,7 +78,6 @@
             <a href="/invoiceConfiguration/main?active=description-category-coupler" class="btn btn-primary" th:text="#{button.back}"></a>
           </div>
         </div>
-      </div>
       </form>
       
       <script src="/js/invoiceConfiguration/descriptionCategoryCouplerEdit.js"></script>

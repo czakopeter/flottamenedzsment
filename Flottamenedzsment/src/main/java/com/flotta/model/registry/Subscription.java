@@ -136,6 +136,9 @@ public class Subscription extends BasicEntityWithCreateDate {
           // nem csinálunk semmit
         } else {
           if (date.isAfter(lastModDate)) {
+            if(reason.isEmpty()) {
+              throw new IllegalArgumentException();
+            }
             last.setEndDate(date.minusDays(1));
             last.getSim().setChangeReason(reason);
             last.getSim().setStatus(SimStatus.CHANGED);

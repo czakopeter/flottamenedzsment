@@ -19,15 +19,17 @@
           <th th:text="#{deviceType.brand}">Brand</th>
           <th th:text="#{deviceType.model}">Model</th>
           <th th:text="#{name}">Name</th>
+          <th th:text="#{availability}">Availability</th>
           <th></th>
         </tr>
       </thead>
       <tbody id="content-body">
         <tr th:each="deviceType, i : ${deviceTypes}" th:id="${i.count}">
-          <td name="visible" th:text="${deviceType.visible}" style="display: none;"></td>
           <td name="brand" th:text="${deviceType.brand}"></td>
           <td name="model" th:text="${deviceType.model}"></td>
           <td name="name" th:text="${deviceType.name}"></td>
+          <td name="availability" th:text="${deviceType.availability}" style="display: none;">
+          <td name="availabilityView" th:text="#{__${deviceType.availability.key}__}"></td>
           <td class="text-right"><a class="btn btn-primary" th:href="'/deviceType/' + ${deviceType.id} + '/update'" th:text="#{button.edit}"
             >Edit</a>
           </td>

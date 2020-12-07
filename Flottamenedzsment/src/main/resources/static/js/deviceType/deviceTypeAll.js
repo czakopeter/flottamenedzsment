@@ -23,7 +23,7 @@ function clearFilter() {
 	filterOptionsWrapper.querySelector("#name").value = "";
 	filterOptionsWrapper.querySelector("#brand").value = "";
 	filterOptionsWrapper.querySelector("#model").value = "";
-	filterOptionsWrapper.querySelector("#status").value = filterOptionsWrapper.querySelector("#status")[0].value;
+	filterOptionsWrapper.querySelector("#availability").value = filterOptionsWrapper.querySelector("#availability")[0].value;
 	showAll();
 }
 
@@ -40,11 +40,12 @@ function filterCondition(tr) {
 
 function conditionForStatus(tr) {
 	let filterOptionsWrapper = document.querySelector("#filter-options-wrapper");
-	let status = filterOptionsWrapper.querySelector("#status").value;
-	let visible = tr.querySelector("[name=visible]").innerHTML.toLowerCase();
-	return status == "all" ||
-			(status == "active" && visible == "true") ||
-			(status == "archived" && visible == "false");
+	console.log(filterOptionsWrapper);
+	let selectedAvailability = filterOptionsWrapper.querySelector("#availability").value;
+	let availability = tr.querySelector("[name=availability]").innerHTML.toUpperCase();
+	console.log(selectedAvailability);
+	console.log(availability);
+	return selectedAvailability == "ALL" || selectedAvailability == availability;
 }
 
 function showAll() {

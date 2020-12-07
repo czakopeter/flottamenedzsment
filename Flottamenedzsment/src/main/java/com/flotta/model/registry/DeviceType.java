@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.flotta.enums.Availability;
 import com.flotta.model.BasicEntity;
 
 @Entity
@@ -21,7 +22,7 @@ public class DeviceType extends BasicEntity {
   @Column(unique = true, nullable = false)
   private String name;
 
-  private boolean visible;
+  private Availability availability;
   
   @OneToMany(mappedBy = "deviceType")
   private List<Device> devices;
@@ -33,13 +34,12 @@ public class DeviceType extends BasicEntity {
   
   public DeviceType() {}
 
-
-  public boolean isVisible() {
-    return visible;
+  public Availability getAvailability() {
+    return availability;
   }
 
-  public void setVisible(boolean visible) {
-    this.visible = visible;
+  public void setAvailability(Availability availability) {
+    this.availability = availability;
   }
 
   public String getBrand() {
@@ -76,7 +76,7 @@ public class DeviceType extends BasicEntity {
 
   @Override
   public String toString() {
-    return "DeviceType [id=" + id + ", visible=" + visible + ", brand=" + brand + ", model=" + model + ", name=" + name + "]";
+    return "DeviceType [id=" + id + ", visible=" + availability + ", brand=" + brand + ", model=" + model + ", name=" + name + "]";
   }
   
 }

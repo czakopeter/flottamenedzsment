@@ -17,11 +17,11 @@
           <div class="col-2 text-right" th:text="${invoicePart.subscription.number}">201234567</div>
         </div>
         <div class="row my-2">
-          <div class="col-2" th:text="#{invoice.from}">From</div>
+          <div class="col-2" th:text="#{invoice.periodBegin}">Period begin</div>
           <div class="col-2 text-right" th:text="${invoicePart.beginDate}">2020.01.10</div>
         </div>
         <div class="row my-2">
-          <div class="col-2" th:text="#{invoice.to}">To</div>
+          <div class="col-2" th:text="#{invoice.periodEnd}">Period ends</div>
           <div class="col-2 text-right" th:text="${invoicePart.endDate}">2020.01.31</div>
         </div>
         <div class="row my-2">
@@ -54,8 +54,8 @@
       <label th:text="#{reviewNoteForEntireInvoice}">Review note for entire invoice</label>
       <textarea th:if="${not invoicePart.acceptedByUser}" class="form-control mb-2" name="textarea" oninput="modifyNotes()"></textarea>
       
-      <div class="btn-group">
-        <button id="reviewBtn" type="submit" th:formaction="'/profile/invoice/' + ${invoicePart.id} + '/revision'" class="btn btn-warning" th:if="${not invoicePart.acceptedByUser}" disabled="disabled" th:text="#{button.askForReview}">Ask for review</button>
+      <div class="text-right">
+        <button id="reviewBtn" type="submit" th:formaction="'/profile/invoice/' + ${invoicePart.id} + '/revision'" class="btn btn-primary" th:if="${not invoicePart.acceptedByUser}" disabled="disabled" th:text="#{button.askForReview}">Ask for review</button>
         <a class="btn btn-primary" href="/profile/invoice" th:text="#{button.back}"></a>
       </div>
       </form>

@@ -44,14 +44,14 @@
                 aria-expanded="false"
               ><b>...</b></a>
                 <div class="dropdown-menu">
-                  <button type="submit" class="dropdown-item"
+                  <button type="submit" class="dropdown-item btn"
                     th:formaction="'/rawInvoice/' + ${rawInvoice.invoiceNumber} + '/restartProcessing'"
                     th:text="#{button.restartProcessing}"
                   >Restart processing</button>
                   <span class="dropdown-item" th:each="problem : ${rawInvoice.getProblems()}"
                     th:text="${problem}"
                   ></span>
-                  <button type="button" class="dropdown-item" onclick="sendRawRemove(this)"
+                  <button type="button" class="dropdown-item btn" onclick="sendRawRemove(this)"
                     th:text="#{button.delete}"
                   >Delete</button>
                 </div></td>
@@ -95,21 +95,15 @@
             <td class="text-right" th:text="${invoice.netAmount}  + ' Ft'"></td>
             <td class="text-right" th:text="${invoice.grossAmount}  + ' Ft'"></td>
             <td class="text-right">
-              <button name="acceptBtn" th:unless="${invoice.acceptedByCompany}" type="button" class="btn btn-sm btn-success"
-                onclick="acceptInvoiceByCompany(this)"
-              >
-                <img th:alt="#{button.accept}" src="/img/checkmark.png">
-              </button>
+              <button name="acceptBtn" th:unless="${invoice.acceptedByCompany}" type="button" class="btn btn-success"
+                onclick="acceptInvoiceByCompany(this)" th:text="#{button.accept}"
+              ></button>
               <a th:href="'/invoice/' + ${invoice.invoiceNumber} + '/details'"
-                class="btn btn-sm btn-primary"
-                > 
-                <img th:alt="#{button.details}" src="/img/list.png" />
-              </a>
-              <button name="deleteBtn" th:if="${invoice.canDelete()}" type="button" class="btn btn-sm btn-danger"
-                onclick="deleteInvoice(this)" 
-              >
-                <img th:alt="#{button.delete}" src="/img/trash.png" />
-              </button>
+                class="btn btn-primary" th:text="#{button.details}"
+                ></a>
+              <button name="deleteBtn" th:if="${invoice.canDelete()}" type="button" class="btn btn-danger"
+                onclick="deleteInvoice(this)" th:text="#{button.delete}"
+              ></button>
             </td>
           </tr>
         </tbody>

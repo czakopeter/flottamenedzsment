@@ -59,7 +59,7 @@ public class SubscriptionController {
       model.addAttribute("messages", messageService.getMessages());
       return "subscription_templates/subscriptionNew";
     } else {
-      messageService.clearAndAddMessage(eb);
+      messageService.addMessage(eb);
       return "redirect:/subscription/all";
     }
   }
@@ -67,7 +67,7 @@ public class SubscriptionController {
   @PostMapping("/subscription/new")
   public String createSubscription(Model model, @ModelAttribute("subscription") SubscriptionToView stv) {
     ExtendedBoolean eb = service.createSubscription(stv); 
-    messageService.clearAndAddMessage(eb);
+    messageService.addMessage(eb);
     model.addAttribute("messages", messageService.getMessages());
       if (eb.isValid()) {
         return "redirect:/subscription/all";
@@ -90,14 +90,17 @@ public class SubscriptionController {
       model.addAttribute("messages", messageService.getMessages());
       return "subscription_templates/subscriptionEdit";
     } else {
-      messageService.clearAndAddMessage(MessageKey.UNKNOWN_SUBSCRIPITON, MessageType.WARNING);
+      messageService.addMessage(MessageKey.UNKNOWN_SUBSCRIPITON, MessageType.WARNING);
       return "redirect:/subscription/all";
     }
   }
 
   @PostMapping("/subscription/{id}/update")
-  public String updateSubscription(RedirectAttributes ra, @ModelAttribute() SubscriptionToView stv) {
-    service.updateSubscription(stv);
+  public String updateSubscription(Model model, @ModelAttribute() SubscriptionToView stv) {
+    ExtendedBoolean eb = service.updateSubscription(stv);
+    if(!eb.isValid()) {
+      messageService.addMessage(eb);
+    }
     return "redirect:/subscription/" + stv.getId() + "/update";
   }
   
@@ -109,7 +112,7 @@ public class SubscriptionController {
       model.addAttribute("dates", subscriptionOpt.get().getAllModificationDateDesc());
       return "subscription_templates/subscriptionView";
     } else {
-      messageService.clearAndAddMessage(MessageKey.UNKNOWN_SUBSCRIPITON, MessageType.WARNING);
+      messageService.addMessage(MessageKey.UNKNOWN_SUBSCRIPITON, MessageType.WARNING);
     }
     return "redirect:/subscription/all";
   }

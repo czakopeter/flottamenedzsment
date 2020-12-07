@@ -83,7 +83,7 @@ public class DeviceToView {
   }
 
   public void setSerialNumber(String serialNumber) {
-    this.serialNumber = serialNumber;
+    this.serialNumber = serialNumber.trim().toUpperCase();
   }
   
   public String getNote() {
@@ -91,7 +91,7 @@ public class DeviceToView {
   }
   
   public void setNote(String note) {
-    this.note = note;
+    this.note = note.trim();
   }
 
   public String getTypeName() {

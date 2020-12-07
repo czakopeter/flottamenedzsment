@@ -35,11 +35,11 @@
           <div class="col-2"></div>
           <div class="col-2">
             <input  id="simChangeBtn" type="button" class="btn btn-primary btn-block" data-toggle="modal"
-              data-target="#simChooserModal" th:value="#{button.change}"
+              data-target="#simChooserModal" th:value="#{button.simChange}"
             />
           </div>
           <div class="col-2">
-            <button  type="button" id="simChangeResetBtn" class="btn btn-primary btn-block" onClick="resetSimChange()" th:text="#{button.reset}">Reset</button>
+            <button type="button" id="simChangeResetBtn" class="btn btn-primary btn-block" onClick="resetSimChange()" th:text="#{button.reset}" disabled="disabled">Reset</button>
           </div>
         </div>
         <div class="row" id="reasonRow" style="display: none;">
@@ -108,7 +108,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Imei change</h5>
+            <h5 class="modal-title" th:text="#{button.simChange}">SIM card change</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>

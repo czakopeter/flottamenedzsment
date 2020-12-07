@@ -26,13 +26,13 @@ public enum MessageKey {
   PHONE_NUMBER_ALREADY_USED("phoneNumberAlreadyUsed"),
   PHONE_NUMBER_INVALID("phoneNumberInvalid"),
   UNKNOWN_SUBSCRIPITON("unknownSubscription"),
+  SIM_CHANGE_REASON_EMPTY("simChangeReasonEmpty"),
   SERIAL_NUMBER_ALREADY_USED("serialNumberAlreadyUsed"),
   UNKNOWN_DEVICE("unknownDevice"),
   NO_DEVICE_TYPE("noDeviceType"),
   NAME_ALREADY_EXISTS("nameAlreadyExists"),
   BRAND_AND_MODEL_ALREADY_EXISTS("brandAndModelAlreadyExists"),
-  UNKNOWN_DEVICE_TYPE("unknownDeviceType")
-  ;
+  UNKNOWN_DEVICE_TYPE("unknownDeviceType");
   
   
   private String key;

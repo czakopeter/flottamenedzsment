@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.flotta.enums.Availability;
 import com.flotta.enums.ControllerType;
 import com.flotta.enums.MessageKey;
 import com.flotta.enums.MessageType;
@@ -55,7 +56,7 @@ public class DeviceController {
     ExtendedBoolean eb = service.canCreateDevice();
     if(eb.isValid()) {
       model.addAttribute("device", new DeviceToView());
-      model.addAttribute("deviceTypes", Utility.sortDeviceTypeByName(service.findAllVisibleDeviceTypes()));
+      model.addAttribute("deviceTypes", Utility.sortDeviceTypeByName(service.findAllDeviceTypesByAvailability(Availability.AVAILABLE)));
       return "device_templates/deviceNew";
     } else {
       messageService.clearAndAddMessage(eb);
@@ -71,7 +72,7 @@ public class DeviceController {
       return "redirect:/device/all";
     } else {
       model.addAttribute("device", dtv);
-      model.addAttribute("deviceTypes", Utility.sortDeviceTypeByName(service.findAllVisibleDeviceTypes()));
+      model.addAttribute("deviceTypes", Utility.sortDeviceTypeByName(service.findAllDeviceTypesByAvailability(Availability.AVAILABLE)));
       return "device_templates/deviceNew";
     }
   }

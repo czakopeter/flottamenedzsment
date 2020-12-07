@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.flotta.enums.Availability;
 import com.flotta.enums.MessageKey;
 import com.flotta.enums.MessageType;
 import com.flotta.model.registry.DeviceType;
@@ -38,8 +39,8 @@ public class DeviceTypeService {
     return deviceTypeRepository.findByNameIgnoreCase(name);
   }
   
-  public List<DeviceType> findAllVisible() {
-    return deviceTypeRepository.findAllByVisibleTrue();
+  public List<DeviceType> findAllAvailability(Availability availability) {
+    return deviceTypeRepository.findAllByAvailability(availability);
   }
 
   public ExtendedBoolean create(DeviceType deviceType) {

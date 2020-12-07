@@ -27,7 +27,7 @@
             <tr th:each="coupler : ${couplers}">
               <td th:text="${coupler.name}"></td>
               <td class="text-right">
-                <div class="btn-group">
+                <div>
                   <a th:href="'/invoiceConfiguration/descriptionCategoryCoupler/' + ${coupler.id}"
                     class="btn btn-primary" th:text="#{button.edit}"
                   >Edit</a> <a

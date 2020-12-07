@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -127,7 +128,7 @@ public class Invoice extends BasicInvoice {
     for (InvoiceByUserAndPhoneNumber part : invoicePart) {
       part.removeAllReviewNote();
       part.setAcceptedByCompany(true);
-      if (part.getUser() == null) {
+      if (part.getUser() == null || part.getUserGrossAmount() == 0) {
         part.setAcceptedByUser(true);
         partOfCompany++;
       }

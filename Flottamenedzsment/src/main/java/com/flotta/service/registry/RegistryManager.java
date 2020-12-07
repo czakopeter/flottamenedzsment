@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.flotta.enums.Availability;
 import com.flotta.enums.MessageKey;
 import com.flotta.enums.MessageType;
 import com.flotta.enums.SimStatus;
@@ -93,8 +94,8 @@ public class RegistryManager {
     deviceTypeService.update(deviceType);
   }
 
-  public List<DeviceType> findAllVisibleDeviceTypes() {
-    return deviceTypeService.findAllVisible();
+  public List<DeviceType> findAllDeviceTypesByAvailability(Availability availability) {
+    return deviceTypeService.findAllAvailability(availability);
   }
   
   public ExtendedBoolean canCreateDevice() {
@@ -148,17 +149,22 @@ public class RegistryManager {
     return subscriptionService.create(stv, simOpt);
   }
 
-  public boolean updateSubscription(SubscriptionToView stv) {
-    Optional<Subscription> subscriptonOpt = subscriptionService.findById(stv.getId());
-    subscriptonOpt.ifPresent(subscription -> {
-      subscription.addSim(simService.findByImei(stv.getImei()), stv.getSimChangeReason(), stv.getBeginDate());
-      subscription.addUser(userService.findById(stv.getUserId()), stv.getBeginDate());
-      subscription.addDevice(deviceService.findById(stv.getDeviceId()), stv.getBeginDate());
-      subscription.addNote(stv.getNote(), stv.getBeginDate());
-      subscriptionService.update(subscription);
-    });
-
-    return subscriptonOpt.isPresent();
+  public ExtendedBoolean updateSubscription(SubscriptionToView stv) {
+    
+      Optional<Subscription> subscriptonOpt = subscriptionService.findById(stv.getId());
+      ExtendedBoolean eb = new ExtendedBoolean(subscriptonOpt.isPresent());
+      try {
+        subscriptonOpt.ifPresent(subscription -> {
+          subscription.addSim(simService.findByImei(stv.getImei()), stv.getSimChangeReason(), stv.getBeginDate());
+          subscription.addUser(userService.findById(stv.getUserId()), stv.getBeginDate());
+          subscription.addDevice(deviceService.findById(stv.getDeviceId()), stv.getBeginDate());
+          subscription.addNote(stv.getNote(), stv.getBeginDate());
+          subscriptionService.update(subscription);
+        });
+      } catch (IllegalArgumentException e) {
+        eb.addMessage(MessageKey.SIM_CHANGE_REASON_EMPTY, MessageType.WARNING);
+      }
+    return eb;
   }
 
   // -------- USER SERVICE --------

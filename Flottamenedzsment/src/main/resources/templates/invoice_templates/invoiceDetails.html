@@ -128,11 +128,10 @@
                 ></td>
                 <td name="buttons" width="85px" th:unless="${partOfInvoice.acceptedByCompany or partOfInvoice.user == null}">
                   <div id="prepareEditingButton" class="text-center">
-                    <button type="button" class="btn btn-sm btn-primary" onclick="prepare_editing(this)">
-                      <img th:alt="#{button.edit}" src="/img/edit.png">
+                    <button type="button" class="btn btn-sm btn-primary" onclick="prepare_editing(this)" th:text="#{button.edit}">
                     </button>
                   </div>
-                  <div id="acceptOrCancelEditingButton" style="display: none" class="btn-group">
+                  <div id="acceptOrCancelEditingButton" style="display: none" class="text-center">
                     <button type="button" class="btn btn-sm btn-success" onclick="accept_editing(this)">
                       <img th:alt="#{button.accept}" src="/img/checkmark.png">
                     </button>
@@ -150,8 +149,10 @@
       </div>
     </div>
 
-
-    <a href="/invoice/all" class="btn btn-primary" th:text="#{button.back}">Back</a>
+    <div class="text-right">
+      <a href="/invoice/all" class="btn btn-primary" th:text="#{button.back}">Back</a>
+    </div>
+    
 
     <script src="/js/invoice/invoiceDetails.js"></script>
 

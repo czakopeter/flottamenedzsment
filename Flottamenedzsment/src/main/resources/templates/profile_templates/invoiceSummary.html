@@ -35,13 +35,13 @@
             <td name="number" th:text="${invoicePart.subscription.number}"></td>
             <td th:text="${invoicePart.getPeriod()}" class="text-center"></td>
             <td th:text="${#numbers.formatDecimal(invoicePart.userGrossAmount, 1, 2)} + ' Ft'" class="text-right"></td>
-            <td class="text-center">
-              <div class="btn-group">
-                <button type="button" onclick="acceptOneInvoice(this)" class="btn btn-sm btn-success" style="color: black;" th:if="${not invoicePart.acceptedByUser}">
-                  <img alt="Accept" src="/img/checkmark.png" />
+            <td class="text-right">
+              <div >
+                <button type="button" onclick="acceptOneInvoice(this)" class="btn btn-success"
+                  th:if="${not invoicePart.acceptedByUser}" th:text="#{button.accept}"> 
                 </button>
-                <button type="submit" th:formaction="'/profile/invoice/' + ${invoicePart.id}" class="btn btn-sm btn-info"  style="color: black;">
-                  <img alt="Details" src="/img/list.png" />
+                <button type="submit" th:formaction="'/profile/invoice/' + ${invoicePart.id}" 
+                  class="btn btn-primary" th:text="#{button.details}">
                 </button>
               </div>
             </td>

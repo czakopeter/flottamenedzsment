@@ -46,6 +46,7 @@ public class DeviceTypeController {
   @RequestMapping("/deviceType/all")
   public String listDeviceTypes(Model model) {
     model.addAttribute("deviceTypes", Utility.sortDeviceTypeByName(service.findAllDeviceTypes()));
+    model.addAttribute("messages", messageService.getMessages());
     return "device_type_templates/deviceTypeAll";
   }
   

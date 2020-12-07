@@ -185,24 +185,24 @@ public class InvoiceService {
       DescriptionCategoryCoupler dcc = optionalParticipant.get().getDescriptionCategoryCoupler();
       for (RawFeeItem rawFeeItem : rawInvoice.getFeeItems()) {
         if (dcc.getCategoryByDescription(rawFeeItem.getDescription()) == null) {
-          rawInvoice.addProblem("Unknown description: " + rawFeeItem.getDescription());
+          rawInvoice.addProblem("Ismeretlen leírás: " + rawFeeItem.getDescription());
         }
       }
     } else {
-      rawInvoice.addProblem("Unknown company, name: " + rawInvoice.getCompanyName());
+      rawInvoice.addProblem("Ismeretlen feladó: " + rawInvoice.getCompanyName());
     }
     Set<User> users = new HashSet<>();
     for (RawFeeItem rawFeeItem : rawInvoice.getFeeItems()) {
       Optional<Subscription> optionalSubscription = subscriptionService.findByNumber(rawFeeItem.getSubscription());
       if (!optionalSubscription.isPresent()) {
-        rawInvoice.addProblem("Unknown phone number: " + rawFeeItem.getSubscription());
+        rawInvoice.addProblem("Ismeretlen telefonszám: " + rawFeeItem.getSubscription());
       } else {
         users.addAll(optionalSubscription.get().getUsersBetween(rawFeeItem.getBeginDate(), rawFeeItem.getEndDate()));
       }
     }
     for(User user : users) {
       if(user.getChargeRatio() == null) {
-        rawInvoice.addProblem(user.getEmail() + " don't have charge ratio");
+        rawInvoice.addProblem("Nincs költség aránya: " + user.getEmail());
       }
     }
     return !rawInvoice.hasProblem();

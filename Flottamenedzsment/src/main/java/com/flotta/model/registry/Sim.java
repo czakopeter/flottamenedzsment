@@ -41,7 +41,7 @@ public class Sim extends BasicEntity {
   }
 
   public void setImei(String imei) {
-    this.imei = imei.toUpperCase();
+    this.imei = imei.toUpperCase().trim();
   }
   
   public String getPin() {
@@ -49,7 +49,7 @@ public class Sim extends BasicEntity {
   }
 
   public void setPin(String pin) {
-    this.pin = pin;
+    this.pin = pin.trim();
   }
 
   public String getPuk() {
@@ -57,7 +57,7 @@ public class Sim extends BasicEntity {
   }
 
   public void setPuk(String puk) {
-    this.puk = puk;
+    this.puk = puk.trim();
   }
 
   public String getChangeReason() {

@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import com.flotta.enums.Availability;
 import com.flotta.model.registry.DeviceType;
 
 public interface DeviceTypeRepository extends CrudRepository<DeviceType, Long> {
@@ -18,6 +19,6 @@ public interface DeviceTypeRepository extends CrudRepository<DeviceType, Long> {
 
   Optional<DeviceType> findByBrandAndModelIgnoreCase(String brand, String model);
 
-  List<DeviceType> findAllByVisibleTrue();
+  List<DeviceType> findAllByAvailability(Availability availability);
 
 }
