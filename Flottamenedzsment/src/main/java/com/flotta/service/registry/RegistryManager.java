@@ -66,7 +66,7 @@ public class RegistryManager {
       deviceService.update(device);
     });
     if(!eb.isValid()) {
-      eb.addMessage(MessageKey.NOT_EXISTS, MessageType.ERROR);
+      eb.addMessage(MessageKey.UNKNOWN_DEVICE, MessageType.ERROR);
     }
     return eb;
   }

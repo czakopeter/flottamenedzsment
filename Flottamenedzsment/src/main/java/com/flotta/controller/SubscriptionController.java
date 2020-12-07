@@ -90,7 +90,7 @@ public class SubscriptionController {
       model.addAttribute("messages", messageService.getMessages());
       return "subscription_templates/subscriptionEdit";
     } else {
-      messageService.clearAndAddMessage(MessageKey.NOT_EXISTS, MessageType.WARNING);
+      messageService.clearAndAddMessage(MessageKey.UNKNOWN_SUBSCRIPITON, MessageType.WARNING);
       return "redirect:/subscription/all";
     }
   }
@@ -109,7 +109,7 @@ public class SubscriptionController {
       model.addAttribute("dates", subscriptionOpt.get().getAllModificationDateDesc());
       return "subscription_templates/subscriptionView";
     } else {
-      messageService.clearAndAddMessage(MessageKey.NOT_EXISTS, MessageType.WARNING);
+      messageService.clearAndAddMessage(MessageKey.UNKNOWN_SUBSCRIPITON, MessageType.WARNING);
     }
     return "redirect:/subscription/all";
   }

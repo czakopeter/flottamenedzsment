@@ -125,14 +125,13 @@ public class Subscription extends BasicEntityWithCreateDate {
       System.err.println("Never happened");
       return;
     }
-    sim.setStatus(SimStatus.USED);
     if (subSim.isEmpty()) {
       subSim.put(date, new SubSim(this, sim, date));
+      sim.setStatus(SimStatus.USED);
     } else {
       LocalDate lastModDate = Utility.getLatestDate(subSim);
       SubSim last = subSim.get(lastModDate);
       if (last.getEndDate() == null) {
-        // Valakihez éppen hozzá van rendelve
         if (last.getSim().equals(sim)) {
           // nem csinálunk semmit
         } else {

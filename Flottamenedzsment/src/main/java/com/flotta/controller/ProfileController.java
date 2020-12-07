@@ -50,25 +50,25 @@ public class ProfileController {
     Optional<User> userOpt = service.findUserByEmail(getActualUserEmail());
     model.addAttribute("devices", Utility.convertUserDevicesToView(userOpt.get()));
     model.addAttribute("subscriptions", Utility.convertUserSubscriptionsToView(userOpt.get()));
-    return "profile/subscriptionAndDevice";
+    return "profile_templates/subscriptionAndDevice";
   }
   
   @GetMapping("/profile/changePassword")
   public String preparePasswordChanging() {
-    return "profile/passwordChange";
+    return "profile_templates/passwordChange";
   }
   
   @PostMapping("/profile/changePassword")
   public String passwordChange(Model model, RedirectAttributes ra, @RequestParam Map<String, String> params) {
     ExtendedBoolean eb = service.changePassword(getActualUserEmail(), params.get("old-password"), params.get("new-password"), params.get("confirm-new-password"));
     messageService.clearAndAddMessage(eb);
-    return "profile/passwordChange";
+    return "profile_templates/passwordChange";
   }
   
   @GetMapping("/profile/invoice")
   public String showActualUserPendingInvoices(Model model) {
     model.addAttribute("invoiceParts", service.findInvoicesOfUserByEmail(getActualUserEmail()));
-    return "profile/invoiceSummary";
+    return "profile_templates/invoiceSummary";
   }
   
   @PostMapping("/profile/invoice/accept")
@@ -83,7 +83,7 @@ public class ProfileController {
     Optional<InvoiceByUserAndPhoneNumber> invoiceOpt = service.findInvoiceOfUserByEmailAndId(getActualUserEmail(), id);
     if(invoiceOpt.isPresent()) {
       model.addAttribute("invoicePart", invoiceOpt.get());
-      return "profile/invoiceDetails";
+      return "profile_templates/invoiceDetails";
     } else {
       messageService.clearAndAddMessage(MessageKey.UNKNOWN_INVOICE, MessageType.WARNING);
       return "redirect:/profile/invoice";

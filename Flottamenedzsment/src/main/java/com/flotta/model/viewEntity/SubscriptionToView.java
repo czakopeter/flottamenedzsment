@@ -207,7 +207,9 @@ public class SubscriptionToView {
       Sim sim = ((SubSim) bst).getSim();
       this.oldImei = sim != null ? sim.getImei() : "";
       this.imei = sim != null ? sim.getImei() : "";
+      this.simChangeReason = sim != null ? sim.getChangeReason() : "";
     }
+    
   }
 
   private void setDevice(BasicSwitchTable bst) {

@@ -17,7 +17,7 @@
             <th th:text="#{phoneNumber}">Number</th>
 <!--             <th th:text="#{imeiNumber}">IMEI</th> -->
 <!--             <th th:text="#{device}">Device</th> -->
-            <th th:text="#{period}">Period</th>
+            <th class="text-right" th:text="#{period}">Period</th>
           </tr>
         </thead>
         <tbody id="content-body">
@@ -25,7 +25,7 @@
             <td th:text="${subscription.number}"></td>
 <!--             <td th:text="${subscription.imei}"></td> -->
 <!--             <td th:text="${subscription.deviceName}"></td> -->
-            <td th:text="${subscription.getPeriod()}"></td>
+            <td class="text-right" th:text="${subscription.getPeriod()}"></td>
           </tr>
         </tbody>
         <tbody id="no-element-body" th:classappend="${#lists.isEmpty(subscriptions)} ? '' : 'collapse'">
@@ -44,7 +44,7 @@
             <th th:text="#{device.serialNumber}">Serial number</th>
             <th th:text="#{device.typeName}">Type Name</th>
 <!--             <th th:text="#{device.subscription}">Subscription</th> -->
-            <th th:text="#{period}">Period</th>
+            <th class="text-right" th:text="#{period}">Period</th>
           </tr>
         </thead>
         <tbody>
@@ -52,7 +52,7 @@
             <td th:text="${device.serialNumber}"></td>
             <td th:text="${device.typeName}"></td>
 <!--             <td th:text="${device.number}"></td> -->
-            <td th:text="${device.getPeriod()}"></td>
+            <td class="text-right" th:text="${device.getPeriod()}"></td>
           </tr>
         </tbody>
         <tbody id="no-element-body" th:classappend="${#lists.isEmpty(devices)} ? '' : 'collapse'">

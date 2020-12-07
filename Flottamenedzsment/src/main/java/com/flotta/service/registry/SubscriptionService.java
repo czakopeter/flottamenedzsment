@@ -44,7 +44,7 @@ public class SubscriptionService implements SubscriptionFinderService {
     Optional<Subscription> optional = subscriptionRepository.findByNumber(stv.getNumber());
     if(optional.isPresent()) {
       eb.setInvalid();
-      eb.addMessage(MessageKey.ALREADY_EXISTS, MessageType.WARNING);
+      eb.addMessage(MessageKey.UNKNOWN_SUBSCRIPITON, MessageType.WARNING);
     } else {
       Subscription entity = new Subscription(stv.getNumber(), stv.getBeginDate());
       entity.addSim(simOpt, null, stv.getBeginDate());

@@ -36,7 +36,7 @@ public class DeviceService {
     ExtendedBoolean eb = new ExtendedBoolean(true);
     if(deviceRepository.findBySerialNumber(dtv.getSerialNumber()).isPresent()) {
       eb.setInvalid();
-      eb.addMessage(MessageKey.ALREADY_EXISTS, MessageType.WARNING);
+      eb.addMessage(MessageKey.SERIAL_NUMBER_ALREADY_USED, MessageType.WARNING);
     } else {
       if(deviceTypeOpt.isPresent()) {
         Device entity = new Device(dtv.getSerialNumber(), deviceTypeOpt.get() ,dtv.getBeginDate());

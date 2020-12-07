@@ -1,12 +1,7 @@
 package com.flotta.enums;
 
 public enum MessageKey {
-  NO_DEVICE_TYPE("noDeviceType"),
-  ALREADY_EXISTS("alreadyExists"),
-  NOT_EXISTS("notExists"),
   SUCCESSFULL_CREATION("succesfulCreation"),
-  NAME_ALREADY_EXISTS("nameAlreadyExists"),
-  BRAND_AND_MODEL_ALREADY_EXISTS("brandAndModelAlreadyExists"),
   EMAIL_FAILURE("emailFailure"),
   NO_REDUCE_ADMIN("noReduceAdmin"),
   PASSWORD_CHANGE_SUCCESSFUL("passwordChangeSuccesful"),
@@ -30,7 +25,12 @@ public enum MessageKey {
   NO_FREE_SIM("noFreeSim"),
   PHONE_NUMBER_ALREADY_USED("phoneNumberAlreadyUsed"),
   UNKNOWN_SUBSCRIPITON("unknownSubscription"),
-  
+  SERIAL_NUMBER_ALREADY_USED("serialNumberAlreadyUsed"),
+  UNKNOWN_DEVICE("unknownDevice"),
+  NO_DEVICE_TYPE("noDeviceType"),
+  NAME_ALREADY_EXISTS("nameAlreadyExists"),
+  BRAND_AND_MODEL_ALREADY_EXISTS("brandAndModelAlreadyExists"),
+  UNKNOWN_DEVICE_TYPE("unknownDeviceType")
   ;
   
   

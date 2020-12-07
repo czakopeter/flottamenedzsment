@@ -36,9 +36,17 @@
             <label th:text="#{imeiNumber}">IMEI</label>
           </div>
           <div class="col-4">
-            <input type="text" class="form-control" id="imei" name="imei" th:value="*{imei}"
+            <input type="text" class="form-control" id="imeiNumber" name="imeiNumber" th:value="*{imei}"
               readonly="readonly"
             />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-2" >
+            <label for="simChangeReason" th:text="#{simChangeReason}"></label>
+          </div>
+          <div class="col-4">
+            <input type="text" id="simChangeReason" name="simChangeReason" th:value="*{simChangeReason}" class="form-control" readonly="readonly" />
           </div>
         </div>
         <div class="row my-2">

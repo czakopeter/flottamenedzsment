@@ -3,7 +3,6 @@ package com.flotta.controller;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import org.apache.catalina.Server;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -85,7 +84,7 @@ public class DeviceController {
       model.addAttribute("users", Utility.sortUserByName(service.findAllUser()));
       return "device_templates/deviceEdit";
     } else {
-      messageService.clearAndAddMessage(MessageKey.NOT_EXISTS, MessageType.WARNING);
+      messageService.clearAndAddMessage(MessageKey.UNKNOWN_DEVICE, MessageType.WARNING);
       return "redirect:/device/all";
     }
   }
@@ -104,7 +103,7 @@ public class DeviceController {
       model.addAttribute("dates", deviceOpt.get().getAllModificationDateDesc());
       return "device_templates/deviceView";
     } else {
-      messageService.clearAndAddMessage(MessageKey.NOT_EXISTS, MessageType.WARNING);
+      messageService.clearAndAddMessage(MessageKey.UNKNOWN_DEVICE, MessageType.WARNING);
       return "redirect:/device/all";
     }
   }

@@ -56,7 +56,7 @@ public class UserController {
   @PostMapping("/user/new")
   public String createUser(Model model, @ModelAttribute("user") User user) {
     ExtendedBoolean eb = service.createUser(user);
-    messageService.clearAndAddMessage(eb);
+    messageService.addMessage(eb);
     if(eb.isValid()) {
       return "redirect:/user/all";
     } else {
@@ -74,7 +74,7 @@ public class UserController {
       model.addAttribute("messages", messageService.getMessages());
       return "user_templates/userEdit";
     } else {
-      messageService.clearAndAddMessage(MessageKey.UNKNOWN_USER, MessageType.WARNING);
+      messageService.addMessage(MessageKey.UNKNOWN_USER, MessageType.WARNING);
       return "redirect:/user/all";
     }
   }
@@ -86,7 +86,7 @@ public class UserController {
     }
     ExtendedBoolean eb = service.updateUser(id, roles);
     if(!eb.isValid()) {
-      messageService.clearAndAddMessage(eb);
+      messageService.addMessage(eb);
     }
     return "redirect:/user/" + id + "/update";
   }
@@ -112,13 +112,13 @@ public class UserController {
   
   @RequestMapping("/login/failure")
   public String loginFailure() {
-    messageService.clearAndAddMessage(MessageKey.LOGIN_FAILURE, MessageType.WARNING);
+    messageService.addMessage(MessageKey.LOGIN_FAILURE, MessageType.WARNING);
     return "redirect:/login";
   }
   
   @RequestMapping("/afterlogout")
   public String logout() {
-    messageService.clearAndAddMessage(MessageKey.SUCCESSFUL_LOGOUT, MessageType.SUCCESS);
+    messageService.addMessage(MessageKey.SUCCESSFUL_LOGOUT, MessageType.SUCCESS);
     return "redirect:/login";
   }
   
@@ -126,14 +126,14 @@ public class UserController {
   public String firstAdminRegistration(Model model, RedirectAttributes redirectAttributes) {
     boolean hasEnabledAdmin = service.hasEnabledAdmin();
     if(hasEnabledAdmin) {
-      messageService.clearAndAddMessage(MessageKey.ALREADY_HAS_ADMIN , MessageType.WARNING);
+      messageService.addMessage(MessageKey.ALREADY_HAS_ADMIN , MessageType.WARNING);
       return "redirect:/login";
     } else {
       boolean hasAdmin = service.hasAdmin();
       if(hasAdmin) {
-        messageService.clearAndAddMessage(MessageKey.ACTIVATE_OR_CREATE_FIRST_ADMIN, MessageType.WARNING);
+        messageService.addMessage(MessageKey.ACTIVATE_OR_CREATE_FIRST_ADMIN, MessageType.WARNING);
       } else {
-        messageService.clearAndAddMessage(MessageKey.CREATE_FIRST_ADMIN, MessageType.WARNING);
+        messageService.addMessage(MessageKey.CREATE_FIRST_ADMIN, MessageType.WARNING);
       }
       model.addAttribute("messages", messageService.getMessages());
       model.addAttribute("user", new User());
@@ -144,7 +144,7 @@ public class UserController {
   @PostMapping("/registration")
   public String firstAdminRegistration(Model model, @ModelAttribute User user, RedirectAttributes redirectAttributes) {
     ExtendedBoolean eb = service.createFirstAdmin(user);
-    messageService.clearAndAddMessage(eb);
+    messageService.addMessage(eb);
     if(eb.isValid()) {
       return "redirect:/login";
     } else {
@@ -156,20 +156,21 @@ public class UserController {
   @GetMapping("/activation/{key}")
   public String activation(@PathVariable("key") String key, RedirectAttributes redirectAttributes) {
     ExtendedBoolean eb = service.activation(key);
-    messageService.clearAndAddMessage(eb);
+    messageService.addMessage(eb);
     return "redirect:/login";
   }
   
   @GetMapping("/requestNewPassword")
-  public String prepareRequestingNewPassword() {
+  public String prepareRequestingNewPassword(Model model) {
+    model.addAttribute("messages", messageService.getMessages());
     return "newPasswordRequest";
   }
   
   @PostMapping("/requestNewPassword")
-  public String requestNewPassword(RedirectAttributes redirectAttributes, @RequestParam("email") String email) {
+  public String requestNewPassword(@RequestParam("email") String email) {
     ExtendedBoolean eb = service.requestNewPassword(email);
-    messageService.clearAndAddMessage(eb);
-    return "newPasswordRequest";
+    messageService.addMessage(eb);
+    return "redirect:/requestNewPassword";
   }
   
 }

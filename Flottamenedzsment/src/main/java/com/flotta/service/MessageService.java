@@ -50,6 +50,9 @@ public class MessageService {
   }
   
   public void addMessage(MessageKey key, MessageType type) {
+    if(!firstGet) {
+      messageList.clear();
+    }
     messageList.add(new MessageToView(key.getKey(), type.getType()));
     firstGet = true;
   }
@@ -61,6 +64,9 @@ public class MessageService {
   }
   
   public void addMessage(ExtendedBoolean eb) {
+    if(!firstGet) {
+      messageList.clear();
+    }
     for(Entry<MessageKey, MessageType> entry : eb.getMessages().entrySet()) {
       messageList.add(new MessageToView(entry.getKey(), entry.getValue()));
     }

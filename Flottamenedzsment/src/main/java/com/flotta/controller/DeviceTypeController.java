@@ -76,7 +76,7 @@ public class DeviceTypeController {
       model.addAttribute("deviceType", deviceTypeOpt.get());
       return "device_type_templates/deviceTypeEdit";
     } else {
-      messageService.addMessage(MessageKey.NOT_EXISTS, MessageType.WARNING);
+      messageService.addMessage(MessageKey.UNKNOWN_DEVICE_TYPE, MessageType.WARNING);
       return "redirect:/diviceType/all";
     }
   }

@@ -71,10 +71,6 @@ public class DeviceTypeService {
   }
   
   private boolean updatable(DeviceType deviceType) {
-    Optional<DeviceType> savedTypeOpt = deviceTypeRepository.findById(deviceType.getId());
-    Optional<DeviceType> typeByNameOpt = deviceTypeRepository.findByNameIgnoreCase(deviceType.getName());
-    Optional<DeviceType> typeByBrandAndModelOpt = deviceTypeRepository.findByBrandAndModelIgnoreCase(deviceType.getBrand(), deviceType.getModel());
-      return (typeByNameOpt.isPresent() && typeByNameOpt.get().equals(savedTypeOpt.get())) ||
-            (typeByBrandAndModelOpt.isPresent() && typeByBrandAndModelOpt.get().equals(savedTypeOpt.get()));
+    return true;
   }
 }
