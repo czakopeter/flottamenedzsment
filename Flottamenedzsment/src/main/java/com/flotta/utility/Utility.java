@@ -5,9 +5,11 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.flotta.model.BasicEntity;
 import com.flotta.model.invoice.Category;
@@ -116,6 +118,37 @@ public class Utility {
     return bd.doubleValue();
   }
   
+  public static List<LocalDate> getModificationDateBetween(Map<LocalDate, ? extends BasicSwitchTable> map, LocalDate beginDate, LocalDate endDate) {
+    if(map == null || beginDate == null || (endDate != null && endDate.isBefore(beginDate))) {
+      return new LinkedList<>();
+    }
+    
+    Set<LocalDate> result = new HashSet<>();
+    List<LocalDate> dates = new LinkedList<>(map.keySet());
+    Collections.sort(dates);
+    for (LocalDate date : dates) {
+      if(endDate != null && !date.isBefore(endDate)) {
+        break;
+      }
+      BasicSwitchTable bst = map.get(date);
+      if(bst.getEndDate() == null) {
+        result.add(date);
+        break;
+      }
+      if(!bst.getEndDate().isBefore(beginDate)) {
+        result.add(date);
+        if(endDate == null) {
+          result.add(bst.getEndDate().plusDays(1));
+        } else if (bst.getEndDate().plusDays(1).isBefore(endDate)) {
+          result.add(bst.getEndDate().plusDays(1));
+        }
+      }
+    }
+    result.remove(endDate);
+    
+    return new LinkedList<>(result);
+  }
+  
   public static String getPeriod(LocalDate beginDate, LocalDate endDate) {
     StringBuilder sb = new StringBuilder();
     if(beginDate == null || (endDate != null && beginDate.isAfter(endDate))) {
@@ -170,7 +203,6 @@ public class Utility {
     } else {
       return last.getEndDate().isBefore(ceil) ? null : last;
     }
-    
   }
   
   public static List<DeviceToView> convertDevicesToView(List<Device> devices) {
@@ -194,20 +226,58 @@ public class Utility {
   public static List<DeviceToView> convertUserDevicesToView(User user) {
     List<DeviceToView> devicesToView = new LinkedList<>();
     for(UserDev userDev : user.getUserDevs()) {
-      DeviceToView dtv = new DeviceToView(userDev.getDev(), userDev.getBeginDate());
-      dtv.setEndDate(userDev.getEndDate());
-      devicesToView.add(dtv);
+      Device device = userDev.getDev();
+      List<LocalDate> dates = getModificationDateBetween(device.getDevSubs(), userDev.getBeginDate(), userDev.getEndDate());
+      if(dates.isEmpty()) {
+        DeviceToView dtv = new DeviceToView(device, userDev.getBeginDate());
+        dtv.setEndDate(userDev.getEndDate());
+        devicesToView.add(dtv);
+      } else {
+        if(!dates.get(0).equals(userDev.getBeginDate())) {
+          DeviceToView dtv = new DeviceToView(device, userDev.getBeginDate());
+          dtv.setEndDate(dates.get(0).minusDays(1));
+          devicesToView.add(dtv);
+        }
+        for(int i = 0; i < dates.size() - 1; i++) {
+          DeviceToView dtv = new DeviceToView(device, dates.get(i));
+          dtv.setEndDate(dates.get(i + 1).minusDays(1));
+          devicesToView.add(dtv);
+        }
+        DeviceToView dtv = new DeviceToView(device, dates.get(dates.size() - 1));
+        dtv.setEndDate(userDev.getEndDate());
+        devicesToView.add(dtv);
+      }
     }
+    Collections.sort(devicesToView, DeviceToView.BY_SERIAL_NUMBER_AND_BEGIN_DATE);
     return devicesToView;
   }
   
   public static List<SubscriptionToView> convertUserSubscriptionsToView(User user) {
     List<SubscriptionToView> subscriptionsToView = new LinkedList<>();
     for(UserSub userSub : user.getUserSubs()) {
-      SubscriptionToView stv = new SubscriptionToView(userSub.getSub(), userSub.getBeginDate());
-      stv.setEndDate(userSub.getEndDate());
-      subscriptionsToView.add(stv);
+      Subscription subscription = userSub.getSub();
+      List<LocalDate> dates = getModificationDateBetween(subscription.getSubDev(), userSub.getBeginDate(), userSub.getEndDate());
+      if(dates.isEmpty()) {
+        SubscriptionToView stv = new SubscriptionToView(subscription, userSub.getBeginDate());
+        stv.setEndDate(userSub.getEndDate());
+        subscriptionsToView.add(stv);
+      } else {
+        if(!dates.get(0).equals(userSub.getBeginDate())) {
+          SubscriptionToView stv = new SubscriptionToView(subscription, userSub.getBeginDate());
+          stv.setEndDate(dates.get(0).minusDays(1));
+          subscriptionsToView.add(stv);
+        }
+        for(int i = 0; i < dates.size() - 1; i++) {
+          SubscriptionToView stv = new SubscriptionToView(subscription, dates.get(i));
+          stv.setEndDate(dates.get(i + 1).minusDays(1));
+          subscriptionsToView.add(stv);
+        }
+        SubscriptionToView stv = new SubscriptionToView(subscription, dates.get(dates.size() - 1));
+        stv.setEndDate(userSub.getEndDate());
+        subscriptionsToView.add(stv);
+      }
     }
+    Collections.sort(subscriptionsToView, SubscriptionToView.BY_PHONE_NUMBER_AND_BEGIN_DATE);
     return subscriptionsToView;
   }
   

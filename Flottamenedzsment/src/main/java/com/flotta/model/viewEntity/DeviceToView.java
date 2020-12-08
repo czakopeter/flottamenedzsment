@@ -30,7 +30,12 @@ public class DeviceToView {
 	private String note;
 	
 	
-	public static final Comparator<DeviceToView> BY_SERIAL_NUMBER = (o1, o2) -> o1.serialNumber.compareToIgnoreCase(o2.serialNumber);
+	public static final Comparator<DeviceToView> BY_SERIAL_NUMBER = Comparator
+      .comparing(DeviceToView::getSerialNumber);
+
+  public static final Comparator<DeviceToView> BY_SERIAL_NUMBER_AND_BEGIN_DATE = Comparator
+      .comparing(DeviceToView::getSerialNumber)
+      .thenComparing(DeviceToView::getBeginDate).reversed();
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private LocalDate beginDate;
@@ -186,4 +191,11 @@ public class DeviceToView {
   private LocalDate getLastModificationDateOfDevice(Device device) {
     return device.getAllModificationDateDesc().get(0);
   }
+
+  @Override
+  public String toString() {
+    return "DeviceToView [serialNumber=" + serialNumber + ", number=" + number + ",period=" + Utility.getPeriod(beginDate, endDate);
+  }
+  
+  
 }

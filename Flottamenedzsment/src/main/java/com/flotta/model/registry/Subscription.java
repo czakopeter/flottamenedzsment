@@ -254,7 +254,7 @@ public class Subscription extends BasicEntityWithCreateDate {
 
   public void addNote(String note, LocalDate date) {
     if(notes.isEmpty()) {
-      if (note != null) {
+      if (note != null && !note.trim().isEmpty()) {
         notes.put(date, new SubNote(this, note, date));
       }
     } else {

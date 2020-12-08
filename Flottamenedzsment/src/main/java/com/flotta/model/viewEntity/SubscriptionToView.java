@@ -37,7 +37,12 @@ public class SubscriptionToView {
 
   private String note;
   
-  public static final Comparator<SubscriptionToView> BY_PHONE_NUMBER = (o1,  o2) -> o1.number.compareToIgnoreCase(o2.number);
+  public static final Comparator<SubscriptionToView> BY_PHONE_NUMBER = Comparator
+      .comparing(SubscriptionToView::getNumber);
+
+  public static final Comparator<SubscriptionToView> BY_PHONE_NUMBER_AND_BEGIN_DATE = Comparator
+      .comparing(SubscriptionToView::getNumber)
+      .thenComparing(SubscriptionToView::getBeginDate).reversed();
 
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   private LocalDate beginDate;

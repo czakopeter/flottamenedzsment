@@ -47,20 +47,20 @@ function tdTextChangeToInput(td) {
     userInput.setAttribute('class', 'form-control form-control-sm');
     userInput.setAttribute('style', 'text-align:right');
     userInput.setAttribute('onchange', 'modifyAmountRatio(this)');
-    userInput.value = td.textContent.replace(" Ft", "");
-    userInput.defaultValue = td.textContent.replace(" Ft", "");
+    userInput.value = amountToFloatConverter(td.textContent);
+    userInput.defaultValue = amountToFloatConverter(td.textContent);
     userInput.setAttribute('size', '1');
     td.textContent = '';
     td.appendChild(userInput);
 }
        		
 function inputValueToTdTextAndRemove(td, input) {
-	td.textContent = input.value + " Ft";
+	td.textContent = floatToAmountConverter(input.value);
 	input.remove();
 }
        		
 function inputDefaultValueToTdTextAndRemove(td, input) {
-	td.textContent = input.defaultValue + " Ft";
+	td.textContent = floatToAmountConverter(input.defaultValue);
 	input.remove();
 }
        		
@@ -71,7 +71,7 @@ function modifyAmountRatio(input) {
 		let otherInput = td.getAttribute('name') == 'userGrossAmount' ? 
 				tr.querySelector('[name=compGrossAmount]').querySelector('input') :
        			tr.querySelector('[name=userGrossAmount]').querySelector('input');
-        let fullAmount = tr.querySelector('[name=totalGrossAmount]').textContent.replace(" Ft", "");
+        let fullAmount = amountToFloatConverter(tr.querySelector('[name=totalGrossAmount]').textContent);
         
         if(parseFloat(input.value) > parseFloat(fullAmount)) {
            	input.value = fullAmount;
@@ -102,4 +102,12 @@ function change(a) {
 	} else {
 		a.querySelector('img').src = "/img/up-arrow.png";
 	}
+}
+
+function amountToFloatConverter(text) {
+	return text.replace(" Ft", "").replace(",",".");
+}
+
+function floatToAmountConverter(float) {
+	return (float + " Ft").replace(".", ",");
 }

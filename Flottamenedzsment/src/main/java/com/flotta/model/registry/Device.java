@@ -163,7 +163,7 @@ public class Device extends BasicEntityWithCreateDate {
 
   public void addNote(String note, LocalDate date) {
     if(notes.isEmpty()) {
-      if (note != null) {
+      if (note != null && !note.trim().isEmpty()) {
         notes.put(date, new DevNote(this, note, date));
       }
     } else {

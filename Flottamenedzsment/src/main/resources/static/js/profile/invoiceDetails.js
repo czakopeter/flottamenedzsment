@@ -2,7 +2,7 @@ function modifyNotes() {
 	let fees = document.querySelectorAll("[name=fee]");
 	
 	if(document.querySelector("[name=textarea]").value.length > 0) {
-		showRevisionBtn();
+		showReviewBtn();
 		return;
 	}
 	for(fee of fees) {

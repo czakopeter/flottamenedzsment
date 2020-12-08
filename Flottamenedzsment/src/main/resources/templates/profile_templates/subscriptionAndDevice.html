@@ -16,7 +16,7 @@
           <tr>
             <th th:text="#{phoneNumber}">Number</th>
 <!--             <th th:text="#{imeiNumber}">IMEI</th> -->
-<!--             <th th:text="#{device}">Device</th> -->
+            <th th:text="#{device}">Device</th>
             <th class="text-right" th:text="#{period}">Period</th>
           </tr>
         </thead>
@@ -24,7 +24,7 @@
           <tr th:each="subscription : ${subscriptions}">
             <td th:text="${subscription.number}"></td>
 <!--             <td th:text="${subscription.imei}"></td> -->
-<!--             <td th:text="${subscription.deviceName}"></td> -->
+            <td th:text="${subscription.deviceName}"></td>
             <td class="text-right" th:text="${subscription.getPeriod()}"></td>
           </tr>
         </tbody>
@@ -43,7 +43,7 @@
           <tr>
             <th th:text="#{device.serialNumber}">Serial number</th>
             <th th:text="#{device.typeName}">Type Name</th>
-<!--             <th th:text="#{device.subscription}">Subscription</th> -->
+            <th th:text="#{subscription}">Subscription</th>
             <th class="text-right" th:text="#{period}">Period</th>
           </tr>
         </thead>
@@ -51,7 +51,7 @@
           <tr th:each="device : ${devices}">
             <td th:text="${device.serialNumber}"></td>
             <td th:text="${device.typeName}"></td>
-<!--             <td th:text="${device.number}"></td> -->
+            <td th:text="${device.number}"></td>
             <td class="text-right" th:text="${device.getPeriod()}"></td>
           </tr>
         </tbody>

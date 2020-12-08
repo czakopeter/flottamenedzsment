@@ -82,7 +82,7 @@
         <table class="table table-sm">
           <thead>
             <tr>
-              <td th:text="${partOfInvoice.subscription?.number} + ' - ' + ${partOfInvoice.user != null ? partOfInvoice.user.fullName : 'Company'}" style="width: 80%"></td>
+              <td th:text="${partOfInvoice.subscription?.number} + ' - ' + (${partOfInvoice.user != null} ? ${partOfInvoice.user.fullName} : #{company})" style="width: 80%"></td>
               <td th:text="${#numbers.formatDecimal(partOfInvoice.grossAmount, 1, 2)} + ' Ft'"></td>
               <td class="text-right">
                 <button class="btn btn-sm" style="background-color: transparent;">
@@ -128,14 +128,14 @@
                 ></td>
                 <td name="buttons" width="85px" th:unless="${partOfInvoice.acceptedByCompany or partOfInvoice.user == null}">
                   <div id="prepareEditingButton" class="text-center">
-                    <button type="button" class="btn btn-sm btn-primary" onclick="prepare_editing(this)" th:text="#{button.edit}">
+                    <button type="button" class="btn btn-primary" onclick="prepare_editing(this)" th:text="#{button.edit}">
                     </button>
                   </div>
                   <div id="acceptOrCancelEditingButton" style="display: none" class="text-center">
-                    <button type="button" class="btn btn-sm btn-success" onclick="accept_editing(this)">
+                    <button type="button" class="btn btn-success" onclick="accept_editing(this)">
                       <img th:alt="#{button.accept}" src="/img/checkmark.png">
                     </button>
-                    <button type="button" class="btn btn-sm btn-danger" onclick="cancel_editing(this)">
+                    <button type="button" class="btn btn-danger" onclick="cancel_editing(this)">
                       <img th:alt="#{button.cancel}" src="/img/cross.png">
                     </button>
                   </div>

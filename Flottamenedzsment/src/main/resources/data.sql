@@ -10,13 +10,15 @@ INSERT INTO users_roles (user_id, role_id) VALUES (2,1)
 INSERT INTO Sims (imei, pin, puk, status) VALUES ('8936304419070454006', '0123', '0123456789', 1)
 INSERT INTO Sims (imei, pin, puk, status) VALUES ('8936304419070454111', '1234', '1234567890', 0)
 
-INSERT INTO Subscriptions (number, create_date) VALUES ('202563364', to_date('20-01-01', 'RR-MM-DD'))
-INSERT INTO sub_sim_st (sub_id, sim_id, begin_date) VALUES (1, 1, to_date('20-01-01', 'RR-MM-DD'))
+INSERT INTO Subscriptions (number, create_date) VALUES ('202563364', to_date('18-01-01', 'RR-MM-DD'))
+INSERT INTO sub_sim_st (sub_id, sim_id, begin_date) VALUES (1, 1, to_date('18-01-01', 'RR-MM-DD'))
 
 INSERT INTO Device_types (brand, model, name, availability) VALUES ('Samsung', 'J330', 'Samsung J3', 0)
+INSERT INTO Device_types (brand, model, name, availability) VALUES ('Samsung', 'A515F', 'Samsung A51', 0)
 INSERT INTO Device_types (brand, model, name, availability) VALUES ('Motorola', 'C380', 'Motorola C380', 1)
 
-INSERT INTO Devices (serial_number, type_id, create_date) VALUES ('R58J900J1W', 1, to_date('20-01-01', 'RR-MM-DD'))
+INSERT INTO Devices (serial_number, type_id, create_date) VALUES ('R58J900J1W', 1, to_date('18-01-01', 'RR-MM-DD'))
+INSERT INTO Devices (serial_number, type_id, create_date) VALUES ('R73D472C2T', 2, to_date('20-01-01', 'RR-MM-DD'))
 
 INSERT INTO Categories (name) VALUES ('Monthly')
 INSERT INTO Categories (name) VALUES ('Call')

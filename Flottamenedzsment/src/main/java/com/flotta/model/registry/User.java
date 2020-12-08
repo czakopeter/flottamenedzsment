@@ -34,8 +34,6 @@ public class User extends BasicEntity {
 	
 	private String fullName;
 	
-//	private boolean enabled;
-	
 	private String activationKey;
 	
   @OneToMany( mappedBy = "user" )

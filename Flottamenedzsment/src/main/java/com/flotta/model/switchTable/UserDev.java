@@ -10,6 +10,7 @@ import javax.persistence.Table;
 
 import com.flotta.model.registry.Device;
 import com.flotta.model.registry.User;
+import com.flotta.utility.Utility;
 
 @Entity
 @Table( name="user_dev_st")
@@ -51,10 +52,7 @@ public class UserDev extends BasicSwitchTable {
 
 	@Override
 	public String toString() {
-		return "UserSub [user=" + (user != null ? user.getFullName().toString() : "no user") + 
-				", sub=" + (dev != null ? dev.getSerialNumber().toString() : "no dev") + 
-				", connect=" + Objects.toString(beginDate, "no beginDate") +
-				", disconnect=" + Objects.toString(endDate, "no endDate") + "]";
+		return "UserDev: username=" + user.getFullName() + ", devSerNum=" + dev.getSerialNumber() + ", period=" + Utility.getPeriod(beginDate, endDate);
 	}
 
 //  @Override
