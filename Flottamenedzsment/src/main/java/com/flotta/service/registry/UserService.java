@@ -260,7 +260,7 @@ public class UserService implements UserDetailsService {
     @PostConstruct
     private void createFirstAdmin() {
       userRepository.save(createUser("admin@gmail.com", "Admin", "admin", UserStatus.ENABLED));
-      userRepository.save(createUser("testuser@gmail.com", "Test User", "testuser", UserStatus.WAITING_FOR_ACTIVATION));
+      userRepository.save(createUser("testuser@gmail.com", "Test User", "testuser", UserStatus.ENABLED));
 //      userRepository.save(createUser("disableduser@gmail.com", "", "disabled", UserStatus.DISABLED));
     }
     

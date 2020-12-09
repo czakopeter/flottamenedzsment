@@ -14,7 +14,6 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.access.AccessDeniedHandler;
 
 @EnableGlobalMethodSecurity(securedEnabled = true)
 @Configuration
@@ -69,7 +68,7 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
 				.logoutSuccessUrl("/afterlogout")
 				.permitAll()
 		  .and()
-		    .exceptionHandling().accessDeniedHandler(accessDeniedHandler());
+		    .exceptionHandling().accessDeniedPage("/accessDenied");
 		
 		
 		http.sessionManagement().maximumSessions(3).sessionRegistry(getSessionRegistry());
@@ -78,11 +77,6 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
 		http.csrf().disable();
 		http.headers().frameOptions().disable();
 	}
-	
-	@Bean
-  public AccessDeniedHandler accessDeniedHandler() {
-      return new CustomAccessDeniedHandler();
-  }
 	
 	@Bean SessionRegistry getSessionRegistry() {
 	  return new SessionRegistryImpl();

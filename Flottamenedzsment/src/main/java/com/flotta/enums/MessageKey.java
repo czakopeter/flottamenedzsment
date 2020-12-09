@@ -61,7 +61,10 @@ public enum MessageKey {
   PASSWORD_NEW_OLD_SAME("passwordNewOldSame"),
   
   EMAIL_FAILURE("emailFailure"),
-  UNKNOWN_EMAIL("unknownEmail"), 
+  UNKNOWN_EMAIL("unknownEmail"),
+  
+  PAGE_NOT_FOUND("pageNotFound"), 
+  UNKNOWN_FAILURE("unknownFailure")
   
   ;
   
