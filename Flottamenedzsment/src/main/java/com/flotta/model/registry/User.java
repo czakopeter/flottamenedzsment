@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -42,7 +41,7 @@ public class User extends BasicEntity {
 	@OneToMany( mappedBy = "user" )
   private Set<UserDev> userDevs;
 	
-	@ManyToMany( cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable( 
 		name = "users_roles",
 		joinColumns = {@JoinColumn(name="user_id")}, 

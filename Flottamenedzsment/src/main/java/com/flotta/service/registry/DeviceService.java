@@ -41,7 +41,6 @@ public class DeviceService {
       if(deviceTypeOpt.isPresent()) {
         Device entity = new Device(dtv.getSerialNumber(), deviceTypeOpt.get() ,dtv.getBeginDate());
         deviceRepository.save(entity);
-        eb.addMessage(MessageKey.SUCCESSFULL_CREATION, MessageType.SUCCESS);
       }
     }
     return eb;

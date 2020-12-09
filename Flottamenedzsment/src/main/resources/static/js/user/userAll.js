@@ -42,3 +42,13 @@ function showAll() {
 		document.querySelector("#user-table").querySelector("#no-result-body").classList.add("collapse");
 	}
 }
+
+function deleteUser(deleteBtn) {
+	let email = deleteBtn.parentElement.parentElement.querySelector("[name=email]").innerHTML;
+	sendData("DELETE", "/user/delete", "email=" + email, callbackOfDeleteUser);
+}
+
+function callbackOfDeleteUser(data) {
+	let row = document.querySelector("#" + data.text);
+	document.querySelector("#user-table").deleteRow(row.rowIndex);
+}

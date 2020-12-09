@@ -150,10 +150,8 @@ public class RegistryManager {
   }
 
   public ExtendedBoolean updateSubscription(SubscriptionToView stv) {
-    
       Optional<Subscription> subscriptonOpt = subscriptionService.findById(stv.getId());
       ExtendedBoolean eb = new ExtendedBoolean(subscriptonOpt.isPresent());
-      try {
         subscriptonOpt.ifPresent(subscription -> {
           subscription.addSim(simService.findByImei(stv.getImei()), stv.getSimChangeReason(), stv.getBeginDate());
           subscription.addUser(userService.findById(stv.getUserId()), stv.getBeginDate());
@@ -161,9 +159,6 @@ public class RegistryManager {
           subscription.addNote(stv.getNote(), stv.getBeginDate());
           subscriptionService.update(subscription);
         });
-      } catch (IllegalArgumentException e) {
-        eb.addMessage(MessageKey.SIM_CHANGE_REASON_EMPTY, MessageType.WARNING);
-      }
     return eb;
   }
 
@@ -214,5 +209,9 @@ public class RegistryManager {
   
   public boolean hasEnabledAdmin() {
     return userService.hasEnabledAdmin();
+  }
+
+  public void deleteUserById(String email) {
+    userService.delete(email);
   }
 }

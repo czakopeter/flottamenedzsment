@@ -51,7 +51,6 @@ public class SubscriptionService implements SubscriptionFinderService {
         Subscription entity = new Subscription(stv.getNumber(), stv.getBeginDate());
         entity.addSim(simOpt, null, stv.getBeginDate());
         subscriptionRepository.save(entity);
-        eb.addMessage(MessageKey.SUCCESSFULL_CREATION, MessageType.SUCCESS);
       }
     } else {
       eb.addMessage(MessageKey.PHONE_NUMBER_INVALID, MessageType.WARNING);

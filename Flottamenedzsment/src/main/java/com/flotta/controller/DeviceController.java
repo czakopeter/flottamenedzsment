@@ -85,7 +85,7 @@ public class DeviceController {
       model.addAttribute("users", Utility.sortUserByName(service.findAllUser()));
       return "device_templates/deviceEdit";
     } else {
-      messageService.clearAndAddMessage(MessageKey.UNKNOWN_DEVICE, MessageType.WARNING);
+      messageService.clearAndAddMessage(MessageKey.UNKNOWN_DEVICE, MessageType.ERROR);
       return "redirect:/device/all";
     }
   }
@@ -104,7 +104,7 @@ public class DeviceController {
       model.addAttribute("dates", deviceOpt.get().getAllModificationDateDesc());
       return "device_templates/deviceView";
     } else {
-      messageService.clearAndAddMessage(MessageKey.UNKNOWN_DEVICE, MessageType.WARNING);
+      messageService.clearAndAddMessage(MessageKey.UNKNOWN_DEVICE, MessageType.ERROR);
       return "redirect:/device/all";
     }
   }

@@ -7,9 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.flotta.enums.Availability;
+import com.flotta.enums.MessageKey;
+import com.flotta.enums.MessageType;
 import com.flotta.model.invoice.Category;
 import com.flotta.model.invoice.DescriptionCategoryCoupler;
 import com.flotta.repository.invoice.DescriptionCategoryCouplerRepository;
+import com.flotta.utility.ExtendedBoolean;
 
 @Service
 public class DescriptionCategoryCouplerService {
@@ -33,12 +36,16 @@ public class DescriptionCategoryCouplerService {
     return descriptionCategoryCouplerRepository.findById(id);
   }
   
-  boolean create(DescriptionCategoryCoupler dcc) {
+  ExtendedBoolean create(DescriptionCategoryCoupler dcc) {
+    ExtendedBoolean eb = new ExtendedBoolean(true);
     Optional<DescriptionCategoryCoupler> optional = descriptionCategoryCouplerRepository.findByName(dcc.getName());
     if(!optional.isPresent()) {
       descriptionCategoryCouplerRepository.save(dcc);
+    } else {
+      eb.setInvalid();
+      eb.addMessage(MessageKey.COUPLER_NAME_ALREADY_USED, MessageType.WARNING);
     }
-    return !optional.isPresent();
+    return eb;
   }
 
   public boolean update(DescriptionCategoryCoupler coupler, List<String> descriptions, List<Category> categories) {

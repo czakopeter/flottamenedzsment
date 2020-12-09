@@ -12,7 +12,7 @@
     <form action="/invoiceConfiguration/chargeRatio/new" method="post" th:object="${chargeRatio}">
       <div class="row my-2">
         <div class="col-1">
-          <label th:text="#{name}">Name</label>
+          <label th:text="#{name}" class="required">Name</label>
         </div>
         <div class="col-4">
           <input type="text" class="form-control" id="name" name="name" th:value="*{name}" required="required" />

@@ -18,10 +18,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.flotta.enums.ControllerType;
-import com.flotta.exception.invoice.FileUploadException;
+import com.flotta.enums.MessageKey;
+import com.flotta.enums.MessageType;
 import com.flotta.model.invoice.Invoice;
 import com.flotta.service.MessageService;
 import com.flotta.service.ServiceManager;
+import com.flotta.utility.ExtendedBoolean;
 import com.flotta.utility.ResponseTransfer;
 import com.flotta.utility.Utility;
 
@@ -49,15 +51,15 @@ public class InvoiceController {
   public String listInvoces(Model model) {
     model.addAttribute("rawInvoices", Utility.sortRawInvoice(service.findAllRawInvoice()));
     model.addAttribute("invoices", Utility.sortInvoice(service.findAllInvoice()));
+    model.addAttribute("messages", messageService.getMessages());
     return "invoice_templates/invoiceAll";
   }
   
   @PostMapping("/invoice/fileUpload")
   public String uploadInvoice(RedirectAttributes ra, @RequestParam("file") MultipartFile file) {
-    try {
-      service.fileUpload(file);
-    } catch (FileUploadException e) {
-      ra.addFlashAttribute("error", e.getMessage());
+    ExtendedBoolean eb = service.fileUpload(file);
+    if(!eb.isValid()) {
+      messageService.addMessage(eb);
     }
     return "redirect:/invoice/all";
   }
@@ -69,6 +71,7 @@ public class InvoiceController {
       model.addAttribute("invoice", invoice.get());
       return "invoice_templates/invoiceDetails";
     } else {
+      messageService.addMessage(MessageKey.UNKNOWN_INVOICE, MessageType.ERROR);
       return "redirect:/invoice/all";
     }
   }

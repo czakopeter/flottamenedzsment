@@ -1,6 +1,5 @@
 package com.flotta.service.registry;
 
-import java.awt.geom.AffineTransform;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -144,7 +143,7 @@ public class UserService implements UserDetailsService {
     if (userOpt.isPresent()) {
       User user = userOpt.get();
       if (!passwordEncoder.matches(oldPsw, user.getPassword())) {
-        eb.addMessage(MessageKey.OLD_PASSWORD_INCORRECT, MessageType.WARNING);
+        eb.addMessage(MessageKey.CURRENT_PASSWORD_INCORRECT, MessageType.WARNING);
       }
       if (oldPsw.equalsIgnoreCase(newPsw)) {
         eb.addMessage(MessageKey.PASSWORD_NEW_OLD_SAME, MessageType.WARNING);
@@ -272,5 +271,14 @@ public class UserService implements UserDetailsService {
       user.setPassword(passwordEncoder.encode(psw));
       user.setStatus(status);
       return user;
+    }
+
+    public void delete(String email) {
+      Optional<User> userOpt = findByEmail(email);
+      userOpt.ifPresent(user -> {
+        if(user.getStatus().equals(UserStatus.WAITING_FOR_ACTIVATION)) {
+          userRepository.delete(user);
+        }
+      });
     }
 }

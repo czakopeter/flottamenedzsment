@@ -47,7 +47,6 @@ public class DeviceTypeService {
     ExtendedBoolean eb = creatable(deviceType);
     if (eb.isValid()) {
         deviceTypeRepository.save(deviceType);
-        eb.addMessage(MessageKey.SUCCESSFULL_CREATION, MessageType.SUCCESS);
     }
     return eb;
   }
@@ -63,10 +62,10 @@ public class DeviceTypeService {
     Optional<DeviceType> typeByBrandAndModelOpt = deviceTypeRepository.findByBrandAndModelIgnoreCase(deviceType.getBrand(), deviceType.getModel());
     ExtendedBoolean eb = new ExtendedBoolean(!typeByNameOpt.isPresent() || typeByBrandAndModelOpt.isPresent());
     if(typeByNameOpt.isPresent()) {
-      eb.addMessage(MessageKey.NAME_ALREADY_EXISTS, MessageType.WARNING);
+      eb.addMessage(MessageKey.NAME_ALREADY_USED, MessageType.WARNING);
     }
     if(typeByBrandAndModelOpt.isPresent()) {
-      eb.addMessage(MessageKey.BRAND_AND_MODEL_ALREADY_EXISTS, MessageType.WARNING);
+      eb.addMessage(MessageKey.BRAND_AND_MODEL_ALREADY_USED, MessageType.WARNING);
     }
     return eb;
   }

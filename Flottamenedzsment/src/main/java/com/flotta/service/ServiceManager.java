@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.flotta.enums.Availability;
-import com.flotta.exception.invoice.FileUploadException;
 import com.flotta.model.invoice.Category;
 import com.flotta.model.invoice.ChargeRatioByCategory;
 import com.flotta.model.invoice.DescriptionCategoryCoupler;
@@ -49,8 +48,8 @@ public class ServiceManager {
   
 //-------- INVOICE SERVICE --------
 
-  public void fileUpload(MultipartFile file) throws FileUploadException {
-    invoiceManager.uploadInvoice(file);
+  public ExtendedBoolean fileUpload(MultipartFile file) {
+    return invoiceManager.uploadInvoice(file);
   }
 
   public List<Invoice> findAllInvoice() {
@@ -107,7 +106,7 @@ public class ServiceManager {
     return invoiceManager.findDescriptionCategoryCoupler(id);
   }
   
-  public boolean createDescriptionCategoryCoupler(DescriptionCategoryCoupler dcc) {
+  public ExtendedBoolean createDescriptionCategoryCoupler(DescriptionCategoryCoupler dcc) {
     return invoiceManager.createDescriptionCategoryCoupler(dcc);
   }
   
@@ -125,7 +124,7 @@ public class ServiceManager {
     return invoiceManager.findChargeRatioById(id);
   }
   
-  public boolean createChargeRatio(ChargeRatioByCategory chargeRatio) {
+  public ExtendedBoolean createChargeRatio(ChargeRatioByCategory chargeRatio) {
     return invoiceManager.createChargeRatio(chargeRatio);
   }
 
@@ -171,7 +170,7 @@ public class ServiceManager {
     return invoiceManager.findParticipantById(id);
   }
 
-  public boolean createParticipant(Participant participant) {
+  public ExtendedBoolean createParticipant(Participant participant) {
     return invoiceManager.createParticipant(participant);
   }
 
@@ -328,10 +327,16 @@ public class ServiceManager {
     return registryManager.hasAdmin();
   }
   
+  public void deleteUserById(String email) {
+    registryManager.deleteUserById(email);
+  }
+  
 
   // --- SWITCH TABLE SERVICE ---
 
   public List<Device> findAllCurrentDeviceByUser(long userId) {
     return switchTableService.findAllCurrentDeviceByUser(registryManager.findUserById(userId));
   }
+
+  
 }

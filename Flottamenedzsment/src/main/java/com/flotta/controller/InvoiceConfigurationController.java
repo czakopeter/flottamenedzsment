@@ -16,12 +16,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.flotta.enums.ControllerType;
+import com.flotta.enums.MessageKey;
+import com.flotta.enums.MessageType;
 import com.flotta.model.invoice.Category;
 import com.flotta.model.invoice.ChargeRatioByCategory;
 import com.flotta.model.invoice.DescriptionCategoryCoupler;
 import com.flotta.model.invoice.Participant;
 import com.flotta.service.MessageService;
 import com.flotta.service.ServiceManager;
+import com.flotta.utility.ExtendedBoolean;
 import com.flotta.utility.ResponseTransfer;
 import com.flotta.utility.Utility;
 
@@ -70,11 +73,15 @@ public class InvoiceConfigurationController {
   
   @PostMapping("/invoiceConfiguration/descriptionCategoryCoupler/new")
   public String createInvoiceDescriptionCategoryCoupler(Model model, @ModelAttribute DescriptionCategoryCoupler dcc) {
-    if(service.createDescriptionCategoryCoupler(dcc)) {
+    ExtendedBoolean eb = service.createDescriptionCategoryCoupler(dcc);
+    messageService.addMessage(eb);
+    if(eb.isValid()) {
       return "redirect:/invoiceConfiguration/main?active=description-category-coupler";
+    } else {
+      model.addAttribute("coupler", dcc);
+      model.addAttribute("messages", messageService.getMessages());
+      return TEMPLATE_PATH + "/descriptionCategoryCouplerNew";
     }
-    model.addAttribute("coupler", dcc);
-    return TEMPLATE_PATH + "/descriptionCategoryCouplerNew";
   }
   
   @GetMapping("/invoiceConfiguration/descriptionCategoryCoupler/{id}")
@@ -92,6 +99,7 @@ public class InvoiceConfigurationController {
       model.addAttribute("rawInvoices", Utility.sortRawInvoice(service.findAllRawInvoice()));
       return TEMPLATE_PATH + "/descriptionCategoryCouplerEdit";
     } else {
+      messageService.addMessage(MessageKey.UNKNOWN_COUPLER, MessageType.ERROR);
       return "redirect:/invoiceConfiguration/main?active=description-category-coupler";
     }
   }
@@ -120,6 +128,7 @@ public class InvoiceConfigurationController {
       model.addAttribute("coupler", dccOpt.get());
       return TEMPLATE_PATH + "/descriptionCategoryCouplerView";
     } else {
+      messageService.addMessage(MessageKey.UNKNOWN_COUPLER, MessageType.ERROR);
       return "redirect:/invoiceConfiguration/main?active=description-category-coupler";
     }
   }
@@ -132,10 +141,13 @@ public class InvoiceConfigurationController {
   
   @PostMapping("/invoiceConfiguration/chargeRatio/new")
   public String createChargeRatio(Model model, @ModelAttribute("chargeRatio") ChargeRatioByCategory chargeRatio) {
-    if(service.createChargeRatio(chargeRatio)) {
+    ExtendedBoolean eb = service.createChargeRatio(chargeRatio);
+    messageService.addMessage(eb);
+    if(eb.isValid()) {
       return "redirect:/invoiceConfiguration/main?active=charge-ratio";
     } else {
       model.addAttribute("chargeRatio", chargeRatio);
+      model.addAttribute("messages", messageService.getMessages());
       return TEMPLATE_PATH + "/chargeRatioByCategoryNew";
     }
   }
@@ -148,6 +160,7 @@ public class InvoiceConfigurationController {
       model.addAttribute("unusedCategories", Utility.sortCategoryByName(service.findAllUnusedCategoryOfChargeRatio(id)));
       return TEMPLATE_PATH + "/chargeRatioByCategoryEdit";
     } else {
+      messageService.addMessage(MessageKey.UNKNOWN_CHARGE_RATIO, MessageType.ERROR);
       return "redirect:/invoiceConfiguration/main?active=charge-ratio";
     }
   }
@@ -186,11 +199,14 @@ public class InvoiceConfigurationController {
   
   @PostMapping("/invoiceConfiguration/participant/new")
   public String createParticipant(Model model, @ModelAttribute Participant participant) {
-    if(service.createParticipant(participant)) {
+    ExtendedBoolean eb = service.createParticipant(participant);
+    messageService.addMessage(eb);
+    if(eb.isValid()) {
       return "redirect:/invoiceConfiguration/main?active=participant";
     } else {
       model.addAttribute("participant", participant);
       model.addAttribute("descriptionCategoryCouplers", Utility.sortCouplerByName(service.findAllDescriptionCategoryCoupler()));
+      model.addAttribute("messages", messageService.getMessages());
       return TEMPLATE_PATH + "/participantNew";
     }
   }
@@ -203,6 +219,7 @@ public class InvoiceConfigurationController {
       model.addAttribute("descriptionCategoryCouplers", Utility.sortCouplerByName(service.findAllDescriptionCategoryCoupler()));
       return TEMPLATE_PATH + "/participantEdit";
     } else {
+      messageService.addMessage(MessageKey.UNKNOWN_PARTICIPANT, MessageType.ERROR);
       return "redirect:/invoiceConfiguration/main?active=participant";
     }
   }

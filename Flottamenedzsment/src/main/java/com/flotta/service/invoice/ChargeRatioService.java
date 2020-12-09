@@ -7,9 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.flotta.enums.Availability;
+import com.flotta.enums.MessageKey;
+import com.flotta.enums.MessageType;
 import com.flotta.model.invoice.Category;
 import com.flotta.model.invoice.ChargeRatioByCategory;
 import com.flotta.repository.invoice.ChargeRatioRepository;
+import com.flotta.utility.ExtendedBoolean;
 
 @Service
 public class ChargeRatioService {
@@ -35,12 +38,16 @@ public class ChargeRatioService {
     return chargeRatioRepository.findById(id);
   }
   
-  boolean create(ChargeRatioByCategory chargeRatio) {
+  ExtendedBoolean create(ChargeRatioByCategory chargeRatio) {
+    ExtendedBoolean ex = new ExtendedBoolean(true);
     Optional<ChargeRatioByCategory> optional = chargeRatioRepository.findByName(chargeRatio.getName());
     if(!optional.isPresent()) {
       chargeRatioRepository.save(chargeRatio);
+    } else {
+      ex.setInvalid();
+      ex.addMessage(MessageKey.CHARGE_RATIO_NAME_ALREADY_USED, MessageType.WARNING);
     }
-    return !optional.isPresent();
+    return ex;
   }
 
   boolean update(ChargeRatioByCategory chargeRatio, List<Category> categories, List<Integer> ratios) {

@@ -55,13 +55,15 @@ public class ProfileController {
   
   @GetMapping("/profile/changePassword")
   public String preparePasswordChanging() {
+    
     return "profile_templates/passwordChange";
   }
   
   @PostMapping("/profile/changePassword")
   public String passwordChange(Model model, RedirectAttributes ra, @RequestParam Map<String, String> params) {
     ExtendedBoolean eb = service.changePassword(getActualUserEmail(), params.get("old-password"), params.get("new-password"), params.get("confirm-new-password"));
-    messageService.clearAndAddMessage(eb);
+    messageService.addMessage(eb);
+    model.addAttribute("messages", messageService.getMessages());
     return "profile_templates/passwordChange";
   }
   
@@ -85,7 +87,7 @@ public class ProfileController {
       model.addAttribute("invoicePart", invoiceOpt.get());
       return "profile_templates/invoiceDetails";
     } else {
-      messageService.clearAndAddMessage(MessageKey.UNKNOWN_INVOICE, MessageType.WARNING);
+      messageService.clearAndAddMessage(MessageKey.UNKNOWN_INVOICE, MessageType.ERROR);
       return "redirect:/profile/invoice";
     }
   }

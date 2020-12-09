@@ -14,13 +14,13 @@
         <div class="row my-3">
         <div class="col-5">
           <select id="selectedUser" name="selectedUser" onchange="selectUser(this)" class="form-control">
-            <option value="0" th:text="#{users}" selected="selected">Users</option>
+            <option value="0" th:text="#{chooseUser}" selected="selected">Users</option>
             <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.fullName} + ' (' + ${user.email} + ')'"></option>
           </select>
         </div>
         <div class="col-5">
           <select id="selectedChargeRatio" name="selectedChargeRatio" class="form-control">
-            <option value="0" th:text="#{chargeRatio.chargeRatios}" selected="selected">Charge ratios</option>
+            <option value="0" th:text="#{chooseChargeRatio}" selected="selected">Charge ratios</option>
             <option th:each="chargeRatio : ${chargeRatios}" th:value="${chargeRatio.id}" th:text="${chargeRatio.name}"></option>
           </select>
         </div>

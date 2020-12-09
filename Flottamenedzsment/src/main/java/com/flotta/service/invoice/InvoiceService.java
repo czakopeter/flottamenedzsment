@@ -26,6 +26,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.flotta.enums.MessageKey;
+import com.flotta.enums.MessageType;
 import com.flotta.exception.invoice.FileUploadException;
 import com.flotta.model.invoice.DescriptionCategoryCoupler;
 import com.flotta.model.invoice.FeeItem;
@@ -38,6 +40,7 @@ import com.flotta.model.registry.User;
 import com.flotta.repository.invoice.InvoiceRepository;
 import com.flotta.repository.invoice.RawInvoiceRepository;
 import com.flotta.service.registry.SubscriptionFinderService;
+import com.flotta.utility.ExtendedBoolean;
 
 /**
  * @author CzP
@@ -78,16 +81,27 @@ public class InvoiceService {
     return invoiceRepository.findByInvoiceNumber(invoiceNumber);
   }
 
-  public void uploadInvoice(MultipartFile file) throws FileUploadException {
-    String xmlString = getXMLString(file);
-
-    RawInvoice rawInvoice = parseXmlStringToRawInvoice(xmlString);
-
-    if (invoiceRepository.findByInvoiceNumber(rawInvoice.getInvoiceNumber()).isPresent() || rawInvoiceRepository.findByInvoiceNumber(rawInvoice.getInvoiceNumber()).isPresent()) {
-      throw new FileUploadException("Already has invoice with this invoice number: " + rawInvoice.getInvoiceNumber());
-    } else {
-      processRawInvoice(rawInvoice);
+  public ExtendedBoolean uploadInvoice(MultipartFile file) {
+    ExtendedBoolean eb = new ExtendedBoolean(true);
+    String xmlString;
+    try {
+      xmlString = getXMLString(file);
+      
+      RawInvoice rawInvoice = parseXmlStringToRawInvoice(xmlString);
+      
+      if (invoiceRepository.findByInvoiceNumber(rawInvoice.getInvoiceNumber()).isPresent() || 
+          rawInvoiceRepository.findByInvoiceNumber(rawInvoice.getInvoiceNumber()).isPresent()) {
+        eb.setInvalid();
+        eb.addMessage(MessageKey.INVOICE_NUMBER_ALREADY_USED, MessageType.WARNING);
+      } else {
+        processRawInvoice(rawInvoice);
+      }
+    } catch (FileUploadException e) {
+      eb.setInvalid();
+      eb.addMessage(e.getKey(), e.getType());
+      e.printStackTrace();
     }
+  return eb;
   }
   
   public void deleteInvoiceByInvoiceNumber(String invoiceNumber) {

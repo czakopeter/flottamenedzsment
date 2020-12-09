@@ -9,11 +9,11 @@
 
     <h3 th:text="#{main.invoices}">Invoices</h3>
 
+    <div th:replace="fragments/message :: messages"></div>
+
     <div
       th:replace="fragments/filter/filter :: add-and-filter-wrapper(invoice-upload, invoice-filter-options)"
     ></div>
-
-    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
     <div>
       <h4 th:text="#{rawInvoices}">Raw invoices</h4>

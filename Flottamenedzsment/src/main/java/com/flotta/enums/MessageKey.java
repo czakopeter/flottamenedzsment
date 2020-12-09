@@ -1,38 +1,69 @@
 package com.flotta.enums;
 
 public enum MessageKey {
-  SUCCESSFULL_CREATION("succesfulCreation"),
-  EMAIL_FAILURE("emailFailure"),
-  NO_REDUCE_ADMIN("noReduceAdmin"),
-  PASSWORD_CHANGE_SUCCESSFUL("passwordChangeSuccesful"),
-  OLD_PASSWORD_INCORRECT("oldPasswordIncorrect"),
-  NEW_PASSWORD_INVALID("newPasswordInvalid"),
-  PASSWORD_NEW_OLD_SAME("passwordNewOldSame"),
-  UNKNOWN_EMAIL("unknownEmail"), 
-  SUCCESSFUL_ACTIVATION("successfulActivation"), 
-  UNKNOWN_ACTIVATION_KEY("unknownActivationKey"),
-  ALREADY_HAS_ADMIN("alreadyHasAdmin"),
-  SUCCESSFUL_REGISTRATION("successfulRegistration"), 
-  UNKNOWN_INVOICE("unknownInvoice"),
-  LOGIN_FAILURE("loginFailure"),
-  SUCCESSFUL_LOGOUT("successfulLogout"), 
-  ACTIVATE_OR_CREATE_FIRST_ADMIN("activateOrCreateFirstAdmin"), 
+//  LOGIN
   CREATE_FIRST_ADMIN("createFirstAdmin"),
+  SUCCESSFUL_REGISTRATION("successfulRegistration"),
+  ACTIVATE_OR_CREATE_FIRST_ADMIN("activateOrCreateFirstAdmin"),
+  ALREADY_HAS_ADMIN("alreadyHasAdmin"),
+  SUCCESSFUL_ACTIVATION("successfulActivation"),
+  UNKNOWN_ACTIVATION_KEY("unknownActivationKey"),
+  
+  LOGIN_FAILURE("loginFailure"),
+  SUCCESSFUL_LOGOUT("successfulLogout"),
+  
+//  USER
   EMAIL_ALREADY_USED("emailAlreadyUsed"),
   UNKNOWN_USER("unknownUser"),
-  IMEI_ALREADY_USED("imeiAlreadyUsed"),
-  IMEI_NUMBER_NOT_VALID("imeiNumberNotValid"),
+  NO_REDUCE_ADMIN("noReduceAdmin"),
+  
+//  SUBSCRIPTIION
   NO_FREE_SIM("noFreeSim"),
   PHONE_NUMBER_ALREADY_USED("phoneNumberAlreadyUsed"),
   PHONE_NUMBER_INVALID("phoneNumberInvalid"),
   UNKNOWN_SUBSCRIPITON("unknownSubscription"),
-  SIM_CHANGE_REASON_EMPTY("simChangeReasonEmpty"),
+  
+//  SIM CARD
+  IMEI_ALREADY_USED("imeiAlreadyUsed"),
+  IMEI_NUMBER_INVALID("imeiNumberInvalid"),
+  
+//  DEVICE
+  NO_DEVICE_TYPE("noDeviceType"),
   SERIAL_NUMBER_ALREADY_USED("serialNumberAlreadyUsed"),
   UNKNOWN_DEVICE("unknownDevice"),
-  NO_DEVICE_TYPE("noDeviceType"),
-  NAME_ALREADY_EXISTS("nameAlreadyExists"),
-  BRAND_AND_MODEL_ALREADY_EXISTS("brandAndModelAlreadyExists"),
-  UNKNOWN_DEVICE_TYPE("unknownDeviceType");
+  
+  
+//  DEVICE TYPE
+  NAME_ALREADY_USED("nameAlreadyExists"),
+  BRAND_AND_MODEL_ALREADY_USED("brandAndModelAlreadyExists"),
+  UNKNOWN_DEVICE_TYPE("unknownDeviceType"),
+  
+//  INVOICE
+  INVOICE_NUMBER_ALREADY_USED("invoiceNumberAlreadyUsed"),
+  UNKNOWN_INVOICE("unknownInvoice"),
+  
+//  INVOICE CONFIG
+  UNKNOWN_COUPLER("unknownCoupler"),
+  COUPLER_NAME_ALREADY_USED("couplerNameAlreadyUsed"),
+  
+  UNKNOWN_CHARGE_RATIO("unknownChargeRatio"),
+  CHARGE_RATIO_NAME_ALREADY_USED("chargeRatioNameAlreadyUsed"),
+  
+  UNKNOWN_PARTICIPANT("unknownParticipant"),
+  PARTICIPANT_NAME_ALREADY_USED("paricipantNameAlreadyUsed"),
+  
+//  EMAIL
+  
+//  PROFILE
+  PASSWORD_CHANGE_SUCCESSFUL("passwordChangeSuccesful"),
+  CURRENT_PASSWORD_INCORRECT("currentPasswordIncorrect"),
+  NEW_PASSWORD_INVALID("newPasswordInvalid"),
+  PASSWORD_NEW_OLD_SAME("passwordNewOldSame"),
+  
+  EMAIL_FAILURE("emailFailure"),
+  UNKNOWN_EMAIL("unknownEmail"), 
+  
+  ;
   
   
   private String key;

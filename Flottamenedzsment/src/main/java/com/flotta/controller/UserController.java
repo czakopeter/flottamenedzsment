@@ -9,11 +9,13 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.flotta.enums.ControllerType;
@@ -23,6 +25,7 @@ import com.flotta.model.registry.User;
 import com.flotta.service.MessageService;
 import com.flotta.service.ServiceManager;
 import com.flotta.utility.ExtendedBoolean;
+import com.flotta.utility.ResponseTransfer;
 
 @Controller
 public class UserController {
@@ -74,7 +77,7 @@ public class UserController {
       model.addAttribute("messages", messageService.getMessages());
       return "user_templates/userEdit";
     } else {
-      messageService.addMessage(MessageKey.UNKNOWN_USER, MessageType.WARNING);
+      messageService.addMessage(MessageKey.UNKNOWN_USER, MessageType.ERROR);
       return "redirect:/user/all";
     }
   }
@@ -171,6 +174,13 @@ public class UserController {
     ExtendedBoolean eb = service.requestNewPassword(email);
     messageService.addMessage(eb);
     return "redirect:/requestNewPassword";
+  }
+  
+  @DeleteMapping("user/delete")
+  @ResponseBody
+  public ResponseTransfer deleteUser(@RequestParam("email") String email) {
+    service.deleteUserById(email);
+    return new ResponseTransfer(email);
   }
   
 }

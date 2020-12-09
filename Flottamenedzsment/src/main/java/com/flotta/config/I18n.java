@@ -50,6 +50,7 @@ public class I18n implements WebMvcConfigurer {
                                  "messages/device/messages_device",
                                  "messages/deviceType/messages_deviceType",
                                  "messages/invoice/messages_invoice",
+                                 "messages/invoiceConf/messages_invoice_conf",
                                  "messages/profile/messages_profile"
                                  );
       messageSource.setDefaultEncoding("UTF-8");

@@ -6,9 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.flotta.model.invoice.DescriptionCategoryCoupler;
+import com.flotta.enums.MessageKey;
+import com.flotta.enums.MessageType;
 import com.flotta.model.invoice.Participant;
 import com.flotta.repository.invoice.ParticipantRepository;
+import com.flotta.utility.ExtendedBoolean;
 
 @Service
 public class ParticipantService implements ParticipantFinderService {
@@ -35,12 +37,16 @@ public class ParticipantService implements ParticipantFinderService {
     return participantRepository.findByName(name);
   }
 
-  boolean create(Participant participant) {
+  ExtendedBoolean create(Participant participant) {
+    ExtendedBoolean eb = new ExtendedBoolean(true);
     Optional<Participant> participantOpt = participantRepository.findByName(participant.getName());
     if (!participantOpt.isPresent()) {
       participantRepository.save(participant);
+    } else {
+      eb.setInvalid();
+      eb.addMessage(MessageKey.PARTICIPANT_NAME_ALREADY_USED, MessageType.WARNING);
     }
-    return !participantOpt.isPresent();
+    return eb;
   }
 
   void update(Participant participant) {

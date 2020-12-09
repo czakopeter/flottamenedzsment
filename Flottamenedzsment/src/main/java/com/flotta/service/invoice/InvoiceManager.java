@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.flotta.exception.invoice.FileUploadException;
 import com.flotta.model.invoice.Category;
 import com.flotta.model.invoice.ChargeRatioByCategory;
 import com.flotta.model.invoice.DescriptionCategoryCoupler;
@@ -18,6 +17,7 @@ import com.flotta.model.invoice.InvoiceByUserAndPhoneNumber;
 import com.flotta.model.invoice.Participant;
 import com.flotta.model.invoice.RawInvoice;
 import com.flotta.model.registry.User;
+import com.flotta.utility.ExtendedBoolean;
 
 @Service
 public class InvoiceManager {
@@ -48,8 +48,8 @@ public class InvoiceManager {
   
 //-------- INVOICE SERVICE --------
   
-  public void uploadInvoice(MultipartFile file) throws FileUploadException {
-    invoiceService.uploadInvoice(file);
+  public ExtendedBoolean uploadInvoice(MultipartFile file) {
+    return invoiceService.uploadInvoice(file);
   }
   
   public List<Invoice> findAllInvoice() {
@@ -130,7 +130,7 @@ public class InvoiceManager {
     return descriptionCategoryCouplerService.findById(id);
   }
   
-  public boolean createDescriptionCategoryCoupler(DescriptionCategoryCoupler dcc) {
+  public ExtendedBoolean createDescriptionCategoryCoupler(DescriptionCategoryCoupler dcc) {
     return descriptionCategoryCouplerService.create(dcc);
   }
   
@@ -142,7 +142,7 @@ public class InvoiceManager {
   
 //-------- CHARGE RATIO BY CATEGORY SERVICE --------
   
-  public boolean createChargeRatio(ChargeRatioByCategory chargeRatio) {
+  public ExtendedBoolean createChargeRatio(ChargeRatioByCategory chargeRatio) {
     return chargeRatioService.create(chargeRatio);
   }
 
@@ -178,7 +178,7 @@ public class InvoiceManager {
     return participantService.findById(id);
   }
 
-  public boolean createParticipant(Participant participant) {
+  public ExtendedBoolean createParticipant(Participant participant) {
       return participantService.create(participant);
   }
   

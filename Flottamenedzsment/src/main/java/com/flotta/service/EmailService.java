@@ -35,6 +35,7 @@ public class EmailService {
       emailSender.send(message);
     } catch (MessagingException e) {
       log.error("Multipart creation failed " + e);
+      return false;
     } catch (MailSendException e) {
       log.error("Failure when sending the message " + e);
       return false;
