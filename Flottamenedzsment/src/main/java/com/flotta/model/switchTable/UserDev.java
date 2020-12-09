@@ -1,7 +1,6 @@
 package com.flotta.model.switchTable;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;

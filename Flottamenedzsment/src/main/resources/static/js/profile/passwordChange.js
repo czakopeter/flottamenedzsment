@@ -5,7 +5,7 @@ function newPswCheck() {
 	if(np.value != cnp.value) {
 		document.querySelector("#error").style.display = null;
 		document.querySelector("#saveBtn").disabled = true;
-	} else if(np.value.trim().length == 0 || || op.trim().length == 0) {
+	} else if(np.value.trim().length == 0 || op.trim().length == 0) {
 		document.querySelector("#error").style.display = 'none';
 		document.querySelector("#saveBtn").disabled = true;
 	} else {
