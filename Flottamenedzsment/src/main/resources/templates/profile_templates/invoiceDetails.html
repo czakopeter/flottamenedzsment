@@ -14,19 +14,19 @@
       <form method="post">
         <div class="row my-2">
           <div class="col-2" th:text="#{phoneNumber}">Phone number</div>
-          <div class="col-2 text-right" th:text="${invoicePart.subscription.number}">201234567</div>
+          <div class="col-2 text-right" th:text="${groupedFeeItems.subscription.number}">201234567</div>
         </div>
         <div class="row my-2">
           <div class="col-2" th:text="#{invoice.periodBegin}">Period begin</div>
-          <div class="col-2 text-right" th:text="${invoicePart.beginDate}">2020.01.10</div>
+          <div class="col-2 text-right" th:text="${groupedFeeItems.beginDate}">2020.01.10</div>
         </div>
         <div class="row my-2">
           <div class="col-2" th:text="#{invoice.periodEnd}">Period ends</div>
-          <div class="col-2 text-right" th:text="${invoicePart.endDate}">2020.01.31</div>
+          <div class="col-2 text-right" th:text="${groupedFeeItems.endDate}">2020.01.31</div>
         </div>
         <div class="row my-2">
           <div class="col-2" th:text="#{invoice.grossAmount}">Gross amount</div>
-          <div class="col-2 text-right" th:text="${#numbers.formatDecimal(invoicePart.userGrossAmount, 1, 2)} + ' Ft'">0 Ft</div>
+          <div class="col-2 text-right" th:text="${#numbers.formatDecimal(groupedFeeItems.userGrossAmount, 1, 2)} + ' Ft'">0 Ft</div>
         </div>
       
       <h4 class="uppercase" th:text="#{invoiceDetails}">Invoice details</h4>
@@ -37,25 +37,25 @@
             <th th:text="#{description}">Description</th>
             <th th:text="#{period}" class="text-center">Period</th>
             <th class="text-right" th:text="#{invoice.grossAmount}">Gross amount</th>
-            <th class="text-center" th:if="${not invoicePart.acceptedByUser}" th:text="#{reviewNote}">Review note</th>
+            <th class="text-center" th:if="${not groupedFeeItems.acceptedByUser}" th:text="#{reviewNote}">Review note</th>
           </tr>
         </thead>
         <tbody>
-          <tr name="fee" th:each="feeItem : ${invoicePart.feeItems}">
+          <tr name="fee" th:each="feeItem : ${groupedFeeItems.feeItems}">
             <td th:text="${feeItem.description}"></td>
             <td th:text="${feeItem.getPeriod()}" class="text-center"></td>
             <td class="text-right" th:text="${#numbers.formatDecimal(feeItem.userGrossAmount, 1, 2)} + ' Ft'"></td>
-            <td th:if="${not invoicePart.acceptedByUser}">
+            <td th:if="${not groupedFeeItems.acceptedByUser}">
               <input type="text" class="form-control form-control-sm" th:name="${feeItem.id}" oninput="modifyNotes()" />
             </td>
           </tr>
         </tbody>
       </table>
       <label th:text="#{reviewNoteForEntireInvoice}">Review note for entire invoice</label>
-      <textarea th:if="${not invoicePart.acceptedByUser}" class="form-control mb-2" name="textarea" oninput="modifyNotes()"></textarea>
+      <textarea th:if="${not groupedFeeItems.acceptedByUser}" class="form-control mb-2" name="textarea" oninput="modifyNotes()"></textarea>
       
       <div class="text-right">
-        <button id="reviewBtn" type="submit" th:formaction="'/profile/invoice/' + ${invoicePart.id} + '/revision'" class="btn btn-primary" th:if="${not invoicePart.acceptedByUser}" disabled="disabled" th:text="#{button.askForReview}">Ask for review</button>
+        <button id="reviewBtn" type="submit" th:formaction="'/profile/invoice/' + ${groupedFeeItems.id} + '/revision'" class="btn btn-primary" th:if="${not groupedFeeItems.acceptedByUser}" disabled="disabled" th:text="#{button.askForReview}">Ask for review</button>
         <a class="btn btn-primary" href="/profile/invoice" th:text="#{button.back}"></a>
       </div>
       </form>

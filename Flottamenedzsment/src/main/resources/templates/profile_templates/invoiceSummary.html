@@ -16,7 +16,7 @@
       <table class="table table-sm">
         <thead>
           <tr class="table-primary" >
-            <th th:classappend="${#lists.isEmpty(invoiceParts)} ? 'collapse' : ''">
+            <th th:classappend="${#lists.isEmpty(groups)} ? 'collapse' : ''">
               <input id="select-all" type="checkbox" title="Select all" th:title="#{profile.selectAll}" onclick="selectAll()" />
             </th>
             <th th:text="#{phoneNumber}">Phone number</th>
@@ -26,28 +26,28 @@
           </tr>
         </thead>
         <tbody>
-          <tr th:each="invoicePart : ${invoiceParts}" >
+          <tr th:each="groupedFeeItems : ${groups}" >
             <td>
-              <input th:id="'p' + ${invoicePart.id}" name="id" type="hidden" th:value="${invoicePart.id}" />
-              <input name="invoiceNumber" type="hidden" th:value="${invoicePart.invoice.invoiceNumber}" />
+              <input th:id="'p' + ${groupedFeeItems.id}" name="id" type="hidden" th:value="${groupedFeeItems.id}" />
+              <input name="invoiceNumber" type="hidden" th:value="${groupedFeeItems.invoice.invoiceNumber}" />
               <input name="numberCheckBox" type="checkbox" onclick="selectSingleCheckbox(this)"/>
             </td>
-            <td name="number" th:text="${invoicePart.subscription.number}"></td>
-            <td th:text="${invoicePart.getPeriod()}" class="text-center"></td>
-            <td th:text="${#numbers.formatDecimal(invoicePart.userGrossAmount, 1, 2)} + ' Ft'" class="text-right"></td>
+            <td name="number" th:text="${groupedFeeItems.subscription.number}"></td>
+            <td th:text="${groupedFeeItems.getPeriod()}" class="text-center"></td>
+            <td th:text="${#numbers.formatDecimal(groupedFeeItems.userGrossAmount, 1, 2)} + ' Ft'" class="text-right"></td>
             <td class="text-right">
               <div >
                 <button type="button" onclick="acceptOneInvoice(this)" class="btn btn-success"
-                  th:if="${not invoicePart.acceptedByUser}" th:text="#{button.accept}"> 
+                  th:if="${not groupedFeeItems.acceptedByUser}" th:text="#{button.accept}"> 
                 </button>
-                <button type="submit" th:formaction="'/profile/invoice/' + ${invoicePart.id}" 
+                <button type="submit" th:formaction="'/profile/invoice/' + ${groupedFeeItems.id}" 
                   class="btn btn-primary" th:text="#{button.details}">
                 </button>
               </div>
             </td>
           </tr>
         </tbody>
-        <tbody name="no-element-body" th:classappend="${#lists.isEmpty(invoiceParts)} ? '' : 'collapse'">
+        <tbody name="no-element-body" th:classappend="${#lists.isEmpty(groups)} ? '' : 'collapse'">
             <tr>
               <th colspan="4" th:text="#{noElement}">No element</th>
             </tr>

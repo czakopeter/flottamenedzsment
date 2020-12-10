@@ -1,10 +1,14 @@
 package com.flotta.model.invoice;
 
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.flotta.model.BasicEntity;
@@ -17,6 +21,9 @@ public class Participant extends BasicEntity {
   private String name;
   
   private String address;
+  
+  @OneToMany(mappedBy = "company")
+  List<Invoice> invoices = new LinkedList<>();
   
   @ManyToOne
   private DescriptionCategoryCoupler descriptionCategoryCoupler;

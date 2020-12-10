@@ -20,7 +20,7 @@
           </div>
           <div class="col-4">
             <input type="text" class="form-control" id="number" name="number" th:value="*{number}"
-              required="required"
+              required="required" oninput="testPhone(this)"  maxlength="9" minlength="9" 
             />
           </div>
         </div>
@@ -58,10 +58,7 @@
 
 
 
-    <script th:inline="javascript">
-					//<![CDATA[
-					//]]>
-				</script>
+    <script src="/js/subscription/subscriptionNew.js"></script>
 
   </div>
 

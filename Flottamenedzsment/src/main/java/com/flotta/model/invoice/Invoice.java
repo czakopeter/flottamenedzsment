@@ -28,9 +28,9 @@ public class Invoice extends BasicInvoice {
   private boolean acceptedByCompany;
 
   @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
-  private List<InvoiceByUserAndPhoneNumber> invoicePart = new LinkedList<>();
+  private List<GroupedFeeItems> groups = new LinkedList<>();
 
-  public static final Comparator<Invoice> BY_INVOICE_NUMBER_ADN_ACCEPT_BY_COMPANY_AMD_DATE  = 
+  public static final Comparator<Invoice> BY_INVOICE_NUMBER_AND_ACCEPT_BY_COMPANY_AMD_DATE  = 
       Comparator.comparing(Invoice::isAcceptedByCompany)
       .thenComparing(Invoice::getBeginDate)
       .thenComparing(Invoice::getInvoiceNumber);
@@ -61,12 +61,14 @@ public class Invoice extends BasicInvoice {
     this.acceptedByCompany = acceptedByCompany;
   }
 
-  public List<InvoiceByUserAndPhoneNumber> getInvoicePart() {
-    return invoicePart;
+  
+
+  public List<GroupedFeeItems> getGroups() {
+    return groups;
   }
 
-  public void setInvoicePart(List<InvoiceByUserAndPhoneNumber> invoicePart) {
-    this.invoicePart = invoicePart;
+  public void setGroups(List<GroupedFeeItems> groups) {
+    this.groups = groups;
   }
 
   // TODO átalakít
@@ -76,19 +78,19 @@ public class Invoice extends BasicInvoice {
     processFeeItems(feeItems, subscription);
     for (FeeItem feeItem : feeItems) {
       boolean hasPart = false;
-      for (InvoiceByUserAndPhoneNumber part : invoicePart) {
-        if(part.getSubscription().equals(subscription) &&
-            (feeItem.getUserId() == 0 && part.getUser() == null) || 
-            (part.getUser() != null && feeItem.getUserId() == part.getUser().getId())) {
-          part.addFeeItem(feeItem);
+      for (GroupedFeeItems groupedFeeItems : groups) {
+        if(groupedFeeItems.getSubscription().equals(subscription) &&
+            (feeItem.getUserId() == 0 && groupedFeeItems.getUser() == null) || 
+            (groupedFeeItems.getUser() != null && feeItem.getUserId() == groupedFeeItems.getUser().getId())) {
+          groupedFeeItems.addFeeItem(feeItem);
           hasPart = true;
           break;
         }
       }
       if (!hasPart) {
-        InvoiceByUserAndPhoneNumber part = new InvoiceByUserAndPhoneNumber(this, subscription, subscription.getUserByDate(feeItem.getBeginDate()));
-        part.addFeeItem(feeItem);
-        invoicePart.add(part);
+        GroupedFeeItems groupedFeeItems = new GroupedFeeItems(this, subscription, subscription.getUserByDate(feeItem.getBeginDate()));
+        groupedFeeItems.addFeeItem(feeItem);
+        groups.add(groupedFeeItems);
       }
     }
   }
@@ -124,7 +126,7 @@ public class Invoice extends BasicInvoice {
   public void setAcceptedByCompany() {
     acceptedByCompany = true;
     int partOfCompany = 0;
-    for (InvoiceByUserAndPhoneNumber part : invoicePart) {
+    for (GroupedFeeItems part : groups) {
       part.removeAllReviewNote();
       part.setAcceptedByCompany(true);
       if (part.getUser() == null || part.getUserGrossAmount() == 0) {
@@ -132,13 +134,13 @@ public class Invoice extends BasicInvoice {
         partOfCompany++;
       }
     }
-    if (partOfCompany == invoicePart.size()) {
+    if (partOfCompany == groups.size()) {
       acceptedByUsers = true;
     }
   }
 
   public boolean hasAnyReviewNote() {
-    for (InvoiceByUserAndPhoneNumber part : invoicePart) {
+    for (GroupedFeeItems part : groups) {
       if (part.hasReviewNote() || part.hasAnyReviewNoteOfFeeItems()) {
         return true;
       }
@@ -151,7 +153,7 @@ public class Invoice extends BasicInvoice {
    */
   public List<String> getAllDescription() {
     Set<String> descriptions = new HashSet<>();
-    for (InvoiceByUserAndPhoneNumber part : invoicePart) {
+    for (GroupedFeeItems part : groups) {
       descriptions.addAll(part.getAllDescription());
     }
     return new LinkedList<>(descriptions);

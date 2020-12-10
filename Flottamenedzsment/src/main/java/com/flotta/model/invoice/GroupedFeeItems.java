@@ -16,7 +16,7 @@ import com.flotta.model.registry.User;
 
 @Entity
 @Table(name = "invoice_parts")
-public class InvoiceByUserAndPhoneNumber extends BasicAccountElement {
+public class GroupedFeeItems extends BasicAccountElement {
 
   @ManyToOne
   private Invoice invoice;
@@ -27,7 +27,7 @@ public class InvoiceByUserAndPhoneNumber extends BasicAccountElement {
   @ManyToOne
   private User user;
   
-  @OneToMany(mappedBy = "invoiceByUserAndPhoneNumber", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "groupedFeeItems", cascade = CascadeType.ALL)
   private List<FeeItem> feeItems = new LinkedList<>();
 
   private double userGrossAmount;
@@ -40,10 +40,10 @@ public class InvoiceByUserAndPhoneNumber extends BasicAccountElement {
   
   private String reviewNote;
   
-  public InvoiceByUserAndPhoneNumber() {
+  public GroupedFeeItems() {
   }
 
-  public InvoiceByUserAndPhoneNumber(Invoice invoice, Subscription subscription, User user) {
+  public GroupedFeeItems(Invoice invoice, Subscription subscription, User user) {
     this.invoice = invoice;
     this.subscription = subscription;
     this.user = user;
@@ -127,7 +127,7 @@ public class InvoiceByUserAndPhoneNumber extends BasicAccountElement {
   }
 
   public void addFeeItem(FeeItem feeItem) {
-    feeItem.setInvoiceByUserAndPhoneNumber(this);
+    feeItem.setGroupedFeeItems(this);
     amountUpdate(feeItem);
     dateUpdate(feeItem);
     feeItems.add(feeItem);

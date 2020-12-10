@@ -13,7 +13,7 @@ import com.flotta.model.invoice.Category;
 import com.flotta.model.invoice.ChargeRatioByCategory;
 import com.flotta.model.invoice.DescriptionCategoryCoupler;
 import com.flotta.model.invoice.Invoice;
-import com.flotta.model.invoice.InvoiceByUserAndPhoneNumber;
+import com.flotta.model.invoice.GroupedFeeItems;
 import com.flotta.model.invoice.Participant;
 import com.flotta.model.invoice.RawInvoice;
 import com.flotta.model.registry.User;
@@ -23,7 +23,7 @@ import com.flotta.utility.ExtendedBoolean;
 public class InvoiceManager {
   private InvoiceService invoiceService;
 
-  private InvoiceByUserAndPhoneNumberService invoiceByUserAndPhoneNumberService;
+  private GroupedFeeItemsService groupedFeeItemsService;
 
   private FeeItemService feeItemService;
 
@@ -36,9 +36,9 @@ public class InvoiceManager {
   private ParticipantService participantService;
 
   @Autowired
-  public InvoiceManager(InvoiceService invoiceService, InvoiceByUserAndPhoneNumberService invoiceByUserAndPhoneNumberService, FeeItemService feeItemService, CategoryService categoryService, ChargeRatioService chargeRatioService, DescriptionCategoryCouplerService descriptionCategoryCouplerService, ParticipantService participantService) {
+  public InvoiceManager(InvoiceService invoiceService, GroupedFeeItemsService groupedFeeItemsService, FeeItemService feeItemService, CategoryService categoryService, ChargeRatioService chargeRatioService, DescriptionCategoryCouplerService descriptionCategoryCouplerService, ParticipantService participantService) {
     this.invoiceService = invoiceService;
-    this.invoiceByUserAndPhoneNumberService = invoiceByUserAndPhoneNumberService;
+    this.groupedFeeItemsService = groupedFeeItemsService;
     this.feeItemService = feeItemService;
     this.categoryService = categoryService;
     this.chargeRatioService = chargeRatioService;
@@ -88,20 +88,20 @@ public class InvoiceManager {
 
 //-------- INVOICE BY USER AND PHONE NUMBER SERVICE --------
   
-  public Optional<InvoiceByUserAndPhoneNumber> findInvoiceOfUserById(User user, Long id) {
-    return invoiceByUserAndPhoneNumberService.findInvoiceOfUserById(user, id);
+  public Optional<GroupedFeeItems> findGroupedFeeItemsByUserAndId(User user, Long id) {
+    return groupedFeeItemsService.findByUserAndId(user, id);
   }
 
-  public void acceptInvoicesOfUserByIdsFromUser(User user, List<Long> ids) {
-    invoiceByUserAndPhoneNumberService.acceptInvoicesOfUserByIdsFromUser(user, ids);
+  public void acceptGroupedFeeItemsOfUserByIdsFromUser(User user, List<Long> ids) {
+    groupedFeeItemsService.acceptByUserAndIdsFromUser(user, ids);
   }
 
   public void askForRevision(User user, long id, Map<String, String> notes) {
-    invoiceByUserAndPhoneNumberService.askForRevision(user, id, notes);
+    groupedFeeItemsService.askForRevision(user, id, notes);
   }
   
-  public List<InvoiceByUserAndPhoneNumber> findInvoicesOfUserByEmail(User user) {
-    return invoiceByUserAndPhoneNumberService.findInvoicesOfUser(user);
+  public List<GroupedFeeItems> findAllGroupedFeeItemsByUser(User user) {
+    return groupedFeeItemsService.findAllByUser(user);
   }
   
 //-------- FEE ITEM SERVICE --------

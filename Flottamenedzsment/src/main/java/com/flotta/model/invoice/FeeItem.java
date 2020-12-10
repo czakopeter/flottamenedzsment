@@ -15,11 +15,11 @@ import javax.persistence.Table;
 import com.flotta.utility.Utility;
 
 @Entity
-@Table(name = "fee_items")
+//@Table(name = "fee_items")
 public class FeeItem extends BasicFeeItem {
 
   @ManyToOne
-  private InvoiceByUserAndPhoneNumber invoiceByUserAndPhoneNumber;
+  private GroupedFeeItems groupedFeeItems;
 
   private long userId;
 
@@ -56,7 +56,7 @@ public class FeeItem extends BasicFeeItem {
   }
 
   public FeeItem(FeeItem feeItem) {
-    this.invoiceByUserAndPhoneNumber = feeItem.invoiceByUserAndPhoneNumber;
+    this.groupedFeeItems = feeItem.groupedFeeItems;
     this.subscription = feeItem.subscription;
     this.description = feeItem.description;
     this.beginDate = feeItem.beginDate;
@@ -70,12 +70,12 @@ public class FeeItem extends BasicFeeItem {
     this.category = feeItem.category;
   }
 
-  public InvoiceByUserAndPhoneNumber getInvoiceByUserAndPhoneNumber() {
-    return invoiceByUserAndPhoneNumber;
+  public GroupedFeeItems getGroupedFeeItems() {
+    return groupedFeeItems;
   }
 
-  public void setInvoiceByUserAndPhoneNumber(InvoiceByUserAndPhoneNumber invoiceByUserAndPhoneNumber) {
-    this.invoiceByUserAndPhoneNumber = invoiceByUserAndPhoneNumber;
+  public void setGroupedFeeItems(GroupedFeeItems groupedFeeItems) {
+    this.groupedFeeItems = groupedFeeItems;
   }
 
   public double getUserGrossAmount() {

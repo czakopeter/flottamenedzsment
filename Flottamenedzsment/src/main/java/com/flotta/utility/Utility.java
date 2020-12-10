@@ -297,7 +297,7 @@ public class Utility {
   }
   
   public static List<Invoice> sortInvoice(List<Invoice> invoices) {
-    Collections.sort(invoices, Invoice.BY_INVOICE_NUMBER_ADN_ACCEPT_BY_COMPANY_AMD_DATE);
+    Collections.sort(invoices, Invoice.BY_INVOICE_NUMBER_AND_ACCEPT_BY_COMPANY_AMD_DATE);
     return invoices;
   }
   

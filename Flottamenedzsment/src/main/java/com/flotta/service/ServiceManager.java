@@ -13,7 +13,7 @@ import com.flotta.model.invoice.Category;
 import com.flotta.model.invoice.ChargeRatioByCategory;
 import com.flotta.model.invoice.DescriptionCategoryCoupler;
 import com.flotta.model.invoice.Invoice;
-import com.flotta.model.invoice.InvoiceByUserAndPhoneNumber;
+import com.flotta.model.invoice.GroupedFeeItems;
 import com.flotta.model.invoice.Participant;
 import com.flotta.model.invoice.RawInvoice;
 import com.flotta.model.registry.Device;
@@ -138,20 +138,20 @@ public class ServiceManager {
   
 //-------- INVOICE BY USER AND PHONE NUMBER SERVICE --------
 
-  public Optional<InvoiceByUserAndPhoneNumber> findInvoiceOfUserByEmailAndId(String email, Long id) {
-    return invoiceManager.findInvoiceOfUserById(registryManager.findUserByEmail(email).get(), id);
+  public Optional<GroupedFeeItems> findGroupedFeeItemsOfUserByEmailAndId(String email, Long id) {
+    return invoiceManager.findGroupedFeeItemsByUserAndId(registryManager.findUserByEmail(email).get(), id);
   }
 
-  public void acceptInvoicesOfUserByEmailAndIdsFromUser(String email, List<Long> ids) {
-    invoiceManager.acceptInvoicesOfUserByIdsFromUser(registryManager.findUserByEmail(email).get(), ids);
+  public void acceptGroupedFeeItemsOfUserByEmailAndIdsFromUser(String email, List<Long> ids) {
+    invoiceManager.acceptGroupedFeeItemsOfUserByIdsFromUser(registryManager.findUserByEmail(email).get(), ids);
   }
 
   public void askForRevision(String email, long id, Map<String, String> notes) {
     invoiceManager.askForRevision(registryManager.findUserByEmail(email).get(), id, notes);
   }
 
-  public List<InvoiceByUserAndPhoneNumber> findInvoicesOfUserByEmail(String email) {
-    return invoiceManager.findInvoicesOfUserByEmail(registryManager.findUserByEmail(email).get());
+  public List<GroupedFeeItems> findAllGroupedFeeItemsByUserEmail(String email) {
+    return invoiceManager.findAllGroupedFeeItemsByUser(registryManager.findUserByEmail(email).get());
   }
 
 //-------- FEE ITEM SERVICE --------
