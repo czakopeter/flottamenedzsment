@@ -12,7 +12,7 @@ import com.flotta.enums.MessageType;
 import com.flotta.model.invoice.Category;
 import com.flotta.model.invoice.ChargeRatioByCategory;
 import com.flotta.repository.invoice.ChargeRatioRepository;
-import com.flotta.utility.ExtendedBoolean;
+import com.flotta.utility.BooleanWithMessages;
 
 @Service
 public class ChargeRatioService {
@@ -38,13 +38,13 @@ public class ChargeRatioService {
     return chargeRatioRepository.findById(id);
   }
   
-  ExtendedBoolean create(ChargeRatioByCategory chargeRatio) {
-    ExtendedBoolean ex = new ExtendedBoolean(true);
+  BooleanWithMessages create(ChargeRatioByCategory chargeRatio) {
+    BooleanWithMessages ex = new BooleanWithMessages(true);
     Optional<ChargeRatioByCategory> optional = chargeRatioRepository.findByName(chargeRatio.getName());
     if(!optional.isPresent()) {
       chargeRatioRepository.save(chargeRatio);
     } else {
-      ex.setInvalid();
+      ex.setFalse();
       ex.addMessage(MessageKey.CHARGE_RATIO_NAME_ALREADY_USED, MessageType.WARNING);
     }
     return ex;

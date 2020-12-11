@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.JoinTable;
@@ -17,6 +18,7 @@ import com.flotta.model.BasicEntity;
 @Entity
 public class ChargeRatioByCategory extends BasicEntity {
   
+  @Column(unique = true)
   private String name;
   
   private Availability availability;

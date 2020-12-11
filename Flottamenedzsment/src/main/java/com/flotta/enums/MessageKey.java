@@ -45,9 +45,11 @@ public enum MessageKey {
 //  INVOICE CONFIG
   UNKNOWN_COUPLER("unknownCoupler"),
   COUPLER_NAME_ALREADY_USED("couplerNameAlreadyUsed"),
+  NO_COUPLER("noCoupler"),
   
   UNKNOWN_CHARGE_RATIO("unknownChargeRatio"),
   CHARGE_RATIO_NAME_ALREADY_USED("chargeRatioNameAlreadyUsed"),
+  NO_CHARGE_RATIO("noChargeRatio"),
   
   UNKNOWN_PARTICIPANT("unknownParticipant"),
   PARTICIPANT_NAME_ALREADY_USED("paricipantNameAlreadyUsed"),

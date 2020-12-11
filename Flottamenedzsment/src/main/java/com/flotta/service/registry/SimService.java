@@ -11,7 +11,7 @@ import com.flotta.enums.MessageType;
 import com.flotta.enums.SimStatus;
 import com.flotta.model.registry.Sim;
 import com.flotta.repository.registry.SimRepository;
-import com.flotta.utility.ExtendedBoolean;
+import com.flotta.utility.BooleanWithMessages;
 
 @Service
 public class SimService {
@@ -40,8 +40,8 @@ public class SimService {
 	}
 
   //TODO check imei, pin, puk format
-  public ExtendedBoolean create(Sim sim) {
-    ExtendedBoolean eb = new ExtendedBoolean(true);
+  public BooleanWithMessages create(Sim sim) {
+    BooleanWithMessages eb = new BooleanWithMessages(true);
 //    if(!Validator.checkImieWithLuhnAlg(sim.getImei())) {
 //      eb.setInvalid();
 //      eb.addMessage(MessageKey.IMEI_NUMBER_NOT_VALID, MessageType.WARNING);
@@ -49,7 +49,7 @@ public class SimService {
 //    }
     Optional<Sim> simOpt = simRepository.findByImei(sim.getImei());
     if(simOpt.isPresent()) {
-      eb.setInvalid();
+      eb.setFalse();
       eb.addMessage(MessageKey.IMEI_ALREADY_USED, MessageType.WARNING);
     } else {
       sim.setStatus(SimStatus.FREE);

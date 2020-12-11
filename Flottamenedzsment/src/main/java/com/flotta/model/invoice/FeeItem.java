@@ -8,18 +8,18 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
 import com.flotta.utility.Utility;
 
 @Entity
-//@Table(name = "fee_items")
+@Table(name = "fee_items")
 public class FeeItem extends BasicFeeItem {
 
   @ManyToOne
-  private GroupedFeeItems groupedFeeItems;
+  private GroupedFeeItems group;
 
   private long userId;
 
@@ -56,7 +56,7 @@ public class FeeItem extends BasicFeeItem {
   }
 
   public FeeItem(FeeItem feeItem) {
-    this.groupedFeeItems = feeItem.groupedFeeItems;
+    this.group = feeItem.group;
     this.subscription = feeItem.subscription;
     this.description = feeItem.description;
     this.beginDate = feeItem.beginDate;
@@ -70,12 +70,12 @@ public class FeeItem extends BasicFeeItem {
     this.category = feeItem.category;
   }
 
-  public GroupedFeeItems getGroupedFeeItems() {
-    return groupedFeeItems;
+  public GroupedFeeItems getGroup() {
+    return group;
   }
 
-  public void setGroupedFeeItems(GroupedFeeItems groupedFeeItems) {
-    this.groupedFeeItems = groupedFeeItems;
+  public void setGroup(GroupedFeeItems group) {
+    this.group = group;
   }
 
   public double getUserGrossAmount() {

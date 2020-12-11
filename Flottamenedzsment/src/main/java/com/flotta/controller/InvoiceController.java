@@ -23,32 +23,28 @@ import com.flotta.enums.MessageType;
 import com.flotta.model.invoice.Invoice;
 import com.flotta.service.MessageService;
 import com.flotta.service.ServiceManager;
-import com.flotta.utility.ExtendedBoolean;
+import com.flotta.utility.BooleanWithMessages;
 import com.flotta.utility.ResponseTransfer;
 import com.flotta.utility.Utility;
 
 @Controller
 public class InvoiceController {
 
+  @Autowired
   private ServiceManager service;
   
   @Autowired
   private MessageService messageService;
   
-  @Autowired
-  public void setMainService(ServiceManager service) {
-    this.service = service;
-  }
-  
   @ModelAttribute
   private void prepareController(Model model) {
     model.addAttribute("title", "Invoice");
-    model.addAttribute("locale", LocaleContextHolder.getLocale().getCountry());
+    model.addAttribute("locale", LocaleContextHolder.getLocale().getLanguage());
     messageService.setActualController(ControllerType.INVOICE);
   }
   
   @GetMapping("/invoice/all")
-  public String listInvoces(Model model) {
+  public String listInvoices(Model model) {
     model.addAttribute("rawInvoices", Utility.sortRawInvoice(service.findAllRawInvoice()));
     model.addAttribute("invoices", Utility.sortInvoice(service.findAllInvoice()));
     model.addAttribute("messages", messageService.getMessages());
@@ -56,9 +52,9 @@ public class InvoiceController {
   }
   
   @PostMapping("/invoice/fileUpload")
-  public String uploadInvoice(RedirectAttributes ra, @RequestParam("file") MultipartFile file) {
-    ExtendedBoolean eb = service.fileUpload(file);
-    if(!eb.isValid()) {
+  public String uploadInvoice(@RequestParam("file") MultipartFile file) {
+    BooleanWithMessages eb = service.fileUpload(file);
+    if(!eb.booleanValue()) {
       messageService.addMessage(eb);
     }
     return "redirect:/invoice/all";
@@ -102,9 +98,6 @@ public class InvoiceController {
     return "redirect:/invoice/all";
   }
   
-  /**
-   * @param invoiceNumber
-   */
   @PostMapping("/rawInvoice/delete")
   @ResponseBody
   public ResponseTransfer deleteRawInvoice(@RequestParam("invoiceNumber") String invoiceNumber) {

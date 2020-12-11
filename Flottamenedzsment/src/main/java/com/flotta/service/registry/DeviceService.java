@@ -12,7 +12,7 @@ import com.flotta.model.registry.Device;
 import com.flotta.model.registry.DeviceType;
 import com.flotta.model.viewEntity.DeviceToView;
 import com.flotta.repository.registry.DeviceRepository;
-import com.flotta.utility.ExtendedBoolean;
+import com.flotta.utility.BooleanWithMessages;
 
 @Service
 public class DeviceService {
@@ -32,10 +32,10 @@ public class DeviceService {
     return deviceRepository.findById(id);
   }
   
-  public ExtendedBoolean create(DeviceToView dtv, Optional<DeviceType> deviceTypeOpt ) {
-    ExtendedBoolean eb = new ExtendedBoolean(true);
+  public BooleanWithMessages create(DeviceToView dtv, Optional<DeviceType> deviceTypeOpt ) {
+    BooleanWithMessages eb = new BooleanWithMessages(true);
     if(deviceRepository.findBySerialNumber(dtv.getSerialNumber()).isPresent()) {
-      eb.setInvalid();
+      eb.setFalse();
       eb.addMessage(MessageKey.SERIAL_NUMBER_ALREADY_USED, MessageType.WARNING);
     } else {
       if(deviceTypeOpt.isPresent()) {

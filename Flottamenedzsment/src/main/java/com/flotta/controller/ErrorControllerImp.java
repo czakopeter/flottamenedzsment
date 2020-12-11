@@ -1,25 +1,27 @@
 package com.flotta.controller;
 
-import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.http.HttpStatus;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.flotta.enums.MessageKey;
 
 @Controller
 public class ErrorControllerImp implements ErrorController {
+  
+  @ModelAttribute
+  public void prepareController(Model model) {
+    model.addAttribute("locale", LocaleContextHolder.getLocale().getLanguage());
+  }
 
   @RequestMapping("/accessDenied")
   public String accesDenied() {
-    
-    System.err.println("accessDenied");
     return "accessDenied";
   }
   
@@ -44,30 +46,13 @@ public class ErrorControllerImp implements ErrorController {
     model.addAttribute("uri", uri);
     model.addAttribute("statusCode", statusCode);
     
-//      WebRequest wr = new ServletWebRequest(request);
-//      Map<String, Object> errors = this.errorAttributes.getErrorAttributes(wr, ErrorAttributeOptions.of(Include.STACK_TRACE));
-//      model.addAttribute("errors", errors);
-      
       return "error";
   }
-  
-  @Deprecated
+
   @Override
   public String getErrorPath() {
+    // TODO Auto-generated method stub
     return null;
   }
   
-  
-//  @ResponseStatus(value = HttpStatus.NOT_FOUND)
-//  public String pageNotFound (Model model) {
-//    model.addAttribute("message", "NOT_FOUND");
-//    return "accessDenied";
-//  }
-//  
-//  
-//  @ResponseStatus(value = HttpStatus.METHOD_NOT_ALLOWED)
-//  public String pageMethodNotAllowed (Model model) {
-//    model.addAttribute("message", "METHOD_NOT_ALLOWED");
-//    return "accessDenied";
-//  }
 }

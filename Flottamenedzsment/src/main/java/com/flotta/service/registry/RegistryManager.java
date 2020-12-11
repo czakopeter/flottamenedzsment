@@ -19,7 +19,7 @@ import com.flotta.model.registry.Subscription;
 import com.flotta.model.registry.User;
 import com.flotta.model.viewEntity.DeviceToView;
 import com.flotta.model.viewEntity.SubscriptionToView;
-import com.flotta.utility.ExtendedBoolean;
+import com.flotta.utility.BooleanWithMessages;
 
 @Service
 public class RegistryManager {
@@ -53,20 +53,20 @@ public class RegistryManager {
     return deviceService.findById(id);
   }
 
-  public ExtendedBoolean createDevice(DeviceToView dtv) {
+  public BooleanWithMessages createDevice(DeviceToView dtv) {
     Optional<DeviceType> deviceTypeOpt = deviceTypeService.findByName(dtv.getTypeName());
     return deviceService.create(dtv, deviceTypeOpt);
   }
 
-  public ExtendedBoolean updateDevice(DeviceToView dtv) {
+  public BooleanWithMessages updateDevice(DeviceToView dtv) {
     Optional<Device> deviceOpt = deviceService.findById(dtv.getId());
-    ExtendedBoolean eb = new ExtendedBoolean(deviceOpt.isPresent());
+    BooleanWithMessages eb = new BooleanWithMessages(deviceOpt.isPresent());
     deviceOpt.ifPresent(device -> {
       device.addUser(userService.findById(dtv.getUserId()), dtv.getBeginDate());
       device.addNote(dtv.getNote(), dtv.getBeginDate());
       deviceService.update(device);
     });
-    if(!eb.isValid()) {
+    if(!eb.booleanValue()) {
       eb.addMessage(MessageKey.UNKNOWN_DEVICE, MessageType.ERROR);
     }
     return eb;
@@ -82,7 +82,7 @@ public class RegistryManager {
     return deviceTypeService.findAllBrandOfDeviceTypes();
   }
 
-  public ExtendedBoolean saveDeviceType(DeviceType deviceType) {
+  public BooleanWithMessages saveDeviceType(DeviceType deviceType) {
     return deviceTypeService.create(deviceType);
   }
 
@@ -95,12 +95,12 @@ public class RegistryManager {
   }
 
   public List<DeviceType> findAllDeviceTypesByAvailability(Availability availability) {
-    return deviceTypeService.findAllAvailability(availability);
+    return deviceTypeService.findAllByAvailability(availability);
   }
   
-  public ExtendedBoolean canCreateDevice() {
-    ExtendedBoolean eb = new ExtendedBoolean(!deviceTypeService.findAll().isEmpty());
-    if(!eb.isValid()) {
+  public BooleanWithMessages canCreateDevice() {
+    BooleanWithMessages eb = new BooleanWithMessages(!deviceTypeService.findAll().isEmpty());
+    if(!eb.booleanValue()) {
       eb.addMessage(MessageKey.NO_DEVICE_TYPE, MessageType.WARNING);
     }
     return eb; 
@@ -120,13 +120,13 @@ public class RegistryManager {
     return simService.findById(id);
   }
 
-  public ExtendedBoolean createSim(Sim sim) {
+  public BooleanWithMessages createSim(Sim sim) {
     return simService.create(sim);
   }
 
-  public ExtendedBoolean canCreateSubscription() {
-    ExtendedBoolean eb = new ExtendedBoolean(!simService.findAllByStatus(SimStatus.FREE).isEmpty());
-    if(!eb.isValid()) eb.addMessage(MessageKey.NO_FREE_SIM, MessageType.WARNING);
+  public BooleanWithMessages canCreateSubscription() {
+    BooleanWithMessages eb = new BooleanWithMessages(!simService.findAllByStatus(SimStatus.FREE).isEmpty());
+    if(!eb.booleanValue()) eb.addMessage(MessageKey.NO_FREE_SIM, MessageType.WARNING);
     return eb;
   }
 
@@ -144,14 +144,14 @@ public class RegistryManager {
     return subscriptionService.findByNumber(number);
   }
 
-  public ExtendedBoolean createSubscription(SubscriptionToView stv) {
+  public BooleanWithMessages createSubscription(SubscriptionToView stv) {
     Optional<Sim> simOpt = simService.findByImei(stv.getImei());
     return subscriptionService.create(stv, simOpt);
   }
 
-  public ExtendedBoolean updateSubscription(SubscriptionToView stv) {
+  public BooleanWithMessages updateSubscription(SubscriptionToView stv) {
       Optional<Subscription> subscriptonOpt = subscriptionService.findById(stv.getId());
-      ExtendedBoolean eb = new ExtendedBoolean(subscriptonOpt.isPresent());
+      BooleanWithMessages eb = new BooleanWithMessages(subscriptonOpt.isPresent());
         subscriptonOpt.ifPresent(subscription -> {
           subscription.addSim(simService.findByImei(stv.getImei()), stv.getSimChangeReason(), stv.getBeginDate());
           subscription.addUser(userService.findById(stv.getUserId()), stv.getBeginDate());
@@ -163,7 +163,7 @@ public class RegistryManager {
   }
 
   // -------- USER SERVICE --------
-  public ExtendedBoolean createUser(User user) {
+  public BooleanWithMessages createUser(User user) {
     return userService.create(user);
   }
 
@@ -175,15 +175,15 @@ public class RegistryManager {
     return userService.findByEmail(email);
   }
 
-  public ExtendedBoolean changePassword(String email, String oldPsw, String newPsw, String confirmPsw) {
+  public BooleanWithMessages changePassword(String email, String oldPsw, String newPsw, String confirmPsw) {
     return userService.changePassword(email, oldPsw, newPsw, confirmPsw);
   }
 
-  public ExtendedBoolean createFirstAdmin(User user) {
+  public BooleanWithMessages createFirstAdmin(User user) {
     return userService.createFirstAdmin(user);
   }
 
-  public ExtendedBoolean activation(String key) {
+  public BooleanWithMessages activation(String key) {
     return userService.activation(key);
   }
 
@@ -191,11 +191,11 @@ public class RegistryManager {
     return userService.findById(id);
   }
 
-  public ExtendedBoolean updateUser(long id, Map<String, Boolean> roles) {
+  public BooleanWithMessages updateUser(long id, Map<String, Boolean> roles) {
     return userService.updateUser(id, roles);
   }
 
-  public ExtendedBoolean requestNewPassword(String email) {
+  public BooleanWithMessages requestNewPassword(String email) {
     return userService.requestNewPassword(email);
   }
 

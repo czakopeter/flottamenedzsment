@@ -19,9 +19,10 @@
           </select>
         </div>
         <div class="col-5">
-          <select id="selectedChargeRatio" name="selectedChargeRatio" class="form-control">
+          <input th:if="#{lists.isEmpty(chargeRatios)}" type="text" th:text="#{noChargeRatio}" readonly="readonly" />
+          <select th:unless="#{lists.isEmpty(avblChargeRatios)}" id="selectedChargeRatio" name="selectedChargeRatio" class="form-control">
             <option value="0" th:text="#{chooseChargeRatio}" selected="selected">Charge ratios</option>
-            <option th:each="chargeRatio : ${chargeRatios}" th:value="${chargeRatio.id}" th:text="${chargeRatio.name}"></option>
+            <option th:each="chargeRatio : ${avblChargeRatios}" th:value="${chargeRatio.id}" th:text="${chargeRatio.name}"></option>
           </select>
         </div>
         <button type="button" class="btn btn-primary" th:text="#{button.save}" onclick="modifyChargeRatioOfUser(this)">Save</button>

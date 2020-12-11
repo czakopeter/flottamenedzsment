@@ -12,7 +12,7 @@ import com.flotta.enums.MessageType;
 import com.flotta.model.invoice.Category;
 import com.flotta.model.invoice.DescriptionCategoryCoupler;
 import com.flotta.repository.invoice.DescriptionCategoryCouplerRepository;
-import com.flotta.utility.ExtendedBoolean;
+import com.flotta.utility.BooleanWithMessages;
 
 @Service
 public class DescriptionCategoryCouplerService {
@@ -36,13 +36,13 @@ public class DescriptionCategoryCouplerService {
     return descriptionCategoryCouplerRepository.findById(id);
   }
   
-  ExtendedBoolean create(DescriptionCategoryCoupler dcc) {
-    ExtendedBoolean eb = new ExtendedBoolean(true);
+  BooleanWithMessages create(DescriptionCategoryCoupler dcc) {
+    BooleanWithMessages eb = new BooleanWithMessages(true);
     Optional<DescriptionCategoryCoupler> optional = descriptionCategoryCouplerRepository.findByName(dcc.getName());
     if(!optional.isPresent()) {
       descriptionCategoryCouplerRepository.save(dcc);
     } else {
-      eb.setInvalid();
+      eb.setFalse();
       eb.addMessage(MessageKey.COUPLER_NAME_ALREADY_USED, MessageType.WARNING);
     }
     return eb;

@@ -24,7 +24,7 @@ import com.flotta.enums.MessageType;
 import com.flotta.model.registry.User;
 import com.flotta.service.MessageService;
 import com.flotta.service.ServiceManager;
-import com.flotta.utility.ExtendedBoolean;
+import com.flotta.utility.BooleanWithMessages;
 import com.flotta.utility.ResponseTransfer;
 
 @Controller
@@ -39,7 +39,7 @@ public class UserController {
   @ModelAttribute
   public void prepareController(Model model) {
     model.addAttribute("title", "User");
-    model.addAttribute("locale", LocaleContextHolder.getLocale().getCountry());
+    model.addAttribute("locale", LocaleContextHolder.getLocale().getLanguage());
     messageService.setActualController(ControllerType.USER);
   }
   
@@ -58,9 +58,9 @@ public class UserController {
   
   @PostMapping("/user/new")
   public String createUser(Model model, @ModelAttribute("user") User user) {
-    ExtendedBoolean eb = service.createUser(user);
+    BooleanWithMessages eb = service.createUser(user);
     messageService.addMessage(eb);
-    if(eb.isValid()) {
+    if(eb.booleanValue()) {
       return "redirect:/user/all";
     } else {
       model.addAttribute("user", user);
@@ -83,12 +83,12 @@ public class UserController {
   }
   
   @PostMapping("/user/{id}/update")
-  public String updateUser(RedirectAttributes ra, @PathVariable("id") long id, @RequestParam(required = false) Map<String, Boolean> roles) {
-    if(roles == null) {
-      roles = Collections.emptyMap();
+  public String updateUser(@PathVariable("id") long id, @RequestParam(required = false) Map<String, Boolean> rolesMap) {
+    if(rolesMap == null) {
+      rolesMap = Collections.emptyMap();
     }
-    ExtendedBoolean eb = service.updateUser(id, roles);
-    if(!eb.isValid()) {
+    BooleanWithMessages eb = service.updateUser(id, rolesMap);
+    if(!eb.booleanValue()) {
       messageService.addMessage(eb);
     }
     return "redirect:/user/" + id + "/update";
@@ -126,7 +126,7 @@ public class UserController {
   }
   
   @GetMapping("/registration")
-  public String firstAdminRegistration(Model model, RedirectAttributes redirectAttributes) {
+  public String prepareFirstAdminRegistration(Model model) {
     boolean hasEnabledAdmin = service.hasEnabledAdmin();
     if(hasEnabledAdmin) {
       messageService.addMessage(MessageKey.ALREADY_HAS_ADMIN , MessageType.WARNING);
@@ -145,10 +145,10 @@ public class UserController {
   }
   
   @PostMapping("/registration")
-  public String firstAdminRegistration(Model model, @ModelAttribute User user, RedirectAttributes redirectAttributes) {
-    ExtendedBoolean eb = service.createFirstAdmin(user);
+  public String firstAdminRegistration(Model model, @ModelAttribute User user) {
+    BooleanWithMessages eb = service.createFirstAdmin(user);
     messageService.addMessage(eb);
-    if(eb.isValid()) {
+    if(eb.booleanValue()) {
       return "redirect:/login";
     } else {
       model.addAttribute("user", user);
@@ -157,8 +157,8 @@ public class UserController {
   }
   
   @GetMapping("/activation/{key}")
-  public String activation(@PathVariable("key") String key, RedirectAttributes redirectAttributes) {
-    ExtendedBoolean eb = service.activation(key);
+  public String activation(@PathVariable("key") String key) {
+    BooleanWithMessages eb = service.activation(key);
     messageService.addMessage(eb);
     return "redirect:/login";
   }
@@ -171,7 +171,7 @@ public class UserController {
   
   @PostMapping("/requestNewPassword")
   public String requestNewPassword(@RequestParam("email") String email) {
-    ExtendedBoolean eb = service.requestNewPassword(email);
+    BooleanWithMessages eb = service.requestNewPassword(email);
     messageService.addMessage(eb);
     return "redirect:/requestNewPassword";
   }

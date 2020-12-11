@@ -40,7 +40,7 @@ import com.flotta.model.registry.User;
 import com.flotta.repository.invoice.InvoiceRepository;
 import com.flotta.repository.invoice.RawInvoiceRepository;
 import com.flotta.service.registry.SubscriptionFinderService;
-import com.flotta.utility.ExtendedBoolean;
+import com.flotta.utility.BooleanWithMessages;
 
 /**
  * @author CzP
@@ -81,8 +81,8 @@ public class InvoiceService {
     return invoiceRepository.findByInvoiceNumber(invoiceNumber);
   }
 
-  public ExtendedBoolean uploadInvoice(MultipartFile file) {
-    ExtendedBoolean eb = new ExtendedBoolean(true);
+  public BooleanWithMessages uploadInvoice(MultipartFile file) {
+    BooleanWithMessages eb = new BooleanWithMessages(true);
     String xmlString;
     try {
       xmlString = getXMLString(file);
@@ -91,13 +91,13 @@ public class InvoiceService {
       
       if (invoiceRepository.findByInvoiceNumber(rawInvoice.getInvoiceNumber()).isPresent() || 
           rawInvoiceRepository.findByInvoiceNumber(rawInvoice.getInvoiceNumber()).isPresent()) {
-        eb.setInvalid();
+        eb.setFalse();
         eb.addMessage(MessageKey.INVOICE_NUMBER_ALREADY_USED, MessageType.WARNING);
       } else {
         processRawInvoice(rawInvoice);
       }
     } catch (FileUploadException e) {
-      eb.setInvalid();
+      eb.setFalse();
       eb.addMessage(e.getKey(), e.getType());
       e.printStackTrace();
     }

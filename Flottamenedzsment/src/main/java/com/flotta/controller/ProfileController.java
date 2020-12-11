@@ -25,7 +25,7 @@ import com.flotta.model.invoice.GroupedFeeItems;
 import com.flotta.model.registry.User;
 import com.flotta.service.MessageService;
 import com.flotta.service.ServiceManager;
-import com.flotta.utility.ExtendedBoolean;
+import com.flotta.utility.BooleanWithMessages;
 import com.flotta.utility.Utility;
 
 @Controller
@@ -41,12 +41,12 @@ public class ProfileController {
   @ModelAttribute
   private void prepareController(Model model) {
     model.addAttribute("title", "Profile");
-    model.addAttribute("locale", LocaleContextHolder.getLocale().getCountry());
+    model.addAttribute("locale", LocaleContextHolder.getLocale().getLanguage());
     messageService.setActualController(ControllerType.PROFILE);
   }
 
   @GetMapping("/profile/subscriptionAndDevice")
-  public String listItems(Model model) {
+  public String listSubscriptionsAndDevices(Model model) {
     Optional<User> userOpt = service.findUserByEmail(getActualUserEmail());
     model.addAttribute("devices", Utility.convertUserDevicesToView(userOpt.get()));
     model.addAttribute("subscriptions", Utility.convertUserSubscriptionsToView(userOpt.get()));
@@ -55,34 +55,33 @@ public class ProfileController {
   
   @GetMapping("/profile/changePassword")
   public String preparePasswordChanging() {
-    
     return "profile_templates/passwordChange";
   }
   
   @PostMapping("/profile/changePassword")
-  public String passwordChange(Model model, RedirectAttributes ra, @RequestParam Map<String, String> params) {
-    ExtendedBoolean eb = service.changePassword(getActualUserEmail(), params.get("old-password"), params.get("new-password"), params.get("confirm-new-password"));
+  public String passwordChange(Model model, @RequestParam Map<String, String> passwords) {
+    BooleanWithMessages eb = service.changePassword(getActualUserEmail(), passwords.get("old-password"), passwords.get("new-password"), passwords.get("confirm-new-password"));
     messageService.addMessage(eb);
     model.addAttribute("messages", messageService.getMessages());
     return "profile_templates/passwordChange";
   }
   
   @GetMapping("/profile/invoice")
-  public String showActualUserPendingInvoices(Model model) {
+  public String getUserActualInvoices(Model model) {
     model.addAttribute("groups", service.findAllGroupedFeeItemsByUserEmail(getActualUserEmail()));
     return "profile_templates/invoiceSummary";
   }
   
   @PostMapping("/profile/invoice/accept")
   @ResponseBody
-  public List<Long> acceptInvoicesOfCurrentUserByInvoiceIds(@RequestParam("ids") List<Long> ids) {
+  public List<Long> acceptInvoicesOfCurrentUserByIds(@RequestParam("ids") List<Long> ids) {
     service.acceptGroupedFeeItemsOfUserByEmailAndIdsFromUser(getActualUserEmail(), ids);
     return ids;
   }
 
   @PostMapping("/profile/invoice/{id}")
-  public String details(Model model, @PathVariable ("id") long id) {
-    Optional<GroupedFeeItems> groupOpt = service.findGroupedFeeItemsOfUserByEmailAndId(getActualUserEmail(), id);
+  public String invoiceDetails(Model model, @PathVariable ("id") long groupedFeeItemsId) {
+    Optional<GroupedFeeItems> groupOpt = service.findGroupedFeeItemsOfUserByEmailAndId(getActualUserEmail(), groupedFeeItemsId);
     if(groupOpt.isPresent()) {
       model.addAttribute("groupedFeeItems", groupOpt.get());
       return "profile_templates/invoiceDetails";
@@ -93,7 +92,7 @@ public class ProfileController {
   }
   
   @PostMapping("/profile/invoice/{id}/revision")
-  public String createRevisionText(Model model, @PathVariable ("id") long id, @RequestParam Map<String, String> notes) {
+  public String addReviewToInvoice(@PathVariable ("id") long id, @RequestParam Map<String, String> notes) {
     service.askForRevision(getActualUserEmail(), id, notes);
     return "redirect:/profile/invoice";
   }

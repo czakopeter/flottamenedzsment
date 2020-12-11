@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.flotta.enums.Availability;
 import com.flotta.enums.ControllerType;
 import com.flotta.enums.MessageKey;
 import com.flotta.enums.MessageType;
@@ -24,7 +25,7 @@ import com.flotta.model.invoice.DescriptionCategoryCoupler;
 import com.flotta.model.invoice.Participant;
 import com.flotta.service.MessageService;
 import com.flotta.service.ServiceManager;
-import com.flotta.utility.ExtendedBoolean;
+import com.flotta.utility.BooleanWithMessages;
 import com.flotta.utility.ResponseTransfer;
 import com.flotta.utility.Utility;
 
@@ -42,18 +43,19 @@ public class InvoiceConfigurationController {
   @ModelAttribute
   public void prepareController(Model model) {
     model.addAttribute("title", "Configuration");
-    model.addAttribute("locale", LocaleContextHolder.getLocale().getCountry());
+    model.addAttribute("locale", LocaleContextHolder.getLocale().getLanguage());
     messageService.setActualController(ControllerType.INVOICE_CONFIG);
   }
   
   @GetMapping("/invoiceConfiguration/main")
-  public String invoiceConfigureMain(Model model, @RequestParam Optional<String> active) {
+  public String invoiceConfigurationMain(Model model, @RequestParam Optional<String> active) {
     if(active.isPresent()) {
       model.addAttribute("active", active.get());
     }
     model.addAttribute("categories", Utility.sortCategoryByName(service.findAllCategory()));
-    model.addAttribute("couplers", Utility.sortCouplerByName(service.findAllDescriptionCategoryCoupler()));
+    model.addAttribute("couplers", Utility.sortCouplerByName(service.findAllDescriptionCategoryCouplerByAvailability(Availability.AVAILABLE)));
     model.addAttribute("chargeRatios", Utility.sortChargeRatioByName(service.findAllChargeRatio()));
+    model.addAttribute("avblChargeRatios", Utility.sortChargeRatioByName(service.findAllChargeRatioByAvailability(Availability.AVAILABLE)));
     model.addAttribute("participants", Utility.sortParticipantByName(service.findAllParticipant()));
     model.addAttribute("users", Utility.sortUserByName(service.findAllUser()));
     return "invoice_config_templates/invoiceConfiguration";
@@ -66,16 +68,16 @@ public class InvoiceConfigurationController {
   }
   
   @GetMapping("/invoiceConfiguration/descriptionCategoryCoupler/new")
-  public String prepareCreatingInvoiceDescriptionCategoryCoupler(Model model) {
+  public String prepareCreatingDescriptionCategoryCoupler(Model model) {
     model.addAttribute("coupler", new DescriptionCategoryCoupler());
     return TEMPLATE_PATH + "/descriptionCategoryCouplerNew";
   }
   
   @PostMapping("/invoiceConfiguration/descriptionCategoryCoupler/new")
-  public String createInvoiceDescriptionCategoryCoupler(Model model, @ModelAttribute DescriptionCategoryCoupler dcc) {
-    ExtendedBoolean eb = service.createDescriptionCategoryCoupler(dcc);
+  public String createDescriptionCategoryCoupler(Model model, @ModelAttribute DescriptionCategoryCoupler dcc) {
+    BooleanWithMessages eb = service.createDescriptionCategoryCoupler(dcc);
     messageService.addMessage(eb);
-    if(eb.isValid()) {
+    if(eb.booleanValue()) {
       return "redirect:/invoiceConfiguration/main?active=description-category-coupler";
     } else {
       model.addAttribute("coupler", dcc);
@@ -85,7 +87,7 @@ public class InvoiceConfigurationController {
   }
   
   @GetMapping("/invoiceConfiguration/descriptionCategoryCoupler/{id}")
-  public String prepareUpdatingInvoiceDescriptionCategoryCoupler(Model model, @PathVariable("id") long id) {
+  public String prepareUpdatingDescriptionCategoryCoupler(Model model, @PathVariable("id") long id) {
     Optional<DescriptionCategoryCoupler> dccOpt = service.findDescriptionCategoryCouplerById(id);
     if(dccOpt.isPresent()) {
       if(model.containsAttribute("descriptions")) {
@@ -111,7 +113,7 @@ public class InvoiceConfigurationController {
   }
   
   @PostMapping("/invoiceConfiguration/descriptionCategoryCoupler/{id}")
-  public String updateInvoiceDescriptionCategoryCoupler(
+  public String updateDescriptionCategoryCoupler(
       @ModelAttribute("coupler") DescriptionCategoryCoupler coupler,
       @RequestParam("description") Optional<List<String>> descriptions,
       @RequestParam("category") Optional<List<Long>> categoryIds) {
@@ -141,9 +143,9 @@ public class InvoiceConfigurationController {
   
   @PostMapping("/invoiceConfiguration/chargeRatio/new")
   public String createChargeRatio(Model model, @ModelAttribute("chargeRatio") ChargeRatioByCategory chargeRatio) {
-    ExtendedBoolean eb = service.createChargeRatio(chargeRatio);
+    BooleanWithMessages eb = service.createChargeRatio(chargeRatio);
     messageService.addMessage(eb);
-    if(eb.isValid()) {
+    if(eb.booleanValue()) {
       return "redirect:/invoiceConfiguration/main?active=charge-ratio";
     } else {
       model.addAttribute("chargeRatio", chargeRatio);
@@ -199,9 +201,9 @@ public class InvoiceConfigurationController {
   
   @PostMapping("/invoiceConfiguration/participant/new")
   public String createParticipant(Model model, @ModelAttribute Participant participant) {
-    ExtendedBoolean eb = service.createParticipant(participant);
+    BooleanWithMessages eb = service.createParticipant(participant);
     messageService.addMessage(eb);
-    if(eb.isValid()) {
+    if(eb.booleanValue()) {
       return "redirect:/invoiceConfiguration/main?active=participant";
     } else {
       model.addAttribute("participant", participant);
@@ -214,12 +216,18 @@ public class InvoiceConfigurationController {
   @GetMapping("/invoiceConfiguration/participant/{id}")
   public String prepareUpdatingParticipant(Model model, @PathVariable("id") long id) {
     Optional<Participant> participantOpt = service.findParticipantById(id);
-    if(participantOpt.isPresent()) {
+    List<DescriptionCategoryCoupler> couplers = service.findAllDescriptionCategoryCouplerByAvailability(Availability.AVAILABLE);
+    if(participantOpt.isPresent() && !couplers.isEmpty()) {
       model.addAttribute("participant", participantOpt.get());
-      model.addAttribute("descriptionCategoryCouplers", Utility.sortCouplerByName(service.findAllDescriptionCategoryCoupler()));
+      model.addAttribute("descriptionCategoryCouplers", Utility.sortCouplerByName(couplers));
       return TEMPLATE_PATH + "/participantEdit";
     } else {
-      messageService.addMessage(MessageKey.UNKNOWN_PARTICIPANT, MessageType.ERROR);
+      if(couplers.isEmpty()) {
+        messageService.addMessage(MessageKey.NO_COUPLER, MessageType.WARNING);
+      }
+      if(!participantOpt.isPresent()) {
+        messageService.addMessage(MessageKey.UNKNOWN_PARTICIPANT, MessageType.ERROR);
+      }
       return "redirect:/invoiceConfiguration/main?active=participant";
     }
   }

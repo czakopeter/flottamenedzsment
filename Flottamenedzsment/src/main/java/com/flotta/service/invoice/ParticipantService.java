@@ -10,7 +10,7 @@ import com.flotta.enums.MessageKey;
 import com.flotta.enums.MessageType;
 import com.flotta.model.invoice.Participant;
 import com.flotta.repository.invoice.ParticipantRepository;
-import com.flotta.utility.ExtendedBoolean;
+import com.flotta.utility.BooleanWithMessages;
 
 @Service
 public class ParticipantService implements ParticipantFinderService {
@@ -37,13 +37,13 @@ public class ParticipantService implements ParticipantFinderService {
     return participantRepository.findByName(name);
   }
 
-  ExtendedBoolean create(Participant participant) {
-    ExtendedBoolean eb = new ExtendedBoolean(true);
+  BooleanWithMessages create(Participant participant) {
+    BooleanWithMessages eb = new BooleanWithMessages(true);
     Optional<Participant> participantOpt = participantRepository.findByName(participant.getName());
     if (!participantOpt.isPresent()) {
       participantRepository.save(participant);
     } else {
-      eb.setInvalid();
+      eb.setFalse();
       eb.addMessage(MessageKey.PARTICIPANT_NAME_ALREADY_USED, MessageType.WARNING);
     }
     return eb;

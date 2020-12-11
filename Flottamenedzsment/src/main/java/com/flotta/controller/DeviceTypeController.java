@@ -20,7 +20,7 @@ import com.flotta.enums.MessageType;
 import com.flotta.model.registry.DeviceType;
 import com.flotta.service.MessageService;
 import com.flotta.service.ServiceManager;
-import com.flotta.utility.ExtendedBoolean;
+import com.flotta.utility.BooleanWithMessages;
 import com.flotta.utility.Utility;
 
 @Controller
@@ -39,7 +39,7 @@ public class DeviceTypeController {
   @ModelAttribute
   public void prepareController(Model model) {
     model.addAttribute("title", "DeviceType");
-    model.addAttribute("locale", LocaleContextHolder.getLocale().getCountry());
+    model.addAttribute("locale", LocaleContextHolder.getLocale().getLanguage());
     messageService.setActualController(ControllerType.DEVICE_TYPE);
   }
 
@@ -59,9 +59,9 @@ public class DeviceTypeController {
   
   @PostMapping("/deviceType/new")
   public String createDeviceTypes(Model model, @ModelAttribute("deviceType") DeviceType deviceType) {
-    ExtendedBoolean eb = service.createDeviceType(deviceType);
+    BooleanWithMessages eb = service.createDeviceType(deviceType);
     messageService.addMessage(eb);
-    if(eb.isValid()) {
+    if(eb.booleanValue()) {
       return "redirect:/deviceType/all";
     } else {
       model.addAttribute("brandList", service.findAllBrandOfDevicesType());
@@ -83,7 +83,7 @@ public class DeviceTypeController {
   }
   
   @PostMapping("/deviceType/{id}/update")
-  public String updateDeviceType(Model model, @ModelAttribute DeviceType deviceType) {
+  public String updateDeviceType(@ModelAttribute DeviceType deviceType) {
     service.updateDeviceType(deviceType);
     return "redirect:/deviceType/" + deviceType.getId() + "/update";
   }

@@ -26,7 +26,7 @@ import com.flotta.model.viewEntity.SubscriptionToView;
 import com.flotta.service.invoice.InvoiceManager;
 import com.flotta.service.registry.RegistryManager;
 import com.flotta.service.switchTable.SwitchTableService;
-import com.flotta.utility.ExtendedBoolean;
+import com.flotta.utility.BooleanWithMessages;
 
 @Service
 public class ServiceManager {
@@ -48,7 +48,7 @@ public class ServiceManager {
   
 //-------- INVOICE SERVICE --------
 
-  public ExtendedBoolean fileUpload(MultipartFile file) {
+  public BooleanWithMessages fileUpload(MultipartFile file) {
     return invoiceManager.uploadInvoice(file);
   }
 
@@ -106,7 +106,11 @@ public class ServiceManager {
     return invoiceManager.findDescriptionCategoryCoupler(id);
   }
   
-  public ExtendedBoolean createDescriptionCategoryCoupler(DescriptionCategoryCoupler dcc) {
+  public List<DescriptionCategoryCoupler> findAllDescriptionCategoryCouplerByAvailability(Availability availability) {
+    return invoiceManager.findAllDescriptionCategoryCouplerByAvailability(availability);
+  }
+  
+  public BooleanWithMessages createDescriptionCategoryCoupler(DescriptionCategoryCoupler dcc) {
     return invoiceManager.createDescriptionCategoryCoupler(dcc);
   }
   
@@ -124,7 +128,11 @@ public class ServiceManager {
     return invoiceManager.findChargeRatioById(id);
   }
   
-  public ExtendedBoolean createChargeRatio(ChargeRatioByCategory chargeRatio) {
+  public List<ChargeRatioByCategory> findAllChargeRatioByAvailability(Availability availability) {
+    return invoiceManager.findAllChargeRatioByAvailability(availability);
+  }
+  
+  public BooleanWithMessages createChargeRatio(ChargeRatioByCategory chargeRatio) {
     return invoiceManager.createChargeRatio(chargeRatio);
   }
 
@@ -136,7 +144,7 @@ public class ServiceManager {
     return invoiceManager.findAllUnusedCategoryOfChargeRatio(id);
   }
   
-//-------- INVOICE BY USER AND PHONE NUMBER SERVICE --------
+//-------- GROUPED FEE ITEMS SERVICE --------
 
   public Optional<GroupedFeeItems> findGroupedFeeItemsOfUserByEmailAndId(String email, Long id) {
     return invoiceManager.findGroupedFeeItemsByUserAndId(registryManager.findUserByEmail(email).get(), id);
@@ -170,7 +178,7 @@ public class ServiceManager {
     return invoiceManager.findParticipantById(id);
   }
 
-  public ExtendedBoolean createParticipant(Participant participant) {
+  public BooleanWithMessages createParticipant(Participant participant) {
     return invoiceManager.createParticipant(participant);
   }
 
@@ -187,11 +195,11 @@ public class ServiceManager {
     return registryManager.findAllDevices();
   }
 
-  public ExtendedBoolean createDevice(DeviceToView dtv) {
+  public BooleanWithMessages createDevice(DeviceToView dtv) {
     return registryManager.createDevice(dtv);
   }
 
-  public ExtendedBoolean updateDevice(DeviceToView dtv) {
+  public BooleanWithMessages updateDevice(DeviceToView dtv) {
     return registryManager.updateDevice(dtv);
   }
 
@@ -213,7 +221,7 @@ public class ServiceManager {
     return registryManager.findDeviceTypeById(id);
   }
 
-  public ExtendedBoolean createDeviceType(DeviceType deviceType) {
+  public BooleanWithMessages createDeviceType(DeviceType deviceType) {
     return registryManager.saveDeviceType(deviceType);
   }
   
@@ -225,7 +233,7 @@ public class ServiceManager {
     return registryManager.findAllDeviceTypesByAvailability(availability);
   }
   
-  public ExtendedBoolean canCreateDevice() {
+  public BooleanWithMessages canCreateDevice() {
     return registryManager.canCreateDevice();
   }
 
@@ -243,11 +251,11 @@ public class ServiceManager {
     return registryManager.findSimById(id);
   }
 
-  public ExtendedBoolean createSim(Sim sim) {
+  public BooleanWithMessages createSim(Sim sim) {
     return registryManager.createSim(sim);
   }
 
-  public ExtendedBoolean canCreateSubscription() {
+  public BooleanWithMessages canCreateSubscription() {
     return registryManager.canCreateSubscription();
   }
 
@@ -261,17 +269,17 @@ public class ServiceManager {
     return registryManager.findSubscriptionById(id);
   }
 
-  public ExtendedBoolean createSubscription(SubscriptionToView stv) {
+  public BooleanWithMessages createSubscription(SubscriptionToView stv) {
     return registryManager.createSubscription(stv);
   }
 
-  public ExtendedBoolean updateSubscription(SubscriptionToView stv) {
+  public BooleanWithMessages updateSubscription(SubscriptionToView stv) {
     return registryManager.updateSubscription(stv);
   }
 
   // -------- USER SERVICE --------
   
-  public ExtendedBoolean createUser(User user) {
+  public BooleanWithMessages createUser(User user) {
     return registryManager.createUser(user);
   }
 
@@ -283,15 +291,15 @@ public class ServiceManager {
     return registryManager.findUserByEmail(email);
   }
 
-  public ExtendedBoolean changePassword(String email, String oldPsw, String newPsw, String confirmPsw) {
+  public BooleanWithMessages changePassword(String email, String oldPsw, String newPsw, String confirmPsw) {
     return registryManager.changePassword(email, oldPsw, newPsw, confirmPsw);
   }
 
-  public ExtendedBoolean createFirstAdmin(User user) {
+  public BooleanWithMessages createFirstAdmin(User user) {
     return registryManager.createFirstAdmin(user);
   }
   
-  public ExtendedBoolean activation(String key) {
+  public BooleanWithMessages activation(String key) {
     return registryManager.activation(key);
   }
 
@@ -299,11 +307,11 @@ public class ServiceManager {
     return registryManager.findUserById(id);
   }
 
-  public ExtendedBoolean updateUser(long id, Map<String, Boolean> roles) {
+  public BooleanWithMessages updateUser(long id, Map<String, Boolean> roles) {
     return registryManager.updateUser(id, roles);
   }
 
-  public ExtendedBoolean requestNewPassword(String email) {
+  public BooleanWithMessages requestNewPassword(String email) {
     return registryManager.requestNewPassword(email);
   }
 
@@ -338,5 +346,4 @@ public class ServiceManager {
     return switchTableService.findAllCurrentDeviceByUser(registryManager.findUserById(userId));
   }
 
-  
 }

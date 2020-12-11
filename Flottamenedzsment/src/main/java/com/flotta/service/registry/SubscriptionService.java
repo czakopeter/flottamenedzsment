@@ -12,7 +12,7 @@ import com.flotta.model.registry.Sim;
 import com.flotta.model.registry.Subscription;
 import com.flotta.model.viewEntity.SubscriptionToView;
 import com.flotta.repository.registry.SubscriptionRepository;
-import com.flotta.utility.ExtendedBoolean;
+import com.flotta.utility.BooleanWithMessages;
 import com.flotta.utility.Validator;
 
 @Service
@@ -40,12 +40,12 @@ public class SubscriptionService implements SubscriptionFinderService {
       return subscriptionRepository.findByNumber(number);
   }
   
-  public ExtendedBoolean create(SubscriptionToView stv, Optional<Sim> simOpt) {
-    ExtendedBoolean eb = new ExtendedBoolean(Validator.validHunPhoneNumber(stv.getNumber()));
-    if(eb.isValid()) {
+  public BooleanWithMessages create(SubscriptionToView stv, Optional<Sim> simOpt) {
+    BooleanWithMessages eb = new BooleanWithMessages(Validator.validHunPhoneNumber(stv.getNumber()));
+    if(eb.booleanValue()) {
       Optional<Subscription> optional = subscriptionRepository.findByNumber(stv.getNumber());
       if(optional.isPresent()) {
-        eb.setInvalid();
+        eb.setFalse();
         eb.addMessage(MessageKey.PHONE_NUMBER_ALREADY_USED, MessageType.WARNING);
       } else {
         Subscription entity = new Subscription(stv.getNumber(), stv.getBeginDate());

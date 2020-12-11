@@ -11,7 +11,7 @@ import com.flotta.enums.MessageKey;
 import com.flotta.enums.MessageType;
 import com.flotta.model.registry.DeviceType;
 import com.flotta.repository.registry.DeviceTypeRepository;
-import com.flotta.utility.ExtendedBoolean;
+import com.flotta.utility.BooleanWithMessages;
 
 @Service
 public class DeviceTypeService {
@@ -39,13 +39,13 @@ public class DeviceTypeService {
     return deviceTypeRepository.findByNameIgnoreCase(name);
   }
   
-  public List<DeviceType> findAllAvailability(Availability availability) {
+  public List<DeviceType> findAllByAvailability(Availability availability) {
     return deviceTypeRepository.findAllByAvailability(availability);
   }
 
-  public ExtendedBoolean create(DeviceType deviceType) {
-    ExtendedBoolean eb = creatable(deviceType);
-    if (eb.isValid()) {
+  public BooleanWithMessages create(DeviceType deviceType) {
+    BooleanWithMessages eb = creatable(deviceType);
+    if (eb.booleanValue()) {
         deviceTypeRepository.save(deviceType);
     }
     return eb;
@@ -57,10 +57,10 @@ public class DeviceTypeService {
     }
   }
   
-  private ExtendedBoolean creatable(DeviceType deviceType) {
+  private BooleanWithMessages creatable(DeviceType deviceType) {
     Optional<DeviceType> typeByNameOpt = deviceTypeRepository.findByNameIgnoreCase(deviceType.getName());
     Optional<DeviceType> typeByBrandAndModelOpt = deviceTypeRepository.findByBrandAndModelIgnoreCase(deviceType.getBrand(), deviceType.getModel());
-    ExtendedBoolean eb = new ExtendedBoolean(!typeByNameOpt.isPresent() || typeByBrandAndModelOpt.isPresent());
+    BooleanWithMessages eb = new BooleanWithMessages(!typeByNameOpt.isPresent() || typeByBrandAndModelOpt.isPresent());
     if(typeByNameOpt.isPresent()) {
       eb.addMessage(MessageKey.NAME_ALREADY_USED, MessageType.WARNING);
     }

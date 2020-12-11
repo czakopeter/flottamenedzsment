@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.flotta.enums.Availability;
 import com.flotta.enums.ControllerType;
@@ -25,7 +24,7 @@ import com.flotta.model.registry.Device;
 import com.flotta.model.viewEntity.DeviceToView;
 import com.flotta.service.MessageService;
 import com.flotta.service.ServiceManager;
-import com.flotta.utility.ExtendedBoolean;
+import com.flotta.utility.BooleanWithMessages;
 import com.flotta.utility.Utility;
 
 @Controller
@@ -40,7 +39,7 @@ public class DeviceController {
   @ModelAttribute
   public void prepareController(Model model) {
     model.addAttribute("title", "Device");
-    model.addAttribute("locale", LocaleContextHolder.getLocale().getCountry());
+    model.addAttribute("locale", LocaleContextHolder.getLocale().getLanguage());
     messageService.setActualController(ControllerType.DEVICE);
   }
 
@@ -52,9 +51,9 @@ public class DeviceController {
   }
   
   @GetMapping("/device/new")
-  public String prepareCreatingDevice(Model model, RedirectAttributes ra) {
-    ExtendedBoolean eb = service.canCreateDevice();
-    if(eb.isValid()) {
+  public String prepareCreatingDevice(Model model) {
+    BooleanWithMessages eb = service.canCreateDevice();
+    if(eb.booleanValue()) {
       model.addAttribute("device", new DeviceToView());
       model.addAttribute("deviceTypes", Utility.sortDeviceTypeByName(service.findAllDeviceTypesByAvailability(Availability.AVAILABLE)));
       return "device_templates/deviceNew";
@@ -66,9 +65,9 @@ public class DeviceController {
   
   @PostMapping("/device/new")
   public String createDevice(Model model, @ModelAttribute("device") DeviceToView dtv) {
-    ExtendedBoolean eb = service.createDevice(dtv);
+    BooleanWithMessages eb = service.createDevice(dtv);
     messageService.clearAndAddMessage(eb);
-    if(eb.isValid()) {
+    if(eb.booleanValue()) {
       return "redirect:/device/all";
     } else {
       model.addAttribute("device", dtv);
@@ -78,7 +77,7 @@ public class DeviceController {
   }
   
   @GetMapping("/device/{id}/update")
-  public String prepareUpdatingDevice(Model model, RedirectAttributes ra , @PathVariable("id") long id) {
+  public String prepareUpdatingDevice(Model model, @PathVariable("id") long id) {
     Optional<Device> deviceOpt = service.findDeviceById(id);
     if(deviceOpt.isPresent()) {
       model.addAttribute("device", new DeviceToView(deviceOpt.get()));

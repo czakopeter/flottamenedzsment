@@ -1,5 +1,6 @@
 package com.flotta.model.invoice;
 
+//import lombok.Getter;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,7 +16,7 @@ import com.flotta.model.registry.Subscription;
 import com.flotta.model.registry.User;
 
 @Entity
-@Table(name = "invoice_parts")
+@Table(name = "groupedFeeItems")
 public class GroupedFeeItems extends BasicAccountElement {
 
   @ManyToOne
@@ -27,7 +28,7 @@ public class GroupedFeeItems extends BasicAccountElement {
   @ManyToOne
   private User user;
   
-  @OneToMany(mappedBy = "groupedFeeItems", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
   private List<FeeItem> feeItems = new LinkedList<>();
 
   private double userGrossAmount;
@@ -36,6 +37,7 @@ public class GroupedFeeItems extends BasicAccountElement {
   
   private boolean acceptedByUser;
   
+//  @Setter
   private boolean acceptedByCompany;
   
   private String reviewNote;
@@ -127,7 +129,7 @@ public class GroupedFeeItems extends BasicAccountElement {
   }
 
   public void addFeeItem(FeeItem feeItem) {
-    feeItem.setGroupedFeeItems(this);
+    feeItem.setGroup(this);
     amountUpdate(feeItem);
     dateUpdate(feeItem);
     feeItems.add(feeItem);

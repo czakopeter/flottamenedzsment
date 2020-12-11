@@ -15,7 +15,7 @@ import com.flotta.enums.ControllerType;
 import com.flotta.model.registry.Sim;
 import com.flotta.service.MessageService;
 import com.flotta.service.ServiceManager;
-import com.flotta.utility.ExtendedBoolean;
+import com.flotta.utility.BooleanWithMessages;
 
 @Controller
 public class SimController {
@@ -33,7 +33,7 @@ public class SimController {
   @ModelAttribute
   public void prepareController(Model model) {
     model.addAttribute("title", "Sim");
-    model.addAttribute("locale", LocaleContextHolder.getLocale().getCountry());
+    model.addAttribute("locale", LocaleContextHolder.getLocale().getLanguage());
     messageService.setActualController(ControllerType.SIM);
   }
   
@@ -51,10 +51,10 @@ public class SimController {
   }
   
   @PostMapping("sim/new")
-  public String createSim(Model model, RedirectAttributes ra, @ModelAttribute Sim sim) {
-    ExtendedBoolean eb = service.createSim(sim); 
+  public String createSim(Model model, @ModelAttribute Sim sim) {
+    BooleanWithMessages eb = service.createSim(sim); 
     messageService.addMessage(eb);
-    if(eb.isValid()) {
+    if(eb.booleanValue()) {
       return "redirect:/sim/all";
     } else {
       model.addAttribute("sim", sim);

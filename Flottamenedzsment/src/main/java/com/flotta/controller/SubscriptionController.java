@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.flotta.enums.ControllerType;
 import com.flotta.enums.MessageKey;
@@ -25,7 +24,7 @@ import com.flotta.model.viewEntity.DeviceToView;
 import com.flotta.model.viewEntity.SubscriptionToView;
 import com.flotta.service.MessageService;
 import com.flotta.service.ServiceManager;
-import com.flotta.utility.ExtendedBoolean;
+import com.flotta.utility.BooleanWithMessages;
 import com.flotta.utility.Utility;
 
 @Controller
@@ -39,7 +38,7 @@ public class SubscriptionController {
   @ModelAttribute
   public void prepareController(Model model) {
     model.addAttribute("title", "Subscription");
-    model.addAttribute("locale", LocaleContextHolder.getLocale().getCountry());
+    model.addAttribute("locale", LocaleContextHolder.getLocale().getLanguage());
     messageService.setActualController(ControllerType.SUBSCRIPTION);
   }
 
@@ -52,8 +51,8 @@ public class SubscriptionController {
 
   @GetMapping("/subscription/new")
   public String prepareCreatingSubscription(Model model) {
-    ExtendedBoolean eb = service.canCreateSubscription();
-    if(eb.isValid()) {
+    BooleanWithMessages eb = service.canCreateSubscription();
+    if(eb.booleanValue()) {
       model.addAttribute("subscription", new SubscriptionToView());
       model.addAttribute("freeSims", service.findAllFreeSim());
       model.addAttribute("messages", messageService.getMessages());
@@ -66,10 +65,10 @@ public class SubscriptionController {
 
   @PostMapping("/subscription/new")
   public String createSubscription(Model model, @ModelAttribute("subscription") SubscriptionToView stv) {
-    ExtendedBoolean eb = service.createSubscription(stv); 
+    BooleanWithMessages eb = service.createSubscription(stv); 
     messageService.addMessage(eb);
     model.addAttribute("messages", messageService.getMessages());
-      if (eb.isValid()) {
+      if (eb.booleanValue()) {
         return "redirect:/subscription/all";
       } else {
         model.addAttribute("subscription", stv);
@@ -96,9 +95,9 @@ public class SubscriptionController {
   }
 
   @PostMapping("/subscription/{id}/update")
-  public String updateSubscription(Model model, @ModelAttribute() SubscriptionToView stv) {
-    ExtendedBoolean eb = service.updateSubscription(stv);
-    if(!eb.isValid()) {
+  public String updateSubscription(@ModelAttribute() SubscriptionToView stv) {
+    BooleanWithMessages eb = service.updateSubscription(stv);
+    if(!eb.booleanValue()) {
       messageService.addMessage(eb);
     }
     return "redirect:/subscription/" + stv.getId() + "/update";
@@ -119,7 +118,7 @@ public class SubscriptionController {
   
   @PostMapping("/subscription/{id}/view")
   @ResponseBody
-  public SubscriptionToView viewChangeDate(@PathVariable("id") long id, @RequestParam("date")@DateTimeFormat(pattern = "yyyy-MM-dd")  LocalDate date) {
+  public SubscriptionToView viewDateChange(@PathVariable("id") long id, @RequestParam("date")@DateTimeFormat(pattern = "yyyy-MM-dd")  LocalDate date) {
     return new SubscriptionToView(service.findSubscriptionById(id).get(), date);
   }
   

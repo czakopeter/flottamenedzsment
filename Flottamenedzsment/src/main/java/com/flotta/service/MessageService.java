@@ -3,7 +3,6 @@ package com.flotta.service;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map.Entry;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Component;
 import com.flotta.enums.ControllerType;
 import com.flotta.enums.MessageKey;
 import com.flotta.enums.MessageType;
-import com.flotta.utility.ExtendedBoolean;
+import com.flotta.utility.BooleanWithMessages;
 import com.flotta.utility.MessageToView;
 
 @Component
@@ -63,21 +62,17 @@ public class MessageService {
     firstGet = true;
   }
   
-  public void addMessage(ExtendedBoolean eb) {
+  public void addMessage(BooleanWithMessages eb) {
     if(!firstGet) {
       messageList.clear();
     }
-    for(Entry<MessageKey, MessageType> entry : eb.getMessages().entrySet()) {
-      messageList.add(new MessageToView(entry.getKey(), entry.getValue()));
-    }
+    messageList.addAll(eb.getMessages());
     firstGet = true;
   }
   
-  public void clearAndAddMessage(ExtendedBoolean eb) {
+  public void clearAndAddMessage(BooleanWithMessages eb) {
     messageList.clear();
-    for(Entry<MessageKey, MessageType> entry : eb.getMessages().entrySet()) {
-      messageList.add(new MessageToView(entry.getKey(), entry.getValue()));
-    }
+    messageList.addAll(eb.getMessages());
     firstGet = true;
   }
   

@@ -23,7 +23,7 @@ public class FeeItemService {
     feeItemOpt.ifPresent(feeItem -> {
       feeItem.setUserGrossAmount(user);
       feeItem.setCompanyGrossAmount(company);
-      feeItem.getGroupedFeeItems().setAmountsByFeeItems();
+      feeItem.getGroup().setAmountsByFeeItems();
       feeItemRepository.save(feeItem);
     });
   }

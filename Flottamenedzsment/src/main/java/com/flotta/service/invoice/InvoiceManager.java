@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.flotta.enums.Availability;
 import com.flotta.model.invoice.Category;
 import com.flotta.model.invoice.ChargeRatioByCategory;
 import com.flotta.model.invoice.DescriptionCategoryCoupler;
@@ -17,7 +18,7 @@ import com.flotta.model.invoice.GroupedFeeItems;
 import com.flotta.model.invoice.Participant;
 import com.flotta.model.invoice.RawInvoice;
 import com.flotta.model.registry.User;
-import com.flotta.utility.ExtendedBoolean;
+import com.flotta.utility.BooleanWithMessages;
 
 @Service
 public class InvoiceManager {
@@ -48,7 +49,7 @@ public class InvoiceManager {
   
 //-------- INVOICE SERVICE --------
   
-  public ExtendedBoolean uploadInvoice(MultipartFile file) {
+  public BooleanWithMessages uploadInvoice(MultipartFile file) {
     return invoiceService.uploadInvoice(file);
   }
   
@@ -130,7 +131,11 @@ public class InvoiceManager {
     return descriptionCategoryCouplerService.findById(id);
   }
   
-  public ExtendedBoolean createDescriptionCategoryCoupler(DescriptionCategoryCoupler dcc) {
+  public List<DescriptionCategoryCoupler> findAllDescriptionCategoryCouplerByAvailability(Availability availability) {
+    return descriptionCategoryCouplerService.findAllByAvailability(availability);
+  }
+  
+  public BooleanWithMessages createDescriptionCategoryCoupler(DescriptionCategoryCoupler dcc) {
     return descriptionCategoryCouplerService.create(dcc);
   }
   
@@ -142,7 +147,7 @@ public class InvoiceManager {
   
 //-------- CHARGE RATIO BY CATEGORY SERVICE --------
   
-  public ExtendedBoolean createChargeRatio(ChargeRatioByCategory chargeRatio) {
+  public BooleanWithMessages createChargeRatio(ChargeRatioByCategory chargeRatio) {
     return chargeRatioService.create(chargeRatio);
   }
 
@@ -152,6 +157,10 @@ public class InvoiceManager {
 
   public Optional<ChargeRatioByCategory> findChargeRatioById(long id) {
     return chargeRatioService.findById(id);
+  }
+  
+  public List<ChargeRatioByCategory> findAllChargeRatioByAvailability(Availability availability) {
+    return chargeRatioService.findAllByAvailability(availability);
   }
 
   public boolean updateChargeRatio(ChargeRatioByCategory chargeRatio, List<Long> categoryIds, List<Integer> ratios) {
@@ -178,11 +187,12 @@ public class InvoiceManager {
     return participantService.findById(id);
   }
 
-  public ExtendedBoolean createParticipant(Participant participant) {
+  public BooleanWithMessages createParticipant(Participant participant) {
       return participantService.create(participant);
   }
   
   public void updateParticipant(Participant participant) {
     participantService.update(participant);
   }
+
 }
