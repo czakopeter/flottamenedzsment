@@ -13,7 +13,6 @@
 
     <form th:action="'/subscription/' + ${subscription.id} + '/update'" th:object="${subscription}" method="post" id="form">
       <div class="container">
-        <input type="hidden" id="id" name="id" th:value="*{id}" /> 
         <div class="row my-2">
           <div class="col-2">
             <label th:text="#{phoneNumber}">Number</label>

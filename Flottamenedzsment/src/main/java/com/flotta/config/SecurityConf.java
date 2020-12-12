@@ -55,6 +55,7 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
 			  .antMatchers("/subscription/**", "/sim/**").hasAnyAuthority("SUBSCRIPTION_MNGR", "ADMIN")
         .antMatchers("/device/**", "/deviceType/**").hasAnyAuthority("DEVICE_MNGR", "ADMIN")
         .antMatchers("/user/**").hasAnyAuthority("USER_MNGR","ADMIN")
+        .antMatchers("/admin/user/delete").hasAnyAuthority("ADMIN")
         .antMatchers("/profile/**", "/").authenticated()
         .anyRequest().authenticated()
 				.and()

@@ -20,8 +20,8 @@ public class SwitchTableService {
     this.userDevService = userDevService;
   }
   
-  public List<Device> findAllCurrentDeviceByUser(Optional<User> userOpt) {
-    return userDevService.findAllCurrentDeviceByUser(userOpt);
+  public List<Device> findAllAvailableDeviceByUser(Optional<User> userOpt) {
+    return userDevService.findAllAvailableDeviceByUser(userOpt);
   }
   
 }

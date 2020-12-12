@@ -189,4 +189,8 @@ public class User extends BasicEntity {
     return true;
   }
   
+  public boolean deletable() {
+    return userDevs.isEmpty() && userSubs.isEmpty();
+  }
+  
 }

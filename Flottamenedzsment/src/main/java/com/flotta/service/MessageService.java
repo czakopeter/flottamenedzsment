@@ -62,17 +62,17 @@ public class MessageService {
     firstGet = true;
   }
   
-  public void addMessage(BooleanWithMessages eb) {
+  public void addMessage(BooleanWithMessages bm) {
     if(!firstGet) {
       messageList.clear();
     }
-    messageList.addAll(eb.getMessages());
+    messageList.addAll(bm.getMessages());
     firstGet = true;
   }
   
-  public void clearAndAddMessage(BooleanWithMessages eb) {
+  public void clearAndAddMessage(BooleanWithMessages bm) {
     messageList.clear();
-    messageList.addAll(eb.getMessages());
+    messageList.addAll(bm.getMessages());
     firstGet = true;
   }
   

@@ -1,0 +1,5 @@
+INSERT INTO Roles (id, role) VALUES (1, 'ADMIN')
+INSERT INTO Roles (id, role) VALUES (2, 'USER_MNGR')
+INSERT INTO Roles (id, role) VALUES (3, 'SUBSCRIPTION_MNGR')
+INSERT INTO Roles (id, role) VALUES (4, 'DEVICE_MNGR')
+INSERT INTO Roles (id, role) VALUES (5, 'FINANCE_MNGR')

@@ -16,14 +16,13 @@ function accept_editing(acceptButton) {
     
     td = tr.querySelector('[name=compGrossAmount]');
     input = td.querySelector('input');
-    let compGrossAmount = input.value;
     inputValueToTdTextAndRemove(td, input);
     
     tr.querySelector('#prepareEditingButton').style.display = null;
     tr.querySelector('#acceptOrCancelEditingButton').style.display = 'none';
     
     let id = tr.id.substr("feeItem".length);
-    sendData('POST', '/invoice/modifyFeeItemGrossAmount', 'id=' + id + '&userGrossAmount=' + userGrossAmount + '&compGrossAmount=' + compGrossAmount, function () {});
+    sendData('POST', '/invoice/modifyFeeItemGrossAmount', 'id=' + id + '&userGrossAmount=' + userGrossAmount, function () {});
 }
 
 function cancel_editing(cancelButton) {

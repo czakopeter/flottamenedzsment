@@ -29,8 +29,7 @@ public class DeviceToView {
 	
 	private String note;
 	
-	
-	public static final Comparator<DeviceToView> BY_SERIAL_NUMBER = Comparator
+	public static final Comparator<DeviceToView> BY_HAS_USER_AND_SERIAL_NUMBER = Comparator
       .comparing(DeviceToView::getSerialNumber);
 
   public static final Comparator<DeviceToView> BY_SERIAL_NUMBER_AND_BEGIN_DATE = Comparator
@@ -54,11 +53,11 @@ public class DeviceToView {
 	  beginDate = getLastModificationDateOfDevice(device);
 	  minDate = beginDate.toString();
 	  
-	  setUser(Utility.getBasicSwitchTable(device.getDevUsers()));
+	  setUser(Utility.getLastUnendedSwitchTable(device.getDevUsers()));
 	  
-	  setSubscription(Utility.getBasicSwitchTable(device.getDevSubs()));
+	  setSubscription(Utility.getLastUnendedSwitchTable(device.getDevSubs()));
 	  
-	  setNote(Utility.getBasicSwitchTable(device.getNotes()));
+	  setNote(Utility.getLastUnendedSwitchTable(device.getNotes()));
 	  
 	  }
 
@@ -68,11 +67,11 @@ public class DeviceToView {
     typeName = device.getDeviceType().getName();
     beginDate = date;
     
-    setUser(Utility.getBasicSwitchTable(device.getDevUsers(), date));
+    setUser(Utility.getModSwitchTableOrNull(device.getDevUsers(), date));
 
-    setSubscription(Utility.getBasicSwitchTable(device.getDevSubs(), date));
+    setSubscription(Utility.getModSwitchTableOrNull(device.getDevSubs(), date));
 
-    setNote(Utility.getBasicSwitchTable(device.getNotes(), date));
+    setNote(Utility.getModSwitchTableOrNull(device.getNotes(), date));
   }
 
   public long getId() {

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.flotta.enums.ControllerType;
 import com.flotta.enums.MessageKey;
@@ -176,11 +175,12 @@ public class UserController {
     return "redirect:/requestNewPassword";
   }
   
-  @DeleteMapping("user/delete")
+  @DeleteMapping("admin/user/delete")
   @ResponseBody
-  public ResponseTransfer deleteUser(@RequestParam("email") String email) {
-    service.deleteUserById(email);
-    return new ResponseTransfer(email);
+  public ResponseTransfer deleteUser(@RequestParam("id") long id) {
+    BooleanWithMessages bm = service.deleteUserById(id);
+    messageService.addMessage(bm);
+    return bm.booleanValue() ? new ResponseTransfer(id) : new ResponseTransfer(0);
   }
   
 }

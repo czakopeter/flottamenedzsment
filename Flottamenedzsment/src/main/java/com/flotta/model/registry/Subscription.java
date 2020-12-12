@@ -129,7 +129,7 @@ public class Subscription extends BasicEntityWithCreateDate {
       subSim.put(date, new SubSim(this, sim, date));
       sim.setStatus(SimStatus.USED);
     } else {
-      LocalDate lastModDate = Utility.getLatestDate(subSim);
+      LocalDate lastModDate = Utility.getLatestSwitchTableDate(subSim);
       SubSim last = subSim.get(lastModDate);
       if (last.getEndDate() == null) {
         if (last.getSim().equals(sim)) {
@@ -160,9 +160,9 @@ public class Subscription extends BasicEntityWithCreateDate {
       }
     } else {
       //Már legalább egyszer hozzárendelték egy felhazsnálóhoz
-      LocalDate lastUserModDate = Utility.getLatestDate(subUsers);
+      LocalDate lastUserModDate = Utility.getLatestSwitchTableDate(subUsers);
       UserSub last = subUsers.get(lastUserModDate);
-      if(last.getEndDate() != null) {
+      if(last.closed()) {
         //Az utolsó hozzárendelést már lezárták jelenleg nem tartozik senkihez
         if(date.minusDays(1).isEqual(last.getEndDate())) {
           if(user == null) {
@@ -180,6 +180,7 @@ public class Subscription extends BasicEntityWithCreateDate {
           }
         }
       } else {
+         boolean shouldCloseDev = false;
         //Valakihez éppen hozzá van rendelve
         if(last.getUser().equals(user)) {
           //nem csinálunk semmit
@@ -187,14 +188,23 @@ public class Subscription extends BasicEntityWithCreateDate {
           if(date.isAfter(lastUserModDate)) {
             last.setEndDate(date.minusDays(1));
             subUsers.put(date, new UserSub(user, this, date));
+            shouldCloseDev = true;
           } else if(date.isEqual(lastUserModDate)) {
          // Módosítjuk az új felhasználóval vagy nem történik módosítás
           }
         } else {
           if(date.isAfter(lastUserModDate)) {
             last.setEndDate(date.minusDays(1));
+            shouldCloseDev = true;
           } else if(date.isEqual(lastUserModDate)) {
             // Még nem tudom mi történjen
+          }
+        }
+        if(shouldCloseDev && !subDev.isEmpty()) {
+          LocalDate lastDevModDate = Utility.getLatestSwitchTableDate(subDev);
+          SubDev lastDev = subDev.get(lastDevModDate);
+          if(!lastDev.closed()) {
+            lastDev.setEndDate(date.minusDays(1));
           }
         }
       }
@@ -204,14 +214,16 @@ public class Subscription extends BasicEntityWithCreateDate {
   //TODO OPTIONAL-lel megold
   public void addDevice(Optional<Device> deviceOpt, LocalDate date) {
     Device device = deviceOpt.orElse(null);
+    boolean shouldCloseDevice = false;
     if (subDev.isEmpty()) {
       if (device != null) {
         subDev.put(date, new SubDev(this, device, date));
+        shouldCloseDevice = true;
       }
     } else {
-      LocalDate lastModDate = Utility.getLatestDate(subDev);
+      LocalDate lastModDate = Utility.getLatestSwitchTableDate(subDev);
       SubDev last = subDev.get(lastModDate);
-      if(last.getEndDate() != null) {
+      if(last.closed()) {
         if(date.minusDays(1).isEqual(last.getEndDate())) {
           if(device == null) {
           //nem csinálunk semmit
@@ -219,22 +231,25 @@ public class Subscription extends BasicEntityWithCreateDate {
             last.setEndDate(null);
           } else {
             subDev.put(date, new SubDev(this, device, date));
+            shouldCloseDevice = true;
           }
         } else if(date.minusDays(1).isAfter(last.getEndDate())) {
           if(device == null) {
             //nem csinálunk semmit
           } else {
             subDev.put(date, new SubDev(this, device, date));
+            shouldCloseDevice = true;
           }
         }
       } else {
-        //Valakihez éppen hozzá van rendelve
+        //Eszközhöz éppen hozzá van rendelve
         if(last.getDev().equals(device)) {
           //nem csinálunk semmit
         } else if(device != null) {
           if(date.isAfter(lastModDate)) {
             last.setEndDate(date.minusDays(1));
             subDev.put(date, new SubDev(this, device, date));
+            shouldCloseDevice = true;
           } else if(date.isEqual(lastModDate)) {
          // Módosítjuk az új felhasználóval vagy nem történik módosítás
           }
@@ -245,6 +260,13 @@ public class Subscription extends BasicEntityWithCreateDate {
             // Még nem tudom mi történjen
           }
         }
+      }
+    }
+    if(shouldCloseDevice && !device.getDevSubs().isEmpty()) {
+      LocalDate lastModDate = Utility.getLatestSwitchTableDate(device.getDevSubs());
+      SubDev last = device.getDevSubs().get(lastModDate);
+      if(!last.closed() && !this.equals(last.getSub())) {
+        last.setEndDate(date.minusDays(1));
       }
     }
   }
@@ -255,7 +277,7 @@ public class Subscription extends BasicEntityWithCreateDate {
         notes.put(date, new SubNote(this, note, date));
       }
     } else {
-      LocalDate lastNoteModDate = Utility.getLatestDate(notes);
+      LocalDate lastNoteModDate = Utility.getLatestSwitchTableDate(notes);
       SubNote last = notes.get(lastNoteModDate);
       if(last.getEndDate() != null) {
         if(date.minusDays(1).isEqual(last.getEndDate())) {
@@ -308,12 +330,8 @@ public class Subscription extends BasicEntityWithCreateDate {
   }
 
   public User getUserByDate(LocalDate date) {
-    LocalDate floor = Utility.floorDate(new LinkedList<>(getModificationDates(subUsers)), date);
-    if (floor == null) {
-      return null;
-    } else {
-      return subUsers.get(floor) != null ? subUsers.get(floor).getUser() : null;
-    }
+    BasicSwitchTable bst = Utility.getModSwitchTableOrNull(subUsers, date);
+    return bst != null && bst instanceof UserSub ? ((UserSub)bst).getUser() : null;
   }
 
   /**

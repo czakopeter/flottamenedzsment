@@ -13,6 +13,7 @@ public enum MessageKey {
   SUCCESSFUL_LOGOUT("successfulLogout"),
   
 //  USER
+  NOT_ACTIVATED_YET("notActivatedYet"),
   EMAIL_ALREADY_USED("emailAlreadyUsed"),
   UNKNOWN_USER("unknownUser"),
   NO_REDUCE_ADMIN("noReduceAdmin"),
@@ -66,8 +67,7 @@ public enum MessageKey {
   UNKNOWN_EMAIL("unknownEmail"),
   
   PAGE_NOT_FOUND("pageNotFound"), 
-  UNKNOWN_FAILURE("unknownFailure")
-  
+  UNKNOWN_FAILURE("unknownFailure"),
   ;
   
   

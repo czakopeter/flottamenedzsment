@@ -58,7 +58,7 @@ public class DeviceController {
       model.addAttribute("deviceTypes", Utility.sortDeviceTypeByName(service.findAllDeviceTypesByAvailability(Availability.AVAILABLE)));
       return "device_templates/deviceNew";
     } else {
-      messageService.clearAndAddMessage(eb);
+      messageService.addMessage(eb);
       return "redirect:/device/all";
     }
   }
@@ -66,7 +66,7 @@ public class DeviceController {
   @PostMapping("/device/new")
   public String createDevice(Model model, @ModelAttribute("device") DeviceToView dtv) {
     BooleanWithMessages eb = service.createDevice(dtv);
-    messageService.clearAndAddMessage(eb);
+    messageService.addMessage(eb);
     if(eb.booleanValue()) {
       return "redirect:/device/all";
     } else {
@@ -84,7 +84,7 @@ public class DeviceController {
       model.addAttribute("users", Utility.sortUserByName(service.findAllUser()));
       return "device_templates/deviceEdit";
     } else {
-      messageService.clearAndAddMessage(MessageKey.UNKNOWN_DEVICE, MessageType.ERROR);
+      messageService.addMessage(MessageKey.UNKNOWN_DEVICE, MessageType.ERROR);
       return "redirect:/device/all";
     }
   }
@@ -103,7 +103,7 @@ public class DeviceController {
       model.addAttribute("dates", deviceOpt.get().getAllModificationDateDesc());
       return "device_templates/deviceView";
     } else {
-      messageService.clearAndAddMessage(MessageKey.UNKNOWN_DEVICE, MessageType.ERROR);
+      messageService.addMessage(MessageKey.UNKNOWN_DEVICE, MessageType.ERROR);
       return "redirect:/device/all";
     }
   }

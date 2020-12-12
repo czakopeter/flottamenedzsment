@@ -60,13 +60,13 @@ public class SubscriptionToView {
     beginDate = getLastModificationDateOfDevice(subscription);
     minDate = subscription.getCreateDate().toString();
 
-    setSim(Utility.getBasicSwitchTable(subscription.getSubSim()));
+    setSim(Utility.getLastUnendedSwitchTable(subscription.getSubSim()));
 
-    setUser(Utility.getBasicSwitchTable(subscription.getSubUsers()));
+    setUser(Utility.getLastUnendedSwitchTable(subscription.getSubUsers()));
 
-    setDevice(Utility.getBasicSwitchTable(subscription.getSubDev()));
+    setDevice(Utility.getLastUnendedSwitchTable(subscription.getSubDev()));
 
-    setNote(Utility.getBasicSwitchTable(subscription.getNotes()));
+    setNote(Utility.getLastUnendedSwitchTable(subscription.getNotes()));
     
     minDate = beginDate.toString();
   }
@@ -76,13 +76,13 @@ public class SubscriptionToView {
     number = subscription.getNumber();
     beginDate = date;
 
-    setSim(Utility.getBasicSwitchTable(subscription.getSubSim(), date));
+    setSim(Utility.getModSwitchTableOrNull(subscription.getSubSim(), date));
 
-    setUser(Utility.getBasicSwitchTable(subscription.getSubUsers(), date));
+    setUser(Utility.getModSwitchTableOrNull(subscription.getSubUsers(), date));
 
-    setDevice(Utility.getBasicSwitchTable(subscription.getSubDev(), date));
+    setDevice(Utility.getModSwitchTableOrNull(subscription.getSubDev(), date));
 
-    setNote(Utility.getBasicSwitchTable(subscription.getNotes(), date));  
+    setNote(Utility.getModSwitchTableOrNull(subscription.getNotes(), date));  
   }
 
   public long getId() {

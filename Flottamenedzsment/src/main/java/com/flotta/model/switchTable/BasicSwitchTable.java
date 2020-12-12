@@ -32,6 +32,9 @@ public abstract class BasicSwitchTable extends BasicEntity {
   public void setEndDate(LocalDate endDate) {
     this.endDate = endDate;
   }
+  
+  public boolean closed() {
+    return endDate != null;
+  }
 
-//  public abstract <Other extends BasicSwitchTable> boolean isSameSwitchedPairs(Other other);
 }

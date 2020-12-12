@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.flotta.enums.ControllerType;
 import com.flotta.enums.MessageKey;
@@ -67,32 +66,32 @@ public class ProfileController {
   }
   
   @GetMapping("/profile/invoice")
-  public String getUserActualInvoices(Model model) {
+  public String getGroupedFeeItemsOfUser(Model model) {
     model.addAttribute("groups", service.findAllGroupedFeeItemsByUserEmail(getActualUserEmail()));
     return "profile_templates/invoiceSummary";
   }
   
   @PostMapping("/profile/invoice/accept")
   @ResponseBody
-  public List<Long> acceptInvoicesOfCurrentUserByIds(@RequestParam("ids") List<Long> ids) {
+  public List<Long> acceptGroupedFeeItemsOfUserByIds(@RequestParam("ids") List<Long> ids) {
     service.acceptGroupedFeeItemsOfUserByEmailAndIdsFromUser(getActualUserEmail(), ids);
     return ids;
   }
 
   @PostMapping("/profile/invoice/{id}")
-  public String invoiceDetails(Model model, @PathVariable ("id") long groupedFeeItemsId) {
+  public String groupedFeeItemsDetails(Model model, @PathVariable ("id") long groupedFeeItemsId) {
     Optional<GroupedFeeItems> groupOpt = service.findGroupedFeeItemsOfUserByEmailAndId(getActualUserEmail(), groupedFeeItemsId);
     if(groupOpt.isPresent()) {
       model.addAttribute("groupedFeeItems", groupOpt.get());
       return "profile_templates/invoiceDetails";
     } else {
-      messageService.clearAndAddMessage(MessageKey.UNKNOWN_INVOICE, MessageType.ERROR);
+      messageService.addMessage(MessageKey.UNKNOWN_INVOICE, MessageType.ERROR);
       return "redirect:/profile/invoice";
     }
   }
   
   @PostMapping("/profile/invoice/{id}/revision")
-  public String addReviewToInvoice(@PathVariable ("id") long id, @RequestParam Map<String, String> notes) {
+  public String addReviewToGroupedFeeItems(@PathVariable ("id") long id, @RequestParam Map<String, String> notes) {
     service.askForRevision(getActualUserEmail(), id, notes);
     return "redirect:/profile/invoice";
   }

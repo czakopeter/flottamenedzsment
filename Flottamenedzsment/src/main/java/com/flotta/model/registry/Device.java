@@ -124,11 +124,12 @@ public class Device extends BasicEntityWithCreateDate {
         devUsers.put(date, new UserDev(user, this, date));
       });
     } else {
-      LocalDate lastUserModDate = Utility.getLatestDate(devUsers);
+      LocalDate lastUserModDate = Utility.getLatestSwitchTableDate(devUsers);
       UserDev last = devUsers.get(lastUserModDate);
-      if(last.getEndDate() != null) {
+      boolean shouldCloseSub = !last.closed();
+      if(last.closed()) {
         //Az utolsó hozzárendelést már lezárták jelenleg nem tartozik senkihez
-        if(date.minusDays(1).isEqual(last.getEndDate())) {
+        if(last.getEndDate().plusDays(1).isEqual(date)) {
           if(userOpt.isPresent()) {
             User user = userOpt.get();
             if(last.getUser().equals(user)) {
@@ -137,7 +138,7 @@ public class Device extends BasicEntityWithCreateDate {
               devUsers.put(date, new UserDev(user, this, date));
             }
           }
-        } else if(date.minusDays(1).isAfter(last.getEndDate())) {
+        } else if(last.getEndDate().plusDays(1).isBefore(date)) {
           userOpt.ifPresent(user -> {
             devUsers.put(date, new UserDev(user, this, date));
           });
@@ -150,12 +151,21 @@ public class Device extends BasicEntityWithCreateDate {
             if(date.isAfter(lastUserModDate)) {
               last.setEndDate(date.minusDays(1));
               devUsers.put(date, new UserDev(user, this, date));
+              shouldCloseSub = true;
             }
           }
         } else {
           if(date.isAfter(lastUserModDate)) {
             last.setEndDate(date.minusDays(1));
+            shouldCloseSub = true;
           }
+        }
+      }
+      if(shouldCloseSub && !devSubs.isEmpty()) {
+        LocalDate lastSubModDate = Utility.getLatestSwitchTableDate(devSubs);
+        SubDev lastSub = devSubs.get(lastSubModDate);
+        if(!lastSub.closed()) {
+          lastSub.setEndDate(date.minusDays(1));
         }
       }
     }
@@ -167,7 +177,7 @@ public class Device extends BasicEntityWithCreateDate {
         notes.put(date, new DevNote(this, note, date));
       }
     } else {
-      LocalDate lastNoteModDate = Utility.getLatestDate(notes);
+      LocalDate lastNoteModDate = Utility.getLatestSwitchTableDate(notes);
       DevNote last = notes.get(lastNoteModDate);
       if(last.getEndDate() != null) {
         if(date.minusDays(1).isEqual(last.getEndDate())) {

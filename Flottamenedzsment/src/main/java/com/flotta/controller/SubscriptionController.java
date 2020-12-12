@@ -85,7 +85,7 @@ public class SubscriptionController {
       model.addAttribute("subscription", stv);
       model.addAttribute("freeSims", Utility.sortSimByImei(service.findAllFreeSim()));
       model.addAttribute("users", Utility.sortUserByName(service.findAllUser()));
-      model.addAttribute("devices", Utility.convertDevicesToView(service.findAllCurrentDeviceByUser(stv.getUserId())));
+      model.addAttribute("devices", Utility.convertDevicesToView(service.findAllAvailableDeviceByUser(stv.getUserId())));
       model.addAttribute("messages", messageService.getMessages());
       return "subscription_templates/subscriptionEdit";
     } else {
@@ -125,7 +125,7 @@ public class SubscriptionController {
   @PostMapping("/subscription/getDevicesByUser")
   @ResponseBody
   public List<DeviceToView> getDevicesByUser(@RequestParam ("userId") long userId) {
-    return Utility.convertDevicesToView(service.findAllCurrentDeviceByUser(userId));
+    return Utility.convertDevicesToView(service.findAllAvailableDeviceByUser(userId));
   }
   
   @PostMapping("/subscription/getDeviceById")

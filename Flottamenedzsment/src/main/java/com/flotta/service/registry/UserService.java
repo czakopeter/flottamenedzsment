@@ -91,9 +91,8 @@ public class UserService implements UserDetailsService {
       user.setStatus(UserStatus.WAITING_FOR_ACTIVATION);
       user.setPassword(passwordEncoder.encode(password));
       user.setActivationKey(generateKey(16));
-      if (emailService.sendMessage(user.getEmail(), "Activation email", emailService.createMessageText(EmailService.ACTIVATION_AND_INITIAL_PASSWORD, new String[] { user.getFullName(), user.getActivationKey(), password }))) {
+      if (emailService.sendMessage(user.getEmail(), "Aktiváció és kezdeti jelszó", emailService.createMessageText(EmailService.ACTIVATION_AND_INITIAL_PASSWORD, new String[] { user.getFullName(), user.getActivationKey(), password }))) {
         userRepository.save(user);
-//        eb.addMessage(MessageKey.USER_SUCCESSFULLY_CREATED, MessageType.SUCCESS);
       } else {
         eb.addMessage(MessageKey.EMAIL_FAILURE, MessageType.WARNING);
       }
@@ -163,23 +162,26 @@ public class UserService implements UserDetailsService {
   }
 
   BooleanWithMessages requestNewPassword(String email) {
-    BooleanWithMessages eb = new BooleanWithMessages(false);
+    BooleanWithMessages em = new BooleanWithMessages(false);
     Optional<User> optionalUser = userRepository.findByEmail(email);
     if (optionalUser.isPresent()) {
       User user = optionalUser.get();
+      if(UserStatus.WAITING_FOR_ACTIVATION.equals(user.getStatus())) {
+        em.addMessage(MessageKey.NOT_ACTIVATED_YET, MessageType.WARNING);
+        return em;
+      }
       String password = generateKey(16);
       user.setPassword(passwordEncoder.encode(password));
-      user.setStatus(UserStatus.ENABLED);
-      if (emailService.sendMessage(user.getEmail(), "Activation email", emailService.createMessageText(EmailService.ACTIVATION_AND_INITIAL_PASSWORD, new String[] { user.getFullName(), user.getActivationKey(), password }))) {
+      if (emailService.sendMessage(user.getEmail(), "Új jelszó kérése", emailService.createMessageText(EmailService.NEW_PASSWORD, new String[] { user.getFullName(), password }))) {
         userRepository.save(user);
-        eb.setTrue();
+        em.setTrue();
       } else {
-        eb.addMessage(MessageKey.EMAIL_FAILURE, MessageType.WARNING);
+        em.addMessage(MessageKey.EMAIL_FAILURE, MessageType.WARNING);
       }
     } else {
-      eb.addMessage(MessageKey.UNKNOWN_EMAIL, MessageType.WARNING);
+      em.addMessage(MessageKey.UNKNOWN_EMAIL, MessageType.WARNING);
     }
-    return eb;
+    return em;
   }
 
   boolean updateChargeRatioOfUser(long userId, Optional<ChargeRatioByCategory> chargeRatioOpt) {
@@ -202,7 +204,7 @@ public class UserService implements UserDetailsService {
     user.setStatus(UserStatus.WAITING_FOR_ACTIVATION);
     user.setPassword(passwordEncoder.encode(password));
     user.setActivationKey(generateKey(16));
-    if (emailService.sendMessage(user.getEmail(), "Activation email", emailService.createMessageText(EmailService.ACTIVATION_AND_INITIAL_PASSWORD, new String[] { user.getFullName(), user.getActivationKey(), password }))) {
+    if (emailService.sendMessage(user.getEmail(), "Aktiváció és kezdeti jelszó", emailService.createMessageText(EmailService.ACTIVATION_AND_INITIAL_PASSWORD, new String[] { user.getFullName(), user.getActivationKey(), password }))) {
       userRepository.save(user);
       eb.setTrue();
       eb.addMessage(MessageKey.SUCCESSFUL_REGISTRATION, MessageType.SUCCESS);
@@ -259,7 +261,7 @@ public class UserService implements UserDetailsService {
     @PostConstruct
     private void createFirstAdmin() {
       userRepository.save(createUser("admin@gmail.com", "Admin", "admin", UserStatus.ENABLED));
-      userRepository.save(createUser("testuser@gmail.com", "Test User", "testuser", UserStatus.ENABLED));
+      userRepository.save(createUser("testuser@gmail.com", "Test User", "testuser", UserStatus.WAITING_FOR_ACTIVATION));
 //      userRepository.save(createUser("disableduser@gmail.com", "", "disabled", UserStatus.DISABLED));
     }
     
@@ -272,12 +274,17 @@ public class UserService implements UserDetailsService {
       return user;
     }
 
-    public void delete(String email) {
-      Optional<User> userOpt = findByEmail(email);
+    public BooleanWithMessages delete(long id) {
+      BooleanWithMessages eb = new BooleanWithMessages(true);
+      Optional<User> userOpt = findById(id);
       userOpt.ifPresent(user -> {
-        if(user.getStatus().equals(UserStatus.WAITING_FOR_ACTIVATION)) {
+        if(user.hasRole("admin") && roleRepository.findByRoleIgnoreCase("admin").get().getUsers().size() == 1) {
+          eb.setFalse();
+          eb.addMessage(MessageKey.NO_REDUCE_ADMIN, MessageType.WARNING);
+        } else if(user.deletable()) {
           userRepository.delete(user);
         }
       });
+      return eb;
     }
 }

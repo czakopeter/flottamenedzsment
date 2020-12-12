@@ -22,8 +22,19 @@ public class EmailService {
   @Autowired
   private JavaMailSender emailSender;
 
-  public static String ACTIVATION_AND_INITIAL_PASSWORD = "Kedves $name$!\n\n" + "Aktiválja a profilját <a href=\"http://localhost:8080/activation/$key$\"  target=\"_blank\">IDE</a> kattintva.\n" + "Kezdeti jelszava: $initialPassword$\n\n" + "Üdvözlettel:\n" + "Flottamenedzsment";
+  public static String ACTIVATION_AND_INITIAL_PASSWORD =
+      "Kedves $name$!\n\n"
+      + "Aktiválja a profilját <a href=\"http://localhost:8080/activation/$key$\"  target=\"_blank\">IDE</a> kattintva.\n"
+      + "Kezdeti jelszava: $initialPassword$\n\n" 
+      + "Üdvözlettel:\n" 
+      + "Flottamenedzsment";
 
+  public static String NEW_PASSWORD =
+      "Kedves $name$!\n\n"
+      + "Új jelszava: $initialPassword$\n\n"
+      + "Üdvözlettel:\n"
+      + "Flottamenedzsment";
+  
   public boolean sendMessage(String email, String subject, String messageText) {
 
     MimeMessage message = emailSender.createMimeMessage();

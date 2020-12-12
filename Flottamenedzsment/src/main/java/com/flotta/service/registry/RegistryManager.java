@@ -211,7 +211,7 @@ public class RegistryManager {
     return userService.hasEnabledAdmin();
   }
 
-  public void deleteUserById(String email) {
-    userService.delete(email);
+  public BooleanWithMessages deleteUserById(long id) {
+    return userService.delete(id);
   }
 }

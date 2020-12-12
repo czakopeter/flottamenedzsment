@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.flotta.enums.ControllerType;
 import com.flotta.enums.MessageKey;
@@ -88,12 +87,12 @@ public class InvoiceController {
   
   @PostMapping("/invoice/modifyFeeItemGrossAmount")
   @ResponseStatus(value = HttpStatus.OK)
-  public void modifyFeeItemAmountRatio(@RequestParam ("id") long id, @RequestParam ("userGrossAmount") double userAmount, @RequestParam ("compGrossAmount") double compAmount) {
-    service.modifyFeeItemGrossAmountRatio(id, userAmount, compAmount);
+  public void modifyFeeItemAmountRatio(@RequestParam ("id") long id, @RequestParam ("userGrossAmount") double userAmount) {
+    service.modifyFeeItemGrossAmountRatio(id, userAmount);
   }
   
   @PostMapping("/rawInvoice/{invoiceNumber}/restartProcessing")
-  public String restartProcessingRawInvoice(@PathVariable("invoiceNumber") String invoiceNumber) {
+  public String restartProcessingOfRawInvoice(@PathVariable("invoiceNumber") String invoiceNumber) {
     service.restartProcessingRawInvoiceBy(invoiceNumber);
     return "redirect:/invoice/all";
   }

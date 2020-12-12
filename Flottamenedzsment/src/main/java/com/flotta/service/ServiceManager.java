@@ -164,8 +164,8 @@ public class ServiceManager {
 
 //-------- FEE ITEM SERVICE --------
   
-  public void modifyFeeItemGrossAmountRatio(long id, double userAmount, double compAmount) {
-    invoiceManager.modifyFeeItemGrossAmountRatio(id, userAmount, compAmount);
+  public void modifyFeeItemGrossAmountRatio(long id, double userAmount) {
+    invoiceManager.modifyFeeItemGrossAmountRatio(id, userAmount);
   }
 
 //-------- PARTICIPANT SERVICE --------
@@ -335,15 +335,15 @@ public class ServiceManager {
     return registryManager.hasAdmin();
   }
   
-  public void deleteUserById(String email) {
-    registryManager.deleteUserById(email);
+  public BooleanWithMessages deleteUserById(long id) {
+    return registryManager.deleteUserById(id);
   }
   
 
   // --- SWITCH TABLE SERVICE ---
 
-  public List<Device> findAllCurrentDeviceByUser(long userId) {
-    return switchTableService.findAllCurrentDeviceByUser(registryManager.findUserById(userId));
+  public List<Device> findAllAvailableDeviceByUser(long userId) {
+    return switchTableService.findAllAvailableDeviceByUser(registryManager.findUserById(userId));
   }
 
 }

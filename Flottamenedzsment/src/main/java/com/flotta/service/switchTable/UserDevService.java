@@ -11,6 +11,7 @@ import com.flotta.model.registry.Device;
 import com.flotta.model.registry.User;
 import com.flotta.model.switchTable.UserDev;
 import com.flotta.repository.switchTable.UserDevRepository;
+import com.flotta.utility.Utility;
 
 /**
  * @author CzP
@@ -30,7 +31,7 @@ public class UserDevService {
    * @param userOpt
    * @return visszadja az eszközet melyeket a felhasználó birtokol
    */
-  public List<Device> findAllCurrentDeviceByUser(Optional<User> userOpt) {
+  public List<Device> findAllAvailableDeviceByUser(Optional<User> userOpt) {
     List<Device> result = new LinkedList<>();
     if(userOpt.isPresent()) {
       for(UserDev userDev : userDevRepository.findAllByUserAndEndDateNull(userOpt.get())) {

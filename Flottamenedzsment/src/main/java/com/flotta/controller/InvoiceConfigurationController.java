@@ -123,18 +123,6 @@ public class InvoiceConfigurationController {
     return "redirect:/invoiceConfiguration/descriptionCategoryCoupler/" + coupler.getId();
   }
   
-  @GetMapping("/invoiceConfiguration/descriptionCategoryCoupler/{id}/view")
-  public String viewInvoiceDescriptionCategoryCoupler(Model model, @PathVariable("id") long id) {
-    Optional<DescriptionCategoryCoupler> dccOpt = service.findDescriptionCategoryCouplerById(id);
-    if(dccOpt.isPresent()) {
-      model.addAttribute("coupler", dccOpt.get());
-      return TEMPLATE_PATH + "/descriptionCategoryCouplerView";
-    } else {
-      messageService.addMessage(MessageKey.UNKNOWN_COUPLER, MessageType.ERROR);
-      return "redirect:/invoiceConfiguration/main?active=description-category-coupler";
-    }
-  }
-  
   @GetMapping("/invoiceConfiguration/chargeRatio/new")
   public String prepareCreatingChargeRatio(Model model) {
     model.addAttribute("chargeRatio", new ChargeRatioByCategory());

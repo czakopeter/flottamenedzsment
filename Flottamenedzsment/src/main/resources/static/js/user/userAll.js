@@ -44,11 +44,16 @@ function showAll() {
 }
 
 function deleteUser(deleteBtn) {
-	let email = deleteBtn.parentElement.parentElement.querySelector("[name=email]").innerHTML;
-	sendData("DELETE", "/user/delete", "email=" + email, callbackOfDeleteUser);
+	let id = deleteBtn.parentElement.parentElement.id.substr('id'.length);
+	console.log(id)
+	sendData("DELETE", "/admin/user/delete", "id=" + id, callbackOfDeleteUser);
 }
 
 function callbackOfDeleteUser(data) {
-	let row = document.querySelector("#" + data.text);
-	document.querySelector("#user-table").deleteRow(row.rowIndex);
+	if(data.text != 0) {
+		let row = document.querySelector("#id" + data.text);
+		document.querySelector("#user-table").deleteRow(row.rowIndex);
+	} else {
+		location.reload();
+	}
 }

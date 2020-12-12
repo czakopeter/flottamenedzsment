@@ -107,8 +107,8 @@ public class InvoiceManager {
   
 //-------- FEE ITEM SERVICE --------
   
-  public void modifyFeeItemGrossAmountRatio(long id, double userAmount, double compAmount) {
-    feeItemService.modifyGrossAmountRatio(id, userAmount, compAmount);
+  public void modifyFeeItemGrossAmountRatio(long id, double userAmount) {
+    feeItemService.modifyGrossAmountRatio(id, userAmount);
   }
   
 //-------- CATEGORY SERVICE --------
