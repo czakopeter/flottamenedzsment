@@ -191,8 +191,8 @@ public class RegistryManager {
     return userService.findById(id);
   }
 
-  public BooleanWithMessages updateUser(long id, Map<String, Boolean> roles) {
-    return userService.updateUser(id, roles);
+  public BooleanWithMessages updateUser(User user, Map<String, Boolean> roles) {
+    return userService.updateUser(user, roles);
   }
 
   public BooleanWithMessages requestNewPassword(String email) {

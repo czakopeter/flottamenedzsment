@@ -13,7 +13,7 @@ public enum MessageKey {
   SUCCESSFUL_LOGOUT("successfulLogout"),
   
 //  USER
-  NOT_ACTIVATED_YET("notActivatedYet"),
+  NOT_ENABLED("notEnabled"),
   EMAIL_ALREADY_USED("emailAlreadyUsed"),
   UNKNOWN_USER("unknownUser"),
   NO_REDUCE_ADMIN("noReduceAdmin"),

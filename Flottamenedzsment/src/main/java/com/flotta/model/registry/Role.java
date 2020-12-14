@@ -48,6 +48,14 @@ public class Role extends BasicEntity {
 	}
 
   @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((role == null) ? 0 : role.hashCode());
+    return result;
+  }
+
+  @Override
   public boolean equals(Object obj) {
     if (this == obj)
       return true;
@@ -59,9 +67,12 @@ public class Role extends BasicEntity {
     if (role == null) {
       if (other.role != null)
         return false;
-    } else if (!role.equalsIgnoreCase(other.role))
+    } else if (!role.equals(other.role.toUpperCase()))
       return false;
     return true;
   }
+  
+	
+  
 	
 }

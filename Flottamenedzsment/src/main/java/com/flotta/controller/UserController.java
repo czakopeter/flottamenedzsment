@@ -82,15 +82,15 @@ public class UserController {
   }
   
   @PostMapping("/user/{id}/update")
-  public String updateUser(@PathVariable("id") long id, @RequestParam(required = false) Map<String, Boolean> rolesMap) {
+  public String updateUser(@ModelAttribute ("user") User user, @RequestParam(required = false) Map<String, Boolean> rolesMap) {
     if(rolesMap == null) {
       rolesMap = Collections.emptyMap();
     }
-    BooleanWithMessages eb = service.updateUser(id, rolesMap);
+    BooleanWithMessages eb = service.updateUser(user, rolesMap);
     if(!eb.booleanValue()) {
       messageService.addMessage(eb);
     }
-    return "redirect:/user/" + id + "/update";
+    return "redirect:/user/" + user.getId() + "/update";
   }
   
   // ----- Guest -----

@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.flotta.enums.MessageKey;
 import com.flotta.enums.MessageType;
@@ -34,6 +35,9 @@ import com.flotta.utility.Validator;
 @Service
 public class UserService implements UserDetailsService {
 
+  @Value("${spring.profiles.active}")
+  private String profile;
+  
   private UserRepository userRepository;
 
   private EmailService emailService;
@@ -100,20 +104,16 @@ public class UserService implements UserDetailsService {
     return eb;
   }
 
-  BooleanWithMessages updateUser(long id, Map<String, Boolean> roles) {
+  BooleanWithMessages updateUser(User user, Map<String, Boolean> roles) {
     BooleanWithMessages eb = new BooleanWithMessages(true);
-    Optional<User> userOpt = userRepository.findById(id);
-    Optional<Role> adminRoleOpt = roleRepository.findByRoleIgnoreCase("admin");
-    if(userOpt.isPresent() && adminRoleOpt.isPresent()) {
-      User user = userOpt.get();
-      Set<Role> savableRoles = convertToRoleSet(roles);
-      if(user.hasRole("admin") && adminRoleOpt.get().getUsers().size() == 1 && !savableRoles.contains(new Role("admin"))) {
-        eb.setFalse();
-        eb.addMessage(MessageKey.NO_REDUCE_ADMIN, MessageType.WARNING);
-      } else {
-        user.setRoles(savableRoles);
-        userRepository.save(user);
-      }
+    Set<Role> savableRoles = convertToRoleSet(roles);
+    Role adminRole = roleRepository.findByRoleIgnoreCase("admin").get();
+    if(lastAdmin(user.getId()) && !(savableRoles.contains(adminRole) && user.getStatus().equals(UserStatus.ENABLED))) {
+      eb.setFalse();
+      eb.addMessage(MessageKey.NO_REDUCE_ADMIN, MessageType.WARNING);
+    } else {
+      user.setRoles(savableRoles);
+      userRepository.save(user);
     }
     return eb;
   }
@@ -166,17 +166,18 @@ public class UserService implements UserDetailsService {
     Optional<User> optionalUser = userRepository.findByEmail(email);
     if (optionalUser.isPresent()) {
       User user = optionalUser.get();
-      if(UserStatus.WAITING_FOR_ACTIVATION.equals(user.getStatus())) {
-        em.addMessage(MessageKey.NOT_ACTIVATED_YET, MessageType.WARNING);
-        return em;
-      }
-      String password = generateKey(16);
-      user.setPassword(passwordEncoder.encode(password));
-      if (emailService.sendMessage(user.getEmail(), "Új jelszó kérése", emailService.createMessageText(EmailService.NEW_PASSWORD, new String[] { user.getFullName(), password }))) {
-        userRepository.save(user);
-        em.setTrue();
+      if(UserStatus.ENABLED.equals(user.getStatus())) {
+        String password = generateKey(16);
+        user.setPassword(passwordEncoder.encode(password));
+        if (emailService.sendMessage(user.getEmail(), "Új jelszó kérése", emailService.createMessageText(EmailService.NEW_PASSWORD, new String[] { user.getFullName(), password }))) {
+          userRepository.save(user);
+          em.setTrue();
+        } else {
+          em.addMessage(MessageKey.EMAIL_FAILURE, MessageType.WARNING);
+        }
       } else {
-        em.addMessage(MessageKey.EMAIL_FAILURE, MessageType.WARNING);
+        em.addMessage(MessageKey.NOT_ENABLED, MessageType.WARNING);
+        return em;
       }
     } else {
       em.addMessage(MessageKey.UNKNOWN_EMAIL, MessageType.WARNING);
@@ -197,7 +198,6 @@ public class UserService implements UserDetailsService {
   }
 
   BooleanWithMessages createFirstAdmin(User user) {
-    userRepository.deleteAll();
     BooleanWithMessages eb = new BooleanWithMessages(false);
     String password = generateKey(16);
     user.addRole(roleRepository.findByRoleIgnoreCase("admin").get());
@@ -205,6 +205,7 @@ public class UserService implements UserDetailsService {
     user.setPassword(passwordEncoder.encode(password));
     user.setActivationKey(generateKey(16));
     if (emailService.sendMessage(user.getEmail(), "Aktiváció és kezdeti jelszó", emailService.createMessageText(EmailService.ACTIVATION_AND_INITIAL_PASSWORD, new String[] { user.getFullName(), user.getActivationKey(), password }))) {
+      userRepository.deleteAll();
       userRepository.save(user);
       eb.setTrue();
       eb.addMessage(MessageKey.SUCCESSFUL_REGISTRATION, MessageType.SUCCESS);
@@ -260,9 +261,10 @@ public class UserService implements UserDetailsService {
   // TOTO delete create first admin
     @PostConstruct
     private void createFirstAdmin() {
-      userRepository.save(createUser("admin@gmail.com", "Admin", "admin", UserStatus.ENABLED));
-      userRepository.save(createUser("testuser@gmail.com", "Test User", "testuser", UserStatus.WAITING_FOR_ACTIVATION));
-//      userRepository.save(createUser("disableduser@gmail.com", "", "disabled", UserStatus.DISABLED));
+      if(!"min".equals(profile)) {
+        userRepository.save(createUser("admin@gmail.com", "Admin", "admin", UserStatus.ENABLED));
+        userRepository.save(createUser("testuser@gmail.com", "Test User", "testuser", UserStatus.WAITING_FOR_ACTIVATION));
+      }
     }
     
     private User createUser(String email, String name, CharSequence psw, UserStatus status) {
@@ -278,7 +280,7 @@ public class UserService implements UserDetailsService {
       BooleanWithMessages eb = new BooleanWithMessages(true);
       Optional<User> userOpt = findById(id);
       userOpt.ifPresent(user -> {
-        if(user.hasRole("admin") && roleRepository.findByRoleIgnoreCase("admin").get().getUsers().size() == 1) {
+        if(lastAdmin(id)) {
           eb.setFalse();
           eb.addMessage(MessageKey.NO_REDUCE_ADMIN, MessageType.WARNING);
         } else if(user.deletable()) {
@@ -286,5 +288,18 @@ public class UserService implements UserDetailsService {
         }
       });
       return eb;
+    }
+    
+    public boolean lastAdmin(long id) {
+      Optional<User> userOpt = userRepository.findById(id);
+      if(userOpt.isPresent()) {
+        User user = userOpt.get();
+        if(!user.hasRole("admin")) {
+          return false;
+        }
+        Role adminRole = roleRepository.findByRoleIgnoreCase("admin").get();
+        return adminRole.getUsers().size() == 1;
+      }
+      return false;
     }
 }

@@ -139,12 +139,11 @@ public class User extends BasicEntity {
 	}
 	
 	@Override
-	public String toString() {
-		return "User [id=" + id + ", email=" + email + ", password=" + password + ", fullName=" + fullName
-				 + ", subscriptions=" + Objects.toString(userSubs, "NULL") + ", roles=" + Objects.toString(roles, "NULL") + "]";
-	}
-	
-	public boolean equalsByEmail(User other) {
+  public String toString() {
+    return "User [email=" + email + ", password=" + password + ", fullName=" + fullName + ", activationKey=" + activationKey + ", status=" + status + "]";
+  }
+
+  public boolean equalsByEmail(User other) {
 		if(other == null) {
 			return false;
 		}

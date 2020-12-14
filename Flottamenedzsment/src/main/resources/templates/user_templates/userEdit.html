@@ -35,6 +35,20 @@
         </div>
         <div class="row my-2">
           <div class="col-2">
+            <label th:text="#{status}">Status</label>
+          </div>
+          <div class="col-4">
+            <input th:if="${user.status.name() == 'WAITING_FOR_ACTIVATION'}" type="text" class="form-control" id="status" name="status" th:value="*{status}"
+              readonly="readonly"
+            />
+            <select th:unless="${user.status.name() == 'WAITING_FOR_ACTIVATION'}" id="status" name="status" th:value="*{status}" class="form-control">
+              <option th:value="${T(com.flotta.enums.UserStatus).ENABLED}" th:text="#{__${T(com.flotta.enums.UserStatus).ENABLED.key}__}" th:selected="${user.status.name() == 'ENABLED'}"></option>
+              <option th:value="${T(com.flotta.enums.UserStatus).DISABLED}" th:text="#{__${T(com.flotta.enums.UserStatus).DISABLED.key}__}" th:selected="${user.status.name() == 'DISABLED'}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-2">
             <label th:text="#{role.roles}" style="font-weight: bold;">Roles</label>
           </div>
         </div>
