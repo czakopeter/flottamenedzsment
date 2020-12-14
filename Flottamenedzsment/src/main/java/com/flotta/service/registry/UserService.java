@@ -38,29 +38,17 @@ public class UserService implements UserDetailsService {
   @Value("${spring.profiles.active}")
   private String profile;
   
+  @Autowired
   private UserRepository userRepository;
 
+  @Autowired
   private EmailService emailService;
 
+  @Autowired
   private RoleRepository roleRepository;
 
   @Autowired
   private PasswordEncoder passwordEncoder;
-
-  @Autowired
-  public UserService(UserRepository userRepository) {
-    this.userRepository = userRepository;
-  }
-
-  @Autowired
-  public void setEmailService(EmailService emailService) {
-    this.emailService = emailService;
-  }
-
-  @Autowired
-  public void setRoleRepository(RoleRepository roleRepository) {
-    this.roleRepository = roleRepository;
-  }
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -104,7 +92,7 @@ public class UserService implements UserDetailsService {
     return eb;
   }
 
-  BooleanWithMessages updateUser(User user, Map<String, Boolean> roles) {
+  BooleanWithMessages update(User user, Map<String, Boolean> roles) {
     BooleanWithMessages eb = new BooleanWithMessages(true);
     Set<Role> savableRoles = convertToRoleSet(roles);
     Role adminRole = roleRepository.findByRoleIgnoreCase("admin").get();
@@ -112,8 +100,12 @@ public class UserService implements UserDetailsService {
       eb.setFalse();
       eb.addMessage(MessageKey.NO_REDUCE_ADMIN, MessageType.WARNING);
     } else {
-      user.setRoles(savableRoles);
-      userRepository.save(user);
+      userRepository.findById(user.getId()).ifPresent(savedUser -> {
+        savedUser.setRoles(savableRoles);
+        savedUser.setStatus(user.getStatus());
+        userRepository.save(savedUser);
+      });
+      
     }
     return eb;
   }
@@ -259,7 +251,7 @@ public class UserService implements UserDetailsService {
     return result;
   }
 
-    public BooleanWithMessages delete(long id) {
+    BooleanWithMessages delete(long id) {
       BooleanWithMessages eb = new BooleanWithMessages(true);
       Optional<User> userOpt = findById(id);
       userOpt.ifPresent(user -> {
@@ -273,7 +265,7 @@ public class UserService implements UserDetailsService {
       return eb;
     }
     
-    public boolean lastAdmin(long id) {
+    private boolean lastAdmin(long id) {
       Optional<User> userOpt = userRepository.findById(id);
       if(userOpt.isPresent()) {
         User user = userOpt.get();

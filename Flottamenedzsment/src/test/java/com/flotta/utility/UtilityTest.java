@@ -2,6 +2,7 @@ package com.flotta.utility;
 
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,8 +20,7 @@ class UtilityTest {
   
   @Test
   void getLatestDateOfEmptyMap() {
-    Map<LocalDate, BasicSwitchTable> map = new HashMap<LocalDate, BasicSwitchTable>();
-    Assertions.assertThrows(IllegalArgumentException.class, () -> Utility.getLatestSwitchTableDate(map));
+    Assertions.assertThrows(IllegalArgumentException.class, () -> Utility.getLatestSwitchTableDate(Collections.emptyMap()));
   }
   
   @Test
@@ -30,4 +30,5 @@ class UtilityTest {
     map.put(LocalDate.parse("2020-02-01"), null);
     Assertions.assertEquals(LocalDate.parse("2020-02-01"), Utility.getLatestSwitchTableDate(map));
   }
+  
 }

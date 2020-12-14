@@ -131,7 +131,7 @@ public class Utility {
     return devicesToView;
   }
 
-  public static List<SubscriptionToView> convertSubscripionToView(List<Subscription> subscriptions) {
+  public static List<SubscriptionToView> convertSubscripionsToView(List<Subscription> subscriptions) {
     List<SubscriptionToView> subscriptionsToView = new LinkedList<>();
     for(Subscription subscription : subscriptions) {
       subscriptionsToView.add(new SubscriptionToView(subscription));

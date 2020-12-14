@@ -11,14 +11,14 @@
 	<InvoiceData>
 		<Begin>2020.05.01.</Begin>
 		<End>2020.05.31.</End>
-		<InvNb>5120200501000005</InvNb>
-		<InvTotalNetA>2000</InvTotalNetA>
-		<InvTotalTaxA>430</InvTotalTaxA>
-		<InvTotalGrossA>2430</InvTotalGrossA>
+		<InvNb>5120200401000005</InvNb>
+		<InvTotalNetA>1500</InvTotalNetA>
+		<InvTotalTaxA>295</InvTotalTaxA>
+		<InvTotalGrossA>1795</InvTotalGrossA>
 	</InvoiceData>
 	<FeeItems>
 		<FeeItem>
-			<ItemNr>202563364</ItemNr>
+			<ItemNr>201234567</ItemNr>
 			<Desc>Mobil telefon szolgaltatas</Desc>
 			<Begin>2020.05.01.</Begin>
 			<End>2020.05.31.</End>
@@ -28,24 +28,14 @@
 			<GrossA>1270</GrossA>
 		</FeeItem>
 		<FeeItem>
-			<ItemNr>202563364</ItemNr>
+			<ItemNr>201234567</ItemNr>
 			<Desc>Mobil net 1GB</Desc>
-      <Begin>2020.05.01.</Begin>
+			<Begin>2020.05.01.</Begin>
 			<End>2020.05.31.</End>
 			<NetA>500</NetA>
 			<TaxP>5%</TaxP>
       <TaxA>25</TaxA>
 			<GrossA>525</GrossA>
-		</FeeItem>
-		<FeeItem>
-			<ItemNr>202563364</ItemNr>
-			<Desc>Telekom mobilhalozaton belul</Desc>
-      <Begin>2020.05.10.</Begin>
-			<End>2020.05.20.</End>
-			<NetA>500</NetA>
-			<TaxP>27%</TaxP>
-      <TaxA>135</TaxA>
-			<GrossA>635</GrossA>
 		</FeeItem>
 	</FeeItems>
 </Account>

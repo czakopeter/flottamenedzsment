@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-2"?>
+<Account>
+	<CustomerData>
+		<Name>Czako Peter Soma</Name>
+		<City>Budapest</City>
+	</CustomerData>
+	<CompanyData>
+		<Name>Test participant</Name>
+		<City>Budapest</City>
+	</CompanyData>
+	<InvoiceData>
+		<Begin>2020.06.01.</Begin>
+		<End>2020.06.30.</End>
+		<InvNb>5120200601000006</InvNb>
+		<InvTotalNetA>2000</InvTotalNetA>
+		<InvTotalTaxA>540</InvTotalTaxA>
+		<InvTotalGrossA>2540</InvTotalGrossA>
+	</InvoiceData>
+	<FeeItems>
+		<FeeItem>
+			<ItemNr>201234567</ItemNr>
+			<Desc>Mobil telefon szolgaltatas</Desc>
+			<Begin>2020.06.01.</Begin>
+			<End>2020.06.30.</End>
+			<NetA>1000</NetA>
+			<TaxP>27%</TaxP>
+      <TaxA>270</TaxA>
+			<GrossA>1270</GrossA>
+		</FeeItem>
+		<FeeItem>
+			<ItemNr>207654321</ItemNr>
+			<Desc>Mobil net 1GB</Desc>
+      <Begin>2020.06.01.</Begin>
+			<End>2020.06.30.</End>
+			<NetA>1000</NetA>
+			<TaxP>27%</TaxP>
+      <TaxA>270</TaxA>
+			<GrossA>1270</GrossA>
+		</FeeItem>
+	</FeeItems>
+</Account>

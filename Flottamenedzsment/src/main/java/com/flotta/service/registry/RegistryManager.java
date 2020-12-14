@@ -192,7 +192,7 @@ public class RegistryManager {
   }
 
   public BooleanWithMessages updateUser(User user, Map<String, Boolean> roles) {
-    return userService.updateUser(user, roles);
+    return userService.update(user, roles);
   }
 
   public BooleanWithMessages requestNewPassword(String email) {

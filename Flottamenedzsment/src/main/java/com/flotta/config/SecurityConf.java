@@ -46,11 +46,8 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests()
-			//TODO adatbázishoz csak ADMIN,
-//			  .antMatchers("/db/**").hasRole("ADMIN")
-//			  .antMatchers("/login").permitAll()
-			  .antMatchers("/db/**", "/login").permitAll()
-			  .antMatchers("/activation/**", "/registration", "/accessDennied", "/requestNewPassword", "/css/*", "/favicon.ico").permitAll()
+			  .antMatchers("/db/**" ).permitAll()
+			  .antMatchers("/login", "/activation/**", "/registration", "/accessDennied", "/requestNewPassword", "/css/*", "/favicon.ico").permitAll()
 			  .antMatchers("/invoice/**", "/rawInvoice/**", "/invoiceConfiguration/**").hasAnyAuthority("FINANCE_MNGR", "ADMIN")
 			  .antMatchers("/subscription/**", "/sim/**").hasAnyAuthority("SUBSCRIPTION_MNGR", "ADMIN")
         .antMatchers("/device/**", "/deviceType/**").hasAnyAuthority("DEVICE_MNGR", "ADMIN")

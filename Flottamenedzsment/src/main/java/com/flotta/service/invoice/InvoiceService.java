@@ -81,7 +81,7 @@ public class InvoiceService {
     return invoiceRepository.findByInvoiceNumber(invoiceNumber);
   }
 
-  public BooleanWithMessages uploadInvoice(MultipartFile file) {
+  BooleanWithMessages uploadInvoice(MultipartFile file) {
     BooleanWithMessages eb = new BooleanWithMessages(true);
     String xmlString;
     try {
@@ -103,12 +103,12 @@ public class InvoiceService {
   return eb;
   }
   
-  public void deleteInvoiceByInvoiceNumber(String invoiceNumber) {
+  void deleteInvoiceByInvoiceNumber(String invoiceNumber) {
     Optional<Invoice> invoiceOpt = invoiceRepository.findByInvoiceNumber(invoiceNumber);
     invoiceOpt.ifPresent(invoice -> invoiceRepository.delete(invoice));
   }
   
-  public void acceptInvoiceByInvoiceNumberFromCompany(String invoiceNumber) {
+  void acceptInvoiceByInvoiceNumberFromCompany(String invoiceNumber) {
     Optional<Invoice> invoiceOpt = invoiceRepository.findByInvoiceNumber(invoiceNumber);
     invoiceOpt.ifPresent(invoice -> {
       invoice.setAcceptedByCompany();
@@ -120,7 +120,7 @@ public class InvoiceService {
     return rawInvoiceRepository.findAll();
   }
   
-  public void restartProcessingRawInvoiceByInvoiceNumber(String invoiceNumber) {
+  void restartProcessingRawInvoiceByInvoiceNumber(String invoiceNumber) {
     Optional<RawInvoice> rawInvoiceOpt= rawInvoiceRepository.findByInvoiceNumber(invoiceNumber);
     rawInvoiceOpt.ifPresent(rawInvoice -> {
       rawInvoice.clearProblem();
@@ -130,14 +130,14 @@ public class InvoiceService {
     });
   }
 
-  public void deleteRawInvoiceByInvoiceNumber(String invoiceNumber) {
+  void deleteRawInvoiceByInvoiceNumber(String invoiceNumber) {
     Optional<RawInvoice> optional = rawInvoiceRepository.findByInvoiceNumber(invoiceNumber);
     if(optional.isPresent()) {
       rawInvoiceRepository.delete(optional.get());
     }
   }
   
-  public List<String> findDescriptionsOfInvoiceByInvoiceNumber(String invoiceNumber) {
+  List<String> findDescriptionsOfInvoiceByInvoiceNumber(String invoiceNumber) {
     Optional<Invoice> optionalInvoice = invoiceRepository.findByInvoiceNumber(invoiceNumber);
     Optional<RawInvoice> optionalRawInvoice = rawInvoiceRepository.findByInvoiceNumber(invoiceNumber);
     if (optionalInvoice.isPresent()) {

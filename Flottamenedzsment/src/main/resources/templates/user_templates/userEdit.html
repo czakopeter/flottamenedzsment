@@ -41,10 +41,15 @@
             <input th:if="${user.status.name() == 'WAITING_FOR_ACTIVATION'}" type="text" class="form-control" id="status" name="status" th:value="*{status}"
               readonly="readonly"
             />
-            <select th:unless="${user.status.name() == 'WAITING_FOR_ACTIVATION'}" id="status" name="status" th:value="*{status}" class="form-control">
-              <option th:value="${T(com.flotta.enums.UserStatus).ENABLED}" th:text="#{__${T(com.flotta.enums.UserStatus).ENABLED.key}__}" th:selected="${user.status.name() == 'ENABLED'}"></option>
-              <option th:value="${T(com.flotta.enums.UserStatus).DISABLED}" th:text="#{__${T(com.flotta.enums.UserStatus).DISABLED.key}__}" th:selected="${user.status.name() == 'DISABLED'}"></option>
-            </select>
+            <div th:unless="${user.status.name() == 'WAITING_FOR_ACTIVATION'}">
+              <input sec:authorize="not hasAnyAuthority('ADMIN')" type="text" class="form-control" id="status" name="status" th:value="#{__${user.status.key}__}"
+              readonly="readonly"
+              />
+              <select sec:authorize="hasAnyAuthority('ADMIN')" id="status" name="status" class="form-control">
+                <option th:value="${T(com.flotta.enums.UserStatus).ENABLED}" th:text="#{__${T(com.flotta.enums.UserStatus).ENABLED.key}__}" th:selected="${user.status.name() == 'ENABLED'}"></option>
+                <option th:value="${T(com.flotta.enums.UserStatus).DISABLED}" th:text="#{__${T(com.flotta.enums.UserStatus).DISABLED.key}__}" th:selected="${user.status.name() == 'DISABLED'}"></option>
+              </select>
+            </div>
           </div>
         </div>
         <div class="row my-2">

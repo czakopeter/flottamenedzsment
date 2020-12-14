@@ -44,7 +44,7 @@ public class SubscriptionController {
 
   @GetMapping("/subscription/all")
   public String listSubscriptions(Model model) {
-    model.addAttribute("subscriptions", Utility.convertSubscripionToView(service.findAllSubscription()));
+    model.addAttribute("subscriptions", Utility.convertSubscripionsToView(service.findAllSubscription()));
     model.addAttribute("messages", messageService.getMessages());
     return "subscription_templates/subscriptionAll";
   }

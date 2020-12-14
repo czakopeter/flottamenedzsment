@@ -73,7 +73,7 @@
 
     <h4 class="uppercase" th:text="#{invoiceDetails}">Invoice details</h4>
 
-    <div th:each="partOfInvoice : ${invoice.invoicePart}">
+    <div th:each="partOfInvoice : ${invoice.groups}">
       <a class="noneunderline"
         th:href="'#' + ${partOfInvoice.subscription?.number} + ${partOfInvoice.user != null ? partOfInvoice.user.fullName : 'Company'}"
         data-toggle="collapse" aria-expanded="false" role="button" onclick="change(this)"
@@ -126,7 +126,7 @@
                 <td class="text-right" name="compGrossAmount"
                   th:text="${#numbers.formatDecimal(feeItem.companyGrossAmount, 1, 2)} + ' Ft'"
                 ></td>
-                <td name="buttons" width="85px" th:unless="${partOfInvoice.acceptedByCompany or partOfInvoice.user == null}">
+                <td name="buttons" width="105px" th:unless="${partOfInvoice.acceptedByCompany or partOfInvoice.user == null}">
                   <div id="prepareEditingButton" class="text-center">
                     <button type="button" class="btn btn-primary" onclick="prepare_editing(this)" th:text="#{button.edit}">
                     </button>

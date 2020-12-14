@@ -9,19 +9,19 @@
 		<City>Budapest</City>
 	</CompanyData>
 	<InvoiceData>
-		<Begin>2020.04.01.</Begin>
-		<End>2020.04.30.</End>
-		<InvNb>5120200401000004</InvNb>
+		<Begin>2020.03.01.</Begin>
+		<End>2020.03.31.</End>
+		<InvNb>5120200301000003</InvNb>
 		<InvTotalNetA>1000</InvTotalNetA>
 		<InvTotalTaxA>270</InvTotalTaxA>
 		<InvTotalGrossA>1270</InvTotalGrossA>
 	</InvoiceData>
 	<FeeItems>
 		<FeeItem>
-			<ItemNr>202563364</ItemNr>
+			<ItemNr>207654321</ItemNr>
 			<Desc>Mobil telefon szolgaltatas</Desc>
-			<Begin>2020.04.01.</Begin>
-			<End>2020.04.30.</End>
+			<Begin>2020.03.01.</Begin>
+			<End>2020.03.31.</End>
 			<NetA>1000</NetA>
 			<TaxP>27%</TaxP>
       <TaxA>270</TaxA>

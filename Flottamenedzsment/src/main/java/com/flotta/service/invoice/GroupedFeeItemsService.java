@@ -26,12 +26,6 @@ public class GroupedFeeItemsService {
     this.groupedFeeItemsRepository = groupedFeeItemsRepository;
   }
   
-  /**
-   * Visszaadja a felhasználóhoz tartózó számlatételeket, melyek a cég oldaláról már elfogadásra kerültek
-   * A lista rendeztett, előre kerülnek a felhasználó által még nem elfogadottak, azon belül meg dátum szerint növekvő a sorrend
-   * @param user
-   * @return Felhasználóhoz tartózó számlatételeket listája
-   */
   public List<GroupedFeeItems> findAllByUser(User user) {
     return groupedFeeItemsRepository.findAllByUserAndAcceptedByCompanyTrueOrderByAcceptedByUserAscBeginDateAsc(user);
   }
@@ -51,8 +45,8 @@ public class GroupedFeeItemsService {
     groupedFeeItemsRepository.save(invoices);
   }
 
-  public void askForRevision(User user, long id, Map<String, String> notes) {
-    Optional<GroupedFeeItems> optional = groupedFeeItemsRepository.findByIdAndUser(id, user);
+  public void askForRevision(User user, long groupId, Map<String, String> notes) {
+    Optional<GroupedFeeItems> optional = groupedFeeItemsRepository.findByIdAndUser(groupId, user);
     optional.ifPresent(invoice -> {
       invoice.getInvoice().setAcceptedByCompany(false);
       invoice.setAcceptedByCompany(false);

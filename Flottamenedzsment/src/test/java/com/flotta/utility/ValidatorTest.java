@@ -30,5 +30,10 @@ class ValidatorTest {
   void invalidImieWithLuhnAlg() {
     assertFalse(Validator.checkImieWithLuhnAlg("8936304419070454007"));
   }
+  
+  @Test
+  void validPassword() {
+    assertTrue(Validator.validPassword("valid1234"));
+  }
 
 }
