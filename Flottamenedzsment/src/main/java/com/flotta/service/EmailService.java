@@ -7,6 +7,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -44,11 +45,8 @@ public class EmailService {
       helper.setSubject(subject);
       helper.setText(messageText, true);
       emailSender.send(message);
-    } catch (MessagingException e) {
-      log.error("Multipart creation failed " + e);
-      return false;
-    } catch (MailSendException e) {
-      log.error("Failure when sending the message " + e);
+    } catch (MessagingException | MailSendException | MailAuthenticationException e) {
+      log.error("Error happened during the send\t" + e);
       return false;
     }
     return true;

@@ -52,9 +52,13 @@ public class InvoiceController {
   
   @PostMapping("/invoice/fileUpload")
   public String uploadInvoice(@RequestParam("file") MultipartFile file) {
-    BooleanWithMessages eb = service.fileUpload(file);
-    if(!eb.booleanValue()) {
-      messageService.addMessage(eb);
+    if(file.getOriginalFilename().isEmpty()) {
+      messageService.addMessage(MessageKey.FILE_NOT_CHOSE, MessageType.WARNING);
+    } else {
+      BooleanWithMessages eb = service.fileUpload(file);
+      if(!eb.booleanValue()) {
+        messageService.addMessage(eb);
+      }
     }
     return "redirect:/invoice/all";
   }

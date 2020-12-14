@@ -99,7 +99,6 @@ public class InvoiceService {
     } catch (FileUploadException e) {
       eb.setFalse();
       eb.addMessage(e.getKey(), e.getType());
-      e.printStackTrace();
     }
   return eb;
   }
@@ -178,7 +177,7 @@ public class InvoiceService {
 
       return rawInvoice;
     } else {
-      throw new FileUploadException("Invalid structure");
+      throw new FileUploadException(MessageKey.NOT_VALID_INVOICE_STUCTURE, MessageType.WARNING);
     }
   }
   
@@ -270,7 +269,6 @@ public class InvoiceService {
   }
 
   private Element getTreeFromXMLString(String xmlString) throws FileUploadException {
-    // TODO convert to utf-8
     try {
       DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
       Document doc = dBuilder.parse(new InputSource(new StringReader(xmlString)));
@@ -278,18 +276,14 @@ public class InvoiceService {
       doc.getDocumentElement().normalize();
 
       return doc.getDocumentElement();
-    } catch (ParserConfigurationException e) {
-      throw new FileUploadException("ParserConfigurationException");
-    } catch (IOException e) {
-      throw new FileUploadException("IOException");
-    } catch (SAXException e) {
-      throw new FileUploadException("SAXException\n" + e);
+    } catch (ParserConfigurationException | IOException | SAXException e) {
+      throw new FileUploadException(MessageKey.NOT_VALID_XML, MessageType.WARNING);
     }
   }
 
   private String getXMLString(MultipartFile file) throws FileUploadException {
     if (file.isEmpty()) {
-      throw new FileUploadException("Empty file");
+      throw new FileUploadException(MessageKey.EMPTY_FILE, MessageType.WARNING);
     }
 
     StringBuilder sb = new StringBuilder();
@@ -302,7 +296,7 @@ public class InvoiceService {
 
       return sb.toString().replaceAll(">\\s+<", "><");
     } catch (IOException e) {
-      throw new FileUploadException("IOException");
+      throw new FileUploadException(MessageKey.FILE_CANT_READ, MessageType.WARNING);
     }
   }
 }

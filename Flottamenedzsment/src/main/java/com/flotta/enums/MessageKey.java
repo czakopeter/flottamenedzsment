@@ -42,6 +42,11 @@ public enum MessageKey {
 //  INVOICE
   INVOICE_NUMBER_ALREADY_USED("invoiceNumberAlreadyUsed"),
   UNKNOWN_INVOICE("unknownInvoice"),
+  EMPTY_FILE("emptyFile"),
+  FILE_CANT_READ("fileCantRead"),
+  NOT_VALID_XML("notValidXml"),
+  NOT_VALID_INVOICE_STUCTURE("notValidStructure"),
+  FILE_NOT_CHOSE("fileNotChosed"),
   
 //  INVOICE CONFIG
   UNKNOWN_COUPLER("unknownCoupler"),

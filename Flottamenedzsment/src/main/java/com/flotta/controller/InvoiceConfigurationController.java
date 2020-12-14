@@ -52,6 +52,8 @@ public class InvoiceConfigurationController {
     if(active.isPresent()) {
       model.addAttribute("active", active.get());
     }
+    List<ChargeRatioByCategory> avbl = service.findAllChargeRatioByAvailability(Availability.AVAILABLE);
+    System.err.println(avbl.isEmpty());
     model.addAttribute("categories", Utility.sortCategoryByName(service.findAllCategory()));
     model.addAttribute("couplers", Utility.sortCouplerByName(service.findAllDescriptionCategoryCouplerByAvailability(Availability.AVAILABLE)));
     model.addAttribute("chargeRatios", Utility.sortChargeRatioByName(service.findAllChargeRatio()));

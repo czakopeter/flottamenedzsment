@@ -123,6 +123,7 @@ public class UserService implements UserDetailsService {
     Optional<User> userOpt = userRepository.findByActivationKey(key);
     if(userOpt.isPresent()) {
       User user = userOpt.get();
+      user.setActivationKey("");
       user.setStatus(UserStatus.ENABLED);
       userRepository.save(user);
       eb.addMessage(MessageKey.SUCCESSFUL_ACTIVATION, MessageType.SUCCESS);
@@ -258,24 +259,6 @@ public class UserService implements UserDetailsService {
     return result;
   }
 
-  // TOTO delete create first admin
-    @PostConstruct
-    private void createFirstAdmin() {
-      if(!"min".equals(profile)) {
-        userRepository.save(createUser("admin@gmail.com", "Admin", "admin", UserStatus.ENABLED));
-        userRepository.save(createUser("testuser@gmail.com", "Test User", "testuser", UserStatus.WAITING_FOR_ACTIVATION));
-      }
-    }
-    
-    private User createUser(String email, String name, CharSequence psw, UserStatus status) {
-      User user = new User();
-      user.setEmail(email);
-      user.setFullName(name);
-      user.setPassword(passwordEncoder.encode(psw));
-      user.setStatus(status);
-      return user;
-    }
-
     public BooleanWithMessages delete(long id) {
       BooleanWithMessages eb = new BooleanWithMessages(true);
       Optional<User> userOpt = findById(id);
@@ -301,5 +284,23 @@ public class UserService implements UserDetailsService {
         return adminRole.getUsers().size() == 1;
       }
       return false;
+    }
+    
+ // TOTO delete create first admin
+    @PostConstruct
+    private void createFirstAdmin() {
+      if("test".equals(profile)) {
+        userRepository.save(createUser("admin@gmail.com", "Admin", "admin", UserStatus.ENABLED));
+        userRepository.save(createUser("testuser@gmail.com", "Test User", "testuser", UserStatus.WAITING_FOR_ACTIVATION));
+      }
+    }
+    
+    private User createUser(String email, String name, CharSequence psw, UserStatus status) {
+      User user = new User();
+      user.setEmail(email);
+      user.setFullName(name);
+      user.setPassword(passwordEncoder.encode(psw));
+      user.setStatus(status);
+      return user;
     }
 }
